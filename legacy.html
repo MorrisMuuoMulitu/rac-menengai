@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+	<meta charset="UTF-8">
+	<title>Rotaract Club of Menengai · Service Above Self</title>
+	<meta name="description" content="RAC Menengai — a decade of service, leadership and fellowship in Nakuru, Kenya. Join us every Thursday for fellowship and action.">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<meta name="theme-color" content="#1C2734">
+	<link rel="icon" href="assets/images/menengai/logo.jpg" sizes="32x32">
+	<link rel="apple-touch-icon" href="assets/images/menengai/logo.jpg">
+	<link rel="stylesheet" href="assets/fonts/fonts.css">
+<style>
+/* ============================================================
+   DESIGN TOKENS — locked (pink + navy, per user choice)
+   ============================================================ */
+:root{
+	--accent:#C21F5D;
+	--accent-2:#e0558a;
+	--secondary:#1C2734;
+	--secondary-2:#2a3a4f;
+	--text:#333333;
+	--muted:#8a93a1;
+	--border:rgba(28,39,52,0.10);
+	--surface:#ffffff;
+	--surface-alt:#ffe6ef;
+	--bg:#f4f5f7;
+	--footer-bg:#141b26;
+	--font-heading:'Open Sans',sans-serif;
+	--font-body:Georgia,'Times New Roman',serif;
+	--grad:linear-gradient(135deg,#C21F5D 0%,#e0558a 55%,#1C2734 130%);
+	--shadow-sm:0 2px 10px rgba(28,39,52,.06);
+	--shadow-md:0 14px 40px rgba(28,39,52,.12);
+	--shadow-lg:0 30px 70px rgba(28,39,52,.18);
+	--radius:20px;
+	--content-width:1280px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{
+	font-family:var(--font-body);font-size:18px;line-height:1.75;color:var(--text);
+	background:var(--bg);overflow-x:hidden;-webkit-font-smoothing:antialiased;
+}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--accent);text-decoration:none;transition:color .25s}
+a:hover{color:var(--accent-2)}
+h1,h2,h3,h4,h5,h6{font-family:var(--font-heading);font-weight:700;letter-spacing:-0.02em;line-height:1.15;color:var(--secondary)}
+.container{max-width:var(--content-width);margin:0 auto;padding:0 clamp(1.25rem,4vw,2.5rem);width:100%}
+.far,.fas{font-family:"fontawesome";font-weight:400;font-style:normal}
+.fab{font-family:"Font Awesome 5 Brands";font-weight:400;font-style:normal}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);border:0}
+
+/* ============ BUTTONS ============ */
+.btn{
+	display:inline-flex;align-items:center;justify-content:center;gap:.55em;
+	font-family:var(--font-heading);font-size:15px;line-height:1;font-weight:700;
+	text-transform:uppercase;letter-spacing:.04em;border-radius:12px;
+	padding:1.05em 1.9em;border:2px solid transparent;cursor:pointer;
+	transition:transform .2s,box-shadow .3s,background .25s,color .25s,border-color .25s;
+}
+.btn:active{transform:scale(.97)}
+.btn-solid{background:var(--grad);color:#fff;box-shadow:0 10px 26px rgba(194,31,93,.34)}
+.btn-solid:hover{color:#fff;box-shadow:0 16px 38px rgba(194,31,93,.44);transform:translateY(-2px)}
+.btn-outline{background:transparent;border-color:var(--secondary);color:var(--secondary)}
+.btn-outline:hover{background:var(--secondary);color:#fff;transform:translateY(-2px)}
+.btn-light{background:#fff;color:var(--secondary);box-shadow:var(--shadow-sm)}
+.btn-light:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.btn-sm{padding:.75em 1.4em;font-size:13px}
+
+/* ============ SCROLL PROGRESS ============ */
+#progress{position:fixed;top:0;left:0;height:3px;width:0;background:var(--grad);z-index:1000;transition:width .1s linear}
+
+/* ============ HEADER ============ */
+.l-header{
+	position:fixed;top:0;left:0;right:0;z-index:900;padding:0;
+	background:rgba(255,255,255,.82);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+	border-bottom:1px solid var(--border);transition:box-shadow .3s,background .3s;
+}
+.l-header.is-sticky{box-shadow:0 10px 40px rgba(28,39,52,.10);background:rgba(255,255,255,.94)}
+.l-subheader-h{max-width:var(--content-width);margin:0 auto;padding:0 clamp(1.25rem,4vw,2.5rem);display:flex;align-items:center;justify-content:space-between;height:78px}
+.brand{display:flex;align-items:center;gap:.85rem}
+.brand-mark{height:52px;width:auto;filter:drop-shadow(0 2px 6px rgba(28,39,52,.18))}
+.brand-name{font-family:var(--font-heading);font-weight:800;color:var(--secondary);font-size:1.08rem;line-height:1.1;letter-spacing:-.01em}
+.brand-name small{display:block;font-size:.62rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);margin-top:.2rem}
+.nav-main{display:flex;align-items:center;gap:1.6rem}
+.nav-main>a{font-family:var(--font-heading);font-weight:600;font-size:.95rem;color:var(--secondary);position:relative;padding:.35rem 0}
+.nav-main>a:not(.btn)::after{content:"";position:absolute;left:0;right:100%;bottom:0;height:2px;background:var(--grad);transition:right .3s ease}
+.nav-main>a:not(.btn):hover::after,.nav-main>a:not(.btn).active::after{right:0}
+.nav-main>a:not(.btn).active{color:var(--accent)}
+.nav-cta{display:flex;align-items:center;gap:.9rem}
+.nav-toggle{display:none;background:none;border:none;cursor:pointer;width:46px;height:46px;flex-direction:column;gap:5px;align-items:center;justify-content:center}
+.nav-toggle span{display:block;width:24px;height:2.5px;background:var(--secondary);border-radius:2px;transition:transform .25s,opacity .25s}
+body.nav-open .nav-toggle span:nth-child(1){transform:translateY(7.5px) rotate(45deg)}
+body.nav-open .nav-toggle span:nth-child(2){opacity:0}
+body.nav-open .nav-toggle span:nth-child(3){transform:translateY(-7.5px) rotate(-45deg)}
+.mobile-nav{display:none;position:fixed;top:78px;left:0;right:0;bottom:0;background:rgba(255,255,255,.98);z-index:890;overflow-y:auto;padding:1.5rem 2rem 4rem;backdrop-filter:blur(20px)}
+body.nav-open .mobile-nav{display:block}
+.mobile-nav a{display:block;font-family:var(--font-heading);font-weight:600;font-size:22px;color:var(--secondary);padding:1rem 0;border-bottom:1px solid var(--border)}
+.mobile-nav a:hover{color:var(--accent)}
+
+/* ============ HERO ============ */
+.hero{position:relative;min-height:100svh;display:flex;align-items:center;overflow:hidden;padding-top:78px}
+.hero-bg{position:absolute;inset:0;background-image:url('assets/images/menengai/banner.jpg');background-size:cover;background-position:center;transform:scale(1.06);animation:kenburns 22s ease-in-out infinite alternate}
+@keyframes kenburns{from{transform:scale(1.06) translate(0,0)}to{transform:scale(1.14) translate(-1.5%,1.5%)}}
+.hero-overlay{position:absolute;inset:0;background:linear-gradient(115deg,rgba(20,27,38,.9) 0%,rgba(28,39,52,.72) 42%,rgba(194,31,93,.38) 100%)}
+.hero-glow{position:absolute;width:640px;height:640px;border-radius:50%;right:-160px;top:-120px;background:radial-gradient(circle,rgba(224,85,138,.45),transparent 65%);filter:blur(10px);animation:float 9s ease-in-out infinite}
+.hero-glow.g2{left:-180px;bottom:-160px;width:520px;height:520px;background:radial-gradient(circle,rgba(194,31,93,.32),transparent 62%);animation-delay:-4s}
+@keyframes float{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-26px) scale(1.05)}}
+.hero-inner{position:relative;z-index:2;width:100%;padding:7rem 0 6rem}
+.hero-eyebrow{
+	display:inline-flex;align-items:center;gap:.6rem;padding:.5rem 1.1rem;border-radius:100px;
+	font-family:var(--font-heading);font-size:.78rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;
+	background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.22);color:#fff;backdrop-filter:blur(6px);
+	margin-bottom:1.6rem;animation:rise .8s ease both;
+}
+.hero-eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--accent-2);box-shadow:0 0 12px var(--accent-2);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.8)}}
+.hero h1{color:#fff;font-size:clamp(2.6rem,6.2vw,5.1rem);font-weight:800;max-width:16ch;line-height:1.04;letter-spacing:-.03em;animation:rise .9s .08s ease both}
+.hero h1 .grad-text{background:linear-gradient(90deg,#ff8db0,#ffc3d6);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .hero-sub{color:rgba(255,255,255,.85);font-size:clamp(1.05rem,1.6vw,1.3rem);max-width:52ch;margin:1.6rem 0 2.4rem;font-family:var(--font-heading);font-weight:400;line-height:1.7;animation:rise .9s .18s ease both}
+.hero-ctas{display:flex;gap:1rem;flex-wrap:wrap;animation:rise .9s .28s ease both}
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.hero-meta{display:flex;gap:2.4rem;flex-wrap:wrap;margin-top:3.2rem;animation:rise .9s .38s ease both}
+.hero-meta .hm-item{color:rgba(255,255,255,.8)}
+.hero-meta .hm-item b{display:block;font-family:var(--font-heading);font-size:1.45rem;font-weight:800;color:#fff}
+.hero-meta .hm-item span{font-size:.82rem;letter-spacing:.08em;text-transform:uppercase;font-family:var(--font-heading)}
+.scroll-cue{position:absolute;bottom:28px;left:50%;transform:translateX(-50%);color:#fff;opacity:.7;display:flex;flex-direction:column;align-items:center;gap:.5rem;font-family:var(--font-heading);font-size:.7rem;letter-spacing:.2em;text-transform:uppercase;z-index:3}
+.scroll-cue .wheel{width:26px;height:42px;border:2px solid rgba(255,255,255,.6);border-radius:14px;display:flex;justify-content:center;padding-top:7px}
+.scroll-cue .wheel i{width:4px;height:8px;border-radius:2px;background:#fff;animation:wheel 1.6s infinite}
+@keyframes wheel{0%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(14px)}}
+
+/* ============ SECTION PRIMITIVES ============ */
+section{position:relative;padding:clamp(4.5rem,9vw,7.5rem) 0}
+.sec-head{max-width:760px;margin-bottom:3.4rem}
+.sec-head.center{margin-left:auto;margin-right:auto;text-align:center}
+.eyebrow{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--font-heading);font-size:.76rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+.eyebrow::before{content:"";width:26px;height:2px;background:var(--grad);border-radius:2px}
+.sec-head.center .eyebrow::after{content:"";width:26px;height:2px;background:var(--grad);border-radius:2px}
+.sec-title{font-size:clamp(2rem,4vw,3rem);font-weight:800;letter-spacing:-.025em;line-height:1.1}
+.sec-lead{color:var(--muted);font-size:1.08rem;margin-top:1.1rem;line-height:1.8}
+
+/* Reveal on scroll */
+.reveal{opacity:0;transform:translateY(36px);transition:opacity .8s cubic-bezier(.2,.6,.2,1),transform .8s cubic-bezier(.2,.6,.2,1)}
+.reveal.in{opacity:1;transform:translateY(0)}
+.reveal.d1{transition-delay:.08s}.reveal.d2{transition-delay:.16s}.reveal.d3{transition-delay:.24s}
+.reveal.d4{transition-delay:.32s}.reveal.d5{transition-delay:.4s}.reveal.d6{transition-delay:.48s}
+
+/* ============ MARQUEE ============ */
+.ticker{background:var(--secondary);color:#fff;overflow:hidden;padding:1rem 0;position:relative;border-top:1px solid rgba(255,255,255,.06)}
+.ticker-track{display:flex;gap:3.5rem;width:max-content;animation:marquee 30s linear infinite}
+.ticker-track span{font-family:var(--font-heading);font-size:.85rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.8);white-space:nowrap;display:flex;align-items:center;gap:3.5rem}
+.ticker-track i{color:var(--accent-2)}
+@keyframes marquee{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+/* ============ STATS ============ */
+.stats{background:linear-gradient(180deg,#fff,#fff)}
+.stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.6rem}
+.stat-card{
+	background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);
+	padding:2.2rem 1.8rem;text-align:center;position:relative;overflow:hidden;
+	box-shadow:var(--shadow-sm);transition:transform .3s,box-shadow .3s;
+}
+.stat-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.stat-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--grad)}
+.stat-num{font-family:var(--font-heading);font-size:clamp(2.2rem,4vw,3.1rem);font-weight:800;background:var(--grad);-webkit-background-clip:text;background-clip:text;color:transparent;line-height:1}
+.stat-card h4{font-size:1rem;margin-top:.7rem;letter-spacing:.02em}
+.stat-card p{font-size:.82rem;color:var(--muted);margin-top:.3rem}
+
+/* ============ ABOUT ============ */
+.about{background:var(--surface)}
+.about-grid{display:grid;grid-template-columns:1.05fr 1fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+.about-visual{position:relative;display:grid;grid-template-columns:1fr 1fr;gap:1.4rem}
+.about-img{border-radius:24px;overflow:hidden;box-shadow:var(--shadow-md);position:relative}
+.about-img img{width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.about-img:hover img{transform:scale(1.06)}
+.about-img.tall{grid-row:span 2}
+.about-img:first-child{aspect-ratio:3/4}
+.about-img:nth-child(2){aspect-ratio:4/3;margin-top:2.6rem}
+.about-badge{
+	position:absolute;left:-18px;bottom:-18px;background:var(--grad);color:#fff;border-radius:18px;
+	padding:1.1rem 1.4rem;box-shadow:var(--shadow-lg);font-family:var(--font-heading);
+	display:flex;flex-direction:column;align-items:center;line-height:1.1;
+}
+.about-badge b{font-size:1.7rem;font-weight:800}
+.about-badge span{font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;font-weight:600}
+.about-copy h2{margin:0 0 1.2rem}
+.about-copy p{color:#4b5563;margin-bottom:1.2rem}
+.about-feats{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1.8rem 0}
+.feat{display:flex;gap:.85rem;align-items:flex-start;padding:1rem 1.1rem;background:var(--bg);border-radius:14px;border:1px solid var(--border)}
+.feat i{color:var(--accent);font-size:1.25rem;margin-top:.1rem}
+.feat b{font-family:var(--font-heading);font-size:.95rem;color:var(--secondary);display:block}
+.feat span{font-size:.82rem;color:var(--muted)}
+
+/* ============ VALUES ============ */
+.values{background:var(--bg)}
+.values-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem}
+.value-card{
+	background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:2.4rem 2rem;
+	position:relative;overflow:hidden;transition:transform .35s,box-shadow .35s;box-shadow:var(--shadow-sm);
+}
+.value-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-md)}
+.value-card .v-icon{
+	width:62px;height:62px;border-radius:18px;background:var(--grad);color:#fff;font-size:1.6rem;
+	display:flex;align-items:center;justify-content:center;margin-bottom:1.4rem;box-shadow:0 10px 24px rgba(194,31,93,.3);
+}
+.value-card:nth-child(2) .v-icon{background:linear-gradient(135deg,#1C2734,#3b4f6b)}
+.value-card:nth-child(2) .v-icon{box-shadow:0 10px 24px rgba(28,39,52,.3)}
+.value-card h3{font-size:1.35rem;margin-bottom:.6rem}
+.value-card p{color:var(--muted);font-size:.98rem}
+
+/* ============ AREAS OF FOCUS ============ */
+.areas{background:var(--surface)}
+.areas-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.3rem}
+.area-card{
+	display:flex;gap:.9rem;align-items:center;padding:1.25rem 1.3rem;border:1px solid var(--border);
+	border-radius:16px;background:var(--bg);transition:transform .25s,border-color .25s,box-shadow .25s;
+}
+.area-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:var(--shadow-sm)}
+.area-card i{color:var(--accent);font-size:1.35rem;flex-shrink:0}
+.area-card b{font-family:var(--font-heading);font-size:.9rem;color:var(--secondary);line-height:1.3}
+
+/* ============ PROJECTS ============ */
+.projects{background:linear-gradient(180deg,var(--bg),#fff)}
+.carousel{position:relative}
+.carousel-viewport{overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none;padding:.4rem .2rem 1rem}
+.carousel-viewport::-webkit-scrollbar{display:none}
+.carousel-track{display:flex;gap:1.5rem}
+.carousel-track>*{scroll-snap-align:start;flex:0 0 auto}
+.proj-card{
+	width:min(360px,82vw);background:var(--surface);border-radius:22px;overflow:hidden;
+	border:1px solid var(--border);box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:transform .35s,box-shadow .35s;
+}
+.proj-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-md)}
+.proj-card .thumb{position:relative;aspect-ratio:16/11;overflow:hidden}
+.proj-card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.proj-card:hover .thumb img{transform:scale(1.08)}
+.proj-card .tag{position:absolute;top:14px;left:14px;background:rgba(28,39,52,.82);color:#fff;font-family:var(--font-heading);font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.5rem .9rem;border-radius:100px;backdrop-filter:blur(4px)}
+.proj-card .body{padding:1.5rem 1.6rem 1.8rem;display:flex;flex-direction:column;flex:1}
+.proj-card h3{font-size:1.2rem;margin-bottom:.6rem}
+.proj-card p{color:var(--muted);font-size:.9rem;flex:1}
+.proj-card .date{font-family:var(--font-heading);font-size:.75rem;font-weight:700;color:var(--accent);letter-spacing:.08em;text-transform:uppercase;margin-top:1rem}
+.carousel-nav{display:flex;gap:.7rem;justify-content:flex-end;margin-top:1rem}
+.car-btn{width:48px;height:48px;border-radius:50%;border:1px solid var(--border);background:var(--surface);color:var(--secondary);font-size:1.1rem;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .25s,color .25s,transform .2s;font-family:"fontawesome"}
+.car-btn:hover{background:var(--grad);color:#fff;border-color:transparent;transform:translateY(-2px)}
+
+/* ============ SIGNATURE ============ */
+.signature{background:var(--secondary);color:#fff;overflow:hidden}
+.signature .sec-title{color:#fff}
+.signature .sec-lead{color:rgba(255,255,255,.72)}
+.signature-grid{display:grid;grid-template-columns:1fr 1.05fr;gap:clamp(2rem,5vw,4.5rem);align-items:center}
+.sig-img{position:relative;border-radius:26px;overflow:hidden;box-shadow:var(--shadow-lg);aspect-ratio:4/3}
+.sig-img img{width:100%;height:100%;object-fit:cover}
+.sig-img::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 40%,rgba(20,27,38,.55))}
+.sig-quote{
+	position:absolute;left:20px;right:20px;bottom:18px;z-index:2;background:rgba(255,255,255,.92);color:var(--secondary);
+	border-radius:14px;padding:1.1rem 1.3rem;font-family:var(--font-heading);font-size:.92rem;line-height:1.55;box-shadow:var(--shadow-md);
+}
+.sig-quote b{color:var(--accent)}
+.sig-list{list-style:none;margin:1.8rem 0 2.2rem}
+.sig-list li{display:flex;gap:.9rem;align-items:flex-start;padding:.7rem 0;color:rgba(255,255,255,.9);font-size:1rem}
+.sig-list li i{color:var(--accent-2);margin-top:.2rem;flex-shrink:0}
+
+/* ============ AWARDS ============ */
+.awards{background:var(--surface)}
+.award-card{
+	width:min(340px,80vw);border-radius:22px;overflow:hidden;position:relative;border:1px solid var(--border);
+	box-shadow:var(--shadow-sm);transition:transform .35s,box-shadow .35s;
+}
+.award-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-md)}
+.award-card .thumb{aspect-ratio:16/11;overflow:hidden;position:relative}
+.award-card .thumb img{width:100%;height:100%;object-fit:cover;transition:transform .6s}
+.award-card:hover .thumb img{transform:scale(1.07)}
+.award-card .thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 30%,rgba(20,27,38,.72))}
+.award-card .body{position:absolute;left:0;right:0;bottom:0;padding:2.4rem 1.4rem 1.3rem;z-index:2;color:#fff}
+.award-card .award-badge{display:inline-block;background:rgba(255,255,255,.2);border:1px solid rgba(255,255,255,.4);color:#fff;font-family:var(--font-heading);font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.45rem .85rem;border-radius:100px;margin-bottom:.7rem;backdrop-filter:blur(4px)}
+.award-card h3{color:#fff;font-size:1.15rem;line-height:1.3}
+.award-card .date{font-size:.78rem;color:rgba(255,255,255,.75);font-family:var(--font-heading);margin-top:.4rem}
+
+/* ============ LEADERSHIP ============ */
+.leadership{background:var(--bg)}
+.leaders-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.6rem}
+.leader-card{
+	background:var(--surface);border:1px solid var(--border);border-radius:22px;padding:2.2rem 2rem;
+	text-align:center;transition:transform .35s,box-shadow .35s;box-shadow:var(--shadow-sm);position:relative;overflow:hidden;
+}
+.leader-card::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--grad)}
+.leader-card:hover{transform:translateY(-8px);box-shadow:var(--shadow-md)}
+.leader-avatar{
+	width:86px;height:86px;border-radius:50%;background:var(--grad);color:#fff;margin:0 auto 1.2rem;
+	display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-size:1.7rem;font-weight:800;
+	box-shadow:0 12px 30px rgba(194,31,93,.3);border:3px solid #fff;
+}
+.leader-card h3{font-size:1.2rem}
+.leader-card .role{font-family:var(--font-heading);font-size:.78rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:.35rem 0 .8rem}
+.leader-card p{color:var(--muted);font-size:.9rem}
+
+/* ============ MEETINGS CTA ============ */
+.meetings{background:var(--grad);color:#fff;text-align:center;overflow:hidden}
+.meetings .sec-title{color:#fff}
+.meetings .sec-lead{color:rgba(255,255,255,.85)}
+.meetings::before,.meetings::after{content:"";position:absolute;width:380px;height:380px;border-radius:50%;background:rgba(255,255,255,.06)}
+.meetings::before{left:-140px;top:-140px}
+.meetings::after{right:-140px;bottom:-140px}
+.meet-row{display:flex;gap:1.4rem;justify-content:center;flex-wrap:wrap;margin:2.6rem 0}
+.meet-chip{background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28);border-radius:14px;padding:1.2rem 1.6rem;font-family:var(--font-heading);backdrop-filter:blur(6px);min-width:200px}
+.meet-chip i{font-size:1.4rem;display:block;margin-bottom:.5rem}
+.meet-chip b{display:block;font-size:1rem}
+.meet-chip span{font-size:.78rem;opacity:.85;letter-spacing:.04em}
+.meetings .btn-light{color:var(--accent)}
+
+/* ============ NEWS ============ */
+.news{background:var(--surface)}
+.blog-card{
+	width:min(400px,86vw);display:flex;background:var(--bg);border:1px solid var(--border);border-radius:20px;overflow:hidden;
+	transition:transform .3s,box-shadow .3s;
+}
+.blog-card:hover{transform:translateY(-6px);box-shadow:var(--shadow-md)}
+.blog-card .b8-img{width:44%;min-height:190px;overflow:hidden;position:relative}
+.blog-card .b8-img img{width:100%;height:100%;object-fit:cover;transition:transform .5s}
+.blog-card:hover .b8-img img{transform:scale(1.07)}
+.blog-card .b8-text{flex:1;padding:1.3rem 1.4rem}
+.blog-card .cat{font-family:var(--font-heading);font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.blog-card .date{font-size:.78rem;color:var(--muted);font-family:var(--font-heading)}
+.blog-card h3{font-size:1.06rem;margin:.55rem 0 .4rem;line-height:1.35}
+.blog-card .excerpt{font-size:.85rem;color:var(--muted);line-height:1.6}
+
+/* ============ PARTNERS ============ */
+.partners{background:var(--surface);padding-bottom:5rem}
+.partners-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem}
+.partner-chip{
+	display:flex;align-items:center;justify-content:center;text-align:center;padding:1.5rem 1rem;
+	background:var(--bg);border:1px solid var(--border);border-radius:14px;
+	font-family:var(--font-heading);font-weight:600;font-size:.92rem;color:var(--secondary);
+	transition:transform .25s,border-color .25s,box-shadow .25s;min-height:84px;line-height:1.35;
+}
+.partner-chip:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:var(--shadow-sm)}
+
+/* ============ FOOTER ============ */
+footer{background:var(--footer-bg);color:#aeb6c2;position:relative}
+footer::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--grad)}
+.footer-top{display:grid;grid-template-columns:1.4fr 1fr 1fr 1.2fr;gap:3rem;padding:5rem 0 3rem}
+.footer-brand p{margin-top:1.1rem;font-size:.95rem;line-height:1.7;max-width:30ch}
+.footer-social{display:flex;gap:.7rem;margin-top:1.4rem}
+.footer-social a{width:42px;height:42px;border-radius:12px;background:rgba(255,255,255,.08);color:#cfd6df;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:background .25s,color .25s,transform .2s}
+.footer-social a:hover{background:var(--grad);color:#fff;transform:translateY(-3px)}
+.footer-col h4{color:#fff;font-size:1rem;margin-bottom:1.3rem;letter-spacing:.02em}
+.footer-col a{display:block;color:#aeb6c2;font-size:.92rem;padding:.35rem 0;font-family:var(--font-heading);font-weight:400}
+.footer-col a:hover{color:#fff}
+.footer-contact{display:flex;gap:.8rem;align-items:flex-start;margin-bottom:1rem;font-size:.92rem;font-family:var(--font-heading)}
+.footer-contact i{color:var(--accent-2);margin-top:.15rem}
+.footer-bottom{border-top:1px solid rgba(255,255,255,.08);padding:1.6rem 0;text-align:center;font-size:.85rem;color:#7f8896}
+.footer-bottom .container{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+
+/* ============ BACK TO TOP ============ */
+.toplink{position:fixed;right:1.4rem;bottom:1.4rem;z-index:800;width:52px;height:52px;border-radius:16px;background:var(--grad);color:#fff;display:none;align-items:center;justify-content:center;font-size:1.1rem;cursor:pointer;border:none;box-shadow:0 12px 30px rgba(194,31,93,.4);transition:transform .2s}
+.toplink.visible{display:flex}
+.toplink:hover{transform:translateY(-4px)}
+
+/* ============ RESPONSIVE ============ */
+@media (max-width:1024px){
+	.stats-grid{grid-template-columns:repeat(2,1fr)}
+	.areas-grid{grid-template-columns:repeat(2,1fr)}
+	.about-grid{grid-template-columns:1fr}
+	.signature-grid{grid-template-columns:1fr}
+	.leaders-grid{grid-template-columns:repeat(2,1fr)}
+	.footer-top{grid-template-columns:1fr 1fr}
+	.nav-main{display:none}
+	.nav-toggle{display:flex}
+	.mobile-nav{top:78px}
+}
+@media (max-width:600px){
+	body{font-size:16px}
+	section{padding:4rem 0}
+	.values-grid{grid-template-columns:1fr}
+	.areas-grid{grid-template-columns:1fr}
+	.leaders-grid{grid-template-columns:1fr}
+	.partners-grid{grid-template-columns:repeat(2,1fr)}
+	.footer-top{grid-template-columns:1fr}
+	.about-feats{grid-template-columns:1fr}
+	.hero-meta{gap:1.6rem}
+	.hero{padding-top:70px;min-height:92svh}
+	.l-subheader-h{height:70px}
+	.mobile-nav{top:70px}
+}
+</style>
+</head>
+<body>
+
+<div id="progress" aria-hidden="true"></div>
+
+<!-- ============ HEADER ============ -->
+<header id="page-header" class="l-header" itemscope itemtype="https://schema.org/WPHeader">
+	<div class="l-subheader-h">
+		<a class="brand" href="#top" aria-label="Rotaract Club of Menengai" data-od-id="brand-logo">
+			<img class="brand-mark" src="assets/images/menengai/logo-transparent.png" alt="Rotaract Club of Menengai logo" width="315" height="315">
+			<span class="brand-name">Rotaract Club of Menengai<small>RAC Menengai · Nakuru</small></span>
+		</a>
+		<nav class="nav-main" itemscope itemtype="https://schema.org/SiteNavigationElement" data-od-id="main-nav">
+			<a href="#top" class="active">Home</a>
+			<a href="#about">About</a>
+			<a href="#projects">Projects</a>
+			<a href="#awards">Awards</a>
+			<a href="#leadership">Leadership</a>
+			<a href="#news">News</a>
+		</nav>
+		<div class="nav-cta">
+			<a class="btn btn-solid btn-sm" href="#join" data-od-id="header-join">Join Us</a>
+			<button class="nav-toggle" id="nav-toggle" aria-label="Menu" aria-expanded="false"><span></span><span></span><span></span></button>
+		</div>
+	</div>
+</header>
+
+<div class="mobile-nav" id="mobile-nav">
+	<a href="#top">Home</a>
+	<a href="#about">About</a>
+	<a href="#projects">Projects</a>
+	<a href="#awards">Awards</a>
+	<a href="#leadership">Leadership</a>
+	<a href="#news">News</a>
+	<a href="#join" style="color:var(--accent)">Become a Member</a>
+</div>
+
+<main id="page-content" class="l-main">
+
+	<!-- ============ HERO ============ -->
+	<section class="hero" id="top" data-od-id="hero">
+		<div class="hero-bg"></div>
+		<div class="hero-overlay"></div>
+		<div class="hero-glow"></div>
+		<div class="hero-glow g2"></div>
+		<div class="container hero-inner">
+			<span class="hero-eyebrow"><span class="dot"></span>Rotary District 9212 · Nakuru, Kenya</span>
+			<h1 data-od-id="hero-title">A Decade of <span class="grad-text">Service Above Self</span></h1>
+			<p class="hero-sub" data-od-id="hero-subtitle">Rotaract Club of Menengai — a vibrant family of young professionals and students turning Nakuru’s challenges into moments of impact. Join us every Thursday for fellowship, and join us in service every single day.</p>
+			<div class="hero-ctas">
+				<a class="btn btn-solid" href="#join" data-od-id="hero-cta-primary">Become a Member</a>
+				<a class="btn btn-light" href="#projects" data-od-id="hero-cta-secondary">Explore Our Work</a>
+			</div>
+			<div class="hero-meta">
+				<div class="hm-item"><b>10+</b><span>Years of Service</span></div>
+				<div class="hm-item"><b>District 9212</b><span>Kenya · Ethiopia</span></div>
+				<div class="hm-item"><b>Thursdays</b><span>5:30 – 6:30 PM</span></div>
+				<div class="hm-item"><b>#DEI</b><span>Champions 2026</span></div>
+			</div>
+		</div>
+		<div class="scroll-cue"><span>Scroll</span><span class="wheel"><i></i></span></div>
+	</section>
+
+	<!-- ============ TICKER ============ -->
+	<div class="ticker" aria-hidden="true">
+		<div class="ticker-track" id="ticker-track">
+			<span>Adopt-a-River <i class="far fa-water"></i> Mother Packs <i class="far fa-baby"></i> Girls' Education <i class="far fa-graduation-cap"></i> Tree Planting <i class="far fa-tree"></i> Peace in Colour Fest <i class="far fa-handshake"></i> Legacy Award 2026 <i class="far fa-trophy"></i> Street Families <i class="far fa-home"></i></span>
+		</div>
+	</div>
+
+	<!-- ============ STATS ============ -->
+	<section class="stats" data-od-id="stats-section">
+		<div class="container">
+			<div class="stats-grid">
+				<div class="stat-card reveal" data-od-id="stat-years"><span class="stat-num" data-count="10">0</span><h4>Years of Service</h4><p>Chartered by the Rotary Club of Nakuru</p></div>
+				<div class="stat-card reveal d1" data-od-id="stat-girls"><span class="stat-num" data-count="405">0</span><h4>Girls Empowered</h4><p>Sanitary towels across Limuko schools</p></div>
+				<div class="stat-card reveal d2" data-od-id="stat-rivers"><span class="stat-num" data-count="2">0</span><h4>Rivers Adopted</h4><p>Njoro &amp; Ndarugu cleanups</p></div>
+				<div class="stat-card reveal d3" data-od-id="stat-awards"><span class="stat-num" data-count="1">0</span><h4>DEI Legacy Award</h4><p>District 9212 Champion 2026</p></div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============ ABOUT ============ -->
+	<section class="about" id="about" data-od-id="about-section">
+		<div class="container about-grid">
+			<div class="about-visual reveal">
+				<div class="about-img tall"><img src="assets/images/menengai/adopt-river.jpg" alt="Rotaract Club of Menengai members at Adopt-a-River" loading="lazy"></div>
+				<div class="about-img"><img src="assets/images/menengai/cleanup-campaign.jpg" alt="Rotaract Club of Menengai at Nakuru clean-up campaign" loading="lazy"></div>
+				<div class="about-badge"><b>10</b><span>Years<br>Strong</span></div>
+			</div>
+			<div class="about-copy">
+				<div class="eyebrow reveal">Who We Are</div>
+				<h2 class="sec-title reveal">Nakuru’s home of young leaders in action</h2>
+				<p class="reveal">Chartered by the Rotary Club of Nakuru and part of Rotary International’s global Rotaract family, the Rotaract Club of Menengai has spent a decade turning energy into impact — from cleaning our rivers to welcoming new mothers at Bondeni Maternity.</p>
+				<p class="reveal">Rooted in “Service Above Self,” we bring together young professionals and students aged 18–30 across District 9212 to lead with empathy, skill and joy.</p>
+				<div class="about-feats">
+					<div class="feat reveal"><i class="far fa-flag"></i><div><b>Our Motto</b><span>Service Above Self</span></div></div>
+					<div class="feat reveal d1"><i class="far fa-building"></i><div><b>Sponsor</b><span>Rotary Club of Nakuru</span></div></div>
+					<div class="feat reveal d2"><i class="far fa-users"></i><div><b>Members</b><span>18–30, diverse &amp; inclusive</span></div></div>
+					<div class="feat reveal d3"><i class="far fa-map-pin"></i><div><b>Home</b><span>Nakuru, Kenya · D9212</span></div></div>
+				</div>
+				<a class="btn btn-outline reveal" href="#join" data-od-id="about-cta">Come meet us</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============ VALUES ============ -->
+	<section class="values" data-od-id="values-section">
+		<div class="container">
+			<div class="sec-head center reveal">
+				<div class="eyebrow">What We Stand For</div>
+				<h2 class="sec-title">Three pillars. One purpose.</h2>
+			</div>
+			<div class="values-grid">
+				<div class="value-card reveal" data-od-id="value-community">
+					<div class="v-icon"><i class="far fa-users"></i></div>
+					<h3>Community</h3>
+					<p>We show up for the people around us — from new mothers at Bondeni to families on the streets of Nakuru.</p>
+				</div>
+				<div class="value-card reveal d1" data-od-id="value-leadership">
+					<div class="v-icon"><i class="far fa-star"></i></div>
+					<h3>Leadership</h3>
+					<p>Through mentorship, book clubs and financial-literacy drives, we grow professionals and citizens of impact.</p>
+				</div>
+				<div class="value-card reveal d2" data-od-id="value-service">
+					<div class="v-icon"><i class="far fa-hand-holding-heart"></i></div>
+					<h3>Service</h3>
+					<p>Service above self — whether adopting a river, planting trees or championing diversity, equity and inclusion.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============ AREAS OF FOCUS ============ -->
+	<section class="areas" data-od-id="areas-section">
+		<div class="container">
+			<div class="sec-head center reveal">
+				<div class="eyebrow">Rotary's Seven Areas of Focus</div>
+				<h2 class="sec-title">Where our service lands</h2>
+			</div>
+			<div class="areas-grid">
+				<div class="area-card reveal" data-od-id="area-environment"><i class="far fa-leaf"></i><b>Environment</b></div>
+				<div class="area-card reveal d1" data-od-id="area-health"><i class="far fa-heartbeat"></i><b>Maternal &amp; Child Health</b></div>
+				<div class="area-card reveal d2" data-od-id="area-education"><i class="far fa-graduation-cap"></i><b>Basic Education &amp; Literacy</b></div>
+				<div class="area-card reveal d3" data-od-id="area-women"><i class="far fa-female"></i><b>Girls' Education</b></div>
+				<div class="area-card reveal d4" data-od-id="area-water"><i class="far fa-water"></i><b>Water &amp; Sanitation</b></div>
+				<div class="area-card reveal d5" data-od-id="area-economy"><i class="far fa-chart-line"></i><b>Community Economic Development</b></div>
+				<div class="area-card reveal d6" data-od-id="area-disease"><i class="far fa-syringe"></i><b>Disease Prevention</b></div>
+				<div class="area-card reveal d1" data-od-id="area-peace"><i class="far fa-dove"></i><b>Peacebuilding &amp; Conflict Prevention</b></div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============ PROJECTS ============ -->
+	<section class="projects" id="projects" data-od-id="projects-section">
+		<div class="container">
+			<div class="sec-head reveal">
+				<div class="eyebrow">Impact in Action</div>
+				<h2 class="sec-title">Projects that change lives</h2>
+			</div>
+			<div class="carousel reveal">
+				<div class="carousel-viewport"><div class="carousel-track" id="projects-track"></div></div>
+				<div class="carousel-nav">
+					<button class="car-btn prev" aria-label="Previous projects" data-track="projects-track"><i class="far fa-angle-left"></i></button>
+					<button class="car-btn next" aria-label="Next projects" data-track="projects-track"><i class="far fa-angle-right"></i></button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============ SIGNATURE ============ -->
+	<section class="signature" id="signature" data-od-id="signature-section">
+		<div class="container signature-grid">
+			<div class="sig-img reveal">
+				<img src="assets/images/menengai/river-cleanup.jpg" alt="Adopt-a-River cleanup — River Njoro" loading="lazy">
+				<div class="sig-quote"><b>“The plastic we removed is just what happens upstream.”</b> — RAC Menengai, Adopt-a-River</div>
+			</div>
+			<div>
+				<div class="eyebrow reveal" style="color:var(--accent-2)">Signature Project</div>
+				<h2 class="sec-title reveal">Adopt-a-River: restoring Nakuru’s waterways</h2>
+				<p class="sec-lead reveal">Our flagship environmental project tackles pollution at the source. In Barut, we installed a water filtration set, mobilized the community, cleaned River Njoro at Mwariki Bridge, and set up waste-disposal points to keep it clean.</p>
+				<ul class="sig-list">
+					<li class="reveal"><i class="far fa-check-circle"></i>River Njoro &amp; Ndarugu cleanups with 20+ youth volunteers</li>
+					<li class="reveal d1"><i class="far fa-check-circle"></i>Community sensitization on single-use plastic</li>
+					<li class="reveal d2"><i class="far fa-check-circle"></i>Water filtration system installed for residents of Barut</li>
+					<li class="reveal d3"><i class="far fa-check-circle"></i>Waste-disposal containers for lasting cleanliness</li>
+				</ul>
+				<a class="btn btn-light reveal" href="https://www.facebook.com/RCmenengai/" target="_blank" rel="nofollow" data-od-id="signature-cta">Join a Cleanup</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============ AWARDS ============ -->
+	<section class="awards" id="awards" data-od-id="awards-section">
+		<div class="container">
+			<div class="sec-head reveal">
+				<div class="eyebrow">Recognition</div>
+				<h2 class="sec-title">Celebrating excellence</h2>
+			</div>
+			<div class="carousel reveal">
+				<div class="carousel-viewport"><div class="carousel-track" id="awards-track"></div></div>
+				<div class="carousel-nav">
+					<button class="car-btn prev" aria-label="Previous awards" data-track="awards-track"><i class="far fa-angle-left"></i></button>
+					<button class="car-btn next" aria-label="Next awards" data-track="awards-track"><i class="far fa-angle-right"></i></button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============ LEADERSHIP ============ -->
+	<section class="leadership" id="leadership" data-od-id="leadership-section">
+		<div class="container">
+			<div class="sec-head center reveal">
+				<div class="eyebrow">The People</div>
+				<h2 class="sec-title">Leadership that leads with heart</h2>
+			</div>
+			<div class="leaders-grid">
+				<div class="leader-card reveal" data-od-id="leader-president">
+					<div class="leader-avatar">JW</div>
+					<h3>Joyce Wanjiku Nguru</h3>
+					<div class="role">President · 2026/27</div>
+					<p>Oaks+Crown fellow and environmental champion, leading a year of mother packs, girls’ education and fellowship.</p>
+				</div>
+				<div class="leader-card reveal d1" data-od-id="leader-charter">
+					<div class="leader-avatar" style="background:linear-gradient(135deg,#1C2734,#3b4f6b);box-shadow:0 12px 30px rgba(28,39,52,.3)">JB</div>
+					<h3>John Brodrick</h3>
+					<div class="role">Charter President</div>
+					<p>Founder president who guided the club’s charter under the sponsorship of the Rotary Club of Nakuru.</p>
+				</div>
+				<div class="leader-card reveal d2" data-od-id="leader-dei">
+					<div class="leader-avatar">PK</div>
+					<h3>Phylis Kanja</h3>
+					<div class="role">DEI Director · 2025/26</div>
+					<p>Champion of diversity, equity and inclusion — recognised as the District 9212 DEI Champion 2026.</p>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============ MEETINGS CTA ============ -->
+	<section class="meetings" id="join" data-od-id="join-section">
+		<div class="container">
+			<div class="eyebrow reveal" style="color:#ffc3d6">Ready to Serve?</div>
+			<h2 class="sec-title reveal">Join the Rotaract Club of Menengai</h2>
+			<p class="sec-lead reveal" style="max-width:640px;margin:1.2rem auto 0">Come as you are. Leave as a leader. Attend three meetings, take part in a project, and find your people.</p>
+			<div class="meet-row">
+				<div class="meet-chip reveal"><i class="far fa-calendar-check"></i><b>Every Thursday</b><span>5:30 – 6:30 PM</span></div>
+				<div class="meet-chip reveal d1"><i class="far fa-map-marker-alt"></i><b>Nakuru, Kenya</b><span>District 9212</span></div>
+				<div class="meet-chip reveal d2"><i class="far fa-users"></i><b>Ages 18–30</b><span>Everyone welcome</span></div>
+			</div>
+			<div class="hero-ctas reveal" style="justify-content:center">
+				<a class="btn btn-solid" href="https://www.facebook.com/RCmenengai/" target="_blank" rel="nofollow" data-od-id="join-cta-facebook">Message Us on Facebook</a>
+				<a class="btn btn-light" href="https://www.instagram.com/racmenengai/" target="_blank" rel="nofollow" data-od-id="join-cta-instagram">Follow on Instagram</a>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============ NEWS ============ -->
+	<section class="news" id="news" data-od-id="news-section">
+		<div class="container">
+			<div class="sec-head reveal">
+				<div class="eyebrow">Stay Connected</div>
+				<h2 class="sec-title">Club updates &amp; stories</h2>
+			</div>
+			<div class="carousel reveal">
+				<div class="carousel-viewport"><div class="carousel-track" id="news-track"></div></div>
+				<div class="carousel-nav">
+					<button class="car-btn prev" aria-label="Previous news" data-track="news-track"><i class="far fa-angle-left"></i></button>
+					<button class="car-btn next" aria-label="Next news" data-track="news-track"><i class="far fa-angle-right"></i></button>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- ============ PARTNERS ============ -->
+	<section class="partners" data-od-id="partners-section">
+		<div class="container">
+			<div class="sec-head center reveal">
+				<div class="eyebrow">Our Community</div>
+				<h2 class="sec-title">Who we serve alongside</h2>
+			</div>
+			<div class="partners-grid" id="partners-grid" data-od-id="partners-grid"></div>
+		</div>
+	</section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer id="page-footer" class="l-footer" itemscope itemtype="https://schema.org/WPFooter">
+	<div class="container footer-top">
+		<div class="footer-brand" data-od-id="footer-brand">
+			<a class="brand" href="#top">
+				<img class="brand-mark" src="assets/images/menengai/logo-transparent.png" alt="Rotaract Club of Menengai logo" width="315" height="315">
+				<span class="brand-name" style="color:#fff">Rotaract Club of Menengai<small style="color:var(--accent-2)">RAC Menengai · Nakuru</small></span>
+			</a>
+			<p>Service above self — a decade of community impact in Nakuru, powered by young leaders across District 9212.</p>
+			<div class="footer-social">
+				<a href="https://www.facebook.com/RCmenengai/" target="_blank" rel="nofollow" aria-label="Facebook" data-od-id="social-facebook"><i class="fab fa-facebook-f"></i></a>
+				<a href="https://www.instagram.com/racmenengai/" target="_blank" rel="nofollow" aria-label="Instagram" data-od-id="social-instagram"><i class="fab fa-instagram"></i></a>
+				<a href="https://x.com/RcMenengai" target="_blank" rel="nofollow" aria-label="X" data-od-id="social-x"><i class="fab fa-x-twitter"></i></a>
+				<a href="https://www.linkedin.com/in/rac-menengai-91b5591b3" target="_blank" rel="nofollow" aria-label="LinkedIn" data-od-id="social-linkedin"><i class="fab fa-linkedin-in"></i></a>
+				<a href="https://www.threads.com/@racmenengai" target="_blank" rel="nofollow" aria-label="Threads" data-od-id="social-threads"><i class="fab fa-threads"></i></a>
+			</div>
+		</div>
+		<div class="footer-col" data-od-id="footer-explore">
+			<h4>Explore</h4>
+			<a href="#about">About Us</a>
+			<a href="#projects">Projects</a>
+			<a href="#awards">Awards</a>
+			<a href="#leadership">Leadership</a>
+			<a href="#news">News</a>
+		</div>
+		<div class="footer-col" data-od-id="footer-quick">
+			<h4>Quick Links</h4>
+			<a href="#join">Become a Member</a>
+			<a href="#signature">Adopt-a-River</a>
+			<a href="https://www.rotary.org/en/get-involved/rotaract-clubs" target="_blank" rel="nofollow">About Rotaract</a>
+			<a href="https://www.rotary.org" target="_blank" rel="nofollow">Rotary International</a>
+		</div>
+		<div class="footer-col" data-od-id="footer-contact">
+			<h4>Meet Us</h4>
+			<div class="footer-contact"><i class="far fa-map-marker-alt"></i><span>Nakuru, Kenya · Rotary District 9212</span></div>
+			<div class="footer-contact"><i class="far fa-clock"></i><span>Fellowship every Thursday, 5:30–6:30 PM</span></div>
+			<div class="footer-contact"><i class="far fa-envelope"></i><a href="https://www.facebook.com/RCmenengai/" target="_blank" rel="nofollow">Message us on Facebook</a></div>
+		</div>
+	</div>
+	<div class="footer-bottom">
+		<div class="container">
+			<span>© 2016 – 2026 Rotaract Club of Menengai · Rotary District 9212</span>
+			<span>Service Above Self</span>
+		</div>
+	</div>
+</footer>
+
+<button class="toplink" id="toplink" aria-label="Back to top"><i class="far fa-angle-up"></i></button>
+
+<script>
+(function(){
+	var $=function(s,c){return (c||document).querySelector(s)};
+	var $$=function(s,c){return Array.prototype.slice.call((c||document).querySelectorAll(s))};
+
+	/* Scroll progress + sticky header + back to top */
+	var header=$('#page-header'),toplink=$('#toplink'),progress=$('#progress');
+	function onScroll(){
+		var y=window.scrollY||document.documentElement.scrollTop;
+		header.classList.toggle('is-sticky',y>40);
+		toplink.classList.toggle('visible',y>500);
+		var h=document.documentElement.scrollHeight-window.innerHeight;
+		progress.style.width=(h>0?(y/h*100):0)+'%';
+	}
+	window.addEventListener('scroll',onScroll,{passive:true});onScroll();
+	toplink.addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+
+	/* Mobile nav */
+	var toggle=$('#nav-toggle');
+	toggle.addEventListener('click',function(){
+		var open=document.body.classList.toggle('nav-open');
+		toggle.setAttribute('aria-expanded',open?'true':'false');
+	});
+	$$('#mobile-nav a').forEach(function(a){a.addEventListener('click',function(){document.body.classList.remove('nav-open');toggle.setAttribute('aria-expanded','false');});});
+
+	/* Reveal on scroll */
+	var io=new IntersectionObserver(function(entries){
+		entries.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+	},{threshold:.14,rootMargin:'0px 0px -40px 0px'});
+	$$('.reveal').forEach(function(el){io.observe(el);});
+
+	/* Animated counters */
+	var cio=new IntersectionObserver(function(entries){
+		entries.forEach(function(e){
+			if(!e.isIntersecting)return;
+			var el=e.target,target=parseInt(el.dataset.count,10)||0,start=null;
+			function step(ts){
+				if(!start)start=ts;
+				var p=Math.min((ts-start)/1400,1);
+				el.textContent=Math.floor(p*target).toLocaleString();
+				if(p<1)requestAnimationFrame(step);else el.textContent=target.toLocaleString();
+			}
+			requestAnimationFrame(step);cio.unobserve(el);
+		});
+	},{threshold:.5});
+	$$('.stat-num').forEach(function(el){cio.observe(el);});
+
+	/* Duplicate ticker for seamless marquee */
+	var t=document.getElementById('ticker-track');
+	t.innerHTML+=t.innerHTML;
+
+	/* Carousel arrows */
+	$$('.car-btn').forEach(function(btn){
+		btn.addEventListener('click',function(){
+			var track=document.getElementById(btn.dataset.track);
+			var vp=track.parentElement;
+			var dir=btn.classList.contains('prev')?-1:1;
+			var card=track.children[0].getBoundingClientRect().width+24;
+			vp.scrollBy({left:dir*card*Math.floor(vp.clientWidth/card),behavior:'smooth'});
+		});
+	});
+
+	/* ===== Projects data (verified from public sources) ===== */
+	var projects=[
+		{title:'Mother Packs at Bondeni Maternity',tag:'Health',date:'2026',img:'assets/images/menengai/welcome.jpg',desc:'Distributed mother packs to support new mothers and their babies at Bondeni Maternity, launching our Rotary year in service.'},
+		{title:'405 Girls at Limuko Schools',tag:'Girls Education',date:'2026',img:'assets/images/menengai/cleanup-campaign.jpg',desc:'Sanitary-towel donations worth three months per girl to over 405 students at Limuko High & Primary School.'},
+		{title:'Adopt-a-River Launch',tag:'Environment',date:'2022',img:'assets/images/menengai/adopt-river.jpg',desc:'Water filter installation, community mobilization and a cleanup of River Njoro at Mwariki Bridge, Barut.'},
+		{title:'River Ndarugu Cleanup',tag:'Environment',date:'2022',img:'assets/images/menengai/river-cleanup.jpg',desc:'Cleanup and community sensitization along River Ndarugu with partners and stakeholders.'},
+		{title:'Peace in Colour Fest',tag:'Community',date:'2025',img:'assets/images/menengai/banner.jpg',desc:'Art, mental wellness and peacebuilding for young people in Nakuru — moderated by our past president.'},
+		{title:'Street Families Outreach',tag:'Service',date:'2021',img:'assets/images/menengai/welcome.jpg',desc:'Donated clothes, diapers and amenities to families on the streets of Nakuru.'},
+		{title:'Tree Planting & Cookout',tag:'Environment',date:'2022',img:'assets/images/menengai/river-cleanup.jpg',desc:'World Environment Day tree planting and cookout at Pangani Special School.'},
+		{title:'Interact Club Donation',tag:'Mentorship',date:'2026',img:'assets/images/menengai/cleanup-campaign.jpg',desc:'~150 sanitary towels donated to support the young leaders of Interact Club of Nakuru Day.'}
+	];
+
+	/* ===== Awards data ===== */
+	var awards=[
+		{title:'DEI Champion — Legacy Award 2026',tag:'Award',date:'2026',img:'assets/images/menengai/welcome.jpg'},
+		{title:'Ten Years of Service',tag:'Milestone',date:'2025',img:'assets/images/menengai/banner.jpg'},
+		{title:'City Clean-up Campaign',tag:'Recognition',date:'2024',img:'assets/images/menengai/cleanup-campaign.jpg'},
+		{title:'Adopt-a-River Launch',tag:'Flagship',date:'2022',img:'assets/images/menengai/adopt-river.jpg'},
+		{title:'DRR Meet & Greet, Hyrax Hill',tag:'Fellowship',date:'2023',img:'assets/images/menengai/river-cleanup.jpg'}
+	];
+
+	/* ===== News data (verified from public sources) ===== */
+	var news=[
+		{title:'President’s first month — mother packs & 405 girls reached',cat:'President',date:'2026',img:'assets/images/menengai/welcome.jpg',excerpt:'Our President reflects on a first month of service at Bondeni Maternity, Limuko schools and unforgettable Thursday fellowships.'},
+		{title:'Deputy Governor launches city clean-up',cat:'Community',date:'2024',img:'assets/images/menengai/cleanup-campaign.jpg',excerpt:'RAC Menengai joined KWS, NEMA, Red Cross and more for Nakuru’s inaugural city clean-up campaign.'},
+		{title:'Rotary Nakuru & RAC Menengai partnership',cat:'Partnership',date:'2025',img:'assets/images/menengai/banner.jpg',excerpt:'A joint visit between the Rotary Club of Nakuru, RAC Menengai and RAC Bahati on the 7th of October 2025.'},
+		{title:'Peace in Colour Fest, Nakuru',cat:'Community',date:'2025',img:'assets/images/menengai/river-cleanup.jpg',excerpt:'Art, health, mental wellness and reconciliation for young people across Nakuru.'},
+		{title:'Book club turns one',cat:'Fellowship',date:'2026',img:'assets/images/menengai/adopt-river.jpg',excerpt:'A year of meaningful conversations and fresh perspectives in our members’ book club.'},
+		{title:'Financial literacy for empowerment',cat:'Member Story',date:'2026',img:'assets/images/menengai/cleanup-campaign.jpg',excerpt:'A member shares how she’s using finance to scale the club’s projects and equip the community.'}
+	];
+
+	function projCard(p){
+		var el=document.createElement('article');
+		el.className='proj-card';
+		el.innerHTML='<div class="thumb"><img src="'+p.img+'" alt="'+p.title+'" loading="lazy"><span class="tag">'+p.tag+'</span></div>'+
+			'<div class="body"><h3>'+p.title+'</h3><p>'+p.desc+'</p><div class="date">'+p.date+'</div></div>';
+		return el;
+	}
+	function awardCard(a){
+		var el=document.createElement('article');
+		el.className='award-card';
+		el.innerHTML='<div class="thumb"><img src="'+a.img+'" alt="'+a.title+'" loading="lazy"></div>'+
+			'<div class="body"><span class="award-badge">'+a.tag+'</span><h3>'+a.title+'</h3><div class="date">'+a.date+'</div></div>';
+		return el;
+	}
+	function blogCard(n){
+		var el=document.createElement('article');
+		el.className='blog-card';
+		el.innerHTML='<div class="b8-img"><img src="'+n.img+'" alt="'+n.title+'" loading="lazy"></div>'+
+			'<div class="b8-text"><div><span class="cat">'+n.cat+'</span> <span class="date">· '+n.date+'</span></div><h3>'+n.title+'</h3><p class="excerpt">'+n.excerpt+'</p></div>';
+		return el;
+	}
+
+	projects.forEach(function(p,i){var el=projCard(p);el.setAttribute('data-od-id','project-'+i);$('#projects-track').appendChild(el);});
+	awards.forEach(function(a,i){var el=awardCard(a);el.setAttribute('data-od-id','award-'+i);$('#awards-track').appendChild(el);});
+	news.forEach(function(n,i){var el=blogCard(n);el.setAttribute('data-od-id','news-'+i);$('#news-track').appendChild(el);});
+
+	/* ===== Partners (verified, text cards — no logo assets) ===== */
+	var partners=[
+		'Rotary Club of Nakuru','Rotary District 9212','Kenya Red Cross','Nairobi Women’s Hospital',
+		'Art for Children Foundation','County Government of Nakuru','Kivu Resort','IPOA Kenya',
+		'Nailepu Counseling Services','KWS','NEMA','Egerton University'
+	];
+	var pg=$('#partners-grid');
+	partners.forEach(function(p,i){
+		var el=document.createElement('div');
+		el.className='partner-chip';el.setAttribute('data-od-id','partner-'+i);
+		el.textContent=p;pg.appendChild(el);
+	});
+})();
+</script>
+</body>
+</html>

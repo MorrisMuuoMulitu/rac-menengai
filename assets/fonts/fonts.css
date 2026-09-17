@@ -1,0 +1,44 @@
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 300 800;
+  font-stretch: normal;
+  font-display: swap;
+  src: url('fonts.gstatic.com/memvYaGs126MiZpBA-UvWbX2vVnXBbObj2OVTS-muw-c79c2f5783.woff2') format('woff2');
+}
+
+@font-face {
+  font-display: block;
+  font-style: normal;
+  font-family: "fontawesome";
+  font-weight: 900;
+  src: url("rcncrotaract.org/fa-solid-900-d95d1ba940.woff2") format("woff2");
+}
+@font-face {
+  font-display: block;
+  font-style: normal;
+  font-family: "fontawesome";
+  font-weight: 400;
+  src: url("rcncrotaract.org/fa-regular-400-752801e30e.woff2") format("woff2");
+}
+@font-face {
+  font-display: block;
+  font-style: normal;
+  font-family: "fontawesome";
+  font-weight: 300;
+  src: url("rcncrotaract.org/fa-light-300-f96e81550c.woff2") format("woff2");
+}
+@font-face {
+  font-display: block;
+  font-style: normal;
+  font-family: "Font Awesome 5 Duotone";
+  font-weight: 900;
+  src: url("rcncrotaract.org/fa-duotone-900-00aecbac1d.woff2") format("woff2");
+}
+@font-face {
+  font-display: block;
+  font-style: normal;
+  font-family: "Font Awesome 5 Brands";
+  font-weight: 400;
+  src: url("rcncrotaract.org/fa-brands-400-dbd4758458.woff2") format("woff2");
+}
