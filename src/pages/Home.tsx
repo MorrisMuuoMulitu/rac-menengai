@@ -17,7 +17,10 @@ import {
 export default function HomePage() {
   return (
     <>
-      <PageMeta title="Rotaract Club of Menengai — Service Above Self" />
+      <PageMeta
+        title="Rotaract Club of Menengai — Service Above Self"
+        description="Young professionals and students in Nakuru, Kenya serving through projects and fellowship. Attend a fellowship this Thursday, 5:30–6:30 PM."
+      />
       <Hero />
       <TrustBar />
       <Services />

@@ -15,7 +15,7 @@ export default function ProjectsPage() {
 
   return (
     <>
-      <PageMeta title="Projects" />
+      <PageMeta title="Projects" description={intro.description} />
       <PageHero eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead}>
         <ButtonLink to="/membership" variant="primary" size="sm">
           Attend a fellowship <ArrowRight aria-hidden="true" />

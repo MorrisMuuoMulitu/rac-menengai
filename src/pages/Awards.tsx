@@ -10,7 +10,7 @@ export default function AwardsPage() {
   const intro = PAGE_INTROS.awards;
   return (
     <>
-      <PageMeta title="Awards & Recognition" />
+      <PageMeta title="Awards & Recognition" description={intro.description} />
       <PageHero eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead} />
       <section className="section section-tint">
         <div className="container">

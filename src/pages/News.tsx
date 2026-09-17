@@ -10,7 +10,7 @@ export default function NewsPage() {
   const intro = PAGE_INTROS.news;
   return (
     <>
-      <PageMeta title="News & Stories" />
+      <PageMeta title="News & Stories" description={intro.description} />
       <PageHero eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead}>
         <ButtonLink to="/membership" variant="primary" size="sm">
           Attend a fellowship <ArrowRight aria-hidden="true" />

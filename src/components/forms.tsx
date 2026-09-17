@@ -8,7 +8,7 @@
  * handler needs replacing. Nothing is silently "sent".
  */
 import { useRef, useState, type FormEvent } from 'react';
-import { ArrowRight, CheckCircle2, Send } from 'lucide-react';
+import { AlertTriangle, ArrowRight, CheckCircle2, Send } from 'lucide-react';
 import { CONTACT, SOCIALS } from '../data';
 
 interface FormState {
@@ -43,8 +43,11 @@ export function ContactForm({ defaultInterest, heading = 'Message the club', lea
   const [form, setForm] = useState<FormState>({ ...EMPTY, interest: defaultInterest ?? EMPTY.interest });
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
+  const [failed, setFailed] = useState(false);
   const [touched, setTouched] = useState(false);
+  const [company, setCompany] = useState(''); // honeypot — real humans never fill it
   const successRef = useRef<HTMLDivElement | null>(null);
+  const failureRef = useRef<HTMLDivElement | null>(null);
 
   const set = <K extends keyof FormState>(key: K, value: FormState[K]) => {
     setForm((f) => ({ ...f, [key]: value }));
@@ -53,12 +56,25 @@ export function ContactForm({ defaultInterest, heading = 'Message the club', lea
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
+    // Honeypot: bots fill this hidden field — pretend success, do nothing.
+    if (company.trim()) {
+      setSent(true);
+      requestAnimationFrame(() => successRef.current?.focus());
+      return;
+    }
     setTouched(true);
     const errs = validate(form);
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
-    setSent(true);
-    requestAnimationFrame(() => successRef.current?.focus());
+    try {
+      // No backend yet — see docs/CONTENT_AUDIT.md §Contact. When an endpoint
+      // exists, this is the single place to call it; failure lands in `failed`.
+      setSent(true);
+      requestAnimationFrame(() => successRef.current?.focus());
+    } catch {
+      setFailed(true);
+      requestAnimationFrame(() => failureRef.current?.focus());
+    }
   };
 
   const reset = () => {
@@ -66,7 +82,34 @@ export function ContactForm({ defaultInterest, heading = 'Message the club', lea
     setErrors({});
     setTouched(false);
     setSent(false);
+    setFailed(false);
+    setCompany('');
   };
+
+  const retry = () => {
+    setFailed(false);
+  };
+
+  if (failed) {
+    return (
+      <div className="form-failure" ref={failureRef} tabIndex={-1} role="alert">
+        <AlertTriangle aria-hidden="true" />
+        <h3>Sorry — that didn’t go through.</h3>
+        <p>Something went wrong while preparing your message. Please try again, or message the club directly:</p>
+        <div className="form-success-actions">
+          <a className="btn btn-primary btn-md" href={SOCIALS.facebook} target="_blank" rel="noopener noreferrer">
+            Message us on Facebook <ArrowRight aria-hidden="true" />
+          </a>
+          <a className="btn btn-secondary btn-md" href={SOCIALS.instagram} target="_blank" rel="noopener noreferrer">
+            Message us on Instagram <ArrowRight aria-hidden="true" />
+          </a>
+        </div>
+        <button className="form-reset" type="button" onClick={retry}>
+          Try the form again
+        </button>
+      </div>
+    );
+  }
 
   if (sent) {
     return (
@@ -177,6 +220,19 @@ export function ContactForm({ defaultInterest, heading = 'Message the club', lea
             {errors.consent}
           </span>
         ) : null}
+      </div>
+
+      <div className="field hp-field" aria-hidden="true">
+        <label htmlFor="cf-company">Company (leave blank)</label>
+        <input
+          id="cf-company"
+          name="company"
+          type="text"
+          tabIndex={-1}
+          autoComplete="off"
+          value={company}
+          onChange={(e) => setCompany(e.target.value)}
+        />
       </div>
 
       <div className="form-actions">

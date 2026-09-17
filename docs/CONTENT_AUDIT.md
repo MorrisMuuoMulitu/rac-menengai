@@ -20,10 +20,19 @@ Legend — `[V]` verified · `[C]` confirm · `[MISSING]` no source available.
 ## Contact
 | Field | Value | Status |
 |---|---|---|
-| Email | — | [MISSING] — no official email supplied; form cannot send without one |
-| Phone | — | [MISSING] — no official phone supplied |
+| Email | `contactConfig.email` = `CONFIRM_OFFICIAL_EMAIL` — placeholder, hidden from visitors | [MISSING] — provide the real address to `src/data.ts` and it appears site-wide |
+| Phone | `contactConfig.phone` = `CONFIRM_OFFICIAL_PHONE` — placeholder, hidden | [MISSING] |
+| WhatsApp | `contactConfig.whatsapp` = `CONFIRM_OFFICIAL_WHATSAPP` — placeholder, hidden | [MISSING] |
 | Socials | Facebook @RCmenengai · Instagram @racmenengai · X @RcMenengai · LinkedIn RAC Menengai · Threads @racmenengai | [V] |
-| Contact form | Client-side validation + success fallback → socials | [MISSING] — wire a real endpoint (Formspree/Web3Forms/club email) when available |
+| Contact form | Client-side validation + honeypot + success/failure states; no backend — success panel explains how to reach the club | [MISSING] — wire a real endpoint (Formspree/Web3Forms/club email) when available |
+
+## Fellowship schedule (operational)
+| Field | Value | Status |
+|---|---|---|
+| Weekday / time | Every Thursday 17:30–18:30 East Africa Time | [V] |
+| Timezone | `Africa/Nairobi` — all UI and JSON-LD use it explicitly | [V] |
+| Override | `FELLOWSHIP_OVERRIDE` in `src/data.ts` (null = weekly schedule) | [C] — set when the club pauses a week |
+| Venue | "Nakuru, Kenya" (city level only — no invented address) | [C] — add a confirmed venue when officers provide one |
 
 ## Impact figures
 | Figure | Context | Status |
@@ -45,7 +54,9 @@ Legend — `[V]` verified · `[C]` confirm · `[MISSING]` no source available.
 | Street Families Outreach | 2021 | [V] |
 
 Per-project partner/result lists were only added where the repo’s own copy supports them;
-all other projects keep a single verified narrative paragraph.
+all other projects keep a single verified narrative paragraph. "People reached" lines on
+detail pages re-word the same verified copy (e.g. "residents of Barut and riverside
+communities") — they introduce no new figures.
 
 ## Awards
 | Award | Year | Status |

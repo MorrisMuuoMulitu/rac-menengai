@@ -26,7 +26,7 @@ export default function AboutPage() {
   const intro = PAGE_INTROS.about;
   return (
     <>
-      <PageMeta title="About" />
+      <PageMeta title="About" description={intro.description} />
       <PageHero eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead} />
 
       <section className="section">

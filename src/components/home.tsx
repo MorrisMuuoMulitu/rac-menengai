@@ -2,18 +2,17 @@
  * Home page sections in narrative order: hero, trust/proof, what we do,
  * featured impact, current opportunity, leadership preview, stories, final CTA.
  */
-import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, CalendarDays, Check, MapPin, Sparkles } from 'lucide-react';
 import { CLUB, FEATURED_PROJECT_SLUG, FINAL_CTA, HERO, HERO_IMAGES, LEADERS, NEWS, PARTNERS, PROJECTS, SERVICES, STATS } from '../data';
 import { Reveal } from '../hooks';
 import { ButtonLink, SectionHeading, StatBar } from './ui';
 import { LeaderCard, OpportunityCard, ServiceAreaCard, StoryCard } from './cards';
-import { formatMeetingDate, nextMeetingDate } from '../lib/format';
+import { useFellowshipStatus } from './layout';
 
 /* ---------- Hero ---------- */
 export function Hero() {
-  const [meeting] = useState(() => nextMeetingDate());
+  const fellowshipLine = useFellowshipStatus();
   return (
     <section className="hero" id="top">
       <div className="hero-bg" style={{ backgroundImage: `url('${HERO_IMAGES.background}')` }} aria-hidden="true" />
@@ -35,12 +34,9 @@ export function Hero() {
             {HERO.secondaryCta}
           </ButtonLink>
         </div>
-        <Link to="/membership" className="hero-meeting" aria-label={`Next fellowship: ${formatMeetingDate(meeting)}, 5:30 to 6:30 PM — see how to attend`}>
+        <Link to="/membership" className="hero-meeting" aria-label={`${fellowshipLine} — see how to attend`}>
           <CalendarDays aria-hidden="true" size={15} />
-          <span>
-            Next fellowship: <strong>{formatMeetingDate(meeting)}</strong> · {CLUB.meeting.timeLabel} ·{' '}
-            {CLUB.city.split(',')[0]}
-          </span>
+          <span>{fellowshipLine}</span>
           <ArrowRight aria-hidden="true" size={15} />
         </Link>
       </div>

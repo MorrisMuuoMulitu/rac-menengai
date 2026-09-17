@@ -66,8 +66,13 @@ export interface Project {
   location: string;
   /** Only where the repo's own copy supports them. */
   challenge?: string;
+  /** People / communities reached — only where the copy supports it. */
+  reached?: string[];
+  /** Outputs delivered and measured outcomes — never implies unmeasured outcomes. */
   results?: string[];
   partners?: string[];
+  /** Meaningful caption under the project photo. */
+  caption?: string;
   featured?: boolean;
 }
 
@@ -123,6 +128,8 @@ export interface PageIntro {
   eyebrow: string;
   title: string;
   lead?: string;
+  /** Unique meta description for the route (SEO). */
+  description: string;
 }
 
 /* ============================= Icons ============================= */
@@ -188,7 +195,7 @@ export const HERO = {
   title: 'A Decade of Service Above Self',
   titleAccent: 'Service Above Self',
   lead:
-    'Rotaract Club of Menengai — young professionals and students in Nakuru, Kenya, turning service into community impact. Every Thursday, 5:30–6:30 PM, at fellowship.',
+    'Rotaract Club of Menengai — young professionals and students in Nakuru, Kenya, turning service into community impact. We meet every Thursday from 5:30–6:30 PM in Nakuru for fellowship.',
   primaryCta: 'Attend a fellowship',
   secondaryCta: 'Explore our projects',
 };
@@ -205,9 +212,9 @@ export const TRUST_BAR = [
 
 export const STATS: Stat[] = [
   { value: 10, suffix: '+', label: 'Years of service', context: 'chartered with the Rotary Club of Nakuru', year: '2016' },
-  { value: 405, suffix: '', label: 'Girls empowered', context: 'sanitary towels across Limuko schools', year: '2026' },
-  { value: 2, suffix: '', label: 'Rivers adopted', context: 'Njoro & Ndarugu cleanups', year: '2022' },
-  { value: 150, suffix: '+', label: 'Mother packs', context: 'for new mothers at Bondeni Maternity', year: '2026' },
+  { value: 405, suffix: '+', label: 'Girls empowered', context: 'sanitary-towel donations across Limuko schools', year: '2026' },
+  { value: 2, suffix: '', label: 'Rivers adopted', context: 'River Njoro & River Ndarugu cleanups', year: '2022' },
+  { value: 150, suffix: '+', label: 'Mother packs', context: 'delivered at Bondeni Maternity', year: '2026' },
 ];
 
 export const SERVICES: ServiceArea[] = [
@@ -236,9 +243,11 @@ export const PROJECTS: Project[] = [
     location: 'Mwariki Bridge, Barut — River Njoro & River Ndarugu',
     featured: true,
     challenge: 'Rivers in Nakuru carry untreated waste, plastic and runoff — affecting the communities that live and draw water along them.',
+    reached: ['Residents of Barut and riverside communities along River Njoro and River Ndarugu'],
+    caption: 'Club members and partners during the Adopt-a-River cleanups on River Njoro.',
     results: [
-      'Water filtration system installed for Barut residents',
-      'Cleanups on River Njoro & River Ndarugu with 20+ youth volunteers',
+      'Water filtration system installed for residents of Barut',
+      'Cleanups on River Njoro & River Ndarugu with 20+ youth volunteers (2022)',
       'Community sensitisation on single-use plastic',
       'Waste-disposal containers for lasting cleanliness',
     ],
@@ -254,6 +263,8 @@ export const PROJECTS: Project[] = [
     detail:
       'To open the 2026 Rotary year, members assembled and distributed mother packs — diapers, wraps, soap and essentials — to new mothers at Bondeni Maternity in Nakuru. Each pack carries a simple message: no mother welcomes new life alone.',
     location: 'Bondeni Maternity, Nakuru',
+    reached: ['New mothers and their babies at Bondeni Maternity'],
+    caption: 'Mother packs assembled and distributed at Bondeni Maternity.',
     results: ['150+ mother packs distributed', 'New-year service launch at Bondeni Maternity'],
     partners: ['Bondeni Maternity'],
   },
@@ -267,6 +278,8 @@ export const PROJECTS: Project[] = [
     detail:
       'Working with school leadership, the club delivered sanitary-towel donations worth roughly three months per girl to more than 405 students — paired with mentorship conversations so no girl misses class for lack of supplies.',
     location: 'Limuko High & Primary School',
+    reached: ['405+ students at Limuko High & Primary School'],
+    caption: 'Sanitary-towel donations prepared for Limuko schools.',
     results: ['405+ students reached with ~3 months of sanitary towels each', 'Mentorship conversations with students'],
     partners: ['Limuko Schools'],
   },
@@ -280,6 +293,8 @@ export const PROJECTS: Project[] = [
     detail:
       'Second river adoption: volunteers, partners and riverside residents cleared solid waste along River Ndarugu and ran sensitisation on dumping, drainage and safe water handling.',
     location: 'River Ndarugu',
+    reached: ['Riverside residents and volunteers along River Ndarugu'],
+    caption: 'Community cleanup along River Ndarugu.',
     results: ['Solid waste cleared with volunteers and partners', 'Sensitisation on dumping, drainage and safe water'],
   },
   {
@@ -292,6 +307,8 @@ export const PROJECTS: Project[] = [
     detail:
       'A festival-format fellowship: live art, music, mental-wellness circles and peacebuilding dialogues for young people across Nakuru — moderated by our own past president.',
     location: 'Nakuru',
+    reached: ['Young people across Nakuru'],
+    caption: 'Art and fellowship at Peace in Colour Fest in Nakuru.',
   },
   {
     slug: 'street-families',
@@ -303,6 +320,8 @@ export const PROJECTS: Project[] = [
     detail:
       'Members pooled clothes, diapers, foodstuffs and hygiene amenities for street-connected families — delivered directly, with dignity, and followed up through partner homes.',
     location: 'Nakuru CBD',
+    reached: ['Street-connected families in Nakuru CBD'],
+    caption: 'Clothing and amenities gathered for the street-families outreach.',
   },
 ];
 
@@ -489,13 +508,48 @@ export const AUDIENCES: AudiencePath[] = [
 
 /* ============================= Page intros ============================= */
 export const PAGE_INTROS: Record<string, PageIntro> = {
-  about: { eyebrow: 'About us', title: 'Young leaders, rooted in Nakuru', lead: 'Chartered by the Rotary Club of Nakuru and part of Rotary International’s global Rotaract family, we have spent a decade turning energy into impact.' },
-  projects: { eyebrow: 'Impact in action', title: 'Projects that change lives', lead: 'Six to eight hands-on projects a year across health, education, environment and peacebuilding.' },
-  awards: { eyebrow: 'Recognition', title: 'Celebrating excellence', lead: 'Awards and recognition from Rotary District 9212, Nakuru County and our partners.' },
-  leadership: { eyebrow: 'The people', title: 'Leadership that leads with heart', lead: 'Current leadership and the presidents who built the club.' },
-  news: { eyebrow: 'Stay connected', title: 'Club updates & stories', lead: 'Recent service, fellowships and partnerships — told straight from the club.' },
-  membership: { eyebrow: 'Membership', title: 'Join the Rotaract Club of Menengai', lead: 'Come as you are. Leave as a leader. Three fellowships, one project, and you’ve found your people.' },
-  contact: { eyebrow: 'Contact & partnerships', title: 'Let’s talk about service', lead: 'Joining, partnering or supporting a project — we’d love to hear from you.' },
+  about: {
+    eyebrow: 'About us',
+    title: 'Young leaders, rooted in Nakuru',
+    lead: 'Chartered by the Rotary Club of Nakuru and part of Rotary International’s global Rotaract family, we have spent a decade turning energy into impact.',
+    description: 'Who we are: a Rotaract club of young professionals and students in Nakuru, Kenya, chartered by the Rotary Club of Nakuru and part of Rotary District 9212.',
+  },
+  projects: {
+    eyebrow: 'Impact in action',
+    title: 'Projects that change lives',
+    lead: 'Six to eight hands-on projects a year across health, education, environment and peacebuilding.',
+    description: 'Verified service projects by the Rotaract Club of Menengai: Adopt-a-River, mother packs at Bondeni Maternity, girls’ education at Limuko schools and more.',
+  },
+  awards: {
+    eyebrow: 'Recognition',
+    title: 'Celebrating excellence',
+    lead: 'Awards and recognition from Rotary District 9212, Nakuru County and our partners.',
+    description: 'Recognition earned by the Rotaract Club of Menengai, including the DEI Champion Legacy Award 2026 from Rotary District 9212.',
+  },
+  leadership: {
+    eyebrow: 'The people',
+    title: 'Leadership that leads with heart',
+    lead: 'Current leadership and the presidents who built the club.',
+    description: 'Meet the Rotaract Club of Menengai leadership — current officers and the past presidents who built the club in Nakuru, Kenya.',
+  },
+  news: {
+    eyebrow: 'Stay connected',
+    title: 'Club updates & stories',
+    lead: 'Recent service, fellowships and partnerships — told straight from the club.',
+    description: 'Recent Rotaract Club of Menengai stories: service projects, fellowships and partnerships in Nakuru, Kenya.',
+  },
+  membership: {
+    eyebrow: 'Membership',
+    title: 'Join the Rotaract Club of Menengai',
+    lead: 'Come as you are. Leave as a leader. Three fellowships, one project, and you’ve found your people.',
+    description: 'How to join the Rotaract Club of Menengai: attend three Thursday fellowships in Nakuru, serve on a project, and get inducted. Ages 18–30 welcome.',
+  },
+  contact: {
+    eyebrow: 'Contact & partnerships',
+    title: 'Let’s talk about service',
+    lead: 'Joining, partnering or supporting a project — we’d love to hear from you.',
+    description: 'Contact the Rotaract Club of Menengai about membership, partnerships or supporting a project in Nakuru, Kenya.',
+  },
 };
 
 /* ============================= Contact ============================= */
@@ -503,3 +557,24 @@ export const CONTACT = {
   formNote: 'We are a volunteer-run club. Fill this in and one of our officers will reach out — or message us on Facebook or Instagram for the fastest reply.',
   interests: ['Join the club', 'Partner on a project', 'Support a project', 'General question'] as const,
 };
+
+/**
+ * Official contact details (docs/CONTENT_AUDIT.md). Nothing here was invented:
+ * values still marked `CONFIRM_*` are placeholders that are NEVER shown to
+ * visitors — the UI only reveals a channel once it holds a real value.
+ */
+export const contactConfig = {
+  email: 'CONFIRM_OFFICIAL_EMAIL',
+  phone: 'CONFIRM_OFFICIAL_PHONE',
+  whatsapp: 'CONFIRM_OFFICIAL_WHATSAPP',
+} as const;
+
+/** True once a contact channel has been confirmed by the club. */
+export const isContactConfirmed = (value: string): boolean => !value.startsWith('CONFIRM_');
+
+/**
+ * Holiday / special-event override. To pause the weekly schedule and show a
+ * custom message everywhere, set `{ message: 'No fellowship this week — see
+ * you next Thursday!' }` (leave `null` for the normal Thursday schedule).
+ */
+export const FELLOWSHIP_OVERRIDE: { message: string } | null = null;

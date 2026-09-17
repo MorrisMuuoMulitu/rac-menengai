@@ -31,6 +31,7 @@ import {
 } from 'lucide-react';
 import {
   CLUB,
+  FELLOWSHIP_OVERRIDE,
   type AudiencePath,
   type Faq,
   type IconKey,
@@ -41,7 +42,26 @@ import {
 } from '../data';
 import { Reveal } from '../hooks';
 import { ButtonLink, PlaceholderImage } from './ui';
-import { describeCountdown, formatMeetingDate, meetingDayLabel, nextMeetingDate } from '../lib/format';
+import {
+  fellowship,
+  fellowshipStatus,
+  formatMeetingDate,
+  meetingDayLabel,
+  meetingTimeLabel,
+  describeCountdown,
+  type FellowshipState,
+} from '../lib/fellowship';
+
+const FELLOWSHIP_CFG = { ...fellowship, override: FELLOWSHIP_OVERRIDE };
+
+/** Status snapshot with a stable fallback if the event calculation fails. */
+function statusSnapshot(): { ok: true; status: FellowshipState } | { ok: false } {
+  try {
+    return { ok: true, status: fellowshipStatus(new Date(), FELLOWSHIP_CFG) };
+  } catch {
+    return { ok: false };
+  }
+}
 
 /* ---------- Service area ---------- */
 const SERVICE_ICONS: Record<IconKey, React.ReactNode> = {
@@ -67,6 +87,7 @@ const SERVICE_ICONS: Record<IconKey, React.ReactNode> = {
 };
 
 export function ServiceAreaCard({ area, delay = 0 }: { area: ServiceArea; delay?: number }) {
+  const linkLabel = SERVICE_LINK_LABELS[area.id] ?? `See ${area.title.toLowerCase()} projects`;
   return (
     <Reveal delay={delay} className="service-card" as="article">
       <span className="service-icon" aria-hidden="true">
@@ -75,11 +96,18 @@ export function ServiceAreaCard({ area, delay = 0 }: { area: ServiceArea; delay?
       <h3>{area.title}</h3>
       <p>{area.oneLiner}</p>
       <Link to="/projects" className="service-more">
-        See projects <ArrowRight aria-hidden="true" />
+        {linkLabel} <ArrowRight aria-hidden="true" />
       </Link>
     </Reveal>
   );
 }
+
+const SERVICE_LINK_LABELS: Record<string, string> = {
+  environment: 'See environment projects',
+  health: 'See maternal and child health projects',
+  education: "See education and girls’ empowerment projects",
+  community: 'See community and peacebuilding projects',
+};
 
 /* ---------- Project card + filter ---------- */
 export function ProjectCard({ project, delay = 0 }: { project: Project; delay?: number }) {
@@ -207,74 +235,114 @@ export function StoryCard({ story, delay = 0, to, href }: { story: NewsItem; del
 }
 
 /* ---------- Current opportunity (next fellowship) ---------- */
-export function Countdown({ date }: { date: Date }) {
-  const [, tick] = useState(0);
+export function OpportunityCard({ compact = false }: { compact?: boolean }) {
+  const [snapshot, setSnapshot] = useState(statusSnapshot);
   useEffect(() => {
-    const t = setInterval(() => tick((v) => v + 1), 60_000);
+    const t = setInterval(() => setSnapshot(statusSnapshot()), 60_000);
     return () => clearInterval(t);
   }, []);
-  const label = meetingDayLabel(date);
-  const phrase = describeCountdown(date);
-  return (
-    <p className="opportunity-count">
-      <span className="oc-day">{label}</span>
-      <span className="oc-date">{formatMeetingDate(date)}</span>
-      <span className="oc-note">Fellowship starts at 5:30 PM — see you there {phrase}.</span>
-    </p>
-  );
-}
 
-export function OpportunityCard({ compact = false }: { compact?: boolean }) {
-  const [meeting] = useState(() => nextMeetingDate());
-  const active = CLUB.meeting.active;
+  const kicker = 'Fellowship';
+  const meta = (
+    <div className="opportunity-meta">
+      <span>
+        <Clock aria-hidden="true" /> {meetingTimeLabel()}
+      </span>
+      <span>
+        <MapPin aria-hidden="true" /> {CLUB.city.split(',')[0]} · casual
+      </span>
+    </div>
+  );
+
+  if (!snapshot.ok) {
+    return (
+      <Reveal className={`opportunity-card${compact ? ' opportunity-card-compact' : ''}`} as="article">
+        <span className="opportunity-kicker">{kicker}</span>
+        <h3>Attend a fellowship</h3>
+        <p className="opportunity-note">
+          Fellowship every {CLUB.meeting.dayLabel}, {meetingTimeLabel()} in {CLUB.city.split(',')[0]}. Guests are
+          always welcome.
+        </p>
+        <div className="opportunity-actions">
+          <ButtonLink to="/membership" variant="primary">
+            Attend a fellowship <ArrowRight aria-hidden="true" />
+          </ButtonLink>
+          <ButtonLink to="/contact" variant="secondary">
+            Ask a question
+          </ButtonLink>
+        </div>
+      </Reveal>
+    );
+  }
+
+  const s = snapshot.status;
+
+  if (s.kind === 'override') {
+    return (
+      <Reveal className={`opportunity-card${compact ? ' opportunity-card-compact' : ''}`} as="article">
+        <span className="opportunity-kicker">Special announcement</span>
+        <h3>Fellowship update</h3>
+        <p className="opportunity-note">{s.message}</p>
+        <div className="opportunity-actions">
+          <ButtonLink to="/contact" variant="primary">
+            Ask a question
+          </ButtonLink>
+        </div>
+      </Reveal>
+    );
+  }
+
+  if (s.kind === 'live') {
+    return (
+      <Reveal className={`opportunity-card${compact ? ' opportunity-card-compact' : ''}`} as="article">
+        <span className="opportunity-kicker">Right now</span>
+        <h3>Fellowship is happening now</h3>
+        <p className="opportunity-count">
+          <span className="oc-day">Happening now</span>
+          <span className="oc-date">{formatMeetingDate(s.start)}</span>
+          <span className="oc-note">Fellowship runs until 6:30 PM — come through now, guests welcome.</span>
+        </p>
+        {meta}
+        <div className="opportunity-actions">
+          <ButtonLink to="/membership" variant="primary">
+            How joining works <ArrowRight aria-hidden="true" />
+          </ButtonLink>
+          <ButtonLink to="/contact" variant="secondary">
+            Ask a question
+          </ButtonLink>
+        </div>
+      </Reveal>
+    );
+  }
+
+  const now = new Date();
+  const day = meetingDayLabel(s.start, now);
+  const note =
+    s.kind === 'today'
+      ? `Fellowship starts today at 5:30 PM — see you there ${describeCountdown(s.start, s.end, now)}.`
+      : `Fellowship runs ${meetingTimeLabel()} — see you there ${describeCountdown(s.start, s.end, now)}.`;
+
   return (
     <Reveal className={`opportunity-card${compact ? ' opportunity-card-compact' : ''}`} as="article">
       <span className="opportunity-kicker">This Thursday</span>
-      {active ? (
-        <>
-          <h3>Attend a fellowship</h3>
-          <Countdown date={meeting} />
-          <div className="opportunity-meta">
-            <span>
-              <Clock aria-hidden="true" /> {CLUB.meeting.timeLabel}
-            </span>
-            <span>
-              <MapPin aria-hidden="true" /> {CLUB.city.split(',')[0]} · casual attire
-            </span>
-          </div>
-          <div className="opportunity-actions">
-            <ButtonLink to="/membership" variant="primary">
-              Attend a fellowship <ArrowRight aria-hidden="true" />
-            </ButtonLink>
-            <ButtonLink to="/contact" variant="secondary">
-              Ask a question
-            </ButtonLink>
-          </div>
-          <p className="opportunity-note">
-            Guests are welcome — come to three meetings to get a feel for the family before joining.
-          </p>
-        </>
-      ) : (
-        <>
-          <h3>Fellowships resume soon</h3>
-          <p className="opportunity-note">
-            The club is between meeting cycles. Watch our{' '}
-            <a href="https://www.instagram.com/racmenengai/" target="_blank" rel="noopener noreferrer">
-              Instagram
-            </a>{' '}
-            or{' '}
-            <a href="https://www.facebook.com/RCmenengai/" target="_blank" rel="noopener noreferrer">
-              Facebook
-            </a>{' '}
-            for the next date, or message us to be invited.
-          </p>
-          <div className="opportunity-actions">
-            <ButtonLink to="/contact" variant="primary">
-              Ask a question
-            </ButtonLink>
-          </div>
-        </>
-      )}
+      <h3>Attend a fellowship</h3>
+      <p className="opportunity-count">
+        <span className="oc-day">{day}</span>
+        <span className="oc-date">{formatMeetingDate(s.start)}</span>
+        <span className="oc-note">{note}</span>
+      </p>
+      {meta}
+      <div className="opportunity-actions">
+        <ButtonLink to="/membership" variant="primary">
+          Attend a fellowship <ArrowRight aria-hidden="true" />
+        </ButtonLink>
+        <ButtonLink to="/contact" variant="secondary">
+          Ask a question
+        </ButtonLink>
+      </div>
+      <p className="opportunity-note">
+        Guests are welcome — come to three meetings to get a feel for the family before joining.
+      </p>
     </Reveal>
   );
 }

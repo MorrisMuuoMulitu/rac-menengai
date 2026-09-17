@@ -20,7 +20,10 @@ export default function ProjectDetailPage() {
 
   return (
     <>
-      <PageMeta title={project.title} />
+      <PageMeta
+        title={project.title}
+        description={`${project.summary} — Rotaract Club of Menengai, ${project.location}.`}
+      />
       <article className="project-detail">
         <div className="container detail-top">
           <Link to="/projects" className="back-link">
@@ -44,6 +47,7 @@ export default function ProjectDetailPage() {
           ) : (
             <PlaceholderImage label={project.title} />
           )}
+          {project.caption ? <span className="detail-caption">{project.caption}</span> : null}
         </div>
 
         <div className="container detail-body">
@@ -55,12 +59,22 @@ export default function ProjectDetailPage() {
               </section>
             ) : null}
             <section className="detail-block">
-              <h2>What we did</h2>
+              <h2>What the club did</h2>
               <p>{project.detail}</p>
             </section>
+            {project.reached && project.reached.length > 0 ? (
+              <section className="detail-block">
+                <h2>People & communities reached</h2>
+                <ul className="detail-reached">
+                  {project.reached.map((r) => (
+                    <li key={r}>{r}</li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
             {project.results && project.results.length > 0 ? (
               <section className="detail-block">
-                <h2>Measurable results</h2>
+                <h2>Verified outputs & outcomes</h2>
                 <ul className="detail-results">
                   {project.results.map((r) => (
                     <li key={r}>

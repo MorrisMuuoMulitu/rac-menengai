@@ -13,7 +13,7 @@ export default function MembershipPage() {
   const intro = PAGE_INTROS.membership;
   return (
     <>
-      <PageMeta title="Membership" />
+      <PageMeta title="Membership" description={intro.description} />
       <PageHero eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead}>
         <ButtonLink to="/contact" variant="secondary" size="sm">
           Ask a question

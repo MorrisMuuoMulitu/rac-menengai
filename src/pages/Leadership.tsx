@@ -14,7 +14,7 @@ export default function LeadershipPage() {
 
   return (
     <>
-      <PageMeta title="Leadership" />
+      <PageMeta title="Leadership" description={intro.description} />
       <PageHero eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead} />
       <section className="section section-tint">
         <div className="container">

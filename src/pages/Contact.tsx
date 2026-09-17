@@ -1,20 +1,60 @@
 /**
  * Contact & partnerships — every way to reach the club, plus the partner path.
  */
-import { ArrowRight, Clock, MapPin, MessageCircle } from 'lucide-react';
-import { CLUB, PAGE_INTROS, PARTNERS, SOCIALS } from '../data';
+import { ArrowRight, Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
+import { AUDIENCES, CLUB, contactConfig, isContactConfirmed, PAGE_INTROS, PARTNERS, SOCIALS } from '../data';
 import { ButtonLink, PageHero, PageMeta } from '../components/ui';
 import { AudiencePaths } from '../components/cards';
 import { ContactForm } from '../components/forms';
 import { Reveal } from '../hooks';
-import { AUDIENCES } from '../data';
 
 export default function ContactPage() {
   const intro = PAGE_INTROS.contact;
+  const confirmedEmail = isContactConfirmed(contactConfig.email) ? contactConfig.email : null;
+  const confirmedPhone = isContactConfirmed(contactConfig.phone) ? contactConfig.phone : null;
+  const confirmedWhatsapp = isContactConfirmed(contactConfig.whatsapp) ? contactConfig.whatsapp : null;
+
   return (
     <>
-      <PageMeta title="Contact & Partnerships" />
+      <PageMeta title="Contact & Partnerships" description={intro.description} />
       <PageHero eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead} />
+
+      {(confirmedEmail || confirmedPhone || confirmedWhatsapp) ? (
+        <section className="section section-tint">
+          <div className="container direct-contact">
+            <h2>Direct contact</h2>
+            <div className="direct-contact-list">
+              {confirmedEmail ? (
+                <a className="contact-card direct" href={`mailto:${confirmedEmail}`}>
+                  <Mail aria-hidden="true" />
+                  <div>
+                    <h3>Email</h3>
+                    <p>{confirmedEmail}</p>
+                  </div>
+                </a>
+              ) : null}
+              {confirmedPhone ? (
+                <a className="contact-card direct" href={`tel:${confirmedPhone.replace(/\s/g, '')}`}>
+                  <Phone aria-hidden="true" />
+                  <div>
+                    <h3>Phone</h3>
+                    <p>{confirmedPhone}</p>
+                  </div>
+                </a>
+              ) : null}
+              {confirmedWhatsapp ? (
+                <a className="contact-card direct" href={`https://wa.me/${confirmedWhatsapp.replace(/[^0-9]/g, '')}`} target="_blank" rel="noopener noreferrer">
+                  <MessageCircle aria-hidden="true" />
+                  <div>
+                    <h3>WhatsApp</h3>
+                    <p>{confirmedWhatsapp}</p>
+                  </div>
+                </a>
+              ) : null}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       <section className="section section-tint">
         <div className="container form-layout">
@@ -68,6 +108,10 @@ export default function ContactPage() {
           <Reveal delay={120} className="form-card">
             <ContactForm heading="Message the club" />
           </Reveal>
+          <p className="fine-print">
+            Official email and phone will appear here once the club confirms them — nothing is shown before it
+            exists. Until then, the fastest way to reach us is the form, Facebook or Instagram.
+          </p>
         </div>
       </section>
 

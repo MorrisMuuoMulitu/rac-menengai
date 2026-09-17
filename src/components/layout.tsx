@@ -16,30 +16,48 @@ import {
   Twitter,
   X,
 } from 'lucide-react';
-import { ANNOUNCEMENT, CLUB, HERO_IMAGES, NAV_LINKS, SOCIALS } from '../data';
+import { ANNOUNCEMENT, CLUB, FELLOWSHIP_OVERRIDE, HERO_IMAGES, NAV_LINKS, SOCIALS } from '../data';
 import { useLockBody, useScrolled } from '../hooks';
 import { ButtonLink } from './ui';
-import { formatMeetingDate, nextMeetingDate } from '../lib/format';
+import { fellowship, fellowshipLine, fellowshipStatus } from '../lib/fellowship';
+
+const FELLOWSHIP_CFG = { ...fellowship, override: FELLOWSHIP_OVERRIDE };
+
+/** Stable fallback if the event calculation ever fails. */
+const FALLBACK_LINE = `Fellowship every ${CLUB.meeting.dayLabel}, ${CLUB.meeting.timeLabel} · ${CLUB.city.split(',')[0]}`;
+
+/** Reads the current fellowship state; falls back to a stable line on error. */
+export function useFellowshipStatus() {
+  const [line, setLine] = useState<string>(() => {
+    try {
+      return fellowshipLine(fellowshipStatus(new Date(), FELLOWSHIP_CFG));
+    } catch {
+      return FALLBACK_LINE;
+    }
+  });
+  useEffect(() => {
+    const update = () => {
+      try {
+        setLine(fellowshipLine(fellowshipStatus(new Date(), FELLOWSHIP_CFG)));
+      } catch {
+        setLine(FALLBACK_LINE);
+      }
+    };
+    const t = setInterval(update, 60_000);
+    return () => clearInterval(t);
+  }, []);
+  return line;
+}
 
 /* ---------- Announcement bar ---------- */
 export function AnnouncementBar() {
-  const [meeting] = useState(() => nextMeetingDate());
-  const active = CLUB.meeting.active;
+  const line = useFellowshipStatus();
   return (
     <div className="announcement" role="region" aria-label="Next fellowship announcement">
       <div className="container announcement-inner">
-        <p className="announcement-text">
-          {active ? (
-            <>
-              <Clock aria-hidden="true" size={14} />
-              <span>
-                Next fellowship: <strong>{formatMeetingDate(meeting)}</strong> · {CLUB.meeting.timeLabel} ·{' '}
-                {CLUB.city.split(',')[0]}
-              </span>
-            </>
-          ) : (
-            <span>Fellowships resume soon — watch our socials for the next date.</span>
-          )}
+        <p className="announcement-text" aria-live="polite">
+          <Clock aria-hidden="true" size={14} />
+          <span>{line}</span>
         </p>
         <Link to="/membership" className="announcement-action">
           {ANNOUNCEMENT.action} <ArrowRight aria-hidden="true" size={14} />
