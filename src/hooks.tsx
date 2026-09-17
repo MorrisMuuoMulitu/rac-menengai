@@ -1,23 +1,12 @@
 /**
- * Shared UI primitives: scroll reveal, animated counters, scroll progress,
- * active-section spy and body scroll locking.
+ * Shared UI primitives: scroll reveal, animated counters, scroll-lock and the
+ * active-section spy for navigation. Deliberately small — nothing here adds
+ * decoration, only basic motion and behaviour.
  */
-import { useEffect, useRef, useState, type MouseEvent as ReactMouseEvent, type ReactNode, type CSSProperties } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 /** Adds `.in` when the element scrolls into view (once). Respects reduced motion via CSS. */
-export function Reveal({
-  children,
-  delay = 0,
-  className = '',
-  as: Tag = 'div',
-  onMouseMove,
-}: {
-  children: ReactNode;
-  delay?: number;
-  className?: string;
-  as?: 'div' | 'li' | 'span' | 'article';
-  onMouseMove?: (e: ReactMouseEvent<HTMLElement>) => void;
-}) {
+export function Reveal({ children, delay = 0, className = '', as: Tag = 'div' }: { children: ReactNode; delay?: number; className?: string; as?: 'div' | 'li' | 'span' | 'article' }) {
   const ref = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const el = ref.current;
@@ -35,22 +24,22 @@ export function Reveal({
           }
         }
       },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' },
+      { threshold: 0.12, rootMargin: '0px 0px -36px 0px' },
     );
     io.observe(el);
     return () => io.disconnect();
   }, []);
-  const style: CSSProperties | undefined = delay ? { transitionDelay: `${delay}ms` } : undefined;
+  const style = delay ? { transitionDelay: `${delay}ms` } : undefined;
   return (
     // @ts-expect-error polymorphic tag with shared ref
-    <Tag ref={ref} className={`reveal ${className}`.trim()} style={style} onMouseMove={onMouseMove}>
+    <Tag ref={ref} className={`reveal ${className}`.trim()} style={style}>
       {children}
     </Tag>
   );
 }
 
 /** Eases 0 → `target` once visible. Returns the display string. */
-export function useCountUp(target: number, suffix: string, start: boolean, duration = 1400): string {
+export function useCountUp(target: number, suffix: string, start: boolean, duration = 1200): string {
   const [value, setValue] = useState(0);
   useEffect(() => {
     if (!start) return;
@@ -72,30 +61,19 @@ export function useCountUp(target: number, suffix: string, start: boolean, durat
   return `${value.toLocaleString()}${suffix}`;
 }
 
-/** 0–100 scroll progress for the top progress bar. */
-export function useScrollProgress(): number {
-  const [progress, setProgress] = useState(0);
+/** Locks body scroll while `locked` (mobile drawer, dialog). */
+export function useLockBody(locked: boolean) {
   useEffect(() => {
-    let raf = 0;
-    const update = () => {
-      raf = 0;
-      const h = document.documentElement.scrollHeight - window.innerHeight;
-      setProgress(h > 0 ? Math.min((window.scrollY / h) * 100, 100) : 0);
-    };
-    const onScroll = () => {
-      if (!raf) raf = requestAnimationFrame(update);
-    };
-    update();
-    window.addEventListener('scroll', onScroll, { passive: true });
+    if (!locked) return;
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
     return () => {
-      window.removeEventListener('scroll', onScroll);
-      if (raf) cancelAnimationFrame(raf);
+      document.body.style.overflow = prev;
     };
-  }, []);
-  return progress;
+  }, [locked]);
 }
 
-/** Tracks which section id is currently in view for nav highlighting. */
+/** Tracks which section id is currently in view — used for anchor highlighting. */
 export function useActiveSection(ids: string[]): string {
   const [active, setActive] = useState(ids[0] ?? '');
   useEffect(() => {
@@ -113,75 +91,18 @@ export function useActiveSection(ids: string[]): string {
     );
     sections.forEach((s) => io.observe(s));
     return () => io.disconnect();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [ids]);
   return active;
 }
 
-/** Locks body scroll while `locked` (mobile drawer, modal). */
-export function useLockBody(locked: boolean) {
+/** True while the page is scrolled past a threshold (sticky header state). */
+export function useScrolled(threshold = 24): boolean {
+  const [scrolled, setScrolled] = useState(false);
   useEffect(() => {
-    if (!locked) return;
-    const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.body.style.overflow = prev;
-    };
-  }, [locked]);
-}
-
-/**
- * Cursor-follow spotlight for cards. Attach `onMouseMove` to any element with
- * the `.spot` class (e.g. via `<Reveal onMouseMove>`); the CSS radial
- * highlight tracks the cursor through `--mx` / `--my` custom properties.
- */
-export function useSpotlight() {
-  const ref = useRef<HTMLElement | null>(null);
-  const onMouseMove = (e: ReactMouseEvent<HTMLElement>) => {
-    const el = (ref.current ?? e.currentTarget) as HTMLElement | null;
-    if (!el) return;
-    const rect = el.getBoundingClientRect();
-    el.style.setProperty('--mx', `${Math.round(e.clientX - rect.left)}px`);
-    el.style.setProperty('--my', `${Math.round(e.clientY - rect.top)}px`);
-  };
-  return { ref, onMouseMove };
-}
-
-/** True when the user prefers reduced motion or a coarse (touch) pointer. */
-export function usePrefersReducedMotionOrTouch(): boolean {
-  const [prefers, setPrefers] = useState(false);
-  useEffect(() => {
-    const mqReduce = window.matchMedia?.('(prefers-reduced-motion: reduce)');
-    const mqFine = window.matchMedia?.('(pointer: fine)');
-    const update = () => setPrefers(Boolean(mqReduce?.matches) || !mqFine);
-    update();
-    mqReduce?.addEventListener?.('change', update);
-    mqFine?.addEventListener?.('change', update);
-    return () => {
-      mqReduce?.removeEventListener?.('change', update);
-      mqFine?.removeEventListener?.('change', update);
-    };
-  }, []);
-  return prefers;
-}
-
-/**
- * 3D tilt. Attach `onMouseMove` / `onMouseLeave` to an element with the
- * `.tilt` class; rotation is written via `--rx` / `--ry` custom properties.
- */
-export function useTilt(maxDeg = 7) {
-  const onMouseMove = (e: ReactMouseEvent<HTMLElement>) => {
-    const el = e.currentTarget;
-    const r = el.getBoundingClientRect();
-    if (r.width === 0 || r.height === 0) return;
-    const px = (e.clientX - r.left) / r.width - 0.5;
-    const py = (e.clientY - r.top) / r.height - 0.5;
-    el.style.setProperty('--ry', `${(px * maxDeg).toFixed(2)}deg`);
-    el.style.setProperty('--rx', `${(-py * maxDeg).toFixed(2)}deg`);
-  };
-  const onMouseLeave = (e: ReactMouseEvent<HTMLElement>) => {
-    e.currentTarget.style.setProperty('--rx', '0deg');
-    e.currentTarget.style.setProperty('--ry', '0deg');
-  };
-  return { onMouseMove, onMouseLeave };
+    const onScroll = () => setScrolled(window.scrollY > threshold);
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [threshold]);
+  return scrolled;
 }

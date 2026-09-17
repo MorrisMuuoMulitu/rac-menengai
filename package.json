@@ -1,8 +1,8 @@
 {
   "name": "rac-menengai",
   "private": true,
-  "version": "2.0.0",
-  "description": "Rotaract Club of Menengai — Service Above Self. React + Vite + TypeScript site.",
+  "version": "3.0.0",
+  "description": "Rotaract Club of Menengai — Service Above Self. Multi-page React + Vite + TypeScript site: About, Projects, Awards, Leadership, News, Membership, Contact.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -13,7 +13,8 @@
   "dependencies": {
     "lucide-react": "^0.469.0",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1"
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
     "@types/react": "^18.3.18",
