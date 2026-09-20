@@ -38,29 +38,6 @@ export function Reveal({ children, delay = 0, className = '', as: Tag = 'div' }:
   );
 }
 
-/** Eases 0 → `target` once visible. Returns the display string. */
-export function useCountUp(target: number, suffix: string, start: boolean, duration = 1200): string {
-  const [value, setValue] = useState(0);
-  useEffect(() => {
-    if (!start) return;
-    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) {
-      setValue(target);
-      return;
-    }
-    let raf = 0;
-    const t0 = performance.now();
-    const tick = (t: number) => {
-      const p = Math.min((t - t0) / duration, 1);
-      const eased = 1 - Math.pow(1 - p, 3);
-      setValue(Math.round(eased * target));
-      if (p < 1) raf = requestAnimationFrame(tick);
-    };
-    raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
-  }, [start, target, duration]);
-  return `${value.toLocaleString()}${suffix}`;
-}
-
 /** Locks body scroll while `locked` (mobile drawer, dialog). */
 export function useLockBody(locked: boolean) {
   useEffect(() => {

@@ -105,6 +105,7 @@ h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 700; letter-spac
 .btn-lg { padding: 1.05rem 2.1rem; font-size: 1.05rem; border-radius: 14px; }
 .btn-primary { background: var(--pink-600); color: #fff; box-shadow: var(--shadow-pink); }
 .btn-primary:hover { background: var(--pink-700); color: #fff; box-shadow: 0 14px 30px rgba(194, 31, 93, 0.35); }
+.btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none !important; box-shadow: none !important; }
 .btn-secondary { background: var(--surface); color: var(--ink-800); border-color: var(--ink-800); }
 .btn-secondary:hover { background: var(--ink-800); color: #fff; }
 .btn-ghost { background: transparent; color: #fff; border-color: rgba(255, 255, 255, 0.55); }
@@ -242,8 +243,10 @@ body.nav-open .mobile-nav { display: flex; flex-direction: column; }
 .stat-cell { padding: 0.4rem clamp(1rem, 2.5vw, 2rem); border-right: 1px solid var(--line); }
 .stat-cell:first-child { padding-left: 0; }
 .stat-cell:last-child { border-right: none; }
-.stat-value { display: block; font-family: var(--font-display); font-size: clamp(2.2rem, 3.6vw, 3rem); font-weight: 800; color: var(--ink-800); line-height: 1; letter-spacing: -0.02em; }
-.stat-count { font-variant-numeric: tabular-nums; }
+.stat-final { display: block; font-family: var(--font-display); font-size: clamp(2.2rem, 3.6vw, 3rem); font-weight: 800; color: var(--ink-800); line-height: 1; letter-spacing: -0.02em; }
+.statbar-dark .stat-final { color: #fff; }
+.stat-visual { display: block; }
+.stat-accname { display: flex; flex-direction: column; }
 .stat-value[data-dark] { color: #fff; }
 .stat-label { display: block; font-weight: 700; font-size: 0.95rem; color: var(--ink-800); margin-top: 0.55rem; }
 .stat-label[data-dark] { color: #fff; }
@@ -448,6 +451,7 @@ body.nav-open .mobile-nav { display: flex; flex-direction: column; }
 /* ---------- Membership ---------- */
 .membership-grid { display: grid; grid-template-columns: 1.1fr 0.9fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
 .lede { color: var(--ink-600); font-size: 1.05rem; line-height: 1.8; max-width: 58ch; }
+.lede + .lede { margin-top: 0.9rem; }
 .guest-note { display: flex; gap: 0.6rem; align-items: flex-start; background: var(--blush); border: 1px solid var(--pink-100); border-radius: 12px; padding: 1rem 1.2rem; margin-top: 1.2rem; color: var(--ink-700); font-size: 0.95rem; }
 .guest-note svg { color: var(--pink-600); flex-shrink: 0; margin-top: 0.2rem; }
 .join-steps { list-style: none; display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.3rem; counter-reset: step; }

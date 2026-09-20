@@ -442,6 +442,8 @@ export const JOIN_STEPS: JoinStep[] = [
 
 export const MEMBERSHIP = {
   whoCanJoin: 'Young professionals and students, roughly 18–30, in and around Nakuru. We are deliberately diverse and inclusive: all professions, campuses and backgrounds welcome.',
+  whatHappens:
+    'Fellowship is a relaxed hour: a short look at the week’s service, a project update, and time to get to know each other. Through the year we also run our book club and professional-development sessions.',
   feesNote: 'A modest annual subscription set by the club covers Rotary International dues and running costs — ask us for the current year’s figure. Service projects are funded separately by fundraising.', // CONFIRM fee figure
   guestNote: 'Guests may attend three fellowships before deciding — no pressure, no cost.',
 };
@@ -502,8 +504,8 @@ export const FAQS: Faq[] = [
 /* ============================= Audience paths ============================= */
 export const AUDIENCES: AudiencePath[] = [
   { id: 'join', title: 'I want to join', text: 'Three fellowships, one project, and you’re in. Guests are always welcome.', cta: 'Become a member', href: '/membership' },
-  { id: 'partner', title: 'I want to partner', text: 'Sponsor or co-deliver a service project with an active, verified local club.', cta: 'Talk to us', href: '/contact' },
-  { id: 'support', title: 'I want to support a project', text: 'Fund or donate to Adopt-a-River, mother packs, girls’ education and more.', cta: 'Support a project', href: '/contact' },
+  { id: 'partner', title: 'I want to partner', text: 'Sponsor or co-deliver a service project with an active, verified local club.', cta: 'Talk to us', href: '/contact?interest=partner-project' },
+  { id: 'support', title: 'I want to support a project', text: 'Fund or donate to Adopt-a-River, mother packs, girls’ education and more.', cta: 'Support a project', href: '/contact?interest=support-project' },
 ];
 
 /* ============================= Page intros ============================= */

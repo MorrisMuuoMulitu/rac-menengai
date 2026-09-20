@@ -24,6 +24,7 @@ export default function ProjectsPage() {
 
       <section className="section section-tint">
         <div className="container">
+          <h2 className="sr-only">All projects</h2>
           <ProjectFilter tags={PROJECT_TAGS} active={tag} onChange={setTag} />
           {filtered.length > 0 ? (
             <ul className="projects-grid" aria-live="polite">

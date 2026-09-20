@@ -41,7 +41,7 @@ import {
   type ServiceArea,
 } from '../data';
 import { Reveal } from '../hooks';
-import { ButtonLink, PlaceholderImage } from './ui';
+import { ButtonLink, SmartImage } from './ui';
 import {
   fellowship,
   fellowshipStatus,
@@ -115,11 +115,14 @@ export function ProjectCard({ project, delay = 0 }: { project: Project; delay?: 
     <Reveal delay={delay} as="li" className="project-card">
       <Link to={`/projects/${project.slug}`} className="project-card-inner" aria-label={`Read the project story: ${project.title} (${project.tag}, ${project.year})`}>
         <span className="project-thumb">
-          {project.image ? (
-            <img src={project.image} alt={`${project.title} — photograph from the project`} width={800} height={500} loading="lazy" />
-          ) : (
-            <PlaceholderImage label={project.title} />
-          )}
+          <SmartImage
+            src={project.image}
+            alt={`${project.title} — photograph from the project`}
+            width={800}
+            height={500}
+            loading="lazy"
+            fallback={project.title}
+          />
           <span className="project-tag">{project.tag}</span>
         </span>
         <span className="project-body">
@@ -188,14 +191,11 @@ export function LeaderCard({ leader, delay = 0, linkTo }: { leader: Leader; dela
 
 /* ---------- Story card ---------- */
 export function StoryCard({ story, delay = 0, to, href }: { story: NewsItem; delay?: number; to?: string; href?: string }) {
+  const readLabel = to ? `Read the story: ${story.title}.` : `Read the full story on Instagram: ${story.title}.`;
   const body = (
     <>
       <span className="story-thumb">
-        {story.image ? (
-          <img src={story.image} alt={`${story.title} — photograph`} width={640} height={360} loading="lazy" />
-        ) : (
-          <PlaceholderImage label={story.category} />
-        )}
+        <SmartImage src={story.image} alt={`${story.title} — photograph`} width={640} height={360} loading="lazy" fallback={story.category} />
       </span>
       <span className="story-body">
         <span className="story-meta">
@@ -213,7 +213,7 @@ export function StoryCard({ story, delay = 0, to, href }: { story: NewsItem; del
   if (to) {
     return (
       <Reveal delay={delay} as="li" className="story-card">
-        <Link className="story-card-inner" to={to} aria-label={`Read more: ${story.title}`}>
+        <Link className="story-card-inner" to={to} aria-label={readLabel}>
           {body}
         </Link>
       </Reveal>
@@ -226,7 +226,7 @@ export function StoryCard({ story, delay = 0, to, href }: { story: NewsItem; del
         href={href ?? 'https://www.instagram.com/racmenengai/'}
         target="_blank"
         rel="noopener noreferrer"
-        aria-label={`${story.title} — read the full story on Instagram`}
+        aria-label={readLabel}
       >
         {body}
       </a>
@@ -246,7 +246,7 @@ export function OpportunityCard({ compact = false }: { compact?: boolean }) {
   const meta = (
     <div className="opportunity-meta">
       <span>
-        <Clock aria-hidden="true" /> {meetingTimeLabel()}
+        <Clock aria-hidden="true" /> {meetingTimeLabel()} · East Africa Time
       </span>
       <span>
         <MapPin aria-hidden="true" /> {CLUB.city.split(',')[0]} · casual

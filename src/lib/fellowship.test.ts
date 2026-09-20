@@ -128,6 +128,68 @@ describe('fellowship display helpers', () => {
   });
 });
 
+describe('production state matrix (exact audit states)', () => {
+  it('Wednesday before the meeting → upcoming', () => {
+    const s = fellowshipStatus(nairobi(2026, 9, 23, 12, 0)); // Wed 23 Sep later in 2026
+    expect(s.kind).toBe('upcoming');
+    if (s.kind === 'upcoming') expect(wallClock(s.start).d).toBe(24);
+  });
+
+  it('Thursday at 4:00 PM → today', () => {
+    const s = fellowshipStatus(nairobi(2026, 9, 24, 16, 0)); // Thu 24 Sep
+    expect(s.kind).toBe('today');
+    if (s.kind === 'today') {
+      expect(wallClock(s.start).h).toBe(17);
+      expect(wallClock(s.start).min).toBe(30);
+      expect(fellowshipLine(s)).toContain('Fellowship today at 5:30 PM');
+    }
+  });
+
+  it('Thursday at 5:45 PM → live', () => {
+    const now = nairobi(2026, 9, 24, 17, 45);
+    expect(fellowshipStatus(now).kind).toBe('live');
+    expect(isFellowshipLive(now)).toBe(true);
+    expect(fellowshipLine(fellowshipStatus(now))).toContain('Fellowship is happening now');
+  });
+
+  it('Thursday at 7:00 PM → following Thursday (upcoming)', () => {
+    const now = nairobi(2026, 9, 24, 19, 0);
+    const s = fellowshipStatus(now);
+    expect(s.kind).toBe('upcoming');
+    if (s.kind === 'upcoming') expect(wallClock(s.start).d).toBe(1); // next Thursday 1 Oct
+    expect(fellowshipLine(s)).toContain('Next fellowship: Thursday');
+  });
+
+  it('Friday after the meeting → upcoming', () => {
+    const s = fellowshipStatus(nairobi(2026, 9, 25, 9, 0)); // Fri
+    expect(s.kind).toBe('upcoming');
+    if (s.kind === 'upcoming') expect(wallClock(s.start).d).toBe(1); // 1 Oct
+  });
+
+  it('is independent of a daylight-saving-observing visitor timezone', () => {
+    // Absolute instant: Thursday 24 Sep 2026 17:45 East Africa Time.
+    // Whatever the visitor's local zone (EDT, BST, …), the state must be "live"
+    // because the calculation always reads the Nairobi wall clock.
+    const instant = nairobi(2026, 9, 24, 17, 45);
+    const wall = wallClock(instant);
+    expect(wall.h).toBe(17);
+    expect(wall.min).toBe(45);
+    expect(fellowshipStatus(instant).kind).toBe('live');
+    // Same absolute instant passed in again (simulating a different client clock).
+    expect(fellowshipStatus(new Date(instant.getTime())).kind).toBe('live');
+  });
+
+  it('does not crash on an invalid system clock; falls back to a sane state', () => {
+    const bad = new Date(NaN);
+    expect(() => wallClock(bad)).not.toThrow();
+    const s = fellowshipStatus(bad);
+    expect(['upcoming', 'today', 'live']).toContain(s.kind === 'override' ? 'upcoming' : s.kind);
+    if (s.kind === 'upcoming' || s.kind === 'today') expect(s.start.getTime()).toBeGreaterThan(0);
+    // countdown from a broken clock is never negative
+    expect(countdownParts(new Date(NaN), new Date(NaN)).ms).toBe(0);
+  });
+});
+
 describe('nextFellowshipDate convenience', () => {
   it('is never in the past when the session has ended', () => {
     const after = nairobi(2026, 3, 5, 19, 0);

@@ -18,11 +18,22 @@ export default function NewsPage() {
       </PageHero>
       <section className="section section-tint">
         <div className="container">
-          <ul className="stories-grid">
-            {NEWS.map((n, i) => (
-              <StoryCard key={n.title} story={n} delay={(i % 3) * 70} />
-            ))}
-          </ul>
+          <h2 className="sr-only">All stories</h2>
+          {NEWS.length > 0 ? (
+            <ul className="stories-grid">
+              {NEWS.map((n, i) => (
+                <StoryCard key={n.title} story={n} delay={(i % 3) * 70} />
+              ))}
+            </ul>
+          ) : (
+            <p className="empty-state" role="status">
+              New stories are on the way. Follow{' '}
+              <a href="https://www.instagram.com/racmenengai/" target="_blank" rel="noopener noreferrer">
+                @racmenengai on Instagram
+              </a>{' '}
+              for the latest club moments.
+            </p>
+          )}
           <p className="fine-print">
             Each story links to its original post on the club’s Instagram. Want the freshest updates?
             <a href="https://www.instagram.com/racmenengai/" target="_blank" rel="noopener noreferrer">

@@ -5,7 +5,7 @@
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CalendarDays, Check, MapPin } from 'lucide-react';
 import { CLUB, PROJECTS } from '../data';
-import { ButtonLink, PageMeta, PlaceholderImage } from '../components/ui';
+import { ButtonLink, PageMeta, SmartImage } from '../components/ui';
 import { ProjectCard } from '../components/cards';
 import { OpportunityCard } from '../components/cards';
 import NotFoundPage from './NotFound';
@@ -42,11 +42,13 @@ export default function ProjectDetailPage() {
         </div>
 
         <div className="container detail-hero-media">
-          {project.image ? (
-            <img src={project.image} alt={`${project.title} — photograph from the project`} width={1200} height={675} />
-          ) : (
-            <PlaceholderImage label={project.title} />
-          )}
+          <SmartImage
+            src={project.image}
+            alt={`${project.title} — photograph from the project`}
+            width={1200}
+            height={675}
+            fallback={project.title}
+          />
           {project.caption ? <span className="detail-caption">{project.caption}</span> : null}
         </div>
 

@@ -1,6 +1,8 @@
 /**
  * Contact & partnerships — every way to reach the club, plus the partner path.
  */
+import { useEffect, useState } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import { ArrowRight, Clock, Mail, MapPin, MessageCircle, Phone } from 'lucide-react';
 import { AUDIENCES, CLUB, contactConfig, isContactConfirmed, PAGE_INTROS, PARTNERS, SOCIALS } from '../data';
 import { ButtonLink, PageHero, PageMeta } from '../components/ui';
@@ -8,8 +10,22 @@ import { AudiencePaths } from '../components/cards';
 import { ContactForm } from '../components/forms';
 import { Reveal } from '../hooks';
 
+/** Maps /contact?interest=<key> to a preselected form value. */
+const INTEREST_MAP: Record<string, string> = {
+  'join-club': 'Join the club',
+  'partner-project': 'Partner on a project',
+  'support-project': 'Support a project',
+  'general-question': 'General question',
+};
+
 export default function ContactPage() {
   const intro = PAGE_INTROS.contact;
+  const [params] = useSearchParams();
+  const [interest, setInterest] = useState<string | undefined>(() => INTEREST_MAP[params.get('interest') ?? '']);
+  useEffect(() => {
+    if (params.get('interest')) setInterest(INTEREST_MAP[params.get('interest') ?? '']);
+  }, [params]);
+
   const confirmedEmail = isContactConfirmed(contactConfig.email) ? contactConfig.email : null;
   const confirmedPhone = isContactConfirmed(contactConfig.phone) ? contactConfig.phone : null;
   const confirmedWhatsapp = isContactConfirmed(contactConfig.whatsapp) ? contactConfig.whatsapp : null;
@@ -62,7 +78,7 @@ export default function ContactPage() {
             <Reveal>
               <div className="section-head-block">
                 <span className="eyebrow">Send a message</span>
-                <h2 className="sec-title">We reply to every message</h2>
+                <h2 className="sec-title">Our officers review every message</h2>
               </div>
             </Reveal>
             <Reveal delay={80}>
@@ -106,7 +122,7 @@ export default function ContactPage() {
             </Reveal>
           </div>
           <Reveal delay={120} className="form-card">
-            <ContactForm heading="Message the club" />
+            <ContactForm key={interest ?? 'default'} defaultInterest={interest} heading="Message the club" />
           </Reveal>
           <p className="fine-print">
             Official email and phone will appear here once the club confirms them — nothing is shown before it

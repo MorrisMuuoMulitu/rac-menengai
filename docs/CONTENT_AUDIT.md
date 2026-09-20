@@ -24,7 +24,7 @@ Legend — `[V]` verified · `[C]` confirm · `[MISSING]` no source available.
 | Phone | `contactConfig.phone` = `CONFIRM_OFFICIAL_PHONE` — placeholder, hidden | [MISSING] |
 | WhatsApp | `contactConfig.whatsapp` = `CONFIRM_OFFICIAL_WHATSAPP` — placeholder, hidden | [MISSING] |
 | Socials | Facebook @RCmenengai · Instagram @racmenengai · X @RcMenengai · LinkedIn RAC Menengai · Threads @racmenengai | [V] |
-| Contact form | Client-side validation + honeypot + success/failure states; no backend — success panel explains how to reach the club | [MISSING] — wire a real endpoint (Formspree/Web3Forms/club email) when available |
+| Contact form | Client-side only (no backend endpoint exists). Validates name / email-or-phone / interest / message / consent; pending + double-submit guard + failure state; after "success" the panel states plainly that NOTHING was sent by the form and points to Facebook/Instagram. Wire a real endpoint (Formspree/Web3Forms/club email) in `ContactForm.onSubmit` when available | [MISSING] backend |
 
 ## Fellowship schedule (operational)
 | Field | Value | Status |

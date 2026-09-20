@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 import { ArrowRight, CalendarDays, Check, MapPin, Sparkles } from 'lucide-react';
 import { CLUB, FEATURED_PROJECT_SLUG, FINAL_CTA, HERO, HERO_IMAGES, LEADERS, NEWS, PARTNERS, PROJECTS, SERVICES, STATS } from '../data';
 import { Reveal } from '../hooks';
-import { ButtonLink, SectionHeading, StatBar } from './ui';
+import { ButtonLink, SectionHeading, SmartImage, StatBar } from './ui';
 import { LeaderCard, OpportunityCard, ServiceAreaCard, StoryCard } from './cards';
 import { useFellowshipStatus } from './layout';
 
@@ -78,7 +78,14 @@ export function FeaturedImpact() {
     <section className="section featured" id="featured">
       <div className="container featured-grid">
         <Reveal className="featured-media" as="div">
-          <img src={project.image} alt={`${project.title} — club members during the project`} width={800} height={900} loading="lazy" />
+          <SmartImage
+            src={project.image}
+            alt={`${project.title} — club members during the project`}
+            width={800}
+            height={920}
+            loading="lazy"
+            fallback={project.title}
+          />
           <span className="featured-caption">{project.title} · {project.year}</span>
         </Reveal>
         <div className="featured-copy">
@@ -196,10 +203,10 @@ export function FinalCta() {
             <ButtonLink to="/membership" variant="primary" size="lg">
               Attend a fellowship <ArrowRight aria-hidden="true" />
             </ButtonLink>
-            <ButtonLink to="/contact" variant="light" size="lg">
+            <ButtonLink to="/contact?interest=partner-project" variant="light" size="lg">
               Partner with us
             </ButtonLink>
-            <ButtonLink to="/contact" variant="light" size="lg">
+            <ButtonLink to="/contact?interest=support-project" variant="light" size="lg">
               Support a project
             </ButtonLink>
           </div>

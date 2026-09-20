@@ -39,6 +39,11 @@ interface WallTime {
 
 /** Wall-clock components of `date` in the configured timezone. */
 export function wallClock(date: Date, timeZone: string = fellowship.timezone): WallTime {
+  // Invalid system clock (e.g. NaN date) — fall back to "now" so the UI never
+  // computes broken dates or shows a stale countdown.
+  if (!(date instanceof Date) || Number.isNaN(date.getTime())) {
+    date = new Date();
+  }
   if (typeof Intl === 'undefined' || typeof Intl.DateTimeFormat !== 'function') {
     // Last-resort fallback: assume UTC so the site never crashes.
     return {
@@ -211,9 +216,10 @@ export interface CountdownParts {
   ms: number;
 }
 
-/** Non-negative countdown (clamped at 0 — never stale or negative). */
+/** Non-negative countdown (clamped at 0; never NaN, stale or negative). */
 export function countdownParts(target: Date, from: Date = new Date()): CountdownParts {
-  const ms = Math.max(0, target.getTime() - from.getTime());
+  const raw = target.getTime() - from.getTime();
+  const ms = Number.isFinite(raw) ? Math.max(0, raw) : 0;
   const s = Math.floor(ms / 1000);
   return {
     d: Math.floor(s / 86400),

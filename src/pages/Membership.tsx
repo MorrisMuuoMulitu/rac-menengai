@@ -32,6 +32,9 @@ export default function MembershipPage() {
             <Reveal delay={80}>
               <p className="lede">{MEMBERSHIP.whoCanJoin}</p>
             </Reveal>
+            <Reveal delay={100}>
+              <p className="lede">{MEMBERSHIP.whatHappens}</p>
+            </Reveal>
             <Reveal delay={120}>
               <p className="guest-note">
                 <Users aria-hidden="true" /> {MEMBERSHIP.guestNote}

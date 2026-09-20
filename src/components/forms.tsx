@@ -44,6 +44,7 @@ export function ContactForm({ defaultInterest, heading = 'Message the club', lea
   const [errors, setErrors] = useState<Errors>({});
   const [sent, setSent] = useState(false);
   const [failed, setFailed] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [touched, setTouched] = useState(false);
   const [company, setCompany] = useState(''); // honeypot — real humans never fill it
   const successRef = useRef<HTMLDivElement | null>(null);
@@ -56,7 +57,9 @@ export function ContactForm({ defaultInterest, heading = 'Message the club', lea
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    // Honeypot: bots fill this hidden field — pretend success, do nothing.
+    // Guards against duplicate submissions and submits while already pending.
+    if (submitting || sent || failed) return;
+    // Honeypot: bots fill this hidden field — pretend nothing happened.
     if (company.trim()) {
       setSent(true);
       requestAnimationFrame(() => successRef.current?.focus());
@@ -66,15 +69,23 @@ export function ContactForm({ defaultInterest, heading = 'Message the club', lea
     const errs = validate(form);
     setErrors(errs);
     if (Object.keys(errs).length > 0) return;
-    try {
-      // No backend yet — see docs/CONTENT_AUDIT.md §Contact. When an endpoint
-      // exists, this is the single place to call it; failure lands in `failed`.
-      setSent(true);
-      requestAnimationFrame(() => successRef.current?.focus());
-    } catch {
-      setFailed(true);
-      requestAnimationFrame(() => failureRef.current?.focus());
-    }
+
+    setSubmitting(true);
+    // NO BACKEND YET (docs/CONTENT_AUDIT.md §Contact). This delay exercises the
+    // pending/success/failure states; when the club provides an endpoint, this
+    // is the single place to call it — and an async throw will land in `failed`
+    // with the visitor's data intact.
+    window.setTimeout(() => {
+      try {
+        setSent(true);
+        requestAnimationFrame(() => successRef.current?.focus());
+      } catch {
+        setFailed(true);
+        requestAnimationFrame(() => failureRef.current?.focus());
+      } finally {
+        setSubmitting(false);
+      }
+    }, 650);
   };
 
   const reset = () => {
@@ -83,6 +94,7 @@ export function ContactForm({ defaultInterest, heading = 'Message the club', lea
     setTouched(false);
     setSent(false);
     setFailed(false);
+    setSubmitting(false);
     setCompany('');
   };
 
@@ -95,7 +107,10 @@ export function ContactForm({ defaultInterest, heading = 'Message the club', lea
       <div className="form-failure" ref={failureRef} tabIndex={-1} role="alert">
         <AlertTriangle aria-hidden="true" />
         <h3>Sorry — that didn’t go through.</h3>
-        <p>Something went wrong while preparing your message. Please try again, or message the club directly:</p>
+        <p>
+          Something went wrong while preparing your message. Your details are still here — try again, or message the
+          club directly:
+        </p>
         <div className="form-success-actions">
           <a className="btn btn-primary btn-md" href={SOCIALS.facebook} target="_blank" rel="noopener noreferrer">
             Message us on Facebook <ArrowRight aria-hidden="true" />
@@ -117,8 +132,9 @@ export function ContactForm({ defaultInterest, heading = 'Message the club', lea
         <CheckCircle2 aria-hidden="true" />
         <h3>Thank you, {form.name.trim().split(' ')[0]}.</h3>
         <p>
-          Your message is ready to go — and we’d love to reply personally. This site is run by volunteers without a
-          connected inbox yet, so to make sure your message reaches us, send it to the club on Facebook or Instagram:
+          To be straight with you: this site is run by volunteers and doesn’t have a connected inbox yet, so{' '}
+          <strong>nothing has been sent by this form</strong>. To make sure an officer sees your message, send it to
+          the club on Facebook or Instagram:
         </p>
         <div className="form-success-actions">
           <a className="btn btn-primary btn-md" href={SOCIALS.facebook} target="_blank" rel="noopener noreferrer">
@@ -236,10 +252,14 @@ export function ContactForm({ defaultInterest, heading = 'Message the club', lea
       </div>
 
       <div className="form-actions">
-        <button className="btn btn-primary btn-lg" type="submit">
-          Send message <Send aria-hidden="true" />
+        <button className="btn btn-primary btn-lg" type="submit" disabled={submitting} aria-busy={submitting || undefined}>
+          {submitting ? 'Preparing your message…' : (
+            <>
+              Send message <Send aria-hidden="true" />
+            </>
+          )}
         </button>
-        <p className="form-hint">No account needed — one of our officers will get back to you.</p>
+        <p className="form-hint">No account needed — one of our officers will review your message.</p>
       </div>
     </form>
   );
