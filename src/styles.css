@@ -539,6 +539,92 @@ body.nav-open .mobile-nav { display: flex; flex-direction: column; }
 .notfound p { color: var(--muted); font-size: 1.05rem; }
 .notfound-actions { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-top: 2rem; }
 
+/* ---------- New member orientation (course) ---------- */
+.orientation-callout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; align-items: center; margin-top: 2rem; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--pink-600); border-radius: var(--radius); padding: 1.8rem 2rem; }
+.callout-badge { display: inline-block; font-family: var(--font-mono); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--pink-700); background: var(--blush); border: 1px solid var(--pink-100); padding: 0.32rem 0.75rem; border-radius: 100px; margin-bottom: 0.8rem; }
+.orientation-callout h3 { font-size: 1.3rem; margin-bottom: 0.5rem; }
+.orientation-callout p { color: var(--ink-600); font-size: 0.95rem; line-height: 1.7; }
+.callout-points { list-style: none; display: grid; gap: 0.35rem; margin-top: 1rem; }
+.callout-points li { position: relative; padding-left: 1.1rem; font-size: 0.9rem; color: var(--ink-700); }
+.callout-points li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 6px; height: 6px; border-radius: 50%; background: var(--pink-600); }
+.orientation-callout-actions { display: flex; flex-direction: column; align-items: flex-start; gap: 0.7rem; }
+
+.orientation-layout { display: grid; grid-template-columns: 290px 1fr; gap: clamp(1.6rem, 4vw, 3rem); align-items: start; }
+.orientation-nav { position: sticky; top: calc(var(--header-h) + 1.2rem); background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.4rem 1.3rem; }
+.orientation-nav-title { font-family: var(--font-sans); font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.14em; color: var(--ink-600); margin-bottom: 0.9rem; }
+.orientation-progress { margin-bottom: 1.4rem; }
+.orientation-progress-track { height: 6px; border-radius: 100px; background: var(--paper-2); overflow: hidden; }
+.orientation-progress-track span { display: block; height: 100%; border-radius: 100px; background: var(--pink-600); transition: width 0.3s var(--ease); }
+.orientation-progress-text { font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); margin-top: 0.5rem; }
+.orientation-storage-note { font-size: 0.78rem; color: var(--pink-700); margin-top: 0.5rem; }
+.orientation-modules { list-style: none; display: grid; gap: 0.35rem; }
+.orientation-module-btn { display: flex; gap: 0.7rem; align-items: flex-start; width: 100%; text-align: left; background: none; border: 1px solid transparent; border-radius: 12px; padding: 0.6rem 0.7rem; cursor: pointer; font: inherit; color: var(--ink-700); transition: background 0.2s, border-color 0.2s; }
+.orientation-module-btn:hover { background: var(--paper); }
+.orientation-module-btn.current { background: var(--blush); border-color: var(--pink-200); color: var(--ink-800); }
+.orientation-module-btn .om-status { flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50%; background: var(--paper); border: 1px solid var(--line); font-family: var(--font-mono); font-size: 0.62rem; font-weight: 700; color: var(--ink-600); }
+.orientation-module-btn.done .om-status { background: var(--pink-600); border-color: var(--pink-600); color: #fff; }
+.orientation-module-btn .om-status svg { width: 14px; height: 14px; }
+.om-title { font-size: 0.9rem; font-weight: 600; line-height: 1.35; }
+.om-title small { display: block; font-family: var(--font-mono); font-size: 0.64rem; font-weight: 500; color: var(--muted); margin-top: 0.15rem; }
+.orientation-reset { display: inline-flex; align-items: center; gap: 0.4rem; margin-top: 1.2rem; background: none; border: none; padding: 0; color: var(--muted); font-size: 0.82rem; font-weight: 600; cursor: pointer; text-decoration: underline; text-underline-offset: 3px; }
+.orientation-reset svg { width: 0.95rem; height: 0.95rem; }
+.orientation-reset:hover { color: var(--pink-700); }
+
+.orientation-main { min-width: 0; }
+.orientation-module, .orientation-quiz, .orientation-done { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: clamp(1.6rem, 4vw, 2.8rem); }
+.orientation-module-title { font-size: clamp(1.6rem, 3vw, 2.1rem); margin-bottom: 0.6rem; }
+.orientation-module-title:focus-visible { outline: 3px solid var(--pink-600); outline-offset: 4px; }
+.orientation-module-summary { color: var(--muted); font-size: 1rem; margin-bottom: 1.4rem; }
+.orientation-module p, .orientation-quiz p, .orientation-done p { color: var(--ink-600); line-height: 1.8; margin-bottom: 1rem; }
+.orientation-list { list-style: none; display: grid; gap: 0.6rem; margin: 0 0 1.2rem; }
+.orientation-list li { position: relative; padding-left: 1.2rem; color: var(--ink-700); line-height: 1.7; }
+.orientation-list li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 7px; height: 7px; border-radius: 50%; background: var(--pink-500); }
+.orientation-note { background: var(--blush); border: 1px solid var(--pink-100); border-left: 4px solid var(--pink-600); border-radius: 12px; padding: 1rem 1.2rem; font-size: 0.94rem; color: var(--ink-700); }
+.orientation-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem; margin-top: 1.6rem; padding-top: 1.4rem; border-top: 1px solid var(--line); }
+.orientation-certificate .orientation-actions { border-top: none; padding-top: 0; justify-content: center; }
+
+.quiz-q { border: 1px solid var(--line); border-radius: 14px; padding: 1.2rem 1.3rem; margin-bottom: 1rem; }
+.quiz-q.correct { border-color: #7bb08a; background: #f3f9f4; }
+.quiz-q.incorrect { border-color: #dda9a2; background: #fdf5f4; }
+.quiz-q legend { font-weight: 700; color: var(--ink-800); font-size: 1rem; padding: 0; margin-bottom: 0.7rem; display: flex; gap: 0.6rem; align-items: baseline; }
+.quiz-q-no { font-family: var(--font-mono); font-size: 0.68rem; color: var(--pink-700); }
+.quiz-option { display: flex; gap: 0.7rem; align-items: flex-start; padding: 0.5rem 0.6rem; border-radius: 10px; cursor: pointer; font-size: 0.95rem; color: var(--ink-700); }
+.quiz-option:hover { background: var(--paper); }
+.quiz-option input { width: 20px; height: 20px; margin-top: 0.1rem; accent-color: var(--pink-600); flex-shrink: 0; }
+.quiz-feedback { display: flex; gap: 0.5rem; align-items: flex-start; margin-top: 0.8rem; margin-bottom: 0; font-size: 0.88rem; color: var(--ink-600); }
+.quiz-feedback svg { color: #3f7a52; flex-shrink: 0; margin-top: 0.2rem; width: 1rem; height: 1rem; }
+.quiz-result { margin-top: 1.6rem; padding: 1.3rem 1.4rem; border-radius: 14px; background: var(--paper); border: 1px solid var(--line); }
+.quiz-result h3 { font-size: 1.15rem; margin-bottom: 0.4rem; }
+.quiz-result p { margin-bottom: 0.6rem; }
+.quiz-result:focus-visible { outline: 3px solid var(--pink-600); outline-offset: 3px; }
+
+.orientation-done { display: grid; gap: 1.4rem; }
+.orientation-certificate { border: 2px solid var(--pink-200); border-radius: var(--radius); padding: clamp(1.6rem, 4vw, 2.6rem); text-align: center; background: linear-gradient(180deg, #fff, var(--blush)); }
+.cert-mark { display: inline-flex; align-items: center; justify-content: center; width: 56px; height: 56px; border-radius: 50%; background: var(--surface); border: 1px solid var(--pink-200); color: var(--pink-600); margin-bottom: 1rem; }
+.cert-mark svg { width: 28px; height: 28px; }
+.cert-line { color: var(--ink-700); font-size: 0.98rem; }
+.cert-meta { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; margin: 1.6rem 0; text-align: left; }
+.cert-meta dt { font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); margin-bottom: 0.25rem; }
+.cert-meta dd { font-weight: 700; color: var(--ink-800); font-size: 1rem; }
+.cert-name { max-width: 380px; margin: 0 auto 1.4rem; text-align: left; display: flex; flex-direction: column; gap: 0.4rem; }
+.cert-name label { font-weight: 600; font-size: 0.9rem; color: var(--ink-800); }
+.cert-name input { font: inherit; background: var(--surface); border: 1.5px solid var(--line-strong); border-radius: 10px; padding: 0.7rem 0.9rem; }
+.cert-name input:focus { outline: none; border-color: var(--pink-600); box-shadow: 0 0 0 3px rgba(194, 31, 93, 0.15); }
+.orientation-sources { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.5rem 1.6rem; }
+.orientation-sources h3 { font-size: 1.1rem; margin-bottom: 0.5rem; }
+.orientation-sources p { color: var(--muted); font-size: 0.92rem; margin-bottom: 0.9rem; }
+.orientation-sources ul { list-style: none; display: grid; gap: 0.5rem; }
+.orientation-sources a { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; }
+
+/* Printable completion record */
+@media print {
+  .announcement, .site-header, .site-footer, .skip-link, .no-print { display: none !important; }
+  .section { padding: 0 !important; }
+  .orientation-layout { display: block !important; }
+  .orientation-done > *:not(.orientation-certificate) { display: none !important; }
+  .orientation-certificate { border-color: #000; background: #fff; }
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 1080px) {
   .services-grid { grid-template-columns: repeat(2, 1fr); }
@@ -558,6 +644,10 @@ body.nav-open .mobile-nav { display: flex; flex-direction: column; }
   .statbar { grid-template-columns: repeat(2, 1fr); row-gap: 2rem; }
   .stat-cell { border-right: none; }
   .stat-cell:nth-child(odd) { padding-left: 0; }
+  .orientation-layout { grid-template-columns: 1fr; }
+  .orientation-nav { position: static; }
+  .orientation-callout { grid-template-columns: 1fr; }
+  .cert-meta { grid-template-columns: 1fr; }
 }
 @media (max-width: 640px) {
   body { font-size: 16px; }
@@ -574,6 +664,8 @@ body.nav-open .mobile-nav { display: flex; flex-direction: column; }
   .join-step { padding: 1.5rem 1.4rem; }
   .opportunity-card { padding: 1.6rem 1.3rem; }
   .about-facts { grid-template-columns: 1fr; }
+  .orientation-actions .btn { width: 100%; }
+  .quiz-q { padding: 1rem 1rem; }
 }
 @media (max-width: 380px) {
   .brand-name { display: none; }

@@ -37,7 +37,9 @@ src/
     home.tsx          # Hero, TrustBar, Services, FeaturedImpact, OpportunitySection,
                       # LeadershipPreview, StoriesPreview, FinalCta, PartnersStrip
   pages/              # Home, About, Projects, ProjectDetail, Awards, Leadership,
-                      # News, Membership, Contact, NotFound
+                      # News, Membership, Orientation (new member course),
+                      # Contact, NotFound
+  lib/                # fellowship.ts (event logic) + orientation.ts (course logic)
 docs/                 # IMPLEMENTATION_PLAN.md + CONTENT_AUDIT.md (confirmations)
 assets/images/menengai/  # club photography (bundled + hashed by Vite)
 ```

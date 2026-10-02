@@ -83,9 +83,21 @@ NEMA Kenya · Kenya Red Cross · Bondeni Maternity · Limuko Schools — [V] (pa
 ## Membership
 | Item | Status |
 |---|---|
-| Steps: 3 fellowships → 1 project → induction | [V] |
+| Steps: 3 fellowships → 1 project → **new member orientation** → induction | [V] |
 | Fees: “modest annual subscription … set by the club” | [C] — exact current figure |
 | Age 18–30 | [V] |
+
+## New member orientation (course at `/membership/orientation`)
+| Item | Status |
+|---|---|
+| Course is required before induction | [C] — a **club rule, not a Rotary mandate**; officers to confirm, and align with any district-run Rotaract orientation instead of duplicating it |
+| 6 modules of copy | [V] built only from facts verified elsewhere in `src/data.ts` — officers to review tone and emphasis |
+| 8 quiz questions and answers | [V] every answer traces to a verified club fact — membership team to approve wording |
+| Pass mark (currently 7 of 8 via `ORIENTATION.passMark`) | [C] — confirm with the membership team |
+| Who confirms completion at induction | [C] — name an officer/process; the site cannot verify completion without a backend |
+| Fees paragraph in module 5 | [C] — same open fee figure as the membership page |
+| External sources (`learn.rotary.org`, Rotary Rotaract page) | [V] links resolve; rotary.org rate-limits automated checks but that URL is already used site-wide |
+| Progress storage | [V] browser `localStorage` only — no personal data leaves the device |
 
 ## Structured data (JSON-LD)
 | Field | Status |

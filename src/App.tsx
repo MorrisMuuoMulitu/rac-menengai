@@ -12,6 +12,7 @@ import AwardsPage from './pages/Awards';
 import LeadershipPage from './pages/Leadership';
 import NewsPage from './pages/News';
 import MembershipPage from './pages/Membership';
+import OrientationPage from './pages/Orientation';
 import ContactPage from './pages/Contact';
 import NotFoundPage from './pages/NotFound';
 
@@ -34,6 +35,7 @@ export default function App() {
           <Route path="/leadership" element={<LeadershipPage />} />
           <Route path="/news" element={<NewsPage />} />
           <Route path="/membership" element={<MembershipPage />} />
+          <Route path="/membership/orientation" element={<OrientationPage />} />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

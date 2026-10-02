@@ -437,7 +437,8 @@ export const PARTNERS: Partner[] = [
 export const JOIN_STEPS: JoinStep[] = [
   { title: 'Come to fellowship', text: 'Attend three Thursday fellowships, 5:30–6:30 PM. Come as you are — guests are family.' },
   { title: 'Serve on a project', text: 'Join one hands-on project — a cleanup, a donation drive, a school visit. Feel the work.' },
-  { title: 'Get inducted', text: 'Take the oath, get your pin, and start leading. Mentorship from day one.' },
+  { title: 'Complete new member orientation', text: 'Work through our short course about Rotaract and RAC Menengai — about 20 minutes, at your own pace.' },
+  { title: 'Get inducted', text: 'Take the oath, get your pin, and start with a mentor. Mentorship from day one.' },
 ];
 
 export const MEMBERSHIP = {
@@ -446,6 +447,250 @@ export const MEMBERSHIP = {
     'Fellowship is a relaxed hour: a short look at the week’s service, a project update, and time to get to know each other. Through the year we also run our book club and professional-development sessions.',
   feesNote: 'A modest annual subscription set by the club covers Rotary International dues and running costs — ask us for the current year’s figure. Service projects are funded separately by fundraising.', // CONFIRM fee figure
   guestNote: 'Guests may attend three fellowships before deciding — no pressure, no cost.',
+};
+
+/* ============================= New member orientation =============================
+ * A short club-owned course completed before induction. Every statement here is
+ * drawn from facts already verified elsewhere in this file; anything the club
+ * still needs to decide is marked CONFIRM and listed in docs/CONTENT_AUDIT.md.
+ * ============================================================================ */
+export interface OrientationBlock {
+  kind: 'p' | 'list' | 'note';
+  text?: string;
+  items?: string[];
+}
+
+export interface OrientationModule {
+  id: string;
+  title: string;
+  summary: string;
+  minutes: number;
+  blocks: OrientationBlock[];
+}
+
+export interface OrientationQuestion {
+  id: string;
+  question: string;
+  options: string[];
+  correctIndex: number;
+  explanation: string;
+}
+
+export const ORIENTATION = {
+  title: 'New member orientation',
+  lead: 'A short course about Rotaract and the Rotaract Club of Menengai. Complete it before your induction — about 20 minutes, and you can pause and come back at any time.',
+  /** Club rule (CONFIRM wording with your officers) — enforced at induction, not by Rotary. */
+  requiredBeforeInduction: true,
+  /** Correct answers needed to pass — CONFIRM with your membership team. */
+  passMark: 7,
+  sources: [
+    { label: 'Rotary Learning Center — official courses', href: 'https://learn.rotary.org' },
+    { label: 'Rotary International — Rotaract clubs', href: 'https://www.rotary.org/en/get-involved/rotaract-clubs' },
+  ],
+  modules: [
+    {
+      id: 'welcome',
+      title: 'Welcome to RAC Menengai',
+      summary: 'Who we are, where we are, and who we are for.',
+      minutes: 3,
+      blocks: [
+        {
+          kind: 'p',
+          text: 'The Rotaract Club of Menengai (RAC Menengai) is a service club of young professionals and students in Nakuru, Kenya. We are chartered by the Rotary Club of Nakuru and part of Rotary District 9212.',
+        },
+        {
+          kind: 'list',
+          items: [
+            'Where we are: Nakuru, Kenya',
+            'Sponsored by: the Rotary Club of Nakuru',
+            'District: Rotary District 9212',
+            'Who joins: young professionals and students, roughly 18–30',
+            'Motto: Service Above Self',
+          ],
+        },
+        {
+          kind: 'note',
+          text: 'Fellowship and projects happen in and around Nakuru — you do not need to be a student or a professional to start; curiosity is enough.',
+        },
+      ],
+    },
+    {
+      id: 'rotaract-and-rotary',
+      title: 'Rotaract and Rotary',
+      summary: 'How our club relates to Rotary International.',
+      minutes: 3,
+      blocks: [
+        {
+          kind: 'p',
+          text: 'Rotaract is Rotary’s service programme for young leaders. Rotaract clubs are sponsored by a Rotary club, run their own leadership, and share Rotary’s motto and spirit of service.',
+        },
+        {
+          kind: 'p',
+          text: 'Our sponsor is the Rotary Club of Nakuru. That relationship brings mentorship, a link into Rotary’s wider network, and support for our projects — while our members plan and lead the work themselves.',
+        },
+        {
+          kind: 'list',
+          items: [
+            'Shared with Rotary: the motto Service Above Self, a commitment to service, and membership of Rotary District 9212',
+            'Ours to run: projects, fellowship, club leadership and our own membership process',
+            'Worth reading: Rotary publishes the Rotaract Handbook and its own official courses — see the links at the end of this course',
+          ],
+        },
+      ],
+    },
+    {
+      id: 'how-we-serve',
+      title: 'How we serve',
+      summary: 'The four areas our service falls into, with real examples.',
+      minutes: 4,
+      blocks: [
+        {
+          kind: 'p',
+          text: 'We run six to eight hands-on service projects a year, alongside weekly fellowship, a book club and professional-development sessions.',
+        },
+        {
+          kind: 'list',
+          items: [
+            'Environment & water — Adopt-a-River cleanups on River Njoro and River Ndarugu, water filtration for Barut residents, and waste-disposal containers.',
+            'Maternal & child health — mother packs for new mothers at Bondeni Maternity.',
+            'Education & girls’ empowerment — sanitary-towel donations and mentorship for 405+ students at Limuko High & Primary School.',
+            'Community & peacebuilding — Peace in Colour Fest, and outreach for street-connected families in Nakuru.',
+          ],
+        },
+        {
+          kind: 'p',
+          text: 'Projects are member-led: members propose, plan and run them, with officers and our sponsor club supporting along the way.',
+        },
+      ],
+    },
+    {
+      id: 'fellowship',
+      title: 'Fellowship: what to expect',
+      summary: 'When we meet, what happens, and how guests are treated.',
+      minutes: 3,
+      blocks: [
+        { kind: 'p', text: 'We meet every Thursday, 5:30–6:30 PM East Africa Time, in Nakuru.' },
+        {
+          kind: 'p',
+          text: 'Fellowship is a relaxed hour: a short look at the week’s service, a project update, and time to get to know each other. Come as you are — guests are family.',
+        },
+        { kind: 'note', text: 'Guests may attend three fellowships before deciding whether to join — no pressure, no cost.' },
+      ],
+    },
+    {
+      id: 'your-path',
+      title: 'Your path to membership',
+      summary: 'The four steps, and what the course you are taking is for.',
+      minutes: 4,
+      blocks: [
+        {
+          kind: 'list',
+          items: [
+            'Attend three fellowships (Thursdays, 5:30–6:30 PM).',
+            'Serve on one project — a cleanup, a donation drive, a school visit.',
+            'Complete this orientation course.',
+            'Get inducted: take the oath, receive your pin, and start with a mentor.',
+          ],
+        },
+        {
+          kind: 'p',
+          text: 'About fees: membership carries a modest annual subscription set by the club, which covers Rotary International dues and running costs. Ask an officer for the current year’s figure before your induction.',
+        },
+        {
+          kind: 'note',
+          text: 'Our club requires this course before induction. Completion is confirmed by an officer — keep the record you receive at the end of the course.',
+        },
+      ],
+    },
+    {
+      id: 'being-a-member',
+      title: 'Being a member',
+      summary: 'What we ask of you, and what you get back.',
+      minutes: 3,
+      blocks: [
+        {
+          kind: 'p',
+          text: 'Being a member means showing up: for fellowship, for projects, and for each other. In return you get mentorship, leadership experience, and a network across District 9212 and Rotary.',
+        },
+        {
+          kind: 'list',
+          items: [
+            'Community — we show up for the people around us, from new mothers at Bondeni to families on the streets of Nakuru.',
+            'Leadership — mentorship, our book club and professional-development sessions grow professionals and citizens of impact.',
+            'Service — Service Above Self, whether adopting a river, planting trees or championing diversity, equity and inclusion.',
+          ],
+        },
+        {
+          kind: 'p',
+          text: 'There are roles to grow into — club leadership, project leads and committee work — and our diversity, equity and inclusion work keeps the club open to everyone.',
+        },
+        { kind: 'note', text: 'Questions are always welcome: message the club on Facebook or Instagram, or ask any officer at fellowship.' },
+      ],
+    },
+  ] as OrientationModule[],
+  questions: [
+    {
+      id: 'q-location',
+      question: 'Where is the Rotaract Club of Menengai based?',
+      options: ['Nairobi, Kenya', 'Nakuru, Kenya', 'Kisumu, Kenya', 'Mombasa, Kenya'],
+      correctIndex: 1,
+      explanation: 'The club serves Nakuru, Kenya, and is part of Rotary District 9212.',
+    },
+    {
+      id: 'q-sponsor',
+      question: 'Which club sponsors RAC Menengai?',
+      options: ['Rotary Club of Nairobi', 'Rotary International', 'Rotary Club of Nakuru', 'Rotaract Club of Bahati'],
+      correctIndex: 2,
+      explanation: 'The Rotary Club of Nakuru is our sponsor mother club.',
+    },
+    {
+      id: 'q-district',
+      question: 'Which Rotary district is the club part of?',
+      options: ['9211', '9212', '9142', '9400'],
+      correctIndex: 1,
+      explanation: 'RAC Menengai is part of Rotary District 9212.',
+    },
+    {
+      id: 'q-motto',
+      question: 'What is the club’s motto?',
+      options: ['Service Above All', 'Fellowship First', 'Service Above Self', 'Leaders Through Service'],
+      correctIndex: 2,
+      explanation: 'We share Rotary’s motto: Service Above Self.',
+    },
+    {
+      id: 'q-meeting',
+      question: 'When does the club meet?',
+      options: ['Wednesdays, 6:00–7:00 PM', 'Fridays, 5:30–6:30 PM', 'Thursdays, 5:30–6:30 PM East Africa Time', 'Saturdays, 10:00–11:00 AM'],
+      correctIndex: 2,
+      explanation: 'Fellowship is every Thursday, 5:30–6:30 PM East Africa Time, in Nakuru.',
+    },
+    {
+      id: 'q-guests',
+      question: 'How many fellowships may a guest attend before deciding to join?',
+      options: ['One', 'Two', 'Three', 'Five'],
+      correctIndex: 2,
+      explanation: 'Guests may attend three fellowships before deciding — no pressure, no cost.',
+    },
+    {
+      id: 'q-flagship',
+      question: 'Which of these is the club’s flagship environmental project?',
+      options: ['Mother Packs', 'Adopt-a-River', 'Peace in Colour Fest', 'Street Families Outreach'],
+      correctIndex: 1,
+      explanation: 'Adopt-a-River covers River Njoro and River Ndarugu cleanups, water filtration and waste containers.',
+    },
+    {
+      id: 'q-path',
+      question: 'What are the steps to membership at RAC Menengai?',
+      options: [
+        'Pay a fee and sign up online',
+        'Be invited by an existing member',
+        'Attend a single meeting',
+        'Three fellowships, one project, this orientation course, then induction',
+      ],
+      correctIndex: 3,
+      explanation: 'Three fellowships, one project, the orientation course, then induction.',
+    },
+  ] as OrientationQuestion[],
 };
 
 /* ============================= Values ============================= */
@@ -485,7 +730,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'How do I become a member?',
-    a: 'Three steps: (1) attend three Thursday fellowships, (2) take part in one service project, (3) get inducted. Message us on Facebook or Instagram and we will plug you into the next fellowship.',
+    a: 'Four steps: (1) attend three Thursday fellowships, (2) take part in one service project, (3) complete our short new member orientation course, (4) get inducted. Message us on Facebook or Instagram and we will plug you into the next fellowship.',
   },
   {
     q: 'What does the club actually do?',

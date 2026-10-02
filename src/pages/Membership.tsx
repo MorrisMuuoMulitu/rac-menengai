@@ -3,7 +3,7 @@
  * membership-focused FAQ, and the join-interest form.
  */
 import { ArrowRight, Users } from 'lucide-react';
-import { CLUB, FAQS, JOIN_STEPS, MEMBERSHIP, PAGE_INTROS } from '../data';
+import { CLUB, FAQS, JOIN_STEPS, MEMBERSHIP, ORIENTATION, PAGE_INTROS } from '../data';
 import { ButtonLink, PageHero, PageMeta } from '../components/ui';
 import { FaqAccordion, OpportunityCard } from '../components/cards';
 import { ContactForm } from '../components/forms';
@@ -52,7 +52,7 @@ export default function MembershipPage() {
           <Reveal>
             <div className="section-head-block">
               <span className="eyebrow">How joining works</span>
-              <h2 className="sec-title">Three steps to the family</h2>
+              <h2 className="sec-title">Four steps to the family</h2>
             </div>
           </Reveal>
           <ol className="join-steps">
@@ -66,6 +66,32 @@ export default function MembershipPage() {
               </Reveal>
             ))}
           </ol>
+
+          <Reveal>
+            <div className="orientation-callout">
+              <div className="orientation-callout-copy">
+                <span className="callout-badge">Required before induction</span>
+                <h3>New member orientation</h3>
+                <p>
+                  A short course about Rotaract and RAC Menengai — {ORIENTATION.modules.length} modules, about{' '}
+                  {ORIENTATION.modules.reduce((total, m) => total + m.minutes, 0)} minutes, plus a {ORIENTATION.questions.length}-question
+                  check. Work through it at your own pace; your progress is saved in this browser.
+                </p>
+                <ul className="callout-points">
+                  {ORIENTATION.modules.slice(0, 4).map((m) => (
+                    <li key={m.id}>{m.title}</li>
+                  ))}
+                </ul>
+              </div>
+              <div className="orientation-callout-actions">
+                <ButtonLink to="/membership/orientation" variant="primary" size="lg">
+                  Start the course <ArrowRight aria-hidden="true" />
+                </ButtonLink>
+                <p className="form-hint">Completion is confirmed by an officer at your induction.</p>
+              </div>
+            </div>
+          </Reveal>
+
           <Reveal>
             <p className="fees-note">
               <strong>About fees:</strong> {MEMBERSHIP.feesNote}
