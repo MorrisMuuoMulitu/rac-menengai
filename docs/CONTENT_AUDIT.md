@@ -132,6 +132,25 @@ dates and figures must be re-checked each Rotary year.
 | Nakuru sits inside District 9215 | [V] club-provided · [C] the district's ClubRunner directory could not be read programmatically to double-check |
 | District photos and logo | **not used** — district property; ask the district before reusing |
 
+## Rotary International (global facts — page `/rotary`)
+Facts are paraphrased from Rotary's published material and its polio partners, with
+sources linked on the page. **Rotary's copy, photography, illustrations and logo files are
+not reproduced** — Rotary marks belong to Rotary International and official artwork must
+come from Rotary's Brand Center under Rotary's brand guidelines.
+
+| Item | Status |
+|---|---|
+| Rotary founded 1905 in Chicago by Paul Harris; grew into the world's first service club | [V] widely published Rotary history |
+| 1.2 million members in more than 200 countries and geographical areas | [V] Rotary/district published |
+| Seven areas of focus (peacebuilding; disease prevention; water & sanitation; maternal & child health; basic education; community economic development; environment) | [V] Rotary published; environment added 2021 |
+| The Rotary Foundation founded 1917; District and Global Grants aligned to the areas of focus | [V] Rotary published |
+| Four-Way Test written 1932 by Herbert J. Taylor; adopted by RI in 1943 | [V] Rotary published |
+| Programmes: Rotaract (18–30), Interact (12–18), RYLA, Youth Exchange, Peace Fellowships, Community Corps | [V] Rotary published |
+| Five Avenues of Service (club, vocational, community, international, youth) | [V] Rotary published |
+| Polio: PolioPlus launched 1985; GPEI founded 1988 with WHO, UNICEF and CDC | [V] Rotary/GPEI published |
+| Polio case counts (Afghanistan 35 WPV1 cases in 2026 vs 21 in 2025; cVDPV2 in DR Congo 58, Nigeria 36, Chad 8, Somalia 6, CAR 5) | [V] GPEI "Polio this week", **as of 30 September 2026 — time-sensitive, refresh periodically** |
+| "More than 99% decline since 1988" | [V] GPEI published |
+
 ## Structured data (JSON-LD)
 | Field | Status |
 |---|---|

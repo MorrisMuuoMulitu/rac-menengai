@@ -9,6 +9,7 @@ import {
   LeadershipPreview,
   OpportunitySection,
   PartnersStrip,
+  RotaryBand,
   Services,
   StoriesPreview,
   TrustBar,
@@ -29,6 +30,7 @@ export default function HomePage() {
       <LeadershipPreview />
       <StoriesPreview />
       <PartnersStrip />
+      <RotaryBand />
       <FinalCta />
     </>
   );

@@ -4,7 +4,7 @@
  */
 import { Link } from 'react-router-dom';
 import { ArrowRight, CalendarDays, Check, MapPin, Sparkles } from 'lucide-react';
-import { CLUB, FEATURED_PROJECT_SLUG, FINAL_CTA, HERO, HERO_IMAGES, LEADERS, NEWS, PARTNERS, PROJECTS, SERVICES, STATS } from '../data';
+import { CLUB, FEATURED_PROJECT_SLUG, FINAL_CTA, HERO, HERO_IMAGES, LEADERS, NEWS, PARTNERS, PROJECTS, ROTARY, SERVICES, STATS } from '../data';
 import { Reveal } from '../hooks';
 import { ButtonLink, SectionHeading, SmartImage, StatBar } from './ui';
 import { LeaderCard, OpportunityCard, ServiceAreaCard, StoryCard } from './cards';
@@ -184,6 +184,43 @@ export function StoriesPreview() {
         <div className="section-more">
           <ButtonLink to="/news" variant="secondary" size="sm">
             All stories <ArrowRight aria-hidden="true" />
+          </ButtonLink>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+
+/* ---------- Rotary at a glance (home band) ---------- */
+export function RotaryBand() {
+  return (
+    <section className="section section-tint" aria-labelledby="rotary-band-title">
+      <div className="container">
+        <Reveal>
+          <div className="section-head-block center-block">
+            <span className="eyebrow">Backed by Rotary</span>
+            <h2 className="sec-title" id="rotary-band-title">
+              Local projects, global network
+            </h2>
+            <p className="sec-lead">
+              Our club sits inside Rotary International — 1.2 million members in more than 200 countries and geographical
+              areas, seven areas of focus, and the polio eradication effort behind it all.
+            </p>
+          </div>
+        </Reveal>
+        <div className="stat-band">
+          {ROTARY.stats.map((s, i) => (
+            <Reveal key={s.label} delay={i * 70} className="stat-band-cell">
+              <span className="sb-value">{s.value}</span>
+              <span className="sb-label">{s.label}</span>
+              <span className="sb-note">{s.note}</span>
+            </Reveal>
+          ))}
+        </div>
+        <div className="section-more">
+          <ButtonLink to="/rotary" variant="secondary" size="sm">
+            Explore Rotary worldwide <ArrowRight aria-hidden="true" />
           </ButtonLink>
         </div>
       </div>

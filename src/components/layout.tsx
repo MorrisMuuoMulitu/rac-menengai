@@ -173,6 +173,7 @@ export function Footer() {
           <h4>Explore</h4>
           <Link to="/about">About us</Link>
           <Link to="/about/district-9215">Our district: 9215</Link>
+          <Link to="/rotary">Rotary worldwide</Link>
           <Link to="/projects">Projects</Link>
           <Link to="/awards">Awards</Link>
           <Link to="/news">News</Link>

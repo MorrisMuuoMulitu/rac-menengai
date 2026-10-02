@@ -182,6 +182,7 @@ export const SOCIALS: Socials = {
 
 export const NAV_LINKS = [
   { href: '/about', label: 'About' },
+  { href: '/rotary', label: 'Rotary' },
   { href: '/projects', label: 'Projects' },
   { href: '/awards', label: 'Awards' },
   { href: '/leadership', label: 'Leadership' },
@@ -354,6 +355,154 @@ export const DISTRICT = {
   },
   disclaimer:
     'District pages, dates and figures change — rotary9215.org is the authority. The district’s photos and logo belong to the district; ask before reusing them.',
+};
+
+/* ============================= Rotary International =============================
+ * Global facts about Rotary, paraphrased from Rotary’s own published material and
+ * its polio partners (rotary.org, polioeradication.org). Rotary’s copy, images and
+ * logo files are NOT reproduced here — see ROTARY.brandNote. Figures that move
+ * (polio case counts) carry their as-of date.
+ * ============================================================================ */
+export interface RotaryFocus {
+  id: string;
+  icon: IconKey;
+  title: string;
+  global: string;
+  local?: string;
+  projectSlug?: string;
+}
+
+export interface RotaryProgram {
+  id: string;
+  name: string;
+  ages?: string;
+  text: string;
+  ours?: boolean;
+}
+
+export const ROTARY = {
+  asOf: 'Facts paraphrased from Rotary International and Global Polio Eradication Initiative material; polio figures are as of 30 September 2026.',
+  intro:
+    'We are a Rotaract club inside Rotary — a network of 1.2 million members in more than 200 countries and geographical areas, working across seven areas of focus. This page is the wider picture our projects sit inside.',
+  stats: [
+    { value: '1905', label: 'Founded', note: 'Chicago, United States' },
+    { value: '1.2M', label: 'Members', note: 'Rotarians and Rotaractors' },
+    { value: '200+', label: 'Countries & areas', note: 'a genuinely global network' },
+    { value: '7', label: 'Areas of focus', note: 'where Rotary concentrates its work' },
+  ],
+  what: [
+    'Rotary began in Chicago in 1905 with Paul Harris and three friends, and grew into the world’s first service club. Today it is a global network of 1.2 million members in more than 200 countries and geographical areas.',
+    'Every Rotary and Rotaract club is rooted locally — ours in Nakuru — and connected globally through districts, The Rotary Foundation, and a shared set of causes. That combination is the point: local knowledge, global backing.',
+  ],
+  values: [
+    { title: 'Service', text: 'Service Above Self — the motto, and the test of everything we do.' },
+    { title: 'Fellowship', text: 'The reason we meet every Thursday, and the reason members stay for decades.' },
+    { title: 'Integrity', text: 'The Four-Way Test: truth, fairness, goodwill and benefit to all concerned.' },
+    { title: 'Diversity', text: 'Every profession, campus and background — that is how complex problems get solved.' },
+    { title: 'Leadership', text: 'Members lead. Clubs are run by their members, not by staff.' },
+  ],
+  focuses: [
+    {
+      id: 'peace',
+      icon: 'handshake',
+      title: 'Peacebuilding and conflict prevention',
+      global: 'Rotary works for peace at every level — peace fellowships, community-led reconciliation, and the Positive Peace framework with the Institute for Economics and Peace.',
+      local: 'Our Peace in Colour Fest brought art, mental wellness and dialogue to young people in Nakuru.',
+      projectSlug: 'peace-fest',
+    },
+    {
+      id: 'disease',
+      icon: 'shield',
+      title: 'Disease prevention and treatment',
+      global: 'Vaccination campaigns, training health workers and building clinics — most visibly through the polio eradication effort.',
+      local: 'Our health outreach starts closest to home: mothers and newborns at Bondeni Maternity.',
+    },
+    {
+      id: 'wash',
+      icon: 'droplets',
+      title: 'Water, sanitation and hygiene',
+      global: 'Wells, water purification, sanitation infrastructure and hygiene education in the places where access is most limited.',
+      local: 'Adopt-a-River installed a water filtration set for Barut residents and cleans up River Njoro and River Ndarugu.',
+      projectSlug: 'adopt-a-river',
+    },
+    {
+      id: 'maternal',
+      icon: 'heartPulse',
+      title: 'Maternal and child health',
+      global: 'Prenatal care, midwife training, immunisation and nutrition programmes that reduce under-five mortality.',
+      local: 'Mother packs reach new mothers at Bondeni Maternity — no mother welcomes new life alone.',
+      projectSlug: 'mother-packs',
+    },
+    {
+      id: 'education',
+      icon: 'graduation',
+      title: 'Basic education and literacy',
+      global: 'Schools, teacher training, adult literacy and scholarships — including for women and girls denied access elsewhere.',
+      local: '405+ students at Limuko High & Primary School received sanitary towels and mentorship so no girl misses class.',
+      projectSlug: 'limuko-girls',
+    },
+    {
+      id: 'economy',
+      icon: 'trending',
+      title: 'Community economic development',
+      global: 'Vocational training, microfinance, women-led enterprise and partnerships with social entrepreneurs.',
+      local: 'Our financial-literacy drives and book club build professional skills among members and the people we serve.',
+    },
+    {
+      id: 'environment',
+      icon: 'leaf',
+      title: 'Environment',
+      global: 'The newest area of focus, added in 2021: reforestation, freshwater and ocean protection, sustainable agriculture and climate resilience.',
+      local: 'River cleanups, tree planting, and the waste-disposal infrastructure we leave behind.',
+      projectSlug: 'adopt-a-river',
+    },
+  ] as RotaryFocus[],
+  polio: {
+    title: 'Polio eradication: the biggest thing Rotary does',
+    launch: 'Rotary launched PolioPlus in 1985 and helped found the Global Polio Eradication Initiative in 1988, alongside the World Health Organization, UNICEF and the US CDC.',
+    partners: ['World Health Organization', 'UNICEF', 'US CDC', 'Gates Foundation', 'Gavi', 'Rotary'],
+    progress: 'Wild poliovirus cases have fallen by more than 99% since 1988 — closer to eradication than any disease in history.',
+    status:
+      'It is not finished. As of 30 September 2026, the Global Polio Eradication Initiative reported 35 wild poliovirus type 1 cases in Afghanistan in 2026 (21 in 2025), plus circulating vaccine-derived outbreaks in DR Congo (58 cases), Nigeria (36), Chad (8), Somalia (6) and the Central African Republic (5).',
+    why: 'That is why Rotary clubs — including ours — keep fundraising, keep raising awareness, and keep the promise to finish the job.',
+    href: 'https://polioeradication.org/about-polio/polio-this-week/',
+  },
+  foundation: {
+    title: 'The Rotary Foundation',
+    text: 'Founded in 1917, The Rotary Foundation is Rotary’s own charity. It turns donations into District Grants for local work and Global Grants for larger projects — always aligned to one of the seven areas of focus.',
+    local: 'Our district runs a pledge portal and an annual Foundation Dinner, and our club can apply for Foundation funding for its projects.',
+    href: 'https://trfpledge.rotary9215.org/',
+    hrefLabel: 'District 9215 TRF pledge portal',
+  },
+  fourWayTest: {
+    title: 'The Four-Way Test',
+    intro: 'Written in 1932 by Chicago Rotarian Herbert J. Taylor and adopted by Rotary International in 1943, the Four-Way Test is Rotary’s ethical guide for business and life. Of the things we think, say or do:',
+    questions: ['Is it the TRUTH?', 'Is it FAIR to all concerned?', 'Will it build GOODWILL and BETTER FRIENDSHIPS?', 'Will it be BENEFICIAL to all concerned?'],
+  },
+  programs: [
+    { id: 'rotaract', name: 'Rotaract', ages: '18–30', text: 'Service clubs for young leaders — this is where our club sits, and how most members meet Rotary.', ours: true },
+    { id: 'interact', name: 'Interact', ages: '12–18', text: 'School-based service clubs that get young people serving early, often mentored by a local Rotary club.' },
+    { id: 'ryla', name: 'RYLA', text: 'Rotary Youth Leadership Awards — intensive leadership training for young people.' },
+    { id: 'youth-exchange', name: 'Rotary Youth Exchange', text: 'Long and short exchanges that build international understanding between families and countries.' },
+    { id: 'peace-fellowships', name: 'Rotary Peace Fellowships', text: 'Master’s degrees and professional certificates in peace and conflict resolution at Rotary Peace Centers.' },
+    { id: 'rcc', name: 'Rotary Community Corps', text: 'Community-led groups that partner with a club to serve where they live.' },
+  ] as RotaryProgram[],
+  avenues: [
+    { title: 'Club service', text: 'Running a healthy, welcoming club — the weekly work of fellowship and organisation.' },
+    { title: 'Vocational service', text: 'Using your profession to serve: skills, mentoring and ethics in the workplace.' },
+    { title: 'Community service', text: 'Projects where we live — the river cleanups, mother packs and school visits.' },
+    { title: 'International service', text: 'Work that crosses borders, from district partnerships to global grants.' },
+    { title: 'Youth service', text: 'Backing Rotaract, Interact and youth programmes so leadership keeps renewing.' },
+  ],
+  sources: [
+    { label: 'Rotary International — official site', href: 'https://www.rotary.org/en' },
+    { label: 'Rotary International — our causes', href: 'https://www.rotary.org/en/our-causes' },
+    { label: 'Global Polio Eradication Initiative', href: 'https://polioeradication.org/' },
+    { label: 'Polio this week (GPEI figures)', href: 'https://polioeradication.org/about-polio/polio-this-week/' },
+    { label: 'Rotary District 9215 — our district', href: 'https://rotary9215.org/' },
+  ] as DistrictLink[],
+  brandNote:
+    'The Rotary and Rotaract names and marks belong to Rotary International. Our club uses them as a chartered club under Rotary’s brand guidelines, and official artwork comes from Rotary’s Brand Center — this page paraphrases published facts and links to the sources rather than reproducing Rotary’s copy or images.',
 };
 
 export const STATS: Stat[] = [

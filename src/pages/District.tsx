@@ -5,20 +5,11 @@
  * is paraphrased from the district's own website (see DISTRICT.asOf) and the
  * page links out rather than copying district material.
  */
-import { ArrowRight, Check, Droplets, ExternalLink, GraduationCap, Handshake, Info, MapPin, Sparkles, Star, TrendingUp, Users } from 'lucide-react';
+import { ArrowRight, Check, ExternalLink, Info, MapPin } from 'lucide-react';
 import { CLUB, DISTRICT, HERO_IMAGES } from '../data';
 import { ButtonLink, PageHero, PageMeta, SectionHeading } from '../components/ui';
+import { FocusIcon } from '../components/icons';
 import { Reveal } from '../hooks';
-
-const FOCUS_ICONS: Record<string, React.ReactNode> = {
-  droplets: <Droplets aria-hidden="true" />,
-  graduation: <GraduationCap aria-hidden="true" />,
-  handshake: <Handshake aria-hidden="true" />,
-  trending: <TrendingUp aria-hidden="true" />,
-  users: <Users aria-hidden="true" />,
-  sparkles: <Sparkles aria-hidden="true" />,
-  star: <Star aria-hidden="true" />,
-};
 
 export default function DistrictPage() {
   return (
@@ -43,12 +34,12 @@ export default function DistrictPage() {
           <h2 id="district-scale" className="sr-only">
             District 9215 at a glance
           </h2>
-          <div className="district-stats">
+          <div className="stat-band">
             {DISTRICT.stats.map((s, i) => (
-              <Reveal key={s.label} delay={i * 70} className="district-stat">
-                <span className="ds-value">{s.value}</span>
-                <span className="ds-label">{s.label}</span>
-                <span className="ds-note">{s.note}</span>
+              <Reveal key={s.label} delay={i * 70} className="stat-band-cell">
+                <span className="sb-value">{s.value}</span>
+                <span className="sb-label">{s.label}</span>
+                <span className="sb-note">{s.note}</span>
               </Reveal>
             ))}
           </div>
@@ -140,7 +131,9 @@ export default function DistrictPage() {
           <div className="focus-grid">
             {DISTRICT.focuses.map((f, i) => (
               <Reveal key={f.id} delay={(i % 3) * 70} className="focus-card" as="article">
-                <span className="focus-icon">{FOCUS_ICONS[f.icon] ?? FOCUS_ICONS.star}</span>
+                <span className="focus-icon">
+                  <FocusIcon name={f.icon} />
+                </span>
                 <h3>{f.title}</h3>
                 <p>{f.text}</p>
               </Reveal>

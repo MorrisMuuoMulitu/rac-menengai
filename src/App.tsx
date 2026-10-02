@@ -7,6 +7,7 @@ import { AnnouncementBar, Footer, Header, ScrollToTop } from './components/layou
 import HomePage from './pages/Home';
 import AboutPage from './pages/About';
 import DistrictPage from './pages/District';
+import RotaryPage from './pages/Rotary';
 import ProjectsPage from './pages/Projects';
 import ProjectDetailPage from './pages/ProjectDetail';
 import AwardsPage from './pages/Awards';
@@ -31,6 +32,7 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/about/district-9215" element={<DistrictPage />} />
+          <Route path="/rotary" element={<RotaryPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/:slug" element={<ProjectDetailPage />} />
           <Route path="/awards" element={<AwardsPage />} />

@@ -549,13 +549,13 @@ body.nav-open .mobile-nav { display: flex; flex-direction: column; }
 .notfound-actions { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-top: 2rem; }
 
 /* ---------- Rotary District 9215 page ---------- */
-.district-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
-.district-stat { padding: 0.4rem clamp(1rem, 2.5vw, 2rem); border-right: 1px solid var(--line); }
-.district-stat:first-child { padding-left: 0; }
-.district-stat:last-child { border-right: none; }
-.ds-value { display: block; font-family: var(--font-display); font-size: clamp(1.9rem, 3.2vw, 2.6rem); font-weight: 800; color: var(--ink-800); line-height: 1; letter-spacing: -0.02em; }
-.ds-label { display: block; font-weight: 700; font-size: 0.95rem; color: var(--ink-800); margin-top: 0.5rem; }
-.ds-note { display: block; font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.5; }
+.stat-band { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+.stat-band-cell { padding: 0.4rem clamp(1rem, 2.5vw, 2rem); border-right: 1px solid var(--line); }
+.stat-band-cell:first-child { padding-left: 0; }
+.stat-band-cell:last-child { border-right: none; }
+.sb-value { display: block; font-family: var(--font-display); font-size: clamp(1.9rem, 3.2vw, 2.6rem); font-weight: 800; color: var(--ink-800); line-height: 1; letter-spacing: -0.02em; }
+.sb-label { display: block; font-weight: 700; font-size: 0.95rem; color: var(--ink-800); margin-top: 0.5rem; }
+.sb-note { display: block; font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.5; }
 
 .district-story-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
 .district-callout { display: flex; gap: 0.6rem; align-items: flex-start; margin-top: 1.2rem; background: var(--blush); border: 1px solid var(--pink-100); border-left: 4px solid var(--pink-600); border-radius: 12px; padding: 0.95rem 1.15rem; font-size: 0.9rem; color: var(--ink-700); }
@@ -627,15 +627,73 @@ body.nav-open .mobile-nav { display: flex; flex-direction: column; }
   .district-story-grid, .district-leaders { grid-template-columns: 1fr; }
   .focus-grid { grid-template-columns: repeat(2, 1fr); }
   .district-events { grid-template-columns: 1fr; }
-  .district-stats { grid-template-columns: repeat(2, 1fr); row-gap: 2rem; }
-  .district-stat { border-right: none; }
-  .district-stat:nth-child(odd) { padding-left: 0; }
+  .stat-band { grid-template-columns: repeat(2, 1fr); row-gap: 2rem; }
+  .stat-band-cell { border-right: none; }
+  .stat-band-cell:nth-child(odd) { padding-left: 0; }
 }
 @media (max-width: 640px) {
-  .focus-grid, .district-stats { grid-template-columns: 1fr; }
+  .focus-grid, .stat-band { grid-template-columns: 1fr; }
   .dg-card { grid-template-columns: 1fr; }
   .district-cta { flex-direction: column; align-items: flex-start; }
   .mapping-table th, .mapping-table td { padding: 0.8rem 0.9rem; }
+}
+
+/* ---------- Rotary International page ---------- */
+.rotary-what { display: grid; grid-template-columns: 1.35fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+.values-panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.6rem 1.7rem; }
+.values-panel h3 { font-family: var(--font-sans); font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+.values-panel ul { list-style: none; display: grid; gap: 0.85rem; }
+.values-panel li { position: relative; padding-left: 1.1rem; display: grid; gap: 0.15rem; }
+.values-panel li::before { content: ""; position: absolute; left: 0; top: 0.55em; width: 6px; height: 6px; border-radius: 50%; background: var(--pink-600); }
+.values-panel strong { color: var(--ink-800); font-size: 0.95rem; }
+.values-panel span { color: var(--muted); font-size: 0.9rem; line-height: 1.65; }
+
+.cause-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+.cause-card { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.6rem 1.5rem; }
+.cause-card h3 { font-family: var(--font-sans); font-size: 1.02rem; font-weight: 700; margin-bottom: 0.5rem; }
+.cause-global { font-size: 0.9rem; color: var(--muted); line-height: 1.65; margin-bottom: 0.9rem; }
+.cause-local { display: flex; gap: 0.5rem; align-items: flex-start; margin-top: auto; font-size: 0.88rem; color: var(--ink-700); background: var(--blush); border: 1px solid var(--pink-100); border-radius: 12px; padding: 0.8rem 0.9rem; line-height: 1.6; }
+.cause-local svg { color: var(--pink-700); flex-shrink: 0; margin-top: 0.2rem; width: 1rem; height: 1rem; }
+.cause-link { font-weight: 700; }
+
+.polio-card { display: grid; grid-template-columns: 1.5fr 1fr; gap: clamp(1.6rem, 4vw, 3rem); background: var(--navy-950); color: rgba(255, 255, 255, 0.85); border-radius: var(--radius-lg); padding: clamp(1.8rem, 4vw, 2.8rem); }
+.polio-card .eyebrow { color: var(--pink-200); }
+.polio-card .eyebrow::after { background: var(--pink-500); }
+.polio-card .sec-title { color: #fff; }
+.polio-card p { color: rgba(255, 255, 255, 0.8); line-height: 1.75; margin-bottom: 0.9rem; }
+.polio-progress { display: flex; gap: 0.6rem; align-items: flex-start; color: #fff !important; font-weight: 600; }
+.polio-progress svg, .polio-why svg { color: var(--pink-200); flex-shrink: 0; margin-top: 0.2rem; }
+.polio-why { display: flex; gap: 0.6rem; align-items: flex-start; }
+.polio-aside { background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.14); border-radius: var(--radius); padding: 1.4rem 1.5rem; }
+.polio-aside h3 { color: #fff; font-family: var(--font-sans); font-size: 0.95rem; margin-bottom: 0.9rem; }
+.polio-aside ul { list-style: none; display: grid; gap: 0.5rem; }
+.polio-aside li { display: flex; gap: 0.5rem; align-items: flex-start; font-size: 0.9rem; color: rgba(255, 255, 255, 0.85); }
+.polio-aside svg { color: var(--pink-200); flex-shrink: 0; margin-top: 0.25rem; width: 1rem; height: 1rem; }
+.polio-note { font-size: 0.85rem; color: rgba(255, 255, 255, 0.65); margin-top: 1rem; }
+
+.rotary-two-up { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(1.6rem, 4vw, 2.6rem); align-items: start; }
+.foundation-card, .fourway-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 1.8rem; }
+.foundation-card p, .fourway-card p { color: var(--ink-600); line-height: 1.75; margin-bottom: 0.9rem; }
+.fourway-list { list-style: none; counter-reset: fw; display: grid; gap: 0.6rem; margin-top: 1rem; }
+.fourway-list li { counter-increment: fw; position: relative; padding-left: 2.3rem; font-weight: 600; color: var(--ink-800); }
+.fourway-list li::before { content: counter(fw); position: absolute; left: 0; top: 0; width: 26px; height: 26px; border-radius: 50%; background: var(--blush); border: 1px solid var(--pink-100); color: var(--pink-700); font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; display: grid; place-items: center; }
+
+.program-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+.program-card { position: relative; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.5rem 1.5rem 1.6rem; }
+.program-card.ours { border-color: var(--pink-500); box-shadow: var(--shadow-sm); }
+.program-card h3 { font-family: var(--font-sans); font-size: 1.05rem; font-weight: 700; margin-bottom: 0.45rem; display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap; }
+.program-ages { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; color: var(--pink-700); background: var(--blush); border: 1px solid var(--pink-100); padding: 0.2rem 0.5rem; border-radius: 100px; }
+.program-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
+.program-badge { position: absolute; top: 0.9rem; right: 0.9rem; font-family: var(--font-mono); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #fff; background: var(--pink-600); padding: 0.28rem 0.6rem; border-radius: 100px; }
+.district-cta-icon { display: inline-flex; align-items: center; justify-content: center; color: var(--pink-700); background: var(--blush); }
+.district-cta-icon svg { width: 24px; height: 24px; }
+
+@media (max-width: 1080px) {
+  .rotary-what, .polio-card, .rotary-two-up { grid-template-columns: 1fr; }
+  .cause-grid, .program-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .cause-grid, .program-grid { grid-template-columns: 1fr; }
 }
 
 /* ---------- New member orientation (course) ---------- */

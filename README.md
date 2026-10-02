@@ -36,7 +36,8 @@ src/
     forms.tsx         # first-party contact/join form (validation, errors, success fallback)
     home.tsx          # Hero, TrustBar, Services, FeaturedImpact, OpportunitySection,
                       # LeadershipPreview, StoriesPreview, FinalCta, PartnersStrip
-  pages/              # Home, About, District (Rotary District 9215), Projects,
+  pages/              # Home, About, District (9215), Rotary (Rotary worldwide),
+                      # Projects,
                       # ProjectDetail, Awards, Leadership, News, Membership,
                       # Orientation (new member course), Contact, NotFound
   lib/                # fellowship.ts (event logic) + orientation.ts (course logic)
