@@ -1,7 +1,7 @@
 # Rotaract Club of Menengai — Website
 
 Multi-page React + Vite + TypeScript site for the Rotaract Club of Menengai
-(Nakuru, Kenya · Rotary District 9212). Calm, editorial design system: navy
+(Nakuru, Kenya · Rotary District 9215). Calm, editorial design system: navy
 `#090E18` + warm paper `#F5F4F1` + pink `#C21F5D` (contrast-checked), Fraunces
 display type, Inter body, JetBrains Mono for metadata.
 

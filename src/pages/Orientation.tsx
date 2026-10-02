@@ -9,7 +9,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, Check, CircleCheck, ExternalLink, Printer, RotateCcw } from 'lucide-react';
-import { ORIENTATION } from '../data';
+import { CLUB, ORIENTATION } from '../data';
 import { ButtonLink, PageHero, PageMeta } from '../components/ui';
 import { Reveal } from '../hooks';
 import {
@@ -353,7 +353,7 @@ export default function OrientationPage() {
                     Orientation complete
                   </h2>
                   <p className="cert-line">
-                    <strong>{ORIENTATION.title}</strong> — Rotaract Club of Menengai, Nakuru, Kenya · Rotary District 9212
+                    <strong>{ORIENTATION.title}</strong> — Rotaract Club of Menengai, Nakuru, Kenya · {CLUB.district}
                   </p>
                   <dl className="cert-meta">
                     <div>

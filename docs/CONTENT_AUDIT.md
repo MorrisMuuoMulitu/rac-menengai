@@ -6,11 +6,24 @@ club social pages, LinkedIn posts, Nakuru County coverage, or NOTES.md) or **CON
 
 Legend — `[V]` verified · `[C]` confirm · `[MISSING]` no source available.
 
+> **Club-provided update (supersedes earlier scraped values):**
+> - **Rotary District is 9215** (the site previously said 9212, taken from the club’s
+>   social pages before the change). All present-tense district references, SEO
+>   meta and `parentOrganization` structured data now read **9215**.
+> - **Membership fees: KES 3,000 per year + KES 500 Rotaract pin**, supplied by the
+>   club and now shown on the membership page, the FAQ and the orientation course.
+> - The **2026 DEI Champion award card still reads “Rotary District 9212”** — kept
+>   because it was awarded in the 2025/26 year, before the district change. Confirm
+>   whether the certificate should now read 9215.
+>
+> Historical reference files (`legacy.html`, `NOTES.md`) were deliberately left
+> untouched — they are archives of the previous build, not part of the live site.
+
 ## Identity
 | Field | Value | Status |
 |---|---|---|
 | Club name | Rotaract Club of Menengai (RAC Menengai) | [V] |
-| City / region | Nakuru, Kenya · Rotary District 9212 | [V] |
+| City / region | Nakuru, Kenya · Rotary District 9215 | [V] — club-provided; supersedes District 9212 from the social pages |
 | Sponsor mother club | Rotary Club of Nakuru | [V] |
 | Charter / founding | ~2015/16; 10th anniversary celebrated 2025 | [C] — exact charter year (2015 vs 2016) for “Est.” and JSON-LD |
 | Meeting | Every Thursday, 5:30–6:30 PM, Nakuru | [V] |
@@ -61,7 +74,7 @@ communities") — they introduce no new figures.
 ## Awards
 | Award | Year | Status |
 |---|---|---|
-| Legacy Award 2026 — DEI Champion (District 9212) | 2026 | [V] |
+| Legacy Award 2026 — DEI Champion (District 9212 at the time) | 2026 | [C] — awarded before the district change; confirm whether it should read 9215 |
 | Ten Years of Service | 2025 | [C] year |
 | City Clean-up Campaign recognition (Nakuru County) | 2024 | [V] |
 | DRR Meet & Greet, Hyrax Hill | 2023 | [V] |
@@ -77,14 +90,14 @@ communities") — they introduce no new figures.
 | Phylis Kanja | DEI Director 2025/26 · DEI Champion 2026 | [C] — role & term + whether title “DEI Champion 2026” is hers |
 
 ## Partners
-Rotary Club of Nakuru · Rotary District 9212 · Nakuru County Government · Kenya Wildlife Service ·
+Rotary Club of Nakuru · Rotary District 9215 · Nakuru County Government · Kenya Wildlife Service ·
 NEMA Kenya · Kenya Red Cross · Bondeni Maternity · Limuko Schools — [V] (partner list carries no logos → text chips/links where safe).
 
 ## Membership
 | Item | Status |
 |---|---|
 | Steps: 3 fellowships → 1 project → **new member orientation** → induction | [V] |
-| Fees: “modest annual subscription … set by the club” | [C] — exact current figure |
+| Fees: **KES 3,000 per year** + **KES 500 Rotaract pin** | [V] club-provided · [C] payment timing and whether the pin is one-off |
 | Age 18–30 | [V] |
 
 ## New member orientation (course at `/membership/orientation`)
@@ -95,14 +108,14 @@ NEMA Kenya · Kenya Red Cross · Bondeni Maternity · Limuko Schools — [V] (pa
 | 8 quiz questions and answers | [V] every answer traces to a verified club fact — membership team to approve wording |
 | Pass mark (currently 7 of 8 via `ORIENTATION.passMark`) | [C] — confirm with the membership team |
 | Who confirms completion at induction | [C] — name an officer/process; the site cannot verify completion without a backend |
-| Fees paragraph in module 5 | [C] — same open fee figure as the membership page |
+| Fees paragraph in module 5 | [V] uses the club-provided figures (KES 3,000/year + KES 500 pin) |
 | External sources (`learn.rotary.org`, Rotary Rotaract page) | [V] links resolve; rotary.org rate-limits automated checks but that URL is already used site-wide |
 | Progress storage | [V] browser `localStorage` only — no personal data leaves the device |
 
 ## Structured data (JSON-LD)
 | Field | Status |
 |---|---|
-| Organization (name, areaServed, parentOrganization District 9212, sameAs socials) | [V] |
+| Organization (name, areaServed, parentOrganization District 9215, sameAs socials) | [V] |
 | Event/Schedule: weekly fellowship Thu 17:30–18:30 (byDay schedule) | [V] — meeting pattern; venue is a club rotating venue, so `location` kept generic |
 
 ## Open items (action needed by club officer)
@@ -110,6 +123,7 @@ NEMA Kenya · Kenya Red Cross · Bondeni Maternity · Limuko Schools — [V] (pa
 2. Exact charter year (2015 or 2016).
 3. Leadership roster confirmation (Phylis Kanja title/term; fill out past-president list).
 4. Confirm 405-girl and 150+ pack figures and years for public stats.
-5. Current membership fee figure.
+5. Confirm the DEI Champion 2026 award card district (currently 9212, as awarded at the time).
+6. Confirm fee payment timing and whether the KES 500 pin is a one-off.
 6. Optional: partner logos for a more visual partner strip.
 7. Optional: photography of current officers (initials avatars used until then).

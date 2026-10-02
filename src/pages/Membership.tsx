@@ -3,7 +3,7 @@
  * membership-focused FAQ, and the join-interest form.
  */
 import { ArrowRight, Users } from 'lucide-react';
-import { CLUB, FAQS, JOIN_STEPS, MEMBERSHIP, ORIENTATION, PAGE_INTROS } from '../data';
+import { CLUB, FAQS, JOIN_STEPS, MEMBERSHIP, ORIENTATION, PAGE_INTROS, formatKes } from '../data';
 import { ButtonLink, PageHero, PageMeta } from '../components/ui';
 import { FaqAccordion, OpportunityCard } from '../components/cards';
 import { ContactForm } from '../components/forms';
@@ -93,9 +93,23 @@ export default function MembershipPage() {
           </Reveal>
 
           <Reveal>
-            <p className="fees-note">
-              <strong>About fees:</strong> {MEMBERSHIP.feesNote}
-            </p>
+            <div className="fees-card">
+              <h3>What it costs</h3>
+              <dl className="fee-list">
+                <div>
+                  <dt>Annual membership</dt>
+                  <dd>
+                    {formatKes(MEMBERSHIP.fees.subscription)} <span>{MEMBERSHIP.fees.subscriptionPeriod}</span>
+                  </dd>
+                </div>
+                <div>
+                  <dt>Rotaract pin</dt>
+                  <dd>{formatKes(MEMBERSHIP.fees.pin)}</dd>
+                </div>
+              </dl>
+              <p className="fee-note">{MEMBERSHIP.fees.note}</p>
+              <p className="form-hint">Guests attend free — fees apply once you join.</p>
+            </div>
           </Reveal>
         </div>
       </section>

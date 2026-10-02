@@ -18,8 +18,8 @@ const MILESTONES = [
   { year: '2019', title: 'Presidency of Terry Muigai', text: 'A year of growth and service under then-president Terry Muigai.' },
   { year: '2022', title: 'Adopt-a-River launches', text: 'Our flagship environmental project begins on River Njoro and River Ndarugu.' },
   { year: '2024', title: 'City clean-up, Nakuru County', text: 'Recognised for the inaugural city clean-up campaign with KWS, NEMA and Red Cross.' },
-  { year: '2025', title: 'Ten years of service', text: 'The club marks a decade of fellowship and impact across District 9212.' },
-  { year: '2026', title: 'DEI Champion — Legacy Award', text: 'Recognised by Rotary District 9212 for championing diversity, equity and inclusion.' },
+  { year: '2025', title: 'Ten years of service', text: 'The club marks a decade of fellowship and impact across the district.' },
+  { year: '2026', title: 'DEI Champion — Legacy Award', text: 'Recognised by Rotary for championing diversity, equity and inclusion.' },
 ] as const;
 
 export default function AboutPage() {

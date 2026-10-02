@@ -1,6 +1,6 @@
 # Implementation Plan — RAC Menengai (rac-menengai.vercel.app)
 
-**Project**: Rotaract Club of Menengai website redesign · Nakuru, Kenya · Rotary District 9212
+**Project**: Rotaract Club of Menengai website redesign · Nakuru, Kenya · Rotary District 9215
 **Stack (unchanged, no rewrites without reason)**: React 18 + Vite 6 + TypeScript (strict) + lucide-react.
 **Added**: `react-router-dom` v7 (multi-page IA is a real routing problem) + `vercel.json` (SPA rewrites).
 

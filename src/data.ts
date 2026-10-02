@@ -159,7 +159,7 @@ export const CLUB: ClubMeta = {
   shortName: 'RAC Menengai',
   city: 'Nakuru, Kenya',
   country: 'Kenya',
-  district: 'Rotary District 9212',
+  district: 'Rotary District 9215',
   sponsor: 'Rotary Club of Nakuru',
   establishedLabel: 'Est. 2016', // CONFIRM exact charter year (2015 vs 2016)
   motto: 'Service Above Self',
@@ -331,6 +331,7 @@ export const FEATURED_PROJECT_SLUG = 'adopt-a-river';
 
 /* ============================= Awards ============================= */
 export const AWARDS: Award[] = [
+  // Awarded in the 2025/26 Rotary year, before the district change — CONFIRM (docs/CONTENT_AUDIT.md)
   { title: 'DEI Champion — Legacy Award 2026', tag: 'Rotary District 9212', year: '2026', image: img('welcome.jpg'), gold: true },
   { title: 'Ten Years of Service', tag: 'Milestone', year: '2025', image: img('banner.jpg') },
   { title: 'City Clean-up Campaign · Nakuru County', tag: 'Recognition', year: '2024', image: img('cleanup-campaign.jpg') },
@@ -424,7 +425,7 @@ export const NEWS: NewsItem[] = [
 /* ============================= Partners ============================= */
 export const PARTNERS: Partner[] = [
   { name: 'Rotary Club of Nakuru' },
-  { name: 'Rotary District 9212' },
+  { name: 'Rotary District 9215' },
   { name: 'Nakuru County Government' },
   { name: 'Kenya Wildlife Service' },
   { name: 'NEMA Kenya' },
@@ -432,6 +433,9 @@ export const PARTNERS: Partner[] = [
   { name: 'Bondeni Maternity' },
   { name: 'Limuko Schools' },
 ];
+
+/** Format a Kenyan shilling amount, e.g. 3000 → "KES 3,000". */
+export const formatKes = (amount: number): string => `KES ${amount.toLocaleString('en-KE')}`;
 
 /* ============================= Membership ============================= */
 export const JOIN_STEPS: JoinStep[] = [
@@ -445,7 +449,14 @@ export const MEMBERSHIP = {
   whoCanJoin: 'Young professionals and students, roughly 18–30, in and around Nakuru. We are deliberately diverse and inclusive: all professions, campuses and backgrounds welcome.',
   whatHappens:
     'Fellowship is a relaxed hour: a short look at the week’s service, a project update, and time to get to know each other. Through the year we also run our book club and professional-development sessions.',
-  feesNote: 'A modest annual subscription set by the club covers Rotary International dues and running costs — ask us for the current year’s figure. Service projects are funded separately by fundraising.', // CONFIRM fee figure
+  /** Club-provided figures (see docs/CONTENT_AUDIT.md) — payment timing still to confirm. */
+  fees: {
+    subscription: 3000,
+    subscriptionPeriod: 'per year',
+    pin: 500,
+    note: 'The annual subscription covers Rotary International dues and club running costs. Service projects are funded separately by fundraising.',
+  },
+  feesNote: `Membership is ${formatKes(3000)} a year, and there is a ${formatKes(500)} Rotaract pin. Ask an officer about how and when to pay. Service projects are funded separately by fundraising.`,
   guestNote: 'Guests may attend three fellowships before deciding — no pressure, no cost.',
 };
 
@@ -496,14 +507,14 @@ export const ORIENTATION = {
       blocks: [
         {
           kind: 'p',
-          text: 'The Rotaract Club of Menengai (RAC Menengai) is a service club of young professionals and students in Nakuru, Kenya. We are chartered by the Rotary Club of Nakuru and part of Rotary District 9212.',
+          text: `The Rotaract Club of Menengai (RAC Menengai) is a service club of young professionals and students in Nakuru, Kenya. We are chartered by the Rotary Club of Nakuru and part of ${CLUB.district}.`,
         },
         {
           kind: 'list',
           items: [
             'Where we are: Nakuru, Kenya',
             'Sponsored by: the Rotary Club of Nakuru',
-            'District: Rotary District 9212',
+            `District: ${CLUB.district}`,
             'Who joins: young professionals and students, roughly 18–30',
             'Motto: Service Above Self',
           ],
@@ -531,7 +542,7 @@ export const ORIENTATION = {
         {
           kind: 'list',
           items: [
-            'Shared with Rotary: the motto Service Above Self, a commitment to service, and membership of Rotary District 9212',
+            `Shared with Rotary: the motto Service Above Self, a commitment to service, and membership of ${CLUB.district}`,
             'Ours to run: projects, fellowship, club leadership and our own membership process',
             'Worth reading: Rotary publishes the Rotaract Handbook and its own official courses — see the links at the end of this course',
           ],
@@ -594,7 +605,7 @@ export const ORIENTATION = {
         },
         {
           kind: 'p',
-          text: 'About fees: membership carries a modest annual subscription set by the club, which covers Rotary International dues and running costs. Ask an officer for the current year’s figure before your induction.',
+          text: `About fees: membership is ${formatKes(MEMBERSHIP.fees.subscription)} ${MEMBERSHIP.fees.subscriptionPeriod}, and there is a ${formatKes(MEMBERSHIP.fees.pin)} Rotaract pin. ${MEMBERSHIP.fees.note}`, // CONFIRM payment timing
         },
         {
           kind: 'note',
@@ -610,7 +621,7 @@ export const ORIENTATION = {
       blocks: [
         {
           kind: 'p',
-          text: 'Being a member means showing up: for fellowship, for projects, and for each other. In return you get mentorship, leadership experience, and a network across District 9212 and Rotary.',
+          text: `Being a member means showing up: for fellowship, for projects, and for each other. In return you get mentorship, leadership experience, and a network across ${CLUB.district} and Rotary.`,
         },
         {
           kind: 'list',
@@ -634,7 +645,7 @@ export const ORIENTATION = {
       question: 'Where is the Rotaract Club of Menengai based?',
       options: ['Nairobi, Kenya', 'Nakuru, Kenya', 'Kisumu, Kenya', 'Mombasa, Kenya'],
       correctIndex: 1,
-      explanation: 'The club serves Nakuru, Kenya, and is part of Rotary District 9212.',
+      explanation: `The club serves Nakuru, Kenya, and is part of ${CLUB.district}.`,
     },
     {
       id: 'q-sponsor',
@@ -646,9 +657,9 @@ export const ORIENTATION = {
     {
       id: 'q-district',
       question: 'Which Rotary district is the club part of?',
-      options: ['9211', '9212', '9142', '9400'],
-      correctIndex: 1,
-      explanation: 'RAC Menengai is part of Rotary District 9212.',
+      options: ['9211', '9212', '9215', '9400'],
+      correctIndex: 2,
+      explanation: `RAC Menengai is part of ${CLUB.district}.`,
     },
     {
       id: 'q-motto',
@@ -722,7 +733,7 @@ export const VALUES: Value[] = [
 export const FAQS: Faq[] = [
   {
     q: 'When and where do you meet?',
-    a: 'Fellowship every Thursday, 5:30–6:30 PM in Nakuru, Kenya (Rotary District 9212). Guests are welcome — come to three meetings to get a feel for the family before joining.',
+    a: `Fellowship every Thursday, 5:30–6:30 PM in Nakuru, Kenya (${CLUB.district}). Guests are welcome — come to three meetings to get a feel for the family before joining.`,
   },
   {
     q: 'Who can join Rotaract?',
@@ -738,7 +749,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: 'Is there a membership fee?',
-    a: 'Yes — a modest annual subscription set by the club covers Rotary International dues and running costs. Ask us on socials for the current year’s figure; service projects are funded separately by fundraising.',
+    a: `Yes — ${formatKes(MEMBERSHIP.fees.subscription)} ${MEMBERSHIP.fees.subscriptionPeriod}, plus a ${formatKes(MEMBERSHIP.fees.pin)} Rotaract pin. The subscription covers Rotary International dues and running costs; service projects are funded separately by fundraising.`,
   },
   {
     q: 'How is Rotaract different from Rotary?',
@@ -759,7 +770,7 @@ export const PAGE_INTROS: Record<string, PageIntro> = {
     eyebrow: 'About us',
     title: 'Young leaders, rooted in Nakuru',
     lead: 'Chartered by the Rotary Club of Nakuru and part of Rotary International’s global Rotaract family, we have spent a decade turning energy into impact.',
-    description: 'Who we are: a Rotaract club of young professionals and students in Nakuru, Kenya, chartered by the Rotary Club of Nakuru and part of Rotary District 9212.',
+    description: `Who we are: a Rotaract club of young professionals and students in Nakuru, Kenya, chartered by the Rotary Club of Nakuru and part of ${CLUB.district}.`,
   },
   projects: {
     eyebrow: 'Impact in action',
@@ -770,8 +781,8 @@ export const PAGE_INTROS: Record<string, PageIntro> = {
   awards: {
     eyebrow: 'Recognition',
     title: 'Celebrating excellence',
-    lead: 'Awards and recognition from Rotary District 9212, Nakuru County and our partners.',
-    description: 'Recognition earned by the Rotaract Club of Menengai, including the DEI Champion Legacy Award 2026 from Rotary District 9212.',
+    lead: 'Awards and recognition from Rotary, Nakuru County and our partners.',
+    description: 'Recognition earned by the Rotaract Club of Menengai, including the DEI Champion Legacy Award 2026.',
   },
   leadership: {
     eyebrow: 'The people',

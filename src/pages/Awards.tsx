@@ -1,5 +1,5 @@
 /**
- * Awards — verified recognition from Rotary District 9212 and partners.
+ * Awards — verified recognition from Rotary and partners.
  */
 import { Award as AwardIcon } from 'lucide-react';
 import { AWARDS, PAGE_INTROS } from '../data';
