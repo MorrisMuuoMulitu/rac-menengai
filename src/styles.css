@@ -773,6 +773,16 @@ body.nav-open .mobile-nav { display: flex; flex-direction: column; }
 .orientation-sources ul { list-style: none; display: grid; gap: 0.5rem; }
 .orientation-sources a { display: inline-flex; align-items: center; gap: 0.4rem; font-weight: 600; }
 
+/* ---------- Project ↔ Rotary area of focus ---------- */
+.focus-badges { list-style: none; display: flex; flex-wrap: wrap; gap: 0.6rem; margin-bottom: 1.1rem; }
+.focus-badge { display: inline-flex; align-items: center; gap: 0.5rem; background: var(--blush); border: 1px solid var(--pink-100); color: var(--pink-700); font-weight: 600; font-size: 0.88rem; padding: 0.5rem 0.9rem; border-radius: 100px; }
+.focus-badge:hover { background: #fff; border-color: var(--pink-500); text-decoration: none; }
+.focus-badge-icon { display: inline-flex; }
+.focus-badge-icon svg { width: 1rem; height: 1rem; }
+.detail-funding { font-size: 0.9rem; color: var(--muted); line-height: 1.7; }
+.featured-focus { font-family: var(--font-mono); font-size: 0.74rem; letter-spacing: 0.04em; color: var(--pink-200); margin-top: 0.9rem; }
+.featured-focus a { color: #fff; text-decoration: underline; text-underline-offset: 3px; }
+
 /* Printable completion record */
 @media print {
   .announcement, .site-header, .site-footer, .skip-link, .no-print { display: none !important; }

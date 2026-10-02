@@ -151,6 +151,21 @@ come from Rotary's Brand Center under Rotary's brand guidelines.
 | Polio case counts (Afghanistan 35 WPV1 cases in 2026 vs 21 in 2025; cVDPV2 in DR Congo 58, Nigeria 36, Chad 8, Somalia 6, CAR 5) | [V] GPEI "Polio this week", **as of 30 September 2026 — time-sensitive, refresh periodically** |
 | "More than 99% decline since 1988" | [V] GPEI published |
 
+## Project → Rotary area of focus mapping (in the UI)
+| Project | Mapped to | Status |
+|---|---|---|
+| Adopt-a-River | Water, sanitation & hygiene · Environment | [C] editorial mapping |
+| River Ndarugu Cleanup | Environment · Water, sanitation & hygiene | [C] editorial mapping |
+| Mother Packs (Bondeni) | Maternal & child health | [C] editorial mapping |
+| 405 Girls at Limuko | Basic education & literacy | [C] editorial mapping |
+| Peace in Colour Fest | Peacebuilding & conflict prevention | [C] editorial mapping |
+| Street Families Outreach | *left unmapped* | [C] — no honest fit among the seven; the UI hides the block |
+
+The mapping is **our editorial alignment** so visitors can navigate between local work and
+Rotary's framework. Rotary does not certify club project alignment, and it implies no grant
+has been awarded. Funding wording stays general (club fundraising + the Foundation's
+published District/Global Grant model), with no amounts or award claims.
+
 ## Structured data (JSON-LD)
 | Field | Status |
 |---|---|

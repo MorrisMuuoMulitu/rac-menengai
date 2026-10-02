@@ -73,6 +73,12 @@ export interface Project {
   partners?: string[];
   /** Meaningful caption under the project photo. */
   caption?: string;
+  /**
+   * Rotary areas of focus this project sits in (ids from ROTARY.focuses).
+   * Editorial alignment made by the club — Rotary does not certify it. See
+   * docs/CONTENT_AUDIT.md.
+   */
+  areasOfFocus?: string[];
   featured?: boolean;
 }
 
@@ -536,6 +542,7 @@ export const PROJECTS: Project[] = [
     detail:
       'Adopt-a-River is our flagship environmental project, tackling pollution at the source. On River Njoro, members installed a water filtration set for Barut residents, went door-to-door mobilising against single-use plastic, and ran a full cleanup at Mwariki Bridge. Waste-disposal containers now give the community a lasting place to keep the river clean. On River Ndarugu, volunteers and partners cleared solid waste and ran sensitisation on dumping, drainage and safe water handling.',
     location: 'Mwariki Bridge, Barut — River Njoro & River Ndarugu',
+    areasOfFocus: ['wash', 'environment'],
     featured: true,
     challenge: 'Rivers in Nakuru carry untreated waste, plastic and runoff — affecting the communities that live and draw water along them.',
     reached: ['Residents of Barut and riverside communities along River Njoro and River Ndarugu'],
@@ -558,6 +565,7 @@ export const PROJECTS: Project[] = [
     detail:
       'To open the 2026 Rotary year, members assembled and distributed mother packs — diapers, wraps, soap and essentials — to new mothers at Bondeni Maternity in Nakuru. Each pack carries a simple message: no mother welcomes new life alone.',
     location: 'Bondeni Maternity, Nakuru',
+    areasOfFocus: ['maternal'],
     reached: ['New mothers and their babies at Bondeni Maternity'],
     caption: 'Mother packs assembled and distributed at Bondeni Maternity.',
     results: ['150+ mother packs distributed', 'New-year service launch at Bondeni Maternity'],
@@ -573,6 +581,7 @@ export const PROJECTS: Project[] = [
     detail:
       'Working with school leadership, the club delivered sanitary-towel donations worth roughly three months per girl to more than 405 students — paired with mentorship conversations so no girl misses class for lack of supplies.',
     location: 'Limuko High & Primary School',
+    areasOfFocus: ['education'],
     reached: ['405+ students at Limuko High & Primary School'],
     caption: 'Sanitary-towel donations prepared for Limuko schools.',
     results: ['405+ students reached with ~3 months of sanitary towels each', 'Mentorship conversations with students'],
@@ -588,6 +597,7 @@ export const PROJECTS: Project[] = [
     detail:
       'Second river adoption: volunteers, partners and riverside residents cleared solid waste along River Ndarugu and ran sensitisation on dumping, drainage and safe water handling.',
     location: 'River Ndarugu',
+    areasOfFocus: ['environment', 'wash'],
     reached: ['Riverside residents and volunteers along River Ndarugu'],
     caption: 'Community cleanup along River Ndarugu.',
     results: ['Solid waste cleared with volunteers and partners', 'Sensitisation on dumping, drainage and safe water'],
@@ -602,6 +612,7 @@ export const PROJECTS: Project[] = [
     detail:
       'A festival-format fellowship: live art, music, mental-wellness circles and peacebuilding dialogues for young people across Nakuru — moderated by our own past president.',
     location: 'Nakuru',
+    areasOfFocus: ['peace'],
     reached: ['Young people across Nakuru'],
     caption: 'Art and fellowship at Peace in Colour Fest in Nakuru.',
   },
@@ -623,6 +634,17 @@ export const PROJECTS: Project[] = [
 export const PROJECT_TAGS = ['All', ...Array.from(new Set(PROJECTS.map((p) => p.tag)))] as string[];
 
 export const FEATURED_PROJECT_SLUG = 'adopt-a-river';
+
+/**
+ * How club projects are paid for. The fundraising line is already published on
+ * the membership page; the grant sentence reflects Rotary's published funding
+ * model (District Grants for local work, Global Grants for larger projects).
+ */
+export const PROJECT_FUNDING = {
+  note: 'Club projects are funded by fundraising, and projects aligned to a Rotary area of focus can also be supported through The Rotary Foundation’s District and Global Grants.',
+  rotaryHref: '/rotary',
+  districtHref: '/about/district-9215',
+};
 
 /* ============================= Awards ============================= */
 export const AWARDS: Award[] = [

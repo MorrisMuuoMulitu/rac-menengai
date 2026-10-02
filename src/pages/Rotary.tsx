@@ -5,7 +5,8 @@
  * in the sources block; Rotary's own copy, images and logo files are not
  * reproduced (see ROTARY.brandNote).
  */
-import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { ArrowRight, Check, ExternalLink, Heart, Info, MapPin, Shield, Users } from 'lucide-react';
 import { CLUB, ROTARY } from '../data';
 import { ButtonLink, PageHero, PageMeta, SectionHeading } from '../components/ui';
@@ -13,6 +14,15 @@ import { FocusIcon } from '../components/icons';
 import { Reveal } from '../hooks';
 
 export default function RotaryPage() {
+  const { hash } = useLocation();
+
+  /* Deep links like /rotary#wash land on the matching cause card. */
+  useEffect(() => {
+    if (!hash) return;
+    const el = document.getElementById(hash.slice(1));
+    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, [hash]);
+
   return (
     <>
       <PageMeta
@@ -95,7 +105,7 @@ export default function RotaryPage() {
           />
           <div className="cause-grid">
             {ROTARY.focuses.map((f, i) => (
-              <Reveal key={f.id} delay={(i % 3) * 70} className="cause-card" as="article">
+              <Reveal key={f.id} delay={(i % 3) * 70} className="cause-card" as="article" id={f.id}>
                 <span className="focus-icon">
                   <FocusIcon name={f.icon} />
                 </span>

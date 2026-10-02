@@ -6,7 +6,7 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 
 /** Adds `.in` when the element scrolls into view (once). Respects reduced motion via CSS. */
-export function Reveal({ children, delay = 0, className = '', as: Tag = 'div' }: { children: ReactNode; delay?: number; className?: string; as?: 'div' | 'li' | 'span' | 'article' }) {
+export function Reveal({ children, delay = 0, className = '', as: Tag = 'div', id }: { children: ReactNode; delay?: number; className?: string; as?: 'div' | 'li' | 'span' | 'article'; id?: string }) {
   const ref = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     const el = ref.current;
@@ -32,7 +32,7 @@ export function Reveal({ children, delay = 0, className = '', as: Tag = 'div' }:
   const style = delay ? { transitionDelay: `${delay}ms` } : undefined;
   return (
     // @ts-expect-error polymorphic tag with shared ref
-    <Tag ref={ref} className={`reveal ${className}`.trim()} style={style}>
+    <Tag ref={ref} id={id} className={`reveal ${className}`.trim()} style={style}>
       {children}
     </Tag>
   );

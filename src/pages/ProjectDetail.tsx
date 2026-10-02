@@ -4,8 +4,9 @@
  */
 import { Link, useParams } from 'react-router-dom';
 import { ArrowLeft, ArrowRight, CalendarDays, Check, MapPin } from 'lucide-react';
-import { CLUB, PROJECTS } from '../data';
+import { CLUB, PROJECTS, PROJECT_FUNDING, ROTARY } from '../data';
 import { ButtonLink, PageMeta, SmartImage } from '../components/ui';
+import { FocusIcon } from '../components/icons';
 import { ProjectCard } from '../components/cards';
 import { OpportunityCard } from '../components/cards';
 import NotFoundPage from './NotFound';
@@ -17,6 +18,9 @@ export default function ProjectDetailPage() {
   if (!project) return <NotFoundPage />;
 
   const more = PROJECTS.filter((p) => p.slug !== project.slug).slice(0, 3);
+  const focusAreas = (project.areasOfFocus ?? [])
+    .map((id) => ROTARY.focuses.find((f) => f.id === id))
+    .filter((f): f is (typeof ROTARY.focuses)[number] => Boolean(f));
 
   return (
     <>
@@ -86,6 +90,29 @@ export default function ProjectDetailPage() {
                 </ul>
               </section>
             ) : null}
+
+            {focusAreas.length > 0 ? (
+              <section className="detail-block">
+                <h2>Where this sits in Rotary</h2>
+                <p>
+                  Rotary organises its work around seven areas of focus. This project sits in{' '}
+                  {focusAreas.length > 1 ? 'two of them' : 'one of them'}:
+                </p>
+                <ul className="focus-badges">
+                  {focusAreas.map((f) => (
+                    <li key={f.id}>
+                      <Link className="focus-badge" to={`/rotary#${f.id}`}>
+                        <span className="focus-badge-icon">
+                          <FocusIcon name={f.icon} />
+                        </span>
+                        {f.title}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <p className="detail-funding">{PROJECT_FUNDING.note}</p>
+              </section>
+            ) : null}
             <div className="detail-actions">
               <ButtonLink to="/membership" variant="primary">
                 Attend a fellowship <ArrowRight aria-hidden="true" />
@@ -107,6 +134,14 @@ export default function ProjectDetailPage() {
                 </ul>
               </div>
             ) : null}
+            <div className="detail-aside-card">
+              <h3>Rotary context</h3>
+              <p>
+                We are a Rotaract club inside{' '}
+                <Link to={PROJECT_FUNDING.rotaryHref}>Rotary International</Link>, part of{' '}
+                <Link to={PROJECT_FUNDING.districtHref}>{CLUB.district}</Link>.
+              </p>
+            </div>
             <div className="detail-aside-card">
               <h3>About the club</h3>
               <p>

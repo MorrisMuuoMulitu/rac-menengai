@@ -101,6 +101,16 @@ export function FeaturedImpact() {
               </p>
             ) : null}
           </div>
+          {(() => {
+            const first = (project.areasOfFocus ?? [])
+              .map((id) => ROTARY.focuses.find((f) => f.id === id))
+              .filter(Boolean)[0];
+            return first ? (
+              <p className="featured-focus">
+                Rotary area of focus: <Link to={`/rotary#${first.id}`}>{first.title}</Link>
+              </p>
+            ) : null;
+          })()}
           {project.results ? (
             <ul className="featured-results">
               {project.results.map((r) => (
