@@ -112,6 +112,26 @@ NEMA Kenya · Kenya Red Cross · Bondeni Maternity · Limuko Schools — [V] (pa
 | External sources (`learn.rotary.org`, Rotary Rotaract page) | [V] links resolve; rotary.org rate-limits automated checks but that URL is already used site-wide |
 | Progress storage | [V] browser `localStorage` only — no personal data leaves the device |
 
+## Rotary District 9215 (external facts — page `/about/district-9215`)
+All paraphrased from the district's own site, which stays the authority. District-run
+dates and figures must be re-checked each Rotary year.
+
+| Item | Status |
+|---|---|
+| District established for 2026/27; described as built on the legacy of District 9212 | [V] district site |
+| Coverage: West of Nairobi, Western Kenya and South Sudan | [V] district site |
+| 100+ Rotary clubs and 3,000+ Rotarians | [V] district site |
+| Pioneer District Governor Saad Rahman (2026/27) and his Rotary history | [V] district site |
+| Rotary theme “Create Lasting Impact”; RI President Olayinka Hakeem Babalola | [V] district site, corroborated by press coverage |
+| 1.2 million Rotary members in 200+ countries | [V] district site footer |
+| Focus areas (WASH, basic education, peace, economic development, youth, DEI, engagement) | [V] district site |
+| Foundation Dinner: Saturday 21 November 2026, Trademark Hotel, Nairobi | [V] district site — **time-sensitive, update after the event** |
+| District Conference Assembly 2027 run with District 9216 | [V] district site links |
+| Unicaf scholarship partnership (Districts 9215 & 9216) | [C] — corroborated only by the announcement headline; confirm scope before promoting |
+| “100+ clubs and over 3,000 members across four countries” | [C] — the same district page names only Kenya and South Sudan, so the page here lists the named coverage instead of a country count |
+| Nakuru sits inside District 9215 | [V] club-provided · [C] the district's ClubRunner directory could not be read programmatically to double-check |
+| District photos and logo | **not used** — district property; ask the district before reusing |
+
 ## Structured data (JSON-LD)
 | Field | Status |
 |---|---|

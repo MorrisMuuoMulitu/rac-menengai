@@ -205,10 +205,156 @@ export const ANNOUNCEMENT = {
   action: 'Plan your visit',
 };
 
-export const TRUST_BAR = [
-  { label: 'Est. 2016', note: 'Sponsored by ' + CLUB.sponsor },
-  { label: CLUB.district, note: 'Nakuru · Kenya' },
-] as const;
+/* ============================= Rotary District 9215 =============================
+ * Paraphrased from the district’s own website (rotary9215.org) — district-run
+ * pages and dates change, so the district site remains the authority. Items
+ * still to confirm are listed in docs/CONTENT_AUDIT.md. No district photos or
+ * logos are bundled here: those belong to the district.
+ * ============================================================================ */
+export interface DistrictFocusArea {
+  id: string;
+  icon: IconKey;
+  title: string;
+  text: string;
+}
+
+export interface DistrictEvent {
+  id: string;
+  title: string;
+  when: string;
+  where?: string;
+  text: string;
+  href?: string;
+}
+
+export interface DistrictLink {
+  label: string;
+  href: string;
+}
+
+export const DISTRICT = {
+  name: CLUB.district,
+  number: '9215',
+  inauguralYear: '2026/27',
+  predecessor: 'Rotary District 9212',
+  /** Shown to visitors so the page never pretends to be live district data. */
+  asOf: 'Paraphrased from rotary9215.org, the district’s own site — check there for the latest details.',
+  intro:
+    'Rotary District 9215 is one of East Africa’s newest and most active service networks: clubs, members and changemakers across West of Nairobi, Western Kenya and South Sudan, turning ideas into action.',
+  coverage: ['West of Nairobi', 'Western Kenya', 'South Sudan'],
+  stats: [
+    { value: '100+', label: 'Rotary clubs', note: 'across the district' },
+    { value: '3,000+', label: 'Rotarians', note: 'leaders, professionals and volunteers' },
+    { value: '2026/27', label: 'Inaugural year', note: 'a newly established district' },
+    { value: '1.2M', label: 'Rotary members', note: 'worldwide, in 200+ countries' },
+  ],
+  story: [
+    'District 9215 was established for the 2026/27 Rotary year. The district describes itself as a fresh chapter built on the legacy of District 9212 — new boundaries, new leadership, and the same commitment to service.',
+    'Our club, the Rotaract Club of Menengai, sits inside that district: a Rotaract club in Nakuru serving alongside Rotarians from western Nairobi, Western Kenya and South Sudan.',
+  ],
+  dg: {
+    name: 'Saad Rahman',
+    role: 'Pioneer District Governor · 2026/27',
+    initials: 'SR',
+    bio: [
+      'Inducted into Rotary in November 2015 with the Rotary Club of Bahari in Dar es Salaam, Tanzania — then part of District 9211.',
+      'Moved to Kenya in 2019 and continued serving with the Rotary Club of Lang’ata.',
+      'Charter President of the Rotary Club of Nairobi Upper Hill, leading the club until it was chartered in May 2021.',
+      'A member of The Rotary Foundation’s Cadre of Technical Advisors, supporting the sustainability of major Rotary grants.',
+    ],
+  },
+  ri: {
+    president: 'Olayinka Hakeem Babalola',
+    theme: 'Create Lasting Impact',
+    text: 'Rotary’s theme for the year, Create Lasting Impact, is the district’s operating brief: community ownership, sustainability beyond the grant, and measurable change — not quick fixes.',
+  },
+  focuses: [
+    {
+      id: 'wash',
+      icon: 'droplets',
+      title: 'Water, sanitation & hygiene',
+      text: 'Moving beyond boreholes to community water committees and hygiene education in South Sudan and Western Kenya, so clean water lasts and children stay in school.',
+    },
+    {
+      id: 'education',
+      icon: 'graduation',
+      title: 'Basic education & literacy',
+      text: 'Digital-literacy labs, solar power and teacher training that keep schools thriving long after the project ends.',
+    },
+    {
+      id: 'peace',
+      icon: 'handshake',
+      title: 'Peace & conflict prevention',
+      text: 'Training young leaders in conflict management in regions navigating transition or post-conflict recovery.',
+    },
+    {
+      id: 'economy',
+      icon: 'trending',
+      title: 'Economic & community development',
+      text: 'Micro-financing and vocational skills for women’s cooperatives and young entrepreneurs.',
+    },
+    {
+      id: 'youth',
+      icon: 'users',
+      title: 'Youth leadership: Rotaract & Interact',
+      text: 'Rotaractors are brought into joint project leadership and district roles, keeping the leadership pipeline dynamic.',
+    },
+    {
+      id: 'inclusion',
+      icon: 'sparkles',
+      title: 'Diversity, equity & inclusion',
+      text: 'Welcoming diverse professions, perspectives and backgrounds — which is how complex community problems get solved.',
+    },
+    {
+      id: 'engagement',
+      icon: 'star',
+      title: 'Member engagement & learning',
+      text: 'Vibrant club cultures plus leadership seminars, PELS and District Learning events that keep members informed and involved.',
+    },
+  ] as DistrictFocusArea[],
+  events: [
+    {
+      id: 'trf-dinner-2026',
+      title: 'District 9215 Annual Foundation Dinner 2026',
+      when: 'Saturday 21 November 2026',
+      where: 'Trademark Hotel, Nairobi',
+      text: 'Themed “The Heart of Rotary”, the district’s foundation dinner raises funds for The Rotary Foundation — water, maternal health, education and economic empowerment across Kenya and South Sudan.',
+      href: 'https://rotary9215.org/page/trf-dinner-2026',
+    },
+    {
+      id: 'dca-2027',
+      title: 'District Conference Assembly 2027',
+      when: '2027',
+      text: 'The district’s next conference is being organised together with District 9216; the DCA site carries the programme and registration.',
+      href: 'https://rotary9216.org/page/dca-2027-welcome/',
+    },
+  ] as DistrictEvent[],
+  engagement: [
+    'Rotaractors can take project leadership and district roles, not just club ones.',
+    'The Four-Way Test still guides partnerships: is it the truth, is it fair to all concerned, will it build goodwill and better friendships, will it be beneficial to all concerned?',
+    'District learning: PELS, District Learning events and Membership Month keep members sharp and connected.',
+    'The Rotary Foundation: the district runs a pledge portal and an annual dinner to fund grants.',
+  ],
+  links: [
+    { label: 'District 9215 website', href: 'https://rotary9215.org/' },
+    { label: 'Club directory — find a Rotary club', href: 'https://portal.clubrunner.ca/50421/clubdirectory' },
+    { label: 'Clubs map', href: 'https://portal.clubrunner.ca/50421/clubsmap' },
+    { label: 'District events calendar', href: 'https://rotary9215.org/events/calendar' },
+    { label: 'TRF pledge portal', href: 'https://trfpledge.rotary9215.org/' },
+    { label: 'Unicaf scholarship partnership announcement (Districts 9215 & 9216)', href: 'https://www.unicaf.org/news-and-events/press-release/unicaf-and-rotary-districts-9215-9216-sign-landmark-partnership/' },
+  ] as DistrictLink[],
+  ourPlace: {
+    text: 'District priorities are not abstract for us — our four service areas map onto them, and our members can take club projects to district level.',
+    mapping: [
+      { club: 'Environment & water', district: 'WASH: clean water, clean rivers, hygiene education' },
+      { club: 'Maternal & child health', district: 'Maternal health programmes' },
+      { club: 'Education & girls’ empowerment', district: 'Basic education & literacy' },
+      { club: 'Community & peacebuilding', district: 'Peacebuilding and economic empowerment' },
+    ],
+  },
+  disclaimer:
+    'District pages, dates and figures change — rotary9215.org is the authority. The district’s photos and logo belong to the district; ask before reusing them.',
+};
 
 export const STATS: Stat[] = [
   { value: 10, suffix: '+', label: 'Years of service', context: 'chartered with the Rotary Club of Nakuru', year: '2016' },
@@ -493,7 +639,7 @@ export const ORIENTATION = {
   /** Club rule (CONFIRM wording with your officers) — enforced at induction, not by Rotary. */
   requiredBeforeInduction: true,
   /** Correct answers needed to pass — CONFIRM with your membership team. */
-  passMark: 7,
+  passMark: 8,
   sources: [
     { label: 'Rotary Learning Center — official courses', href: 'https://learn.rotary.org' },
     { label: 'Rotary International — Rotaract clubs', href: 'https://www.rotary.org/en/get-involved/rotaract-clubs' },
@@ -540,9 +686,14 @@ export const ORIENTATION = {
           text: 'Our sponsor is the Rotary Club of Nakuru. That relationship brings mentorship, a link into Rotary’s wider network, and support for our projects — while our members plan and lead the work themselves.',
         },
         {
+          kind: 'p',
+          text: `We belong to ${CLUB.district} — a district established for the 2026/27 Rotary year across West of Nairobi, Western Kenya and South Sudan, with more than 100 clubs and 3,000+ Rotarians. Its first District Governor is Saad Rahman (2026/27).`,
+        },
+        {
           kind: 'list',
           items: [
             `Shared with Rotary: the motto Service Above Self, a commitment to service, and membership of ${CLUB.district}`,
+            'District priorities we serve: water and sanitation, basic education, peacebuilding and economic empowerment',
             'Ours to run: projects, fellowship, club leadership and our own membership process',
             'Worth reading: Rotary publishes the Rotaract Handbook and its own official courses — see the links at the end of this course',
           ],
@@ -664,15 +815,15 @@ export const ORIENTATION = {
     {
       id: 'q-motto',
       question: 'What is the club’s motto?',
-      options: ['Service Above All', 'Fellowship First', 'Service Above Self', 'Leaders Through Service'],
-      correctIndex: 2,
+      options: ['Service Above Self', 'Service Above All', 'Fellowship First', 'Leaders Through Service'],
+      correctIndex: 0,
       explanation: 'We share Rotary’s motto: Service Above Self.',
     },
     {
       id: 'q-meeting',
       question: 'When does the club meet?',
-      options: ['Wednesdays, 6:00–7:00 PM', 'Fridays, 5:30–6:30 PM', 'Thursdays, 5:30–6:30 PM East Africa Time', 'Saturdays, 10:00–11:00 AM'],
-      correctIndex: 2,
+      options: ['Thursdays, 5:30–6:30 PM East Africa Time', 'Wednesdays, 6:00–7:00 PM', 'Fridays, 5:30–6:30 PM', 'Saturdays, 10:00–11:00 AM'],
+      correctIndex: 0,
       explanation: 'Fellowship is every Thursday, 5:30–6:30 PM East Africa Time, in Nakuru.',
     },
     {
@@ -688,6 +839,13 @@ export const ORIENTATION = {
       options: ['Mother Packs', 'Adopt-a-River', 'Peace in Colour Fest', 'Street Families Outreach'],
       correctIndex: 1,
       explanation: 'Adopt-a-River covers River Njoro and River Ndarugu cleanups, water filtration and waste containers.',
+    },
+    {
+      id: 'q-district-coverage',
+      question: 'Which region does Rotary District 9215 cover?',
+      options: ['Central Kenya and Tanzania', 'Uganda and Rwanda', 'West of Nairobi, Western Kenya and South Sudan', 'Coastal Kenya and Somalia'],
+      correctIndex: 2,
+      explanation: 'District 9215 covers West of Nairobi, Western Kenya and South Sudan.',
     },
     {
       id: 'q-path',

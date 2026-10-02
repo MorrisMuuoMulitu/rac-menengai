@@ -548,6 +548,96 @@ body.nav-open .mobile-nav { display: flex; flex-direction: column; }
 .notfound p { color: var(--muted); font-size: 1.05rem; }
 .notfound-actions { display: flex; gap: 0.9rem; flex-wrap: wrap; margin-top: 2rem; }
 
+/* ---------- Rotary District 9215 page ---------- */
+.district-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0; }
+.district-stat { padding: 0.4rem clamp(1rem, 2.5vw, 2rem); border-right: 1px solid var(--line); }
+.district-stat:first-child { padding-left: 0; }
+.district-stat:last-child { border-right: none; }
+.ds-value { display: block; font-family: var(--font-display); font-size: clamp(1.9rem, 3.2vw, 2.6rem); font-weight: 800; color: var(--ink-800); line-height: 1; letter-spacing: -0.02em; }
+.ds-label { display: block; font-weight: 700; font-size: 0.95rem; color: var(--ink-800); margin-top: 0.5rem; }
+.ds-note { display: block; font-family: var(--font-mono); font-size: 0.68rem; color: var(--muted); margin-top: 0.3rem; line-height: 1.5; }
+
+.district-story-grid { display: grid; grid-template-columns: 1.35fr 1fr; gap: clamp(2rem, 5vw, 4rem); align-items: start; }
+.district-callout { display: flex; gap: 0.6rem; align-items: flex-start; margin-top: 1.2rem; background: var(--blush); border: 1px solid var(--pink-100); border-left: 4px solid var(--pink-600); border-radius: 12px; padding: 0.95rem 1.15rem; font-size: 0.9rem; color: var(--ink-700); }
+.district-callout svg { color: var(--pink-700); flex-shrink: 0; margin-top: 0.15rem; width: 1.05rem; height: 1.05rem; }
+.district-coverage { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.6rem 1.7rem; }
+.district-coverage h3 { display: flex; align-items: center; gap: 0.5rem; font-family: var(--font-sans); font-size: 1rem; font-weight: 700; margin-bottom: 1rem; }
+.district-coverage h3 svg { color: var(--pink-600); width: 1.1rem; height: 1.1rem; }
+.district-coverage ul { list-style: none; display: grid; gap: 0.5rem; }
+.district-coverage li { position: relative; padding-left: 1.1rem; color: var(--ink-700); }
+.district-coverage li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 6px; height: 6px; border-radius: 50%; background: var(--pink-600); }
+.district-coverage-note { margin-top: 1rem; font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+.district-leaders { display: grid; grid-template-columns: 1.3fr 1fr; gap: clamp(1.6rem, 4vw, 3rem); align-items: start; }
+.dg-card { display: grid; grid-template-columns: auto 1fr; gap: 1.4rem; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-lg); padding: 1.8rem; }
+.dg-card .leader-avatar { margin: 0; }
+.sec-title-sm { font-size: clamp(1.4rem, 2.4vw, 1.8rem); }
+.dg-bio { list-style: none; display: grid; gap: 0.6rem; margin-top: 1rem; }
+.dg-bio li { display: flex; gap: 0.55rem; align-items: flex-start; font-size: 0.92rem; color: var(--ink-600); line-height: 1.65; }
+.dg-bio svg { color: var(--pink-600); flex-shrink: 0; margin-top: 0.25rem; width: 1rem; height: 1rem; }
+.theme-card { background: var(--navy-950); color: rgba(255, 255, 255, 0.85); border-radius: var(--radius-lg); padding: 1.8rem; border: 1px solid rgba(255, 255, 255, 0.08); }
+.theme-card .eyebrow { color: var(--pink-200); }
+.theme-card .eyebrow::after { background: var(--pink-500); }
+.theme-card .sec-title-sm { color: #fff; }
+.theme-card p { color: rgba(255, 255, 255, 0.8); line-height: 1.75; }
+.theme-president { margin-top: 1rem; font-size: 0.9rem; color: rgba(255, 255, 255, 0.7); }
+.theme-president strong { color: #fff; }
+
+.focus-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.2rem; }
+.focus-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.6rem 1.5rem; }
+.focus-icon { display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; border-radius: 13px; background: var(--blush); color: var(--pink-700); margin-bottom: 1rem; }
+.focus-icon svg { width: 21px; height: 21px; }
+.focus-card h3 { font-family: var(--font-sans); font-size: 1.02rem; font-weight: 700; margin-bottom: 0.45rem; }
+.focus-card p { font-size: 0.9rem; color: var(--muted); line-height: 1.65; }
+
+.district-mapping-intro { margin-bottom: 1.4rem; }
+.mapping-table { width: 100%; border-collapse: collapse; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.mapping-table th, .mapping-table td { text-align: left; padding: 0.95rem 1.2rem; border-bottom: 1px solid var(--line); font-size: 0.93rem; }
+.mapping-table thead th { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted); background: var(--paper); }
+.mapping-table tbody th { font-weight: 700; color: var(--ink-800); }
+.mapping-table tbody td { color: var(--ink-600); }
+.mapping-table tbody tr:last-child th, .mapping-table tbody tr:last-child td { border-bottom: none; }
+
+.district-events { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.3rem; }
+.event-card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.6rem 1.7rem; }
+.event-when { display: inline-block; font-family: var(--font-mono); font-size: 0.66rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--pink-700); background: var(--blush); border: 1px solid var(--pink-100); padding: 0.3rem 0.7rem; border-radius: 100px; margin-bottom: 0.8rem; }
+.event-card h3 { font-size: 1.15rem; margin-bottom: 0.35rem; }
+.event-where { font-size: 0.88rem; color: var(--ink-700); font-weight: 600; margin-bottom: 0.5rem; }
+.event-card p { color: var(--muted); font-size: 0.92rem; line-height: 1.7; margin-bottom: 0.8rem; }
+.engagement-card { margin-top: 1.6rem; background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius); padding: 1.6rem 1.8rem; }
+.engagement-card h3 { font-size: 1.15rem; margin-bottom: 0.9rem; }
+.engagement-card ul { list-style: none; display: grid; gap: 0.6rem; }
+.engagement-card li { display: flex; gap: 0.6rem; align-items: flex-start; color: var(--ink-700); font-size: 0.94rem; line-height: 1.7; }
+.engagement-card svg { color: var(--pink-600); flex-shrink: 0; margin-top: 0.25rem; width: 1rem; height: 1rem; }
+
+.link-list { list-style: none; display: grid; gap: 0.55rem; max-width: 720px; }
+.link-list a { display: inline-flex; align-items: center; gap: 0.45rem; font-weight: 600; }
+.disclaimer { margin-top: 1.4rem; font-size: 0.83rem; color: var(--muted); max-width: 68ch; line-height: 1.7; }
+.district-cta { display: flex; gap: 1.2rem; align-items: center; margin-top: 2rem; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--pink-600); border-radius: var(--radius); padding: 1.5rem 1.7rem; }
+.district-cta-mark { width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0; background: #fff; padding: 2px; }
+.district-cta p { color: var(--ink-600); margin-bottom: 0.8rem; }
+.district-cta-actions { display: flex; gap: 0.7rem; flex-wrap: wrap; }
+.district-teaser { display: flex; flex-direction: column; gap: 1.2rem; align-items: flex-start; }
+.district-teaser ul { list-style: none; display: grid; gap: 0.6rem; max-width: 760px; }
+.district-teaser li { position: relative; padding-left: 1.15rem; color: var(--ink-600); font-size: 0.94rem; line-height: 1.7; }
+.district-teaser li::before { content: ""; position: absolute; left: 0; top: 0.6em; width: 6px; height: 6px; border-radius: 50%; background: var(--pink-600); }
+.district-teaser strong { color: var(--ink-800); }
+
+@media (max-width: 1080px) {
+  .district-story-grid, .district-leaders { grid-template-columns: 1fr; }
+  .focus-grid { grid-template-columns: repeat(2, 1fr); }
+  .district-events { grid-template-columns: 1fr; }
+  .district-stats { grid-template-columns: repeat(2, 1fr); row-gap: 2rem; }
+  .district-stat { border-right: none; }
+  .district-stat:nth-child(odd) { padding-left: 0; }
+}
+@media (max-width: 640px) {
+  .focus-grid, .district-stats { grid-template-columns: 1fr; }
+  .dg-card { grid-template-columns: 1fr; }
+  .district-cta { flex-direction: column; align-items: flex-start; }
+  .mapping-table th, .mapping-table td { padding: 0.8rem 0.9rem; }
+}
+
 /* ---------- New member orientation (course) ---------- */
 .orientation-callout { display: grid; grid-template-columns: 1.5fr 1fr; gap: 2rem; align-items: center; margin-top: 2rem; background: var(--surface); border: 1px solid var(--line); border-left: 4px solid var(--pink-600); border-radius: var(--radius); padding: 1.8rem 2rem; }
 .callout-badge { display: inline-block; font-family: var(--font-mono); font-size: 0.64rem; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: var(--pink-700); background: var(--blush); border: 1px solid var(--pink-100); padding: 0.32rem 0.75rem; border-radius: 100px; margin-bottom: 0.8rem; }

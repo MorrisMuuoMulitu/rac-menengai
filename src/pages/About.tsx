@@ -3,7 +3,7 @@
  */
 import { ArrowRight } from 'lucide-react';
 import { Heart, Star, Users } from 'lucide-react';
-import { ABOUT_IMAGES, CLUB, PAGE_INTROS, VALUES } from '../data';
+import { ABOUT_IMAGES, CLUB, DISTRICT, PAGE_INTROS, VALUES } from '../data';
 import { Reveal } from '../hooks';
 import { ButtonLink, PageHero, PageMeta } from '../components/ui';
 
@@ -109,6 +109,42 @@ export default function AboutPage() {
                 Rotary club — for us, {CLUB.sponsor} — and we work inside Rotary’s seven areas of focus, from the
                 environment to maternal health to peacebuilding.
               </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ---------- District 9215 ---------- */}
+      <section className="section section-tint" aria-labelledby="about-district">
+        <div className="container">
+          <Reveal>
+            <div className="section-head-block">
+              <span className="eyebrow">Our district</span>
+              <h2 className="sec-title" id="about-district">
+                Part of {CLUB.district}
+              </h2>
+            </div>
+          </Reveal>
+          <Reveal delay={60}>
+            <p className="lede">
+              We sit inside {DISTRICT.name} — a district established for {DISTRICT.inauguralYear}, covering{' '}
+              {DISTRICT.coverage.join(', ')}. More than {DISTRICT.stats[0].value.replace('+', '')} clubs and{' '}
+              {DISTRICT.stats[1].value.replace('+', '')} Rotarians serve across it, and Rotaractors are brought into
+              project leadership at district level.
+            </p>
+          </Reveal>
+          <Reveal delay={100}>
+            <div className="district-teaser">
+              <ul>
+                {DISTRICT.focuses.slice(0, 3).map((f) => (
+                  <li key={f.id}>
+                    <strong>{f.title}</strong> — {f.text}
+                  </li>
+                ))}
+              </ul>
+              <ButtonLink to="/about/district-9215" variant="secondary" size="sm">
+                Explore our district <ArrowRight aria-hidden="true" />
+              </ButtonLink>
             </div>
           </Reveal>
         </div>

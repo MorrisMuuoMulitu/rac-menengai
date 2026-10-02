@@ -32,7 +32,8 @@ export default function AwardsPage() {
           </ul>
           <p className="fine-print">
             Recognition records come from district and county sources and the club’s own archive; confirmations tracked
-            in the content audit.
+            in the content audit. District 9215 was established for the 2026/27 Rotary year, building on District 9212 —
+            awards dated before that transition carry the district name in use at the time.
           </p>
         </div>
       </section>
