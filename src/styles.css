@@ -4149,11 +4149,65 @@ h3 {
   }
 }
 
+/* The mantra headline assembles: each line rises out of its own mask in
+   sequence, then the ellipsis ticks in over three beats and breathes. The mask
+   carries extra bottom padding so the descender of "g" is never clipped. */
+.hero-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+}
+.hero-line-inner {
+  display: block;
+  animation: hero-line-rise 880ms var(--ease) both;
+}
+.hero-line:nth-child(2) .hero-line-inner {
+  animation-delay: 130ms;
+}
+.hero-mantra-dots {
+  display: inline-block;
+  animation:
+    hero-dots-tick 480ms steps(3, end) 900ms both,
+    hero-dots-breathe 3.6s ease-in-out 1.5s infinite;
+}
+@keyframes hero-line-rise {
+  from {
+    transform: translate3d(0, 104%, 0);
+    opacity: 0;
+  }
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+@keyframes hero-dots-tick {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+@keyframes hero-dots-breathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translate3d(0, -0.05em, 0);
+  }
+}
+
 /* Reduced motion: no scroll timeline, no pointer drift — the hero is simply the
    opening state, fully visible. */
 @media (prefers-reduced-motion: reduce) {
   .hero-copy,
   .hero-copy h1,
+  .hero-line-inner,
+  .hero-mantra-dots,
   .hero-copy-inner,
   .hero-photo,
   .hero-photo img {
@@ -4164,6 +4218,9 @@ h3 {
   }
   .hero-wash {
     display: none !important;
+  }
+  .hero-mantra-dots {
+    clip-path: none !important;
   }
 }
 

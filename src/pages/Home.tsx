@@ -25,10 +25,19 @@ export default function HomePage() {
             <p className="hero-location">
               <MapPin size={15} aria-hidden="true" /> Nakuru, Kenya
             </p>
+            {/* The club mantra. The two lines rise out of a mask in sequence and
+                the ellipsis ticks in over three beats, then breathes — the
+                phrase members say together at meetings. Accessible text stays
+                "Thee Magicals…" and reduced motion renders it settled. */}
             <h1 id="home-title">
-              Thee{" "}
-              <br />
-              Magicals…
+              <span className="hero-line">
+                <span className="hero-line-inner">Thee{" "}</span>
+              </span>
+              <span className="hero-line">
+                <span className="hero-line-inner">
+                  Magicals<span className="hero-mantra-dots">…</span>
+                </span>
+              </span>
             </h1>
             <p className="hero-description">
               We’re the Rotaract Club of Menengai. We bring people together for
