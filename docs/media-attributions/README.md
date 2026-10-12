@@ -2,6 +2,11 @@
 
 Existing source images: `assets/images/menengai/`. Derivatives: `public/images/gallery/` and `public/images/projects/`. WebP copies use quality 84, with 720 px responsive variants for photographic assets. Originals are preserved. The web preview/social assets in `public/` predate this work. Neither source filenames nor public profile availability prove reuse permission; see BRANDING_VERIFICATION.md.
 
+Portrait updated: the President's photograph (`wanjiku-nguru-320.webp` and `-640.webp`) was
+replaced on 12 October 2026 with a newer club-supplied image (`Wanjiku.jpeg`, 960x1280) showing her
+with the Rotaract presidential medal and the club's Four-Way Test banner. The 3:4 source matches the
+President feature frame, so it is published uncropped; the other eleven portraits are unchanged.
+
 Officer portraits: `public/images/leadership/*.webp` are cropped from the twelve leadership
 cards the club supplied on 12 October 2026 (see BRANDING_VERIFICATION.md). They are the club’s
 own photographs of its officers; no external imagery was downloaded for them.
