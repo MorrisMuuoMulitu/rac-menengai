@@ -1,0 +1,65 @@
+[
+  {
+    "platform": "Instagram",
+    "handle": "racmenengai",
+    "url": "https://www.instagram.com/racmenengai/",
+    "status": "verified-public-identity",
+    "evidence": "Existing production link; browser profile title names Rotaract Club of Menengai, Nakuru Town and Thursday 17:30–18:30 meetings. Profile links to Threads. Administrative ownership has not been authenticated.",
+    "lastVerified": "2026-10-12",
+    "public": true
+  },
+  {
+    "platform": "Facebook",
+    "handle": "RCmenengai",
+    "url": "https://www.facebook.com/RCmenengai/",
+    "status": "verified-public-identity",
+    "evidence": "Existing production link; public profile names the club, Nakuru and menengairc@gmail.com. Public annual report post observed. Administrative ownership has not been authenticated.",
+    "lastVerified": "2026-10-12",
+    "public": true
+  },
+  {
+    "platform": "Threads",
+    "handle": "racmenengai",
+    "url": "https://www.threads.com/@racmenengai",
+    "status": "cross-linked",
+    "evidence": "Directly linked by the verified Instagram profile; destination not independently inspected.",
+    "lastVerified": "2026-10-12",
+    "public": false
+  },
+  {
+    "platform": "X",
+    "handle": "RcMenengai",
+    "url": "https://x.com/RcMenengai",
+    "status": "unresolved",
+    "evidence": "Inherited production URL only; not enough current evidence for public display.",
+    "lastVerified": null,
+    "public": false
+  },
+  {
+    "platform": "LinkedIn",
+    "handle": "rac-menengai-91b5591b3",
+    "url": "https://www.linkedin.com/in/rac-menengai-91b5591b3",
+    "status": "unresolved",
+    "evidence": "Inherited production URL points to a personal-profile path; official ownership unconfirmed.",
+    "lastVerified": null,
+    "public": false
+  },
+  {
+    "platform": "TikTok",
+    "handle": null,
+    "url": null,
+    "status": "not-found",
+    "evidence": "No verified account in the repository or inspected profiles.",
+    "lastVerified": "2026-10-12",
+    "public": false
+  },
+  {
+    "platform": "YouTube",
+    "handle": null,
+    "url": null,
+    "status": "not-found",
+    "evidence": "No verified account in the repository or inspected profiles.",
+    "lastVerified": "2026-10-12",
+    "public": false
+  }
+]

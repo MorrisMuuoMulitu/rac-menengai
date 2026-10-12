@@ -1,17 +1,18 @@
 /**
  * Projects — filterable catalogue of verified service projects.
  */
-import { useState } from 'react';
-import { ArrowRight } from 'lucide-react';
-import { PAGE_INTROS, PROJECTS, PROJECT_TAGS } from '../data';
-import { PageHero, PageMeta } from '../components/ui';
-import { ProjectCard, ProjectFilter } from '../components/cards';
-import { ButtonLink } from '../components/ui';
+import { useState } from "react";
+import { ArrowRight } from "lucide-react";
+import { PAGE_INTROS, PROJECTS, PROJECT_TAGS } from "../data";
+import { PageHero, PageMeta } from "../components/ui";
+import { ProjectCard, ProjectFilter } from "../components/cards";
+import { ButtonLink } from "../components/ui";
 
 export default function ProjectsPage() {
   const intro = PAGE_INTROS.projects;
-  const [tag, setTag] = useState('All');
-  const filtered = tag === 'All' ? PROJECTS : PROJECTS.filter((p) => p.tag === tag);
+  const [tag, setTag] = useState("All");
+  const filtered =
+    tag === "All" ? PROJECTS : PROJECTS.filter((p) => p.tag === tag);
 
   return (
     <>
@@ -34,16 +35,21 @@ export default function ProjectsPage() {
             </ul>
           ) : (
             <p className="empty-state" role="status">
-              No projects in this area yet — check back soon or{' '}
-              <a href="https://www.facebook.com/RCmenengai/" target="_blank" rel="noopener noreferrer">
+              No projects in this area yet — check back soon or{" "}
+              <a
+                href="https://www.facebook.com/RCmenengai/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 follow the club
-              </a>{' '}
+              </a>{" "}
               for the latest.
             </p>
           )}
           <p className="fine-print">
-            Project details and figures come from the club’s own posts and records; a full confirmation list is kept in
-            the content audit.
+            This library retains the club’s existing project records.
+            Unconfirmed counts are withheld, and each detail page notes its
+            source status.
           </p>
         </div>
       </section>

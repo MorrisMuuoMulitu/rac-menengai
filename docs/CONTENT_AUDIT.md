@@ -1,3 +1,5 @@
+> Historical audit from the earlier build. See WEBSITE_AUDIT.md and CONTENT_SOURCES.md for current verification and publication decisions; earlier [V] labels are not new verification.
+
 # Content Audit — RAC Menengai Website
 
 Every value below is either **Verified** (traced to club materials already in this repo:

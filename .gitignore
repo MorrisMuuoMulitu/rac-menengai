@@ -3,3 +3,20 @@ dist/
 .DS_Store
 .npm-cache/
 .rac-verify*/
+.rac-*/
+
+.prerender/
+.env
+.env.*
+!.env.example
+src/.generated/
+.vercel/
+.vercel
+.env*
+
+!.env.example
+# graphify knowledge-graph artefacts
+graphify-out/
+# large local QA screenshot sets (kept out of git, excluded from deploys too)
+docs/audit/screenshots/
+docs/audit/scroll-check/*.jpg

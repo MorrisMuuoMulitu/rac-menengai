@@ -5,13 +5,27 @@
  * in the sources block; Rotary's own copy, images and logo files are not
  * reproduced (see ROTARY.brandNote).
  */
-import { useEffect } from 'react';
-import { Link, useLocation } from 'react-router-dom';
-import { ArrowRight, Check, ExternalLink, Heart, Info, MapPin, Shield, Users } from 'lucide-react';
-import { CLUB, ROTARY } from '../data';
-import { ButtonLink, PageHero, PageMeta, SectionHeading } from '../components/ui';
-import { FocusIcon } from '../components/icons';
-import { Reveal } from '../hooks';
+import { useEffect } from "react";
+import { Link, useLocation } from "react-router-dom";
+import {
+  ArrowRight,
+  Check,
+  ExternalLink,
+  Heart,
+  Info,
+  MapPin,
+  Shield,
+  Users,
+} from "lucide-react";
+import { CLUB, ROTARY } from "../data";
+import {
+  ButtonLink,
+  PageHero,
+  PageMeta,
+  SectionHeading,
+} from "../components/ui";
+import { FocusIcon } from "../components/icons";
+import { Reveal } from "../hooks";
 
 export default function RotaryPage() {
   const { hash } = useLocation();
@@ -20,7 +34,7 @@ export default function RotaryPage() {
   useEffect(() => {
     if (!hash) return;
     const el = document.getElementById(hash.slice(1));
-    if (el) el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
   }, [hash]);
 
   return (
@@ -30,7 +44,11 @@ export default function RotaryPage() {
         description="Rotaract Club of Menengai sits inside Rotary International — 1.2 million members in 200+ countries, seven areas of focus, and the polio eradication effort. Here is the wider picture."
       />
 
-      <PageHero eyebrow="Rotary International" title="Part of a 1.2-million-member network" lead={ROTARY.intro}>
+      <PageHero
+        eyebrow="Rotary International"
+        title="Part of a 1.2-million-member network"
+        lead={ROTARY.intro}
+      >
         <ButtonLink to="/about/district-9215" variant="primary" size="sm">
           Our district: 9215 <ArrowRight aria-hidden="true" />
         </ButtonLink>
@@ -105,7 +123,13 @@ export default function RotaryPage() {
           />
           <div className="cause-grid">
             {ROTARY.focuses.map((f, i) => (
-              <Reveal key={f.id} delay={(i % 3) * 70} className="cause-card" as="article" id={f.id}>
+              <Reveal
+                key={f.id}
+                delay={(i % 3) * 70}
+                className="cause-card"
+                as="article"
+                id={f.id}
+              >
                 <span className="focus-icon">
                   <FocusIcon name={f.icon} />
                 </span>
@@ -116,8 +140,11 @@ export default function RotaryPage() {
                     <MapPin aria-hidden="true" /> In Nakuru: {f.local}
                     {f.projectSlug ? (
                       <>
-                        {' '}
-                        <Link className="cause-link" to={`/projects/${f.projectSlug}`}>
+                        {" "}
+                        <Link
+                          className="cause-link"
+                          to={`/projects/${f.projectSlug}`}
+                        >
                           See the project
                         </Link>
                       </>
@@ -147,8 +174,14 @@ export default function RotaryPage() {
               <p className="polio-why">
                 <Heart aria-hidden="true" /> {ROTARY.polio.why}
               </p>
-              <a className="linked-inline" href={ROTARY.polio.href} target="_blank" rel="noopener noreferrer">
-                Latest polio figures (GPEI) <ExternalLink aria-hidden="true" size={14} />
+              <a
+                className="linked-inline"
+                href={ROTARY.polio.href}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Latest polio figures (GPEI){" "}
+                <ExternalLink aria-hidden="true" size={14} />
               </a>
             </div>
             <aside className="polio-aside">
@@ -161,7 +194,8 @@ export default function RotaryPage() {
                 ))}
               </ul>
               <p className="polio-note">
-                Rotary is one of the initiative’s founding partners and its biggest volunteer army.
+                Rotary is one of the initiative’s founding partners and its
+                biggest volunteer army.
               </p>
             </aside>
           </Reveal>
@@ -169,7 +203,10 @@ export default function RotaryPage() {
       </section>
 
       {/* ---------- Foundation + Four-Way Test ---------- */}
-      <section className="section section-tint" aria-labelledby="rotary-foundation">
+      <section
+        className="section section-tint"
+        aria-labelledby="rotary-foundation"
+      >
         <div className="container rotary-two-up">
           <Reveal className="foundation-card">
             <span className="eyebrow">Funding the work</span>
@@ -178,8 +215,14 @@ export default function RotaryPage() {
             </h2>
             <p>{ROTARY.foundation.text}</p>
             <p>{ROTARY.foundation.local}</p>
-            <a className="linked-inline" href={ROTARY.foundation.href} target="_blank" rel="noopener noreferrer">
-              {ROTARY.foundation.hrefLabel} <ExternalLink aria-hidden="true" size={14} />
+            <a
+              className="linked-inline"
+              href={ROTARY.foundation.href}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {ROTARY.foundation.hrefLabel}{" "}
+              <ExternalLink aria-hidden="true" size={14} />
             </a>
           </Reveal>
           <Reveal delay={80} className="fourway-card">
@@ -206,13 +249,22 @@ export default function RotaryPage() {
           />
           <div className="program-grid">
             {ROTARY.programs.map((p, i) => (
-              <Reveal key={p.id} delay={(i % 3) * 70} className={`program-card${p.ours ? ' ours' : ''}`} as="article">
+              <Reveal
+                key={p.id}
+                delay={(i % 3) * 70}
+                className={`program-card${p.ours ? " ours" : ""}`}
+                as="article"
+              >
                 <h3>
                   {p.name}
-                  {p.ages ? <span className="program-ages">{p.ages}</span> : null}
+                  {p.ages ? (
+                    <span className="program-ages">{p.ages}</span>
+                  ) : null}
                 </h3>
                 <p>{p.text}</p>
-                {p.ours ? <span className="program-badge">That’s us</span> : null}
+                {p.ours ? (
+                  <span className="program-badge">That’s us</span>
+                ) : null}
               </Reveal>
             ))}
           </div>
@@ -236,7 +288,10 @@ export default function RotaryPage() {
       </section>
 
       {/* ---------- Sources ---------- */}
-      <section className="section section-tint" aria-labelledby="rotary-sources">
+      <section
+        className="section section-tint"
+        aria-labelledby="rotary-sources"
+      >
         <div className="container">
           <Reveal>
             <div className="section-head-block">
@@ -262,19 +317,27 @@ export default function RotaryPage() {
           </Reveal>
           <Reveal delay={140}>
             <div className="district-cta">
-              <span className="district-cta-mark district-cta-icon" aria-hidden="true">
+              <span
+                className="district-cta-mark district-cta-icon"
+                aria-hidden="true"
+              >
                 <Users />
               </span>
               <div>
                 <p>
-                  The global network starts with a local club. Ours meets every {CLUB.meeting.dayLabel} in{' '}
-                  {CLUB.city.split(',')[0]} — guests are welcome.
+                  The global network starts with a local club. Ours meets every{" "}
+                  {CLUB.meeting.dayLabel} in {CLUB.city.split(",")[0]} — guests
+                  are welcome.
                 </p>
                 <div className="district-cta-actions">
                   <ButtonLink to="/membership" variant="primary" size="md">
                     Attend a fellowship <ArrowRight aria-hidden="true" />
                   </ButtonLink>
-                  <ButtonLink to="/about/district-9215" variant="secondary" size="md">
+                  <ButtonLink
+                    to="/about/district-9215"
+                    variant="secondary"
+                    size="md"
+                  >
                     Our district: 9215
                   </ButtonLink>
                 </div>

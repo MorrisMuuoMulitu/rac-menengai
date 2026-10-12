@@ -1,239 +1,213 @@
-/**
- * Site chrome: announcement bar, header + accessible mobile menu, footer,
- * scroll restoration and the skip link.
- */
-import { useEffect, useState } from 'react';
-import { Link, NavLink, useLocation } from 'react-router-dom';
-import {
-  ArrowRight,
-  Clock,
-  Facebook,
-  Instagram,
-  Linkedin,
-  MapPin,
-  Menu,
-  MessageCircle,
-  Twitter,
-  X,
-} from 'lucide-react';
-import { ANNOUNCEMENT, CLUB, FELLOWSHIP_OVERRIDE, HERO_IMAGES, NAV_LINKS, SOCIALS } from '../data';
-import { useLockBody, useScrolled } from '../hooks';
-import { ButtonLink } from './ui';
-import { fellowship, fellowshipLine, fellowshipStatus } from '../lib/fellowship';
-
-const FELLOWSHIP_CFG = { ...fellowship, override: FELLOWSHIP_OVERRIDE };
-
-/** Stable fallback if the event calculation ever fails. */
-const FALLBACK_LINE = `Fellowship every ${CLUB.meeting.dayLabel}, ${CLUB.meeting.timeLabel} · ${CLUB.city.split(',')[0]}`;
-
-/** Reads the current fellowship state; falls back to a stable line on error. */
-export function useFellowshipStatus() {
-  const [line, setLine] = useState<string>(() => {
-    try {
-      return fellowshipLine(fellowshipStatus(new Date(), FELLOWSHIP_CFG));
-    } catch {
-      return FALLBACK_LINE;
-    }
-  });
-  useEffect(() => {
-    const update = () => {
-      try {
-        setLine(fellowshipLine(fellowshipStatus(new Date(), FELLOWSHIP_CFG)));
-      } catch {
-        setLine(FALLBACK_LINE);
-      }
-    };
-    const t = setInterval(update, 60_000);
-    return () => clearInterval(t);
-  }, []);
-  return line;
-}
-
-/* ---------- Announcement bar ---------- */
+import { useEffect, useRef, useState } from "react";
+import { Link, NavLink, useLocation } from "react-router-dom";
+import { ArrowUpRight, Instagram, Facebook, Menu, X } from "lucide-react";
+import { CLUB, NAV_LINKS } from "../data";
+import { PUBLIC_ACCOUNTS } from "../content";
+import { useLockBody } from "../hooks";
+import { ButtonLink } from "./ui";
 export function AnnouncementBar() {
-  const line = useFellowshipStatus();
-  return (
-    <div className="announcement" role="region" aria-label="Next fellowship announcement">
-      <div className="container announcement-inner">
-        <p className="announcement-text" aria-live="polite">
-          <Clock aria-hidden="true" size={14} />
-          <span>{line}</span>
-        </p>
-        <Link to="/membership" className="announcement-action">
-          {ANNOUNCEMENT.action} <ArrowRight aria-hidden="true" size={14} />
-        </Link>
-      </div>
-    </div>
-  );
+  return null;
 }
-
-/* ---------- Header ---------- */
 export function Header() {
   const [open, setOpen] = useState(false);
-  const scrolled = useScrolled(12);
+  const toggle = useRef<HTMLButtonElement>(null);
+  const menu = useRef<HTMLElement>(null);
+  const { pathname } = useLocation();
   useLockBody(open);
+  useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
-    document.body.classList.toggle('nav-open', open);
-    return () => document.body.classList.remove('nav-open');
-  }, [open]);
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setOpen(false);
+    if (!open) return;
+    const previous = document.activeElement as HTMLElement;
+    menu.current?.querySelector<HTMLAnchorElement>("a")?.focus();
+    const key = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setOpen(false);
+        toggle.current?.focus();
+      }
+      if (event.key === "Tab") {
+        const elements = [
+          toggle.current,
+          ...Array.from(
+            menu.current?.querySelectorAll<HTMLElement>("a,button") ?? [],
+          ),
+        ].filter(Boolean) as HTMLElement[];
+        const first = elements[0],
+          last = elements[elements.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault();
+          last?.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault();
+          first?.focus();
+        }
+      }
     };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, []);
-
+    document.addEventListener("keydown", key);
+    return () => {
+      document.removeEventListener("keydown", key);
+      if (previous?.isConnected) previous.focus();
+    };
+  }, [open]);
   return (
-    <header className={`site-header${scrolled ? ' is-sticky' : ''}`}>
+    <header className="site-header">
       <div className="container header-inner">
-        <Link to="/" className="brand" aria-label={`${CLUB.name} — home`}>
-          <span className="brand-mark">
-            <img src={HERO_IMAGES.logo} alt="" width={40} height={40} />
-          </span>
-          <span className="brand-name">
-            {CLUB.name}
-            <small>{CLUB.shortName} · {CLUB.city}</small>
-          </span>
+        <Link to="/" className="brand" aria-label={`${CLUB.name}, home`}>
+          {/* The club's official masterbrand lockup. It carries the current
+              Rotary year theme, so refresh it when the theme changes (see
+              docs/BRANDING_VERIFICATION.md). */}
+          <picture>
+            <source
+              srcSet="/images/branding/rotaract-menengai-lockup.webp"
+              type="image/webp"
+            />
+            <img
+              className="brand-lockup"
+              src="/images/branding/rotaract-menengai-lockup.png"
+              alt={CLUB.name}
+              width={560}
+              height={119}
+            />
+          </picture>
         </Link>
-
         <nav className="nav-main" aria-label="Primary">
           {NAV_LINKS.map((l) => (
-            <NavLink key={l.href} to={l.href} className={({ isActive }) => (isActive ? 'active' : '')}>
+            <NavLink key={l.href} to={l.href}>
               {l.label}
             </NavLink>
           ))}
         </nav>
-
         <div className="nav-cta">
-          <ButtonLink to="/membership" variant="primary" size="sm">
-            Attend a fellowship
+          <ButtonLink to="/membership" size="sm">
+            Join us <ArrowUpRight size={17} aria-hidden="true" />
           </ButtonLink>
           <button
+            ref={toggle}
             className="nav-toggle"
-            aria-label={open ? 'Close menu' : 'Open menu'}
+            aria-label={open ? "Close menu" : "Open menu"}
             aria-expanded={open}
             aria-controls="mobile-menu"
-            onClick={() => setOpen((v) => !v)}
+            onClick={() => setOpen(!open)}
           >
             {open ? <X aria-hidden="true" /> : <Menu aria-hidden="true" />}
           </button>
         </div>
       </div>
-
-      <nav id="mobile-menu" className="mobile-nav" aria-label="Mobile" aria-hidden={!open}>
-        {NAV_LINKS.map((l, i) => (
-          <NavLink key={l.href} to={l.href} tabIndex={open ? 0 : -1} onClick={() => setOpen(false)}>
-            <span className="mno" aria-hidden="true">
-              {String(i + 1).padStart(2, '0')}
-            </span>
+      <nav
+        ref={menu}
+        id="mobile-menu"
+        className="mobile-nav"
+        aria-label="Mobile"
+        hidden={!open}
+      >
+        {NAV_LINKS.map((l) => (
+          <NavLink key={l.href} to={l.href} onClick={() => setOpen(false)}>
             {l.label}
           </NavLink>
         ))}
-        <div className="mobile-nav-cta">
-          <ButtonLink to="/membership" variant="primary" onClick={() => setOpen(false)}>
-            Attend a fellowship <ArrowRight aria-hidden="true" />
-          </ButtonLink>
-        </div>
+        <Link to="/membership" onClick={() => setOpen(false)}>
+          Join the club
+        </Link>
+        <Link to="/leadership" onClick={() => setOpen(false)}>
+          Leadership
+        </Link>
+        <Link to="/rotary" onClick={() => setOpen(false)}>
+          Rotary worldwide
+        </Link>
       </nav>
     </header>
   );
 }
-
-/* ---------- Footer ---------- */
 export function Footer() {
-  const year = new Date().getFullYear();
   return (
     <footer className="site-footer">
       <div className="container footer-top">
         <div className="footer-brand">
-          <span className="brand-mark">
-            <img src={HERO_IMAGES.logo} alt="" width={44} height={44} />
-          </span>
+          {/* Club badge supplied with the logo. Alt text is the supplied name
+              only — tell us what it represents and it can be labelled
+              properly (see docs/BRANDING_VERIFICATION.md). */}
+          <picture>
+            <source
+              srcSet="/images/branding/thee-magicals.webp"
+              type="image/webp"
+            />
+            <img
+              className="footer-magicals"
+              src="/images/branding/thee-magicals.png"
+              alt="Thee Magicals"
+              width={203}
+              height={219}
+            />
+          </picture>
           <p>
-            {CLUB.name} — {CLUB.motto}. A decade of community impact in {CLUB.city.split(',')[0]}, powered by young
-            leaders across {CLUB.district}.
+            Community service, professional development and fellowship in
+            Nakuru, Kenya.
           </p>
           <div className="footer-social">
-            <a href={SOCIALS.facebook} target="_blank" rel="noopener noreferrer" aria-label="RAC Menengai on Facebook">
-              <Facebook />
-            </a>
-            <a href={SOCIALS.instagram} target="_blank" rel="noopener noreferrer" aria-label="RAC Menengai on Instagram">
-              <Instagram />
-            </a>
-            <a href={SOCIALS.x} target="_blank" rel="noopener noreferrer" aria-label="RAC Menengai on X">
-              <Twitter />
-            </a>
-            <a href={SOCIALS.linkedin} target="_blank" rel="noopener noreferrer" aria-label="RAC Menengai on LinkedIn">
-              <Linkedin />
-            </a>
-          </div>
-        </div>
-        <div className="footer-col">
-          <h4>Explore</h4>
-          <Link to="/about">About us</Link>
-          <Link to="/about/district-9215">Our district: 9215</Link>
-          <Link to="/rotary">Rotary worldwide</Link>
-          <Link to="/projects">Projects</Link>
-          <Link to="/awards">Awards</Link>
-          <Link to="/news">News</Link>
-        </div>
-        <div className="footer-col">
-          <h4>Join & partner</h4>
-          <Link to="/membership">Membership</Link>
-          <Link to="/leadership">Leadership</Link>
-          <Link to="/contact">Contact & partnerships</Link>
-          <a href="https://www.rotary.org" target="_blank" rel="noopener noreferrer">
-            Rotary International
-          </a>
-        </div>
-        <div className="footer-col">
-          <h4>Meet us</h4>
-          <div className="footer-contact">
-            <MapPin aria-hidden="true" />
-            <span>
-              {CLUB.city} · {CLUB.district}
-            </span>
-          </div>
-          <div className="footer-contact">
-            <Clock aria-hidden="true" />
-            <span>
-              Every {CLUB.meeting.dayLabel}, {CLUB.meeting.timeLabel} ({CLUB.meeting.timeZoneNote})
-            </span>
-          </div>
-          <div className="footer-contact">
-            <MessageCircle aria-hidden="true" />
-            <span>
-              Reach us fastest on{' '}
-              <a href={SOCIALS.facebook} target="_blank" rel="noopener noreferrer">
-                Facebook
-              </a>{' '}
-              or{' '}
-              <a href={SOCIALS.instagram} target="_blank" rel="noopener noreferrer">
-                Instagram
+            {PUBLIC_ACCOUNTS.map((a) => (
+              <a
+                key={a.platform}
+                href={a.url!}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Menengai on ${a.platform}`}
+              >
+                {a.platform === "Instagram" ? <Instagram /> : <Facebook />}
               </a>
-              .
-            </span>
+            ))}
           </div>
+        </div>
+        <div className="footer-col">
+          <h2>Explore</h2>
+          <Link to="/about">About the club</Link>
+          <Link to="/projects">Our projects</Link>
+          <Link to="/events">Events & fellowship</Link>
+          <Link to="/news">News & stories</Link>
+          <Link to="/awards">Club archive</Link>
+        </div>
+        <div className="footer-col">
+          <h2>Get involved</h2>
+          <Link to="/membership">Become a member</Link>
+          <Link to="/partnerships">Partner with us</Link>
+          <Link to="/leadership">Leadership</Link>
+          <Link to="/contact">Contact</Link>
+          <Link to="/privacy">Privacy</Link>
+        </div>
+        <div className="footer-col">
+          <h2>Find us in Nakuru</h2>
+          <p>
+            Thursday fellowship
+            <br />
+            5:30–6:30 PM EAT
+          </p>
+          <p>Check the venue with the club before visiting.</p>
+          <a href="mailto:menengairc@gmail.com">menengairc@gmail.com</a>
+          <Link to="/about/district-9215">Rotary District 9215</Link>
+          <Link to="/rotary">Rotary worldwide</Link>
         </div>
       </div>
       <div className="footer-bottom">
         <div className="container">
           <span>
-            © 2016 – {year} {CLUB.name} · {CLUB.district}
+            © {new Date().getFullYear()} {CLUB.name}
           </span>
-          <span>{CLUB.motto}</span>
+          <span>Service Above Self</span>
         </div>
       </div>
     </footer>
   );
 }
-
-/* ---------- Scroll restoration on route change ---------- */
 export function ScrollToTop() {
-  const { pathname } = useLocation();
+  const { pathname, hash } = useLocation();
   useEffect(() => {
-    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
-  }, [pathname]);
+    if (hash) {
+      const target = document.getElementById(decodeURIComponent(hash.slice(1)));
+      if (target) {
+        target.scrollIntoView();
+        return;
+      }
+    }
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    document.getElementById("main")?.focus({ preventScroll: true });
+  }, [pathname, hash]);
   return null;
 }

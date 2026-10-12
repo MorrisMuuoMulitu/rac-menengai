@@ -1,38 +1,76 @@
 /**
- * Shared UI primitives: scroll reveal, animated counters, scroll-lock and the
- * active-section spy for navigation. Deliberately small — nothing here adds
- * decoration, only basic motion and behaviour.
+ * Shared wrappers, scroll locking and active-section tracking. Content remains
+ * visible before JavaScript; there are no scroll-triggered entrance effects.
  */
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
-/** Adds `.in` when the element scrolls into view (once). Respects reduced motion via CSS. */
-export function Reveal({ children, delay = 0, className = '', as: Tag = 'div', id }: { children: ReactNode; delay?: number; className?: string; as?: 'div' | 'li' | 'span' | 'article'; id?: string }) {
-  const ref = useRef<HTMLDivElement | null>(null);
+/**
+ * Pointer depth for the homepage hero.
+ *
+ * Publishes `--px` / `--py` (each -1…1) on the hero element so the copy and
+ * photograph planes can drift against each other. Purely decorative: it is
+ * skipped on touch/coarse pointers and under `prefers-reduced-motion`, and the
+ * hero renders fully without it.
+ */
+export function useHeroPointer<T extends HTMLElement>() {
+  const ref = useRef<T>(null);
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (typeof IntersectionObserver === 'undefined') {
-      el.classList.add('in');
-      return;
-    }
-    const io = new IntersectionObserver(
-      (entries) => {
-        for (const e of entries) {
-          if (e.isIntersecting) {
-            e.target.classList.add('in');
-            io.unobserve(e.target);
-          }
-        }
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -36px 0px' },
-    );
-    io.observe(el);
-    return () => io.disconnect();
+    const fine = window.matchMedia("(hover: hover) and (pointer: fine)");
+    const calm = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!fine.matches || calm.matches) return;
+    let frame = 0;
+    let px = 0;
+    let py = 0;
+    const apply = () => {
+      frame = 0;
+      el.style.setProperty("--px", px.toFixed(3));
+      el.style.setProperty("--py", py.toFixed(3));
+    };
+    const schedule = () => {
+      if (!frame) frame = window.requestAnimationFrame(apply);
+    };
+    const onMove = (event: PointerEvent) => {
+      const r = el.getBoundingClientRect();
+      px = Math.max(-1, Math.min(1, ((event.clientX - r.left) / r.width - 0.5) * 2));
+      py = Math.max(-1, Math.min(1, ((event.clientY - r.top) / r.height - 0.5) * 2));
+      schedule();
+    };
+    const onLeave = () => {
+      px = 0;
+      py = 0;
+      schedule();
+    };
+    el.addEventListener("pointermove", onMove, { passive: true });
+    el.addEventListener("pointerleave", onLeave);
+    return () => {
+      el.removeEventListener("pointermove", onMove);
+      el.removeEventListener("pointerleave", onLeave);
+      if (frame) window.cancelAnimationFrame(frame);
+      el.style.removeProperty("--px");
+      el.style.removeProperty("--py");
+    };
   }, []);
-  const style = delay ? { transitionDelay: `${delay}ms` } : undefined;
+  return ref;
+}
+
+/** Compatibility wrapper for existing content layouts; renders without entrance animation. */
+export function Reveal({
+  children,
+  delay = 0,
+  className = "",
+  as: Tag = "div",
+  id,
+}: {
+  children: ReactNode;
+  delay?: number;
+  className?: string;
+  as?: "div" | "li" | "span" | "article";
+  id?: string;
+}) {
   return (
-    // @ts-expect-error polymorphic tag with shared ref
-    <Tag ref={ref} id={id} className={`reveal ${className}`.trim()} style={style}>
+    <Tag id={id} className={className}>
       {children}
     </Tag>
   );
@@ -43,7 +81,7 @@ export function useLockBody(locked: boolean) {
   useEffect(() => {
     if (!locked) return;
     const prev = document.body.style.overflow;
-    document.body.style.overflow = 'hidden';
+    document.body.style.overflow = "hidden";
     return () => {
       document.body.style.overflow = prev;
     };
@@ -52,19 +90,19 @@ export function useLockBody(locked: boolean) {
 
 /** Tracks which section id is currently in view — used for anchor highlighting. */
 export function useActiveSection(ids: string[]): string {
-  const [active, setActive] = useState(ids[0] ?? '');
+  const [active, setActive] = useState(ids[0] ?? "");
   useEffect(() => {
     const sections = ids
       .map((id) => document.getElementById(id))
       .filter((el): el is HTMLElement => el !== null);
-    if (!sections.length || typeof IntersectionObserver === 'undefined') return;
+    if (!sections.length || typeof IntersectionObserver === "undefined") return;
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (e.isIntersecting) setActive(e.target.id);
         }
       },
-      { rootMargin: '-40% 0px -55% 0px' },
+      { rootMargin: "-40% 0px -55% 0px" },
     );
     sections.forEach((s) => io.observe(s));
     return () => io.disconnect();
@@ -78,8 +116,8 @@ export function useScrolled(threshold = 24): boolean {
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > threshold);
     onScroll();
-    window.addEventListener('scroll', onScroll, { passive: true });
-    return () => window.removeEventListener('scroll', onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
   }, [threshold]);
   return scrolled;
 }

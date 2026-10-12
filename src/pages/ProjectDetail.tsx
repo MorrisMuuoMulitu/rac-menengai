@@ -2,14 +2,21 @@
  * Project detail — one verified story: challenge, action, location, partners,
  * results and the next step.
  */
-import { Link, useParams } from 'react-router-dom';
-import { ArrowLeft, ArrowRight, CalendarDays, Check, MapPin } from 'lucide-react';
-import { CLUB, PROJECTS, PROJECT_FUNDING, ROTARY } from '../data';
-import { ButtonLink, PageMeta, SmartImage } from '../components/ui';
-import { FocusIcon } from '../components/icons';
-import { ProjectCard } from '../components/cards';
-import { OpportunityCard } from '../components/cards';
-import NotFoundPage from './NotFound';
+import { Link, useParams } from "react-router-dom";
+import {
+  ArrowLeft,
+  ArrowRight,
+  CalendarDays,
+  Check,
+  MapPin,
+} from "lucide-react";
+import { CLUB, PROJECTS, PROJECT_FUNDING, ROTARY } from "../data";
+import { ButtonLink, PageMeta, SmartImage } from "../components/ui";
+import { FocusIcon } from "../components/icons";
+import { ProjectCard } from "../components/cards";
+import { OpportunityCard } from "../components/cards";
+import NotFoundPage from "./NotFound";
+import projectRecords from "../../content/projects.json";
 
 export default function ProjectDetailPage() {
   const { slug } = useParams<{ slug: string }>();
@@ -17,6 +24,7 @@ export default function ProjectDetailPage() {
 
   if (!project) return <NotFoundPage />;
 
+  const record = projectRecords.find((r) => r.slug === project.slug);
   const more = PROJECTS.filter((p) => p.slug !== project.slug).slice(0, 3);
   const focusAreas = (project.areasOfFocus ?? [])
     .map((id) => ROTARY.focuses.find((f) => f.id === id))
@@ -33,7 +41,9 @@ export default function ProjectDetailPage() {
           <Link to="/projects" className="back-link">
             <ArrowLeft aria-hidden="true" /> All projects
           </Link>
-          <span className="detail-tag">{project.tag}</span>
+          <span className="detail-tag">
+            {project.tag} · {record?.status ?? "Archive"}
+          </span>
           <h1>{project.title}</h1>
           <div className="detail-meta">
             <span>
@@ -48,24 +58,48 @@ export default function ProjectDetailPage() {
         <div className="container detail-hero-media">
           <SmartImage
             src={project.image}
-            alt={`${project.title} — photograph from the project`}
+            alt={project.caption ?? "Image associated with this archive record"}
             width={1200}
             height={675}
             fallback={project.title}
           />
-          {project.caption ? <span className="detail-caption">{project.caption}</span> : null}
+          {project.caption ? (
+            <span className="detail-caption">{project.caption}</span>
+          ) : null}
         </div>
 
         <div className="container detail-body">
           <div className="detail-main">
+            <p className="source-note">
+              This record is retained from the club website archive. Dates,
+              photographs and activity totals need confirmation where an
+              original source is not available.
+            </p>
             {project.challenge ? (
               <section className="detail-block">
                 <h2>The challenge</h2>
                 <p>{project.challenge}</p>
               </section>
             ) : null}
+            {record && (
+              <section className="detail-block">
+                <h2>Participation & source</h2>
+                <p>{record.role}.</p>
+                <p>{record.verification}</p>
+                {record.date && <p>Event date: {record.date}</p>}
+                {record.sourceUrl && (
+                  <a
+                    href={record.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    Read the original report
+                  </a>
+                )}
+              </section>
+            )}
             <section className="detail-block">
-              <h2>What the club did</h2>
+              <h2>Activity record</h2>
               <p>{project.detail}</p>
             </section>
             {project.reached && project.reached.length > 0 ? (
@@ -80,7 +114,7 @@ export default function ProjectDetailPage() {
             ) : null}
             {project.results && project.results.length > 0 ? (
               <section className="detail-block">
-                <h2>Verified outputs & outcomes</h2>
+                <h2>Recorded activities</h2>
                 <ul className="detail-results">
                   {project.results.map((r) => (
                     <li key={r}>
@@ -95,8 +129,9 @@ export default function ProjectDetailPage() {
               <section className="detail-block">
                 <h2>Where this sits in Rotary</h2>
                 <p>
-                  Rotary organises its work around seven areas of focus. This project sits in{' '}
-                  {focusAreas.length > 1 ? 'two of them' : 'one of them'}:
+                  Rotary organises its work around seven areas of focus. This
+                  project sits in{" "}
+                  {focusAreas.length > 1 ? "two of them" : "one of them"}:
                 </p>
                 <ul className="focus-badges">
                   {focusAreas.map((f) => (
@@ -137,15 +172,19 @@ export default function ProjectDetailPage() {
             <div className="detail-aside-card">
               <h3>Rotary context</h3>
               <p>
-                We are a Rotaract club inside{' '}
-                <Link to={PROJECT_FUNDING.rotaryHref}>Rotary International</Link>, part of{' '}
+                We are a Rotaract club inside{" "}
+                <Link to={PROJECT_FUNDING.rotaryHref}>
+                  Rotary International
+                </Link>
+                , part of{" "}
                 <Link to={PROJECT_FUNDING.districtHref}>{CLUB.district}</Link>.
               </p>
             </div>
             <div className="detail-aside-card">
               <h3>About the club</h3>
               <p>
-                {CLUB.name} serves {CLUB.city} with young leaders, fellowship every {CLUB.meeting.dayLabel}, and
+                {CLUB.name} serves {CLUB.city} with young leaders, fellowship
+                every {CLUB.meeting.dayLabel}, and
                 {CLUB.district} behind us.
               </p>
             </div>

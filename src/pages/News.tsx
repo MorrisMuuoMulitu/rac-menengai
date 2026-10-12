@@ -1,44 +1,49 @@
-/**
- * News — the club's stories; full originals live on Instagram.
- */
-import { ArrowRight } from 'lucide-react';
-import { NEWS, PAGE_INTROS } from '../data';
-import { ButtonLink, PageHero, PageMeta } from '../components/ui';
-import { StoryCard } from '../components/cards';
-
+import { Link } from "react-router-dom";
+import { ArrowUpRight } from "lucide-react";
+import { PUBLIC_STORIES, dateLabel } from "../content";
+import { PageHero, PageMeta } from "../components/ui";
 export default function NewsPage() {
-  const intro = PAGE_INTROS.news;
   return (
     <>
-      <PageMeta title="News & Stories" description={intro.description} />
-      <PageHero eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead}>
-        <ButtonLink to="/membership" variant="primary" size="sm">
-          Attend a fellowship <ArrowRight aria-hidden="true" />
-        </ButtonLink>
-      </PageHero>
-      <section className="section section-tint">
+      <PageMeta
+        title="News & stories"
+        description="Service and community stories from the Rotaract Club of Menengai, with dates, sources and project context."
+      />
+      <PageHero
+        eyebrow="News & stories"
+        title="The work. The people. The stories."
+        lead="A record of service and community life, with the sources behind each story."
+      />
+      <section className="section">
         <div className="container">
-          <h2 className="sr-only">All stories</h2>
-          {NEWS.length > 0 ? (
-            <ul className="stories-grid">
-              {NEWS.map((n, i) => (
-                <StoryCard key={n.title} story={n} delay={(i % 3) * 70} />
-              ))}
-            </ul>
-          ) : (
-            <p className="empty-state" role="status">
-              New stories are on the way. Follow{' '}
-              <a href="https://www.instagram.com/racmenengai/" target="_blank" rel="noopener noreferrer">
-                @racmenengai on Instagram
-              </a>{' '}
-              for the latest club moments.
-            </p>
-          )}
+          <div className="editorial-stories">
+            {PUBLIC_STORIES.map((s) => (
+              <Link
+                className="editorial-story"
+                key={s.slug}
+                to={`/news/${s.slug}`}
+              >
+                <div>
+                  <span className="story-topic">{s.category}</span>
+                  <h2>{s.title}</h2>
+                  <p>{s.summary}</p>
+                </div>
+                <div className="story-tail">
+                  <time dateTime={s.published!}>{dateLabel(s.published!)}</time>
+                  <ArrowUpRight aria-hidden="true" />
+                </div>
+              </Link>
+            ))}
+          </div>
           <p className="fine-print">
-            Each story links to its original post on the club’s Instagram. Want the freshest updates?
-            <a href="https://www.instagram.com/racmenengai/" target="_blank" rel="noopener noreferrer">
-              {' '}
-              Follow @racmenengai
+            These are archive stories. For current announcements, check the
+            club’s{" "}
+            <a
+              href="https://www.instagram.com/racmenengai/"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Instagram profile
             </a>
             .
           </p>

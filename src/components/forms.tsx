@@ -1,266 +1,253 @@
-/**
- * First-party contact / membership-interest form.
- *
- * There is no backend (no club email/phone has been supplied — see
- * docs/CONTENT_AUDIT.md), so submission is validated client-side and the
- * success state explains exactly how to reach the club. The moment a real
- * endpoint (club email, Formspree, Web3Forms…) exists, only the `submit`
- * handler needs replacing. Nothing is silently "sent".
- */
-import { useRef, useState, type FormEvent } from 'react';
-import { AlertTriangle, ArrowRight, CheckCircle2, Send } from 'lucide-react';
-import { CONTACT, SOCIALS } from '../data';
-
-interface FormState {
-  name: string;
-  contact: string; // email or phone
-  interest: string;
-  message: string;
-  consent: boolean;
-}
-
-type Errors = Partial<Record<keyof FormState | 'contactInvalid', string>>;
-
-const EMPTY: FormState = { name: '', contact: '', interest: CONTACT.interests[0], message: '', consent: false };
-
-function validate(f: FormState): Errors {
-  const errors: Errors = {};
-  if (!f.name.trim()) errors.name = 'Please tell us your name.';
-  if (!f.contact.trim()) {
-    errors.contact = 'Please add an email or phone number so we can reply.';
-  } else if (f.contact.includes('@')) {
-    const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.contact.trim());
-    if (!emailOk) errors.contact = 'That email address doesn’t look right — please check it.';
-  } else if (f.contact.trim().length < 7) {
-    errors.contact = 'That phone number looks too short — please check it.';
-  }
-  if (f.message.trim().length < 10) errors.message = 'A sentence or two helps us answer you well.';
-  if (!f.consent) errors.consent = 'Please tick the box so we may reply to you.';
-  return errors;
-}
-
-export function ContactForm({ defaultInterest, heading = 'Message the club', lead }: { defaultInterest?: string; heading?: string; lead?: string }) {
-  const [form, setForm] = useState<FormState>({ ...EMPTY, interest: defaultInterest ?? EMPTY.interest });
-  const [errors, setErrors] = useState<Errors>({});
-  const [sent, setSent] = useState(false);
-  const [failed, setFailed] = useState(false);
-  const [submitting, setSubmitting] = useState(false);
-  const [touched, setTouched] = useState(false);
-  const [company, setCompany] = useState(''); // honeypot — real humans never fill it
-  const successRef = useRef<HTMLDivElement | null>(null);
-  const failureRef = useRef<HTMLDivElement | null>(null);
-
-  const set = <K extends keyof FormState>(key: K, value: FormState[K]) => {
-    setForm((f) => ({ ...f, [key]: value }));
-    if (touched) setErrors(validate({ ...form, [key]: value }));
+import { useRef, useState, type FormEvent } from "react";
+import { Link } from "react-router-dom";
+import { CONTACT, contactConfig, SOCIALS } from "../data";
+import {
+  emailDraft,
+  enquiryText,
+  validateContact,
+  type Enquiry,
+  type ContactErrors,
+} from "../lib/contact";
+const DELIVERY_ENABLED = import.meta.env.VITE_CONTACT_DELIVERY === "true";
+export function ContactForm({
+  defaultInterest,
+  heading = "Message the club",
+  lead,
+}: {
+  defaultInterest?: string;
+  heading?: string;
+  lead?: string;
+}) {
+  const [form, setForm] = useState<Enquiry>({
+    name: "",
+    contact: "",
+    interest: defaultInterest ?? CONTACT.interests[0],
+    message: "",
+    consent: false,
+    company: "",
+  });
+  const [errors, setErrors] = useState<ContactErrors>({});
+  const [status, setStatus] = useState<
+    "editing" | "draft" | "sending" | "sent"
+  >("editing");
+  const [failure, setFailure] = useState("");
+  const [copied, setCopied] = useState(false);
+  const result = useRef<HTMLDivElement>(null);
+  const formRef = useRef<HTMLFormElement>(null);
+  const update = (key: keyof Enquiry, value: string | boolean) => {
+    setForm((old) => ({ ...old, [key]: value }));
+    setFailure("");
   };
-
-  const onSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    // Guards against duplicate submissions and submits while already pending.
-    if (submitting || sent || failed) return;
-    // Honeypot: bots fill this hidden field — pretend nothing happened.
-    if (company.trim()) {
-      setSent(true);
-      requestAnimationFrame(() => successRef.current?.focus());
+  async function submit(event: FormEvent) {
+    event.preventDefault();
+    if (status === "sending") return;
+    const errs = validateContact(form);
+    setErrors(errs);
+    if (Object.keys(errs).length) {
+      setFailure("Check the highlighted fields.");
+      requestAnimationFrame(() =>
+        formRef.current
+          ?.querySelector<HTMLElement>('[aria-invalid="true"]')
+          ?.focus(),
+      );
       return;
     }
-    setTouched(true);
-    const errs = validate(form);
-    setErrors(errs);
-    if (Object.keys(errs).length > 0) return;
-
-    setSubmitting(true);
-    // NO BACKEND YET (docs/CONTENT_AUDIT.md §Contact). This delay exercises the
-    // pending/success/failure states; when the club provides an endpoint, this
-    // is the single place to call it — and an async throw will land in `failed`
-    // with the visitor's data intact.
-    window.setTimeout(() => {
-      try {
-        setSent(true);
-        requestAnimationFrame(() => successRef.current?.focus());
-      } catch {
-        setFailed(true);
-        requestAnimationFrame(() => failureRef.current?.focus());
-      } finally {
-        setSubmitting(false);
-      }
-    }, 650);
-  };
-
-  const reset = () => {
-    setForm({ ...EMPTY, interest: defaultInterest ?? EMPTY.interest });
-    setErrors({});
-    setTouched(false);
-    setSent(false);
-    setFailed(false);
-    setSubmitting(false);
-    setCompany('');
-  };
-
-  const retry = () => {
-    setFailed(false);
-  };
-
-  if (failed) {
+    if (form.company) return;
+    if (!DELIVERY_ENABLED) {
+      setStatus("draft");
+      requestAnimationFrame(() => result.current?.focus());
+      return;
+    }
+    setStatus("sending");
+    setFailure("");
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+        signal: AbortSignal.timeout(15000),
+      });
+      const payload = await response.json();
+      if (!response.ok || payload.delivered !== true) throw new Error();
+      setStatus("sent");
+      requestAnimationFrame(() => result.current?.focus());
+    } catch {
+      setStatus("editing");
+      setFailure(
+        "Your message was not sent. Your details are still here. Try again or use the email link below.",
+      );
+    }
+  }
+  if (status === "draft" || status === "sent")
     return (
-      <div className="form-failure" ref={failureRef} tabIndex={-1} role="alert">
-        <AlertTriangle aria-hidden="true" />
-        <h3>Sorry — that didn’t go through.</h3>
+      <div className="form-success" ref={result} tabIndex={-1} role="status">
+        <h3>
+          {status === "sent" ? "Message sent" : "Your email draft is ready"}
+        </h3>
         <p>
-          Something went wrong while preparing your message. Your details are still here — try again, or message the
-          club directly:
+          {status === "sent"
+            ? "The message has been accepted by the club’s email delivery service. An officer will reply when available."
+            : "Nothing has been sent yet. Open this draft in your email app, check it, then send it to the club. You can also copy it into a social message."}
         </p>
-        <div className="form-success-actions">
-          <a className="btn btn-primary btn-md" href={SOCIALS.facebook} target="_blank" rel="noopener noreferrer">
-            Message us on Facebook <ArrowRight aria-hidden="true" />
-          </a>
-          <a className="btn btn-secondary btn-md" href={SOCIALS.instagram} target="_blank" rel="noopener noreferrer">
-            Message us on Instagram <ArrowRight aria-hidden="true" />
-          </a>
-        </div>
-        <button className="form-reset" type="button" onClick={retry}>
-          Try the form again
+        {status === "draft" && (
+          <>
+            <pre className="message-draft">{enquiryText(form)}</pre>
+            <a
+              className="btn btn-primary btn-md"
+              href={emailDraft(form, contactConfig.email)}
+            >
+              Open email draft
+            </a>
+            <button
+              type="button"
+              className="btn btn-secondary btn-md"
+              onClick={async () => {
+                try {
+                  await navigator.clipboard.writeText(enquiryText(form));
+                  setCopied(true);
+                } catch {
+                  setFailure(
+                    "Copy is unavailable. Select the message above and copy it manually.",
+                  );
+                }
+              }}
+            >
+              {copied ? "Copied" : "Copy message"}
+            </button>
+            <a
+              className="text-link"
+              href={SOCIALS.instagram}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Open club Instagram
+            </a>
+          </>
+        )}
+        {failure && <p role="alert">{failure}</p>}
+        <button
+          type="button"
+          className="form-reset"
+          onClick={() => setStatus("editing")}
+        >
+          {status === "draft" ? "Edit draft" : "Write another message"}
         </button>
       </div>
     );
-  }
-
-  if (sent) {
-    return (
-      <div className="form-success" ref={successRef} tabIndex={-1} role="status" aria-live="polite">
-        <CheckCircle2 aria-hidden="true" />
-        <h3>Thank you, {form.name.trim().split(' ')[0]}.</h3>
-        <p>
-          To be straight with you: this site is run by volunteers and doesn’t have a connected inbox yet, so{' '}
-          <strong>nothing has been sent by this form</strong>. To make sure an officer sees your message, send it to
-          the club on Facebook or Instagram:
-        </p>
-        <div className="form-success-actions">
-          <a className="btn btn-primary btn-md" href={SOCIALS.facebook} target="_blank" rel="noopener noreferrer">
-            Message us on Facebook <ArrowRight aria-hidden="true" />
-          </a>
-          <a className="btn btn-secondary btn-md" href={SOCIALS.instagram} target="_blank" rel="noopener noreferrer">
-            Message us on Instagram <ArrowRight aria-hidden="true" />
-          </a>
-        </div>
-        <p className="form-success-note">
-          Include your name and “{form.interest}” so the right officer picks it up.
-        </p>
-        <button className="form-reset" type="button" onClick={reset}>
-          Send another message
-        </button>
-      </div>
-    );
-  }
-
-  const err = (k: keyof Errors) => (errors[k] ? <span className="field-error" id={`err-${k}`}>{errors[k]}</span> : null);
-
+  const error = (key: keyof Enquiry) =>
+    errors[key] ? (
+      <span className="field-error" id={`err-${key}`}>
+        {errors[key]}
+      </span>
+    ) : null;
   return (
-    <form className="contact-form" onSubmit={onSubmit} noValidate>
+    <form ref={formRef} className="contact-form" onSubmit={submit} noValidate>
       <div className="form-head">
         <h3>{heading}</h3>
-        {lead ? <p>{lead}</p> : <p>{CONTACT.formNote}</p>}
+        <p>
+          {lead ??
+            (DELIVERY_ENABLED
+              ? "Send an enquiry to the club."
+              : "Prepare an email to menengairc@gmail.com. You’ll send it from your own email app.")}
+        </p>
       </div>
-
       <div className="field">
         <label htmlFor="cf-name">Your name</label>
         <input
           id="cf-name"
-          type="text"
           autoComplete="name"
+          maxLength={100}
           value={form.name}
-          onChange={(e) => set('name', e.target.value)}
-          aria-invalid={errors.name ? true : undefined}
-          aria-describedby={errors.name ? 'err-name' : undefined}
-          placeholder="e.g. Amina Wanjiru"
+          onChange={(e) => update("name", e.target.value)}
+          aria-invalid={!!errors.name}
+          aria-describedby={errors.name ? "err-name" : undefined}
         />
-        {err('name')}
+        {error("name")}
       </div>
-
       <div className="field">
         <label htmlFor="cf-contact">Email or phone</label>
         <input
           id="cf-contact"
-          type="text"
           autoComplete="email"
-          inputMode="email"
+          maxLength={254}
           value={form.contact}
-          onChange={(e) => set('contact', e.target.value)}
-          aria-invalid={errors.contact ? true : undefined}
-          aria-describedby={errors.contact ? 'err-contact' : undefined}
-          placeholder="you@example.com or +254 7xx xxx xxx"
+          onChange={(e) => update("contact", e.target.value)}
+          aria-invalid={!!errors.contact}
+          aria-describedby={errors.contact ? "err-contact" : undefined}
         />
-        {err('contact')}
+        {error("contact")}
       </div>
-
       <div className="field">
-        <label htmlFor="cf-interest">I’m interested in</label>
-        <select id="cf-interest" value={form.interest} onChange={(e) => set('interest', e.target.value)}>
+        <label htmlFor="cf-interest">Enquiry topic</label>
+        <select
+          id="cf-interest"
+          value={form.interest}
+          onChange={(e) => update("interest", e.target.value)}
+        >
           {CONTACT.interests.map((i) => (
-            <option key={i} value={i}>
-              {i}
-            </option>
+            <option key={i}>{i}</option>
           ))}
         </select>
       </div>
-
       <div className="field">
         <label htmlFor="cf-message">Your message</label>
         <textarea
           id="cf-message"
-          rows={4}
+          rows={5}
+          maxLength={5000}
           value={form.message}
-          onChange={(e) => set('message', e.target.value)}
-          aria-invalid={errors.message ? true : undefined}
-          aria-describedby={errors.message ? 'err-message' : undefined}
-          placeholder="Tell us a bit about why you’re reaching out…"
+          onChange={(e) => update("message", e.target.value)}
+          aria-invalid={!!errors.message}
+          aria-describedby={errors.message ? "err-message" : undefined}
         />
-        {err('message')}
+        {error("message")}
       </div>
-
-      <div className="field field-check">
-        <label className="check-label" htmlFor="cf-consent">
-          <input
-            id="cf-consent"
-            type="checkbox"
-            checked={form.consent}
-            onChange={(e) => set('consent', e.target.checked)}
-            aria-invalid={errors.consent ? true : undefined}
-            aria-describedby={errors.consent ? 'err-consent' : undefined}
-          />
-          <span>I’m happy for the club to reply to me about this message.</span>
-        </label>
-        {errors.consent ? (
-          <span className="field-error" id="err-consent">
-            {errors.consent}
-          </span>
-        ) : null}
-      </div>
-
-      <div className="field hp-field" aria-hidden="true">
-        <label htmlFor="cf-company">Company (leave blank)</label>
+      <div hidden aria-hidden="true">
+        <label htmlFor="cf-company">Company website</label>
         <input
           id="cf-company"
-          name="company"
-          type="text"
           tabIndex={-1}
           autoComplete="off"
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
+          value={form.company}
+          onChange={(e) => update("company", e.target.value)}
         />
       </div>
-
-      <div className="form-actions">
-        <button className="btn btn-primary btn-lg" type="submit" disabled={submitting} aria-busy={submitting || undefined}>
-          {submitting ? 'Preparing your message…' : (
-            <>
-              Send message <Send aria-hidden="true" />
-            </>
-          )}
-        </button>
-        <p className="form-hint">No account needed — one of our officers will review your message.</p>
+      <div className="field">
+        <label className="check-label">
+          <input
+            type="checkbox"
+            checked={form.consent}
+            onChange={(e) => update("consent", e.target.checked)}
+            aria-invalid={!!errors.consent}
+            aria-describedby={errors.consent ? "err-consent" : undefined}
+          />
+          <span>The club may use these details to reply to my enquiry.</span>
+        </label>
+        {error("consent")}
       </div>
+      <p className="form-hint">
+        Details stay on this page until you choose to send them.{" "}
+        <Link to="/privacy">Privacy notice</Link>
+      </p>
+      {failure && (
+        <p className="field-error" role="alert">
+          {failure}
+        </p>
+      )}
+      <button
+        className="btn btn-primary btn-md"
+        disabled={status === "sending"}
+      >
+        {status === "sending"
+          ? "Sending…"
+          : DELIVERY_ENABLED
+            ? "Send enquiry"
+            : "Prepare email draft"}
+      </button>
+      <p className="form-hint">
+        Replies are handled by volunteers. Please allow time for an officer to
+        respond.
+      </p>
     </form>
   );
 }

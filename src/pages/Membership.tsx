@@ -2,12 +2,20 @@
  * Membership — who can join, the three steps, what it costs (flagged), the
  * membership-focused FAQ, and the join-interest form.
  */
-import { ArrowRight, Users } from 'lucide-react';
-import { CLUB, FAQS, JOIN_STEPS, MEMBERSHIP, ORIENTATION, PAGE_INTROS, formatKes } from '../data';
-import { ButtonLink, PageHero, PageMeta } from '../components/ui';
-import { FaqAccordion, OpportunityCard } from '../components/cards';
-import { ContactForm } from '../components/forms';
-import { Reveal } from '../hooks';
+import { ArrowRight, Users } from "lucide-react";
+import {
+  CLUB,
+  FAQS,
+  JOIN_STEPS,
+  MEMBERSHIP,
+  ORIENTATION,
+  PAGE_INTROS,
+  formatKes,
+} from "../data";
+import { ButtonLink, PageHero, PageMeta } from "../components/ui";
+import { FaqAccordion, OpportunityCard } from "../components/cards";
+import { ContactForm } from "../components/forms";
+import { Reveal } from "../hooks";
 
 export default function MembershipPage() {
   const intro = PAGE_INTROS.membership;
@@ -26,7 +34,9 @@ export default function MembershipPage() {
             <Reveal>
               <div className="section-head-block">
                 <span className="eyebrow">Who can join</span>
-                <h2 className="sec-title">If you’re 18–30, you’re welcome</h2>
+                <h2 className="sec-title">
+                  If you’re 18 and over, you’re welcome
+                </h2>
               </div>
             </Reveal>
             <Reveal delay={80}>
@@ -52,14 +62,19 @@ export default function MembershipPage() {
           <Reveal>
             <div className="section-head-block">
               <span className="eyebrow">How joining works</span>
-              <h2 className="sec-title">Four steps to the family</h2>
+              <h2 className="sec-title">Getting started</h2>
             </div>
           </Reveal>
           <ol className="join-steps">
             {JOIN_STEPS.map((s, i) => (
-              <Reveal as="li" key={s.title} delay={i * 80} className="join-step">
+              <Reveal
+                as="li"
+                key={s.title}
+                delay={i * 80}
+                className="join-step"
+              >
                 <span className="join-step-no" aria-hidden="true">
-                  {String(i + 1).padStart(2, '0')}
+                  {String(i + 1).padStart(2, "0")}
                 </span>
                 <h3>{s.title}</h3>
                 <p>{s.text}</p>
@@ -70,12 +85,18 @@ export default function MembershipPage() {
           <Reveal>
             <div className="orientation-callout">
               <div className="orientation-callout-copy">
-                <span className="callout-badge">Required before induction</span>
+                <span className="callout-badge">Learn about the club</span>
                 <h3>New member orientation</h3>
                 <p>
-                  A short course about Rotaract and RAC Menengai — {ORIENTATION.modules.length} modules, about{' '}
-                  {ORIENTATION.modules.reduce((total, m) => total + m.minutes, 0)} minutes, plus a {ORIENTATION.questions.length}-question
-                  check. Work through it at your own pace; your progress is saved in this browser.
+                  A short course about Rotaract and RAC Menengai —{" "}
+                  {ORIENTATION.modules.length} modules, about{" "}
+                  {ORIENTATION.modules.reduce(
+                    (total, m) => total + m.minutes,
+                    0,
+                  )}{" "}
+                  minutes, plus a {ORIENTATION.questions.length}-question check.
+                  Work through it at your own pace; your progress is saved in
+                  this browser.
                 </p>
                 <ul className="callout-points">
                   {ORIENTATION.modules.slice(0, 4).map((m) => (
@@ -84,10 +105,16 @@ export default function MembershipPage() {
                 </ul>
               </div>
               <div className="orientation-callout-actions">
-                <ButtonLink to="/membership/orientation" variant="primary" size="lg">
+                <ButtonLink
+                  to="/membership/orientation"
+                  variant="primary"
+                  size="lg"
+                >
                   Start the course <ArrowRight aria-hidden="true" />
                 </ButtonLink>
-                <p className="form-hint">Completion is confirmed by an officer at your induction.</p>
+                <p className="form-hint">
+                  Ask the membership team how they confirm orientation.
+                </p>
               </div>
             </div>
           </Reveal>
@@ -99,7 +126,8 @@ export default function MembershipPage() {
                 <div>
                   <dt>Annual membership</dt>
                   <dd>
-                    {formatKes(MEMBERSHIP.fees.subscription)} <span>{MEMBERSHIP.fees.subscriptionPeriod}</span>
+                    {formatKes(MEMBERSHIP.fees.subscription)}{" "}
+                    <span>{MEMBERSHIP.fees.subscriptionPeriod}</span>
                   </dd>
                 </div>
                 <div>
@@ -108,7 +136,9 @@ export default function MembershipPage() {
                 </div>
               </dl>
               <p className="fee-note">{MEMBERSHIP.fees.note}</p>
-              <p className="form-hint">Guests attend free — fees apply once you join.</p>
+              <p className="form-hint">
+                Guests attend free — fees apply once you join.
+              </p>
             </div>
           </Reveal>
         </div>
@@ -125,13 +155,17 @@ export default function MembershipPage() {
             </Reveal>
             <Reveal delay={80}>
               <p className="lede">
-                Leave your details and one of our officers will invite you to the next fellowship — or just turn up on
-                a {CLUB.meeting.dayLabel}; guests are family.
+                Leave your details and one of our officers will invite you to
+                the next fellowship — ask for the venue before visiting on a{" "}
+                {CLUB.meeting.dayLabel}; guests are welcome.
               </p>
             </Reveal>
           </div>
           <Reveal delay={120} className="form-card">
-            <ContactForm defaultInterest="Join the club" heading="Interest in joining" />
+            <ContactForm
+              defaultInterest="Join the club"
+              heading="Interest in joining"
+            />
           </Reveal>
         </div>
       </section>

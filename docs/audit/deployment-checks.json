@@ -1,0 +1,23 @@
+[
+  {
+    "check": "project",
+    "status": "HTTP/2 200 ",
+    "hasInitialMain": true,
+    "nosniff": true,
+    "csp": true
+  },
+  {
+    "check": "404",
+    "status": "HTTP/2 404 ",
+    "hasInitialMain": true,
+    "nosniff": true,
+    "csp": true
+  },
+  {
+    "check": "api",
+    "status": "HTTP/2 405 ",
+    "hasInitialMain": false,
+    "nosniff": true,
+    "csp": true
+  }
+]

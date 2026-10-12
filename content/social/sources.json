@@ -1,0 +1,69 @@
+[
+  {
+    "id": "peace-2025",
+    "url": "https://aforcf.org/peace-in-colour-fest-held-in-nakuru/",
+    "publisher": "Art for Children Foundation",
+    "published": "2025-09-30",
+    "eventDate": "2025-09-27",
+    "verified": "2026-10-12",
+    "confidence": "primary-participant-report",
+    "notes": "Names Menengai as a contributor and Janet Nkirote as panel moderator. Existing published project; corrected attribution and location."
+  },
+  {
+    "id": "city-cleanup-2024",
+    "url": "https://www.nakuru.go.ke/deputy-governor-david-kones-launches-citys-inaugural-clean-up-campaign/",
+    "publisher": "Nakuru County Government",
+    "published": "2024-02-09",
+    "eventDate": null,
+    "verified": "2026-10-12",
+    "confidence": "primary-government-report",
+    "notes": "Names Menengai among participating organisations. Brief says 10 February but source publication is 9 February. Exact event date withheld."
+  },
+  {
+    "id": "nexora-2026",
+    "url": "https://www.zeroplastic.lk/zeroplastic-club-of-university-of-ruhuna-launches-nexora-bloomx-2026-with-online-session-on-sustainable-entrepreneurship/",
+    "publisher": "ZeroPlastic",
+    "published": "2026-08-07",
+    "eventDate": "2026-07-02",
+    "verified": "2026-10-12",
+    "confidence": "primary-organiser-report",
+    "notes": "Collaboration with Menengai Development Director; individual not named. Do not represent Menengai as sole organiser."
+  },
+  {
+    "id": "medical-2025",
+    "url": "https://www.linkedin.com/posts/rotaract-kenya_rotaractke-highimpactprojects-activity-7313877991539798017-N-ib",
+    "publisher": "Rotaract Kenya",
+    "published": null,
+    "eventDate": "2025-03-08",
+    "verified": "2026-10-12",
+    "confidence": "network-report",
+    "notes": "Names Naivasha as organiser and Menengai as partner. 541 residents is the whole partnership figure; publication timestamp unavailable."
+  },
+  {
+    "id": "installation-2026",
+    "url": "https://ke.linkedin.com/in/joyce-wanjiku-nguru",
+    "publisher": "Joyce Wanjiku Nguru",
+    "published": null,
+    "eventDate": "2026-06-06",
+    "eventEndDate": "2026-06-07",
+    "verified": "2026-10-12",
+    "confidence": "self-report",
+    "notes": "Profile reports installation for 2026–2027. Not a club-approved roster or permanent post URL."
+  },
+  {
+    "id": "rotaract-eligibility",
+    "url": "https://www.rotary.org/en/get-involved/our-clubs/rotaract-clubs",
+    "publisher": "Rotary International",
+    "verified": "2026-10-12",
+    "confidence": "official-policy",
+    "notes": "Rotaract is for people aged 18 and older."
+  },
+  {
+    "id": "brand-center",
+    "url": "https://brandcenter.rotary.org/en-us/search?dt_assettype=Logos&tab=0",
+    "publisher": "Rotary International",
+    "verified": "2026-10-12",
+    "confidence": "official-brand-library",
+    "notes": "Lists official Rotaract masterbrand signatures in cranberry. Base URL returned redirect loop to external fetch tool."
+  }
+]

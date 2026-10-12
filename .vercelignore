@@ -1,0 +1,9 @@
+.git
+node_modules
+dist
+.prerender
+docs/audit/screenshots
+.npm-cache
+legacy.html
+.env
+.env.*

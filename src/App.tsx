@@ -2,21 +2,30 @@
  * App — layout + route table. One primary CTA label everywhere:
  * "Attend a fellowship".
  */
-import { Routes, Route } from 'react-router-dom';
-import { AnnouncementBar, Footer, Header, ScrollToTop } from './components/layout';
-import HomePage from './pages/Home';
-import AboutPage from './pages/About';
-import DistrictPage from './pages/District';
-import RotaryPage from './pages/Rotary';
-import ProjectsPage from './pages/Projects';
-import ProjectDetailPage from './pages/ProjectDetail';
-import AwardsPage from './pages/Awards';
-import LeadershipPage from './pages/Leadership';
-import NewsPage from './pages/News';
-import MembershipPage from './pages/Membership';
-import OrientationPage from './pages/Orientation';
-import ContactPage from './pages/Contact';
-import NotFoundPage from './pages/NotFound';
+import { Routes, Route } from "react-router-dom";
+import {
+  AnnouncementBar,
+  Footer,
+  Header,
+  ScrollToTop,
+} from "./components/layout";
+import EventsPage, { EventDetail } from "./pages/Events";
+import StoryDetail from "./pages/StoryDetail";
+import Partnerships from "./pages/Partnerships";
+import Privacy from "./pages/Privacy";
+import HomePage from "./pages/Home";
+import AboutPage from "./pages/About";
+import DistrictPage from "./pages/District";
+import RotaryPage from "./pages/Rotary";
+import ProjectsPage from "./pages/Projects";
+import ProjectDetailPage from "./pages/ProjectDetail";
+import AwardsPage from "./pages/Awards";
+import LeadershipPage from "./pages/Leadership";
+import NewsPage from "./pages/News";
+import MembershipPage from "./pages/Membership";
+import OrientationPage from "./pages/Orientation";
+import ContactPage from "./pages/Contact";
+import NotFoundPage from "./pages/NotFound";
 
 export default function App() {
   return (
@@ -27,7 +36,7 @@ export default function App() {
       </a>
       <AnnouncementBar />
       <Header />
-      <main id="main">
+      <main id="main" tabIndex={-1}>
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
@@ -38,6 +47,11 @@ export default function App() {
           <Route path="/awards" element={<AwardsPage />} />
           <Route path="/leadership" element={<LeadershipPage />} />
           <Route path="/news" element={<NewsPage />} />
+          <Route path="/news/:slug" element={<StoryDetail />} />
+          <Route path="/events" element={<EventsPage />} />
+          <Route path="/events/:slug" element={<EventDetail />} />
+          <Route path="/partnerships" element={<Partnerships />} />
+          <Route path="/privacy" element={<Privacy />} />
           <Route path="/membership" element={<MembershipPage />} />
           <Route path="/membership/orientation" element={<OrientationPage />} />
           <Route path="/contact" element={<ContactPage />} />

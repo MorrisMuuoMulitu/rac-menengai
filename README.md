@@ -1,66 +1,18 @@
-# Rotaract Club of Menengai — Website
+# Rotaract Club of Menengai
 
-Multi-page React + Vite + TypeScript site for the Rotaract Club of Menengai
-(Nakuru, Kenya · Rotary District 9215). Calm, editorial design system: navy
-`#090E18` + warm paper `#F5F4F1` + pink `#C21F5D` (contrast-checked), Fraunces
-display type, Inter body, JetBrains Mono for metadata.
-
-## Run it
+React, Vite and TypeScript website for community service and fellowship in Nakuru. The 2026 redesign uses locally hosted Manrope and Barlow Condensed, cranberry panels and existing club photography. Public routes are prerendered during build; project and orientation URLs are preserved.
 
 ```bash
-npm install        # first time only (Node 18+)
-npm run dev        # dev server → http://127.0.0.1:5173
-npm run build      # typecheck + production build → dist/
-npm run serve      # preview the production build (SPA fallback works)
+npm ci
+npm run dev
+npm run verify
+npm run serve
 ```
 
-Deployed on Vercel (`vercel.json` rewrites SPA routes to `index.html`).
+Node 24+ recommended. `npm run verify` runs the tests, strict type checking, client/SSR builds, static generation and output checks. `dist/` contains 23 public page documents and the 404 document. `vercel.json` maps known routes and returns HTTP 404 for unknown paths.
 
-## Architecture
+Content: `src/data.ts`, `content/stories/index.json`, `content/events/index.json` and `content/projects.json`. Research/social evidence: `content/social/`. Drafts are excluded from client imports by `scripts/prepare-content.mjs`.
 
-```
-index.html            # SEO/OG/JSON-LD shell (NGO + weekly EventSeries)
-vercel.json           # SPA rewrites
-public/               # stable URLs for favicon + OG image (copied into dist)
-src/
-  main.tsx            # BrowserRouter entry
-  App.tsx             # layout + route table
-  data.ts             # ALL content, typed, single source of truth
-  lib/format.ts       # next-meeting date math (Nairobi tz, edge cases, real dates)
-  hooks.tsx           # Reveal, useCountUp, scroll-lock, active-section, scrolled
-  components/
-    ui.tsx            # SectionHeading, PageHero, ButtonLink, StatBar, PageMeta, PlaceholderImage
-    layout.tsx        # AnnouncementBar, Header (+accessible mobile menu), Footer, ScrollToTop
-    cards.tsx         # ServiceAreaCard, ProjectCard, ProjectFilter, LeaderCard,
-                      # StoryCard, OpportunityCard (live date), FaqAccordion, AudiencePaths
-    forms.tsx         # first-party contact/join form (validation, errors, success fallback)
-    home.tsx          # Hero, TrustBar, Services, FeaturedImpact, OpportunitySection,
-                      # LeadershipPreview, StoriesPreview, FinalCta, PartnersStrip
-  pages/              # Home, About, District (9215), Rotary (Rotary worldwide),
-                      # Projects,
-                      # ProjectDetail, Awards, Leadership, News, Membership,
-                      # Orientation (new member course), Contact, NotFound
-  lib/                # fellowship.ts (event logic) + orientation.ts (course logic)
-docs/                 # IMPLEMENTATION_PLAN.md + CONTENT_AUDIT.md (confirmations)
-assets/images/menengai/  # club photography (bundled + hashed by Vite)
-```
+Enquiries default to an explicit email draft. Direct delivery requires configured server credentials and a real delivery test; see `.env.example` and docs/MAINTENANCE.md. The orientation course retains local progress and quiz functionality.
 
-## Conventions
-
-- **Content lives in `src/data.ts`.** Components render; they never hard-code copy.
-- **No invented facts.** Every number, name and date traces to club materials;
-  anything pending officer confirmation is flagged in `docs/CONTENT_AUDIT.md`.
-- **One primary CTA label** everywhere: “Attend a fellowship”.
-- **Accessibility is a requirement** — one `h1` per page, landmarks, keyboard
-  accordion/filter/menu/form, visible focus rings in light and dark, meaningful
-  alt text, and full `prefers-reduced-motion` support.
-- **Images resolve through Vite** (`new URL(..., import.meta.url)`); never copy
-  files into `dist/`.
-- **Icons are `lucide-react` only** — no emoji in UI, no icon fonts.
-- **TypeScript strict** (`tsc --noEmit` runs on every build). Keep it green.
-
-## Content note
-
-The club has not yet supplied an official email/phone, so the contact form
-validates locally and its success state explains how to reach the club
-(Facebook/Instagram) until a real endpoint exists — see the audit.
+Documentation: WEBSITE_AUDIT.md, DESIGN_SYSTEM.md, SOCIAL_ACCOUNT_VERIFICATION.md, BRANDING_VERIFICATION.md, CONTENT_SOURCES.md, QA_REPORT.md and MAINTENANCE.md in `docs/`. The original audit and legacy files are historical records.

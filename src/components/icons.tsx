@@ -3,7 +3,7 @@
  * priorities, Rotary's areas of focus). Keeps `IconKey` values in `data.ts`
  * free of JSX while letting any page render them consistently.
  */
-import type { ReactNode } from 'react';
+import type { ReactNode } from "react";
 import {
   Award,
   Book,
@@ -24,8 +24,8 @@ import {
   TrendingUp,
   Users,
   Wallet,
-} from 'lucide-react';
-import type { IconKey } from '../data';
+} from "lucide-react";
+import type { IconKey } from "../data";
 
 const ICONS: Record<IconKey, ReactNode> = {
   leaf: <Leaf aria-hidden="true" />,

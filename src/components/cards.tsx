@@ -3,8 +3,8 @@
  * stories, the current-opportunity card with live date, FAQ accordion and
  * audience paths.
  */
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import {
   ArrowRight,
   Award,
@@ -28,7 +28,7 @@ import {
   TrendingUp,
   Users,
   Wallet,
-} from 'lucide-react';
+} from "lucide-react";
 import {
   CLUB,
   FELLOWSHIP_OVERRIDE,
@@ -39,9 +39,9 @@ import {
   type NewsItem,
   type Project,
   type ServiceArea,
-} from '../data';
-import { Reveal } from '../hooks';
-import { ButtonLink, SmartImage } from './ui';
+} from "../data";
+import { Reveal } from "../hooks";
+import { ButtonLink, SmartImage } from "./ui";
 import {
   fellowship,
   fellowshipStatus,
@@ -50,12 +50,13 @@ import {
   meetingTimeLabel,
   describeCountdown,
   type FellowshipState,
-} from '../lib/fellowship';
+} from "../lib/fellowship";
 
 const FELLOWSHIP_CFG = { ...fellowship, override: FELLOWSHIP_OVERRIDE };
 
 /** Status snapshot with a stable fallback if the event calculation fails. */
-function statusSnapshot(): { ok: true; status: FellowshipState } | { ok: false } {
+function statusSnapshot():
+  { ok: true; status: FellowshipState } | { ok: false } {
   try {
     return { ok: true, status: fellowshipStatus(new Date(), FELLOWSHIP_CFG) };
   } catch {
@@ -86,8 +87,15 @@ const SERVICE_ICONS: Record<IconKey, React.ReactNode> = {
   messageCircle: <MessageCircle />,
 };
 
-export function ServiceAreaCard({ area, delay = 0 }: { area: ServiceArea; delay?: number }) {
-  const linkLabel = SERVICE_LINK_LABELS[area.id] ?? `See ${area.title.toLowerCase()} projects`;
+export function ServiceAreaCard({
+  area,
+  delay = 0,
+}: {
+  area: ServiceArea;
+  delay?: number;
+}) {
+  const linkLabel =
+    SERVICE_LINK_LABELS[area.id] ?? `See ${area.title.toLowerCase()} projects`;
   return (
     <Reveal delay={delay} className="service-card" as="article">
       <span className="service-icon" aria-hidden="true">
@@ -103,21 +111,33 @@ export function ServiceAreaCard({ area, delay = 0 }: { area: ServiceArea; delay?
 }
 
 const SERVICE_LINK_LABELS: Record<string, string> = {
-  environment: 'See environment projects',
-  health: 'See maternal and child health projects',
+  environment: "See environment projects",
+  health: "See maternal and child health projects",
   education: "See education and girls’ empowerment projects",
-  community: 'See community and peacebuilding projects',
+  community: "See community and peacebuilding projects",
 };
 
 /* ---------- Project card + filter ---------- */
-export function ProjectCard({ project, delay = 0 }: { project: Project; delay?: number }) {
+export function ProjectCard({
+  project,
+  delay = 0,
+}: {
+  project: Project;
+  delay?: number;
+}) {
   return (
     <Reveal delay={delay} as="li" className="project-card">
-      <Link to={`/projects/${project.slug}`} className="project-card-inner" aria-label={`Read the project story: ${project.title} (${project.tag}, ${project.year})`}>
+      <Link
+        to={`/projects/${project.slug}`}
+        className="project-card-inner"
+        aria-label={`Read the project story: ${project.title} (${project.tag}, ${project.year})`}
+      >
         <span className="project-thumb">
           <SmartImage
             src={project.image}
-            alt={`${project.title} — photograph from the project`}
+            alt={
+              project.caption ?? "Archive image associated with this project"
+            }
             width={800}
             height={500}
             loading="lazy"
@@ -143,17 +163,27 @@ export function ProjectCard({ project, delay = 0 }: { project: Project; delay?: 
   );
 }
 
-export function ProjectFilter({ tags, active, onChange }: { tags: string[]; active: string; onChange: (tag: string) => void }) {
+export function ProjectFilter({
+  tags,
+  active,
+  onChange,
+}: {
+  tags: string[];
+  active: string;
+  onChange: (tag: string) => void;
+}) {
   return (
     <div className="filter-wrap">
-      <label className="filter-label" htmlFor="project-filter">
-        Filter projects
-      </label>
-      <div className="filter-row" role="group" aria-label="Filter projects by area">
+      <label className="filter-label">Filter projects</label>
+      <div
+        className="filter-row"
+        role="group"
+        aria-label="Filter projects by area"
+      >
         {tags.map((t) => (
           <button
             key={t}
-            className={`filter-btn${active === t ? ' active' : ''}`}
+            className={`filter-btn${active === t ? " active" : ""}`}
             aria-pressed={active === t}
             onClick={() => onChange(t)}
           >
@@ -166,7 +196,15 @@ export function ProjectFilter({ tags, active, onChange }: { tags: string[]; acti
 }
 
 /* ---------- Leader card ---------- */
-export function LeaderCard({ leader, delay = 0, linkTo }: { leader: Leader; delay?: number; linkTo?: string }) {
+export function LeaderCard({
+  leader,
+  delay = 0,
+  linkTo,
+}: {
+  leader: Leader;
+  delay?: number;
+  linkTo?: string;
+}) {
   const inner = (
     <Reveal delay={delay} className="leader-card" as="article">
       <span className="leader-avatar" aria-hidden="true">
@@ -175,13 +213,17 @@ export function LeaderCard({ leader, delay = 0, linkTo }: { leader: Leader; dela
       <h3>{leader.name}</h3>
       <span className="leader-role">
         {leader.role}
-        {leader.term ? ` · ${leader.term}` : ''}
+        {leader.term ? ` · ${leader.term}` : ""}
       </span>
       <p>{leader.bio}</p>
     </Reveal>
   );
   return linkTo ? (
-    <Link to={linkTo} className="leader-link" aria-label={`Read more about our leadership — ${leader.name}`}>
+    <Link
+      to={linkTo}
+      className="leader-link"
+      aria-label={`Read more about our leadership — ${leader.name}`}
+    >
       {inner}
     </Link>
   ) : (
@@ -190,12 +232,31 @@ export function LeaderCard({ leader, delay = 0, linkTo }: { leader: Leader; dela
 }
 
 /* ---------- Story card ---------- */
-export function StoryCard({ story, delay = 0, to, href }: { story: NewsItem; delay?: number; to?: string; href?: string }) {
-  const readLabel = to ? `Read the story: ${story.title}.` : `Read the full story on Instagram: ${story.title}.`;
+export function StoryCard({
+  story,
+  delay = 0,
+  to,
+  href,
+}: {
+  story: NewsItem;
+  delay?: number;
+  to?: string;
+  href?: string;
+}) {
+  const readLabel = to
+    ? `Read the story: ${story.title}.`
+    : `Read the full story on Instagram: ${story.title}.`;
   const body = (
     <>
       <span className="story-thumb">
-        <SmartImage src={story.image} alt={`${story.title} — photograph`} width={640} height={360} loading="lazy" fallback={story.category} />
+        <SmartImage
+          src={story.image}
+          alt={`${story.title} — photograph`}
+          width={640}
+          height={360}
+          loading="lazy"
+          fallback={story.category}
+        />
       </span>
       <span className="story-body">
         <span className="story-meta">
@@ -205,7 +266,8 @@ export function StoryCard({ story, delay = 0, to, href }: { story: NewsItem; del
         <h3>{story.title}</h3>
         <span className="story-excerpt">{story.excerpt}</span>
         <span className="story-more">
-          {to ? 'Read the story' : 'Read the full story on Instagram'} <ArrowRight aria-hidden="true" />
+          {to ? "Read the story" : "Read the full story on Instagram"}{" "}
+          <ArrowRight aria-hidden="true" />
         </span>
       </span>
     </>
@@ -223,7 +285,7 @@ export function StoryCard({ story, delay = 0, to, href }: { story: NewsItem; del
     <Reveal delay={delay} as="li" className="story-card">
       <a
         className="story-card-inner"
-        href={href ?? 'https://www.instagram.com/racmenengai/'}
+        href={href ?? "https://www.instagram.com/racmenengai/"}
         target="_blank"
         rel="noopener noreferrer"
         aria-label={readLabel}
@@ -242,26 +304,29 @@ export function OpportunityCard({ compact = false }: { compact?: boolean }) {
     return () => clearInterval(t);
   }, []);
 
-  const kicker = 'Fellowship';
+  const kicker = "Fellowship";
   const meta = (
     <div className="opportunity-meta">
       <span>
         <Clock aria-hidden="true" /> {meetingTimeLabel()} · East Africa Time
       </span>
       <span>
-        <MapPin aria-hidden="true" /> {CLUB.city.split(',')[0]} · casual
+        <MapPin aria-hidden="true" /> {CLUB.city.split(",")[0]} · casual
       </span>
     </div>
   );
 
   if (!snapshot.ok) {
     return (
-      <Reveal className={`opportunity-card${compact ? ' opportunity-card-compact' : ''}`} as="article">
+      <Reveal
+        className={`opportunity-card${compact ? " opportunity-card-compact" : ""}`}
+        as="article"
+      >
         <span className="opportunity-kicker">{kicker}</span>
         <h3>Attend a fellowship</h3>
         <p className="opportunity-note">
-          Fellowship every {CLUB.meeting.dayLabel}, {meetingTimeLabel()} in {CLUB.city.split(',')[0]}. Guests are
-          always welcome.
+          Fellowship every {CLUB.meeting.dayLabel}, {meetingTimeLabel()} in{" "}
+          {CLUB.city.split(",")[0]}. Guests are always welcome.
         </p>
         <div className="opportunity-actions">
           <ButtonLink to="/membership" variant="primary">
@@ -277,9 +342,12 @@ export function OpportunityCard({ compact = false }: { compact?: boolean }) {
 
   const s = snapshot.status;
 
-  if (s.kind === 'override') {
+  if (s.kind === "override") {
     return (
-      <Reveal className={`opportunity-card${compact ? ' opportunity-card-compact' : ''}`} as="article">
+      <Reveal
+        className={`opportunity-card${compact ? " opportunity-card-compact" : ""}`}
+        as="article"
+      >
         <span className="opportunity-kicker">Special announcement</span>
         <h3>Fellowship update</h3>
         <p className="opportunity-note">{s.message}</p>
@@ -292,15 +360,20 @@ export function OpportunityCard({ compact = false }: { compact?: boolean }) {
     );
   }
 
-  if (s.kind === 'live') {
+  if (s.kind === "live") {
     return (
-      <Reveal className={`opportunity-card${compact ? ' opportunity-card-compact' : ''}`} as="article">
+      <Reveal
+        className={`opportunity-card${compact ? " opportunity-card-compact" : ""}`}
+        as="article"
+      >
         <span className="opportunity-kicker">Right now</span>
         <h3>Fellowship is happening now</h3>
         <p className="opportunity-count">
           <span className="oc-day">Happening now</span>
           <span className="oc-date">{formatMeetingDate(s.start)}</span>
-          <span className="oc-note">Fellowship runs until 6:30 PM — come through now, guests welcome.</span>
+          <span className="oc-note">
+            Fellowship runs until 6:30 PM — come through now, guests welcome.
+          </span>
         </p>
         {meta}
         <div className="opportunity-actions">
@@ -318,12 +391,15 @@ export function OpportunityCard({ compact = false }: { compact?: boolean }) {
   const now = new Date();
   const day = meetingDayLabel(s.start, now);
   const note =
-    s.kind === 'today'
+    s.kind === "today"
       ? `Fellowship starts today at 5:30 PM — see you there ${describeCountdown(s.start, s.end, now)}.`
       : `Fellowship runs ${meetingTimeLabel()} — see you there ${describeCountdown(s.start, s.end, now)}.`;
 
   return (
-    <Reveal className={`opportunity-card${compact ? ' opportunity-card-compact' : ''}`} as="article">
+    <Reveal
+      className={`opportunity-card${compact ? " opportunity-card-compact" : ""}`}
+      as="article"
+    >
       <span className="opportunity-kicker">This Thursday</span>
       <h3>Attend a fellowship</h3>
       <p className="opportunity-count">
@@ -341,7 +417,8 @@ export function OpportunityCard({ compact = false }: { compact?: boolean }) {
         </ButtonLink>
       </div>
       <p className="opportunity-note">
-        Guests are welcome — come to three meetings to get a feel for the family before joining.
+        Guests are welcome — come to three meetings to get a feel for the family
+        before joining.
       </p>
     </Reveal>
   );
@@ -353,7 +430,7 @@ export function FaqAccordion({ faqs }: { faqs: Faq[] }) {
   return (
     <div className="faq-list">
       {faqs.map((f, i) => (
-        <Reveal key={f.q} delay={i * 40} className="faq-item" as="div" >
+        <Reveal key={f.q} delay={i * 40} className="faq-item" as="div">
           <h3 className="faq-heading">
             <button
               className="faq-q"
@@ -366,7 +443,13 @@ export function FaqAccordion({ faqs }: { faqs: Faq[] }) {
               <ChevronDown className="faq-chevron" aria-hidden="true" />
             </button>
           </h3>
-          <div className="faq-a" id={`faq-panel-${i}`} role="region" aria-labelledby={`faq-button-${i}`} hidden={open !== i}>
+          <div
+            className="faq-a"
+            id={`faq-panel-${i}`}
+            role="region"
+            aria-labelledby={`faq-button-${i}`}
+            hidden={open !== i}
+          >
             <p>{f.a}</p>
           </div>
         </Reveal>
@@ -380,7 +463,12 @@ export function AudiencePaths({ paths }: { paths: AudiencePath[] }) {
   return (
     <div className="audience-grid">
       {paths.map((p, i) => (
-        <Reveal delay={i * 80} className="audience-card" as="article" key={p.id}>
+        <Reveal
+          delay={i * 80}
+          className="audience-card"
+          as="article"
+          key={p.id}
+        >
           <h3>{p.title}</h3>
           <p>{p.text}</p>
           <ButtonLink to={p.href} variant="secondary">

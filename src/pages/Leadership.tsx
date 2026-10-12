@@ -1,16 +1,16 @@
 /**
  * Leadership — current board and the presidents who built the club.
  */
-import { ArrowRight } from 'lucide-react';
-import { LEADERS, PAGE_INTROS } from '../data';
-import { ButtonLink, PageHero, PageMeta } from '../components/ui';
-import { LeaderCard } from '../components/cards';
-import { Reveal } from '../hooks';
+import { ArrowRight } from "lucide-react";
+import { LEADERS, PAGE_INTROS } from "../data";
+import { ButtonLink, PageHero, PageMeta } from "../components/ui";
+import { LeaderCard } from "../components/cards";
+import { Reveal } from "../hooks";
 
 export default function LeadershipPage() {
   const intro = PAGE_INTROS.leadership;
-  const board = LEADERS.filter((l) => l.kind === 'board');
-  const past = LEADERS.filter((l) => l.kind === 'past');
+  const board = LEADERS.filter((l) => l.kind === "board");
+  const past = LEADERS.filter((l) => l.kind === "past" && !l.confirm);
 
   return (
     <>
@@ -20,10 +20,22 @@ export default function LeadershipPage() {
         <div className="container">
           <Reveal>
             <div className="section-head-block">
-              <span className="eyebrow">Current leadership</span>
-              <h2 className="sec-title">Leading today</h2>
+              <span className="eyebrow">2026–2027 Rotary year</span>
+              <h2 className="sec-title">Reported club presidency</h2>
             </div>
           </Reveal>
+          <p className="leadership-verification">
+            Joyce’s{" "}
+            <a
+              href="https://ke.linkedin.com/in/joyce-wanjiku-nguru"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              public account
+            </a>{" "}
+            reports her installation on 6–7 June 2026. The full current board
+            roster and approved portraits await confirmation from the club.
+          </p>
           <div className="leaders-grid">
             {board.map((l, i) => (
               <LeaderCard key={l.name} leader={l} delay={i * 80} />

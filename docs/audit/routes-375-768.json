@@ -1,0 +1,738 @@
+[
+  {
+    "path": "/",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/about",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/about/district-9215",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/rotary",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/projects",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/awards",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/leadership",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/news",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/events",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/membership",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/membership/orientation",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/contact",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/partnerships",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/privacy",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/projects/adopt-a-river",
+    "brokenImages": [],
+    "clientWidth": 375,
+    "documentWidth": 375,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/projects/mother-packs",
+    "brokenImages": [],
+    "clientWidth": 375,
+    "documentWidth": 375,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/projects/limuko-girls",
+    "brokenImages": [],
+    "clientWidth": 375,
+    "documentWidth": 375,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/projects/ndarugu-cleanup",
+    "brokenImages": [],
+    "clientWidth": 375,
+    "documentWidth": 375,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/projects/peace-fest",
+    "brokenImages": [],
+    "clientWidth": 375,
+    "documentWidth": 375,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/projects/street-families",
+    "brokenImages": [],
+    "clientWidth": 375,
+    "documentWidth": 375,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/news/peace-in-colour-nakuru",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/news/nakuru-city-cleanup",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/events/peace-in-colour-2025",
+    "brokenImages": [],
+    "clientWidth": 364,
+    "documentWidth": 364,
+    "h1": 1,
+    "width": 375
+  },
+  {
+    "path": "/",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/about",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/about/district-9215",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/rotary",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/projects",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/awards",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/leadership",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/news",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/events",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/membership",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/membership/orientation",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/contact",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/partnerships",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/privacy",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/projects/adopt-a-river",
+    "brokenImages": [],
+    "clientWidth": 390,
+    "documentWidth": 390,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/projects/mother-packs",
+    "brokenImages": [],
+    "clientWidth": 390,
+    "documentWidth": 390,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/projects/limuko-girls",
+    "brokenImages": [],
+    "clientWidth": 390,
+    "documentWidth": 390,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/projects/ndarugu-cleanup",
+    "brokenImages": [],
+    "clientWidth": 390,
+    "documentWidth": 390,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/projects/peace-fest",
+    "brokenImages": [],
+    "clientWidth": 390,
+    "documentWidth": 390,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/projects/street-families",
+    "brokenImages": [],
+    "clientWidth": 390,
+    "documentWidth": 390,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/news/peace-in-colour-nakuru",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/news/nakuru-city-cleanup",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/events/peace-in-colour-2025",
+    "brokenImages": [],
+    "clientWidth": 379,
+    "documentWidth": 379,
+    "h1": 1,
+    "width": 390
+  },
+  {
+    "path": "/",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/about",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/about/district-9215",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/rotary",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/projects",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/awards",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/leadership",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/news",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/events",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/membership",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/membership/orientation",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/contact",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/partnerships",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/privacy",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/projects/adopt-a-river",
+    "brokenImages": [],
+    "clientWidth": 430,
+    "documentWidth": 430,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/projects/mother-packs",
+    "brokenImages": [],
+    "clientWidth": 430,
+    "documentWidth": 430,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/projects/limuko-girls",
+    "brokenImages": [],
+    "clientWidth": 430,
+    "documentWidth": 430,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/projects/ndarugu-cleanup",
+    "brokenImages": [],
+    "clientWidth": 430,
+    "documentWidth": 430,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/projects/peace-fest",
+    "brokenImages": [],
+    "clientWidth": 430,
+    "documentWidth": 430,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/projects/street-families",
+    "brokenImages": [],
+    "clientWidth": 430,
+    "documentWidth": 430,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/news/peace-in-colour-nakuru",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/news/nakuru-city-cleanup",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/events/peace-in-colour-2025",
+    "brokenImages": [],
+    "clientWidth": 419,
+    "documentWidth": 419,
+    "h1": 1,
+    "width": 430
+  },
+  {
+    "path": "/",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/about",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/about/district-9215",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/rotary",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/projects",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/awards",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/leadership",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/news",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/events",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/membership",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/membership/orientation",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/contact",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/partnerships",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/privacy",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/projects/adopt-a-river",
+    "brokenImages": [],
+    "clientWidth": 768,
+    "documentWidth": 768,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/projects/mother-packs",
+    "brokenImages": [],
+    "clientWidth": 768,
+    "documentWidth": 768,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/projects/limuko-girls",
+    "brokenImages": [],
+    "clientWidth": 768,
+    "documentWidth": 768,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/projects/ndarugu-cleanup",
+    "brokenImages": [],
+    "clientWidth": 768,
+    "documentWidth": 768,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/projects/peace-fest",
+    "brokenImages": [],
+    "clientWidth": 768,
+    "documentWidth": 768,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/projects/street-families",
+    "brokenImages": [],
+    "clientWidth": 768,
+    "documentWidth": 768,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/news/peace-in-colour-nakuru",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/news/nakuru-city-cleanup",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  },
+  {
+    "path": "/events/peace-in-colour-2025",
+    "brokenImages": [],
+    "clientWidth": 757,
+    "documentWidth": 757,
+    "h1": 1,
+    "width": 768
+  }
+]

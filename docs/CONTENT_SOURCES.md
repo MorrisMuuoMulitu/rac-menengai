@@ -1,0 +1,28 @@
+# Content sources and publication decisions
+
+`content/social/sources.json` records exact source URLs, publication/event dates, confidence and caveats. `content/projects.json` records provenance for the six preserved project routes. `src/data.ts` retains club identity, local membership fees and orientation content. The old CONTENT_AUDIT.md is a historical snapshot whose “verified” labels are not sufficient evidence for new publication.
+
+## Research leads
+
+| Lead | Evidence | Decision |
+|---|---|---|
+| Presidential installation, 6–7 June 2026 | Joyce Wanjiku Nguru’s public LinkedIn profile reports 2026–2027 presidency. | Presidency page says publicly reported; authoritative board roster still pending. New installation story remains draft. |
+| Nexora BloomX, 2 July 2026 | ZeroPlastic organiser report published 7 August 2026 names Menengai’s Development Director, without individual name. | Curated story/event drafts. Representative and exact role need club confirmation. |
+| Peace in Colour, 27 September 2025 | A4C report published 30 September names Menengai as contributor and Janet Nkirote as panel moderator. | Existing public activity corrected, sourced and given a story/event detail page. Joint contribution is explicit. |
+| Kabati medical camp, 8 March 2025 | Rotaract Kenya post names Naivasha as organiser and Menengai among partners. | Draft. Reported 541 residents belongs to the partnership; publication timestamp unavailable. |
+| Nakuru city clean-up | County report published 9 February 2024 names Menengai among participants. | Existing story corrected and sourced. Brief’s proposed 10 February event date is not used; source does not independently establish it. |
+
+No latest-five-posts claim is made. The 11 discovered social records are drafts because their captions/timestamps are incomplete. No third-party article or photo was copied wholesale. New externally researched stories are not visible or bundled into the public client until approved. `scripts/prepare-content.mjs` generates a public-only input; build verification excludes drafts from routes and output.
+
+## Outstanding club confirmations
+
+- Full 2026–2027 board, approved officer biographies and portraits.
+- Official club logo and photo permissions/credits.
+- Charter date: old records conflict between 2015 and 2016; foundingDate and homepage decade counter removed.
+- Project dates/counts, especially Limuko and Bondeni; adoption poster appears to show 2023 while archive year is 2022.
+- Existing award certificates and exact labels/years. Award archive remains labelled as an archive requiring confirmation.
+- Confirm local membership process and whether orientation is required. The existing course is preserved as learning material; it is not presented as a Rotary-wide requirement.
+- Meeting venue, cancellations and phone/WhatsApp number. No location pin or invented contact number is displayed.
+- Email-delivery service, sender-domain approval and inbox-retention policy. Email address is from the public Facebook intro; deliverability has not been tested by sending a message.
+
+The membership amounts (KES 3,000 yearly and KES 500 pin) were explicitly club-provided in the pre-existing audit and remain informational. No payment destination or donation channel is introduced.
