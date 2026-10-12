@@ -77,6 +77,14 @@
       "dest": "/projects/adopt-a-river/index.html"
     },
     {
+      "src": "^/projects/pangani-special-school/?$",
+      "dest": "/projects/pangani-special-school/index.html"
+    },
+    {
+      "src": "^/projects/book-club/?$",
+      "dest": "/projects/book-club/index.html"
+    },
+    {
       "src": "^/projects/mother-packs/?$",
       "dest": "/projects/mother-packs/index.html"
     },

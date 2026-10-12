@@ -42,5 +42,27 @@
     "sourceUrl": null,
     "sourceConfidence": "inherited-record",
     "verification": "Photo retained from archive. Exact date and media attribution need confirmation."
+  },
+  {
+    "slug": "pangani-special-school",
+    "status": "active",
+    "publicationStatus": "published-existing",
+    "role": "club activity at a partner school",
+    "date": null,
+    "yearLabel": "2026",
+    "sourceUrl": null,
+    "sourceConfidence": "club-supplied-photographs",
+    "verification": "Narrative drawn from the club's own art day and Mazingira Day events (September and October 2026), and the photographs supplied for them."
+  },
+  {
+    "slug": "book-club",
+    "status": "active",
+    "publicationStatus": "published-existing",
+    "role": "internal club programme",
+    "date": null,
+    "yearLabel": "2026",
+    "sourceUrl": null,
+    "sourceConfidence": "club-supplied-photographs",
+    "verification": "Drawn from the club's Q1 activities bulletin: Book Club Review every second Sunday, anniversary camping affair in October 2026."
   }
 ]

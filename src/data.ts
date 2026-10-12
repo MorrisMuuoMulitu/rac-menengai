@@ -768,6 +768,36 @@ export const FINAL_CTA = {
 /* ============================= Projects ============================= */
 export const PROJECTS: Project[] = [
   {
+    slug: "pangani-special-school",
+    title: "Pangani Special School",
+    tag: "Education",
+    year: "2026",
+    image: "/images/events/pangani-art-day-2026/pangani-art-day-2026-drawings-held-up.webp",
+    summary:
+      "Art days and environmental work with learners at Pangani Special School in Nakuru.",
+    detail:
+      "The club's ongoing relationship with Pangani Special School: an art day in September 2026 where learners drew, coloured and showed their work, and Mazingira Day in October 2026 when members and learners planted seedlings and talked about conservation. Both visits put the learners at the centre — making, planting and presenting their own work.",
+    location: "Pangani Special School, Nakuru",
+    areasOfFocus: ["education", "environment"],
+    reached: ["Learners at Pangani Special School"],
+    caption: undefined,
+  },
+  {
+    slug: "book-club",
+    title: "Book Club Review",
+    tag: "Community",
+    year: "2026",
+    image: "",
+    summary:
+      "Reading, learning and fellowship — every second Sunday of the month.",
+    detail:
+      "The club's Book Club meets for a review every second Sunday of the month, and marked its anniversary in October 2026 with a camping affair for members.",
+    location: "Nakuru",
+    areasOfFocus: ["education"],
+    reached: ["Members and guests"],
+    caption: undefined,
+  },
+  {
     slug: "adopt-a-river",
     title: "Adopt-a-River",
     tag: "Environment",
@@ -801,16 +831,16 @@ export const PROJECTS: Project[] = [
   },
   {
     slug: "mother-packs",
-    title: "Mother Packs at Bondeni Maternity",
+    title: "Mother Packs",
     tag: "Health",
     year: "2026",
     image:
       "/images/events/mother-pack-kabatini-2026/kabatini-2026-group-with-packs.webp",
     summary:
-      "Mother packs for new mothers and their babies at Bondeni Maternity, launching our Rotary year in service.",
+      "Mother packs of essentials for new mothers and their babies, delivered at Bondeni and Kabatini Maternity.",
     detail:
       "To open the 2026 Rotary year, members assembled and distributed mother packs — diapers, wraps, soap and essentials — to new mothers at Bondeni Maternity in Nakuru. Each pack carries a simple message: practical support for a new family.",
-    location: "Bondeni Maternity, Nakuru",
+    location: "Bondeni and Kabatini Maternity, Nakuru",
     areasOfFocus: ["maternal"],
     reached: ["New mothers and their babies at Bondeni Maternity"],
     caption: undefined,
