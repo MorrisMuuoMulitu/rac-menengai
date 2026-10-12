@@ -104,11 +104,12 @@ export function Header() {
             {l.label}
           </NavLink>
         ))}
-        <Link to="/membership" onClick={() => setOpen(false)}>
-          Join the club
+        {/* Extras the compact nav has no room for. Leadership and Membership
+            are primary items above, so they are not repeated here — the course
+            is the part of membership that is not in the bar. */}
+        <Link to="/membership/orientation" onClick={() => setOpen(false)}>
+          New member course
         </Link>
-        {/* Extras the compact nav has no room for. Leadership is already a
-            primary item above, so it is not repeated here. */}
         <Link to="/awards" onClick={() => setOpen(false)}>
           Awards &amp; recognition
         </Link>
