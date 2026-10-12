@@ -44,6 +44,7 @@ Outstanding:
   dark backgrounds; the white plate is a workaround, not the preferred treatment.
 - The lockup carries the Rotary year theme, so **replace the file when the theme changes** in
   2027/28 (the emblem and social card derive from it too).
-- The footer badge needs a meaning: **confirm what "Thee Magicals" is** (a club initiative,
-  performing group, partner?) so the alt text and any caption are accurate, and confirm the club
-  has permission to display the mark on its public site — it is not a Rotary asset.
+- The footer badge's meaning is confirmed by the club: **"Thee Magicals…" is the club mantra,
+  the slogan members say when they meet.** It is used as the homepage headline (animated) and as
+  the footer badge, and its alt text reads "Thee Magicals — the club mantra". Permission to
+  display the artwork publicly is still the club's to confirm, since it is not a Rotary asset.

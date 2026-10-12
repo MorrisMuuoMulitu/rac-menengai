@@ -122,9 +122,8 @@ export function Footer() {
     <footer className="site-footer">
       <div className="container footer-top">
         <div className="footer-brand">
-          {/* Club badge supplied with the logo. Alt text is the supplied name
-              only — tell us what it represents and it can be labelled
-              properly (see docs/BRANDING_VERIFICATION.md). */}
+          {/* The club mantra as supplied artwork: "Thee Magicals…", the slogan
+              members say when they meet (see docs/BRANDING_VERIFICATION.md). */}
           <picture>
             <source
               srcSet="/images/branding/thee-magicals.webp"
@@ -133,7 +132,7 @@ export function Footer() {
             <img
               className="footer-magicals"
               src="/images/branding/thee-magicals.png"
-              alt="Thee Magicals"
+              alt="Thee Magicals — the club mantra"
               width={203}
               height={219}
             />

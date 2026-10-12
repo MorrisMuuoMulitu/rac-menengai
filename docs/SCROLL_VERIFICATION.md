@@ -66,8 +66,15 @@ Rules that keep it safe:
 - **The field behind the copy** exists because translating the panel exposed a pale gap where it
   had been; the field is painted statically so the exit reads as text leaving a fixed ground.
 
+The headline is the club mantra, so it also assembles: each line rises out of its own mask in
+sequence (880ms, second line +130ms), the ellipsis ticks in over three beats (`steps(3)`), then
+breathes on a 3.6s loop. The mask carries extra bottom padding so the descender of "g" is not
+clipped, which is the usual failure of masked type reveals. Accessible text stays
+"Thee Magicals…" and reduced motion renders it settled.
+
 Tuning lives in four places: the keyframe distances, `animation-range`, the `scale()` in
-`hero-photo-deepen`, and the pointer multipliers in `.hero-copy-inner` / `.hero-photo`.
+`hero-photo-deepen`, and the pointer multipliers in `.hero-copy-inner` / `.hero-photo` (plus the
+mantra timings in `hero-line-rise`, `hero-dots-tick` and `hero-dots-breathe`).
 
 ## Last run
 
