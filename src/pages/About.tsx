@@ -62,7 +62,7 @@ export default function AboutPage() {
                 {CLUB.name} is a member of Rotary International’s global
                 Rotaract family — a vibrant club of young professionals and
                 students, roughly 18 and over, living the motto{" "}
-                <em>{CLUB.motto}</em>. We are chartered by{" "}
+                <em>{CLUB.motto}</em>. We are sponsored by{" "}
                 <strong>{CLUB.sponsor}</strong> and part of {CLUB.district}.
               </p>
             </Reveal>
@@ -135,9 +135,9 @@ export default function AboutPage() {
             <div className="rotary-note">
               <p>
                 Rotaract is Rotary’s young-leaders arm for adults aged 18 and
-                over. We run our own club leadership, sponsored by a Rotary club
-                — for us, {CLUB.sponsor} — and we work inside Rotary’s seven
-                areas of focus, from the environment to maternal health to
+                over. We run our own club leadership, supported by our sponsor —
+                for us, {CLUB.sponsor} — and we work inside Rotary’s seven areas
+                of focus, from the environment to maternal health to
                 peacebuilding.
               </p>
             </div>
@@ -199,7 +199,9 @@ export default function AboutPage() {
         <div className="container">
           <div className="section-head-block">
             <span className="eyebrow">Our mother club</span>
-            <h2 className="sec-title">Chartered by the Rotary Club of Nakuru</h2>
+            <h2 className="sec-title">
+              Sponsored by the Rotary Club of Nakuru
+            </h2>
             <p className="section-lead">{MOTHER_CLUB.summary}</p>
           </div>
           <dl className="mother-club-details">

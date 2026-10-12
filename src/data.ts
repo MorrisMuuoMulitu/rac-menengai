@@ -661,7 +661,7 @@ export const ROTARY = {
     },
     {
       title: "Community service",
-      text: "Projects where we live — the river cleanups, mother packs and school visits.",
+      text: "Projects where we live — mother packs, tree planting and school visits.",
     },
     {
       title: "International service",
@@ -765,7 +765,8 @@ export const PROJECTS: Project[] = [
     title: "Pangani Special School",
     tag: "Education",
     year: "2026",
-    image: "/images/events/pangani-art-day-2026/pangani-art-day-2026-drawings-held-up.webp",
+    image:
+      "/images/events/pangani-art-day-2026/pangani-art-day-2026-drawings-held-up.webp",
     summary:
       "Art days and environmental work with learners at Pangani Special School in Nakuru.",
     detail:
@@ -837,7 +838,6 @@ export const PROJECT_TAGS = [
   "All",
   ...Array.from(new Set(PROJECTS.map((p) => p.tag))),
 ] as string[];
-
 
 /**
  * How club projects are paid for. The fundraising line is already published on
@@ -1027,7 +1027,6 @@ export const LEADERS: Leader[] = [
   },
 ];
 
-
 /* ============================= Partners ============================= */
 export const PARTNERS: Partner[] = [
   { name: "Rotary Club of Nakuru" },
@@ -1055,8 +1054,8 @@ export const JOIN_STEPS: JoinStep[] = [
     text: "Join one hands-on project — a cleanup, a donation drive, a school visit. Feel the work.",
   },
   {
-    title: "Complete new member orientation",
-    text: "Work through our short course about Rotaract and RAC Menengai — about 20 minutes, at your own pace.",
+    title: "Get to know the club",
+    text: "Explore our short orientation course at your own pace. Ask the membership team how they confirm orientation before induction.",
   },
   {
     title: "Get inducted",
@@ -1082,7 +1081,7 @@ export const MEMBERSHIP = {
 };
 
 /* ============================= New member orientation =============================
- * A short club-owned course completed before induction. Every statement here is
+ * A short club-owned course; officers confirm induction requirements. Every statement here is
  * drawn from facts already verified elsewhere in this file; anything the club
  * still needs to decide is marked CONFIRM and listed in docs/CONTENT_AUDIT.md.
  * ============================================================================ */
@@ -1117,6 +1116,10 @@ export const ORIENTATION = {
   passMark: 8,
   sources: [
     {
+      label: "Rotary — Rotaract sponsorship and age policy",
+      href: "https://my-cms.rotary.org/en/recent-rotaract-policy-updates?embed=true",
+    },
+    {
       label: "Rotary Learning Center — official courses",
       href: "https://learn.rotary.org",
     },
@@ -1134,7 +1137,7 @@ export const ORIENTATION = {
       blocks: [
         {
           kind: "p",
-          text: `The Rotaract Club of Menengai (RAC Menengai) is a service club of young professionals and students in Nakuru, Kenya. We are chartered by the Rotary Club of Nakuru and part of ${CLUB.district}.`,
+          text: `The Rotaract Club of Menengai (RAC Menengai) is a service club of young professionals and students in Nakuru, Kenya. We are sponsored by the Rotary Club of Nakuru and part of ${CLUB.district}.`,
         },
         {
           kind: "list",
@@ -1160,7 +1163,7 @@ export const ORIENTATION = {
       blocks: [
         {
           kind: "p",
-          text: "Rotaract is Rotary’s service programme for young leaders. Rotaract clubs are sponsored by a Rotary club, run their own leadership, and share Rotary’s motto and spirit of service.",
+          text: "Rotaract clubs are part of Rotary International. Adults aged 18 and over lead their own clubs, develop skills and serve their communities. Clubs can be established with or without a sponsor; Menengai is sponsored by the Rotary Club of Nakuru.",
         },
         {
           kind: "p",
@@ -1168,7 +1171,7 @@ export const ORIENTATION = {
         },
         {
           kind: "p",
-          text: `We belong to ${CLUB.district} — a district established for the 2026/27 Rotary year across West of Nairobi, Western Kenya and South Sudan, with more than 100 clubs and 3,000+ Rotarians. Its first District Governor is Saad Rahman (2026/27).`,
+          text: `We belong to ${CLUB.district} — a district established for the 2026/27 Rotary year across West of Nairobi, Western Kenya and South Sudan, with clubs working together across the region. Its first District Governor is Saad Rahman (2026/27).`,
         },
         {
           kind: "list",
@@ -1184,7 +1187,7 @@ export const ORIENTATION = {
     {
       id: "how-we-serve",
       title: "How we serve",
-      summary: "The four areas our service falls into, with real examples.",
+      summary: "Our service in Nakuru, and how to think about a project.",
       minutes: 4,
       blocks: [
         {
@@ -1203,6 +1206,14 @@ export const ORIENTATION = {
         {
           kind: "p",
           text: "Projects are member-led: members propose, plan and run them, with officers and our sponsor club supporting along the way.",
+        },
+        {
+          kind: "p",
+          text: "A project starts by listening to the people affected, then agreeing on a plan, roles and resources. After the activity, follow up: seedlings planted are an activity; surviving trees are a result that needs checking.",
+        },
+        {
+          kind: "note",
+          text: "Rotary’s five avenues of service describe how we contribute. Its seven areas of focus describe the cause a project addresses. Community service at a school can support education and the environment at the same time.",
         },
       ],
     },
@@ -1237,7 +1248,7 @@ export const ORIENTATION = {
           items: [
             "Attend three fellowships (Thursdays, 5:30–6:30 PM).",
             "Serve on one project — a cleanup, a donation drive, a school visit.",
-            "Complete this orientation course.",
+            "Explore orientation and confirm the induction requirements with an officer.",
             "Get inducted: take the oath, receive your pin, and start with a mentor.",
           ],
         },
@@ -1247,7 +1258,7 @@ export const ORIENTATION = {
         },
         {
           kind: "note",
-          text: "Our club requires this course before induction. Completion is confirmed by an officer — keep the record you receive at the end of the course.",
+          text: "This course helps you get to know the club. Ask the membership team how they confirm orientation and induction. The completion record is a learning record, not proof of membership.",
         },
       ],
     },
@@ -1266,7 +1277,7 @@ export const ORIENTATION = {
           items: [
             "Community — we show up for the people around us, from new mothers at Bondeni to families on the streets of Nakuru.",
             "Leadership — mentorship, our book club and professional-development sessions grow professionals and citizens of impact.",
-            "Service — Service Above Self, whether adopting a river, planting trees or championing diversity, equity and inclusion.",
+            "Service — Service Above Self, from mother pack distributions to planting with learners at Pangani Special School.",
           ],
         },
         {
@@ -1348,7 +1359,8 @@ export const ORIENTATION = {
     },
     {
       id: "q-pangani",
-      question: "Which school does the club work with on art and Mazingira Day?",
+      question:
+        "Which school does the club work with on art and Mazingira Day?",
       options: [
         "Limuko High & Primary School",
         "Pangani Special School",
@@ -1374,16 +1386,16 @@ export const ORIENTATION = {
     },
     {
       id: "q-path",
-      question: "What are the steps to membership at RAC Menengai?",
+      question: "Who confirms your induction into RAC Menengai?",
       options: [
         "Pay a fee and sign up online",
         "Be invited by an existing member",
         "Attend a single meeting",
-        "Three fellowships, one project, this orientation course, then induction",
+        "A club officer, after confirming the membership steps",
       ],
       correctIndex: 3,
       explanation:
-        "Three fellowships, one project, the orientation course, then induction.",
+        "An officer confirms the membership steps and induction. An online course record does not automatically confer membership.",
     },
   ] as OrientationQuestion[],
 };
@@ -1409,7 +1421,7 @@ export const VALUES: Value[] = [
   {
     icon: "heart",
     title: "Service",
-    text: "Service Above Self — whether adopting a river, planting trees or championing diversity, equity and inclusion.",
+    text: "Service Above Self — from mother pack distributions to planting with learners at Pangani Special School.",
   },
 ];
 
@@ -1425,7 +1437,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: "How do I become a member?",
-    a: "Four steps: (1) attend three Thursday fellowships, (2) take part in one service project, (3) complete our short new member orientation course, (4) get inducted. Message us on Facebook or Instagram and we will plug you into the next fellowship.",
+    a: "Start with three Thursday fellowships and one service project. Explore the orientation course, then ask the membership team to confirm the requirements and induction. Message us on Facebook or Instagram to arrange your first visit.",
   },
   {
     q: "What does the club actually do?",
@@ -1437,7 +1449,27 @@ export const FAQS: Faq[] = [
   },
   {
     q: "How is Rotaract different from Rotary?",
-    a: "Rotaract is Rotary’s young-leaders arm for adults aged 18 and over, with its own club leadership, sponsored by a Rotary club — ours is the Rotary Club of Nakuru. Same motto, same areas of focus: Service Above Self.",
+    a: "Rotaract and Rotary clubs are both part of Rotary International. Rotaract welcomes adults aged 18 and over, with members leading their own clubs and projects. Menengai’s sponsor is the Rotary Club of Nakuru, and we share Rotary’s motto: Service Above Self.",
+  },
+  {
+    q: "Can I come on my own?",
+    a: "Yes. You do not need to know a member before visiting. Introduce yourself as a first-time guest and ask an officer to help you get started.",
+  },
+  {
+    q: "Do I have to be a student?",
+    a: "No. Adults aged 18 and over from different campuses, professions and backgrounds are welcome. You do not need a particular qualification to visit.",
+  },
+  {
+    q: "How much time should I plan for?",
+    a: "Weekly fellowship is one hour, 5:30–6:30 PM on Thursdays. Projects take additional time and vary by activity. Ask about dates and responsibilities before committing.",
+  },
+  {
+    q: "What should I wear or bring?",
+    a: "Check with an officer for any venue or event requirements. Project days may need specific clothing or equipment; ask before you travel.",
+  },
+  {
+    q: "What if I am unsure about joining?",
+    a: "Use the three free guest fellowships to get to know the club and ask questions. You can decide after visiting; attending as a guest does not automatically enrol you.",
   },
 ];
 
@@ -1471,8 +1503,8 @@ export const PAGE_INTROS: Record<string, PageIntro> = {
   about: {
     eyebrow: "About us",
     title: "Young leaders, rooted in Nakuru",
-    lead: "Chartered by the Rotary Club of Nakuru and part of Rotary International’s global Rotaract family, we have spent a decade turning energy into impact.",
-    description: `Who we are: a Rotaract club of young professionals and students in Nakuru, Kenya, chartered by the Rotary Club of Nakuru and part of ${CLUB.district}.`,
+    lead: "Sponsored by the Rotary Club of Nakuru and part of Rotary International’s global Rotaract family, we have spent a decade turning energy into impact.",
+    description: `Who we are: a Rotaract club of young professionals and students in Nakuru, Kenya, sponsored by the Rotary Club of Nakuru and part of ${CLUB.district}.`,
   },
   projects: {
     eyebrow: "Our programmes",

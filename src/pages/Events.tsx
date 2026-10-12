@@ -4,15 +4,18 @@ import { PUBLIC_EVENTS, dateLabel } from "../content";
 import { PageHero, PageMeta, ButtonLink } from "../components/ui";
 import { fellowship, fellowshipStatus } from "../lib/fellowship";
 import { FELLOWSHIP_OVERRIDE, PROJECTS } from "../data";
-import { downloadCalendar } from "../lib/events";
+import { downloadCalendar, initialEventView } from "../lib/events";
+import { ArrowUpRight } from "lucide-react";
 import NotFoundPage from "./NotFound";
 export default function EventsPage() {
-  const [view, setView] = useState<"upcoming" | "past">("upcoming");
+  const [view, setView] = useState<"upcoming" | "past">(() =>
+    initialEventView(PUBLIC_EVENTS),
+  );
   const now = new Date();
   const records = PUBLIC_EVENTS.filter((e) =>
     view === "past"
       ? new Date(`${e.date}T23:59:59+03:00`) < now
-      : new Date(`${e.date}T23:59:59+03:00`) >= now,
+      : e.status !== "cancelled" && new Date(`${e.date}T23:59:59+03:00`) >= now,
   ).sort((a, b) =>
     view === "past"
       ? b.date.localeCompare(a.date)
@@ -56,10 +59,21 @@ export default function EventsPage() {
             {records.length ? (
               records.map((e) => (
                 <Link
-                  className="event-record"
+                  className={`event-record${e.images.length ? " event-record--photo" : ""}`}
                   to={`/events/${e.slug}`}
                   key={e.slug}
                 >
+                  {e.images[0] && (
+                    <img
+                      className="event-record-photo"
+                      src={e.images[0].thumb || e.images[0].src}
+                      alt={e.images[0].alt}
+                      width={240}
+                      height={180}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  )}
                   <time dateTime={e.date}>{dateLabel(e.date)}</time>
                   <div>
                     <h2>{e.title}</h2>
@@ -70,7 +84,9 @@ export default function EventsPage() {
                         : ""}
                     </p>
                   </div>
-                  <span>{view === "past" ? "Completed" : "View event"}</span>
+                  <span className="event-record-action">
+                    View event <ArrowUpRight size={17} aria-hidden="true" />
+                  </span>
                 </Link>
               ))
             ) : (
@@ -139,9 +155,7 @@ export function FellowshipVisit() {
                   "Thursday fellowship, 17:30–18:30 EAT at Nakuru Athletic Club. Guests are welcome.",
                 status: "scheduled",
               });
-              setFeedback(
-                "Calendar file prepared for Nakuru Athletic Club.",
-              );
+              setFeedback("Calendar file prepared for Nakuru Athletic Club.");
             }}
           >
             Add next fellowship to calendar
@@ -245,9 +259,7 @@ export function EventDetail() {
             <div className="event-gallery-block">
               <h2 className="event-gallery-title">
                 Photographs from the day
-                <span>
-                  {event.images.length} images · supplied by the club
-                </span>
+                <span>{event.images.length} images · supplied by the club</span>
               </h2>
               <ul className="event-gallery">
                 {event.images.map((photo) => (

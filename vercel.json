@@ -37,6 +37,10 @@
       "dest": "/rotary/index.html"
     },
     {
+      "src": "^/learn/?$",
+      "dest": "/learn/index.html"
+    },
+    {
       "src": "^/projects/?$",
       "dest": "/projects/index.html"
     },

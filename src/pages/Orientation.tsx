@@ -1,6 +1,6 @@
 /**
  * New member orientation — a short course about Rotaract and RAC Menengai,
- * required by the club before induction.
+ * with induction requirements confirmed by a club officer.
  *
  * No backend: progress lives in localStorage (degrading to in-memory when
  * storage is unavailable) and completion is confirmed by an officer in person.
@@ -284,6 +284,10 @@ export default function OrientationPage() {
                   ),
                 )}
 
+                <p className="orientation-help">
+                  <Link to="/learn#glossary">Look up a Rotaract term</Link> ·{" "}
+                  <Link to="/learn#service">See service in practice</Link>
+                </p>
                 <div className="orientation-actions no-print">
                   {step.index > 0 ? (
                     <button

@@ -174,7 +174,7 @@ export function ProjectFilter({
 }) {
   return (
     <div className="filter-wrap">
-      <label className="filter-label">Filter projects</label>
+      <span className="filter-label">Filter projects</span>
       <div
         className="filter-row"
         role="group"

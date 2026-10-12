@@ -15,6 +15,7 @@ import {
 import { ButtonLink, PageHero, PageMeta } from "../components/ui";
 import { FaqAccordion, OpportunityCard } from "../components/cards";
 import { ContactForm } from "../components/forms";
+import { FirstVisit } from "../components/FirstVisit";
 import { Reveal } from "../hooks";
 
 export default function MembershipPage() {
@@ -26,13 +27,20 @@ export default function MembershipPage() {
         <ButtonLink to="/contact" variant="secondary" size="sm">
           Ask a question
         </ButtonLink>
+        <ButtonLink to="/learn" variant="secondary" size="sm">
+          Learn about Rotaract
+        </ButtonLink>
       </PageHero>
+
+      <FirstVisit />
 
       <section className="section section-tint">
         <div className="container">
           <div className="section-head-block">
             <span className="eyebrow">What we ask of you</span>
-            <h2 className="sec-title">An hour a week, and a hand on a project</h2>
+            <h2 className="sec-title">
+              An hour a week, and a hand on a project
+            </h2>
             <p className="section-lead">
               Service Above Self is the whole idea, so membership asks for your
               time as well as your dues. Here is the honest version, before you
@@ -152,6 +160,11 @@ export default function MembershipPage() {
                   minutes, plus a {ORIENTATION.questions.length}-question check.
                   Work through it at your own pace; your progress is saved in
                   this browser.
+                </p>
+                <p>
+                  <ButtonLink to="/learn" variant="secondary" size="sm">
+                    Browse the glossary and service guide
+                  </ButtonLink>
                 </p>
                 <ul className="callout-points">
                   {ORIENTATION.modules.slice(0, 4).map((m) => (

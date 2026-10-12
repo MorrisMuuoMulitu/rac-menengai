@@ -8,6 +8,7 @@ export const routes = [
   "/about",
   "/about/district-9215",
   "/rotary",
+  "/learn",
   "/projects",
   "/awards",
   "/leadership",
@@ -27,6 +28,7 @@ const titles: Record<string, string> = {
   "/about/district-9215": "Rotary District 9215",
   "/partnerships": "Partnerships",
   "/privacy": "Privacy",
+  "/learn": "Learn about Rotaract",
   "/404": "Page not found",
 };
 export function render(path: string) {
@@ -38,6 +40,9 @@ export function render(path: string) {
     project?.summary ??
     event?.description ??
     intro?.description ??
+    (path === "/learn"
+      ? "A plain-language Rotaract glossary, a short history and real service stories from Menengai in Nakuru."
+      : undefined) ??
     "Community service, professional development and fellowship with the Rotaract Club of Menengai in Nakuru, Kenya.";
   const canonical = `https://rac-menengai.vercel.app${path === "/" ? "/" : path}`;
   const breadcrumbs =

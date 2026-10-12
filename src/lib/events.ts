@@ -81,3 +81,17 @@ export function downloadCalendar(event: CalendarEvent) {
   link.click();
   setTimeout(() => URL.revokeObjectURL(url), 1000);
 }
+
+/** Prefer real upcoming occasions; otherwise lead with the recent archive. */
+export function initialEventView(
+  records: readonly { date: string; status?: string }[],
+  now = new Date(),
+): "upcoming" | "past" {
+  return records.some(
+    (event) =>
+      event.status !== "cancelled" &&
+      new Date(`${event.date}T23:59:59+03:00`).getTime() >= now.getTime(),
+  )
+    ? "upcoming"
+    : "past";
+}

@@ -52,6 +52,9 @@ export default function RotaryPage() {
         <ButtonLink to="/about/district-9215" variant="primary" size="sm">
           Our district: 9215 <ArrowRight aria-hidden="true" />
         </ButtonLink>
+        <ButtonLink to="/learn" variant="secondary" size="sm">
+          Rotaract glossary &amp; guide
+        </ButtonLink>
         <ButtonLink to="/projects" variant="secondary" size="sm">
           See our projects
         </ButtonLink>

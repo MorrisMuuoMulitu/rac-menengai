@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation } from "react-router-dom";
 import { ArrowUpRight, Instagram, Facebook, Menu, X } from "lucide-react";
 import { CLUB, NAV_LINKS } from "../data";
 import { PUBLIC_ACCOUNTS } from "../content";
-import { useLockBody } from "../hooks";
+import { useLockBody, useScrolled } from "../hooks";
 import { ButtonLink } from "./ui";
 export function AnnouncementBar() {
   return null;
@@ -14,10 +14,17 @@ export function Header() {
   const menu = useRef<HTMLElement>(null);
   const { pathname } = useLocation();
   useLockBody(open);
+  const scrolled = useScrolled(24);
   useEffect(() => setOpen(false), [pathname]);
   useEffect(() => {
     if (!open) return;
     const previous = document.activeElement as HTMLElement;
+    const background = [
+      document.querySelector("main"),
+      document.querySelector("footer"),
+    ].filter(Boolean) as HTMLElement[];
+    const wasInert = background.map((element) => element.hasAttribute("inert"));
+    background.forEach((element) => element.setAttribute("inert", ""));
     menu.current?.querySelector<HTMLAnchorElement>("a")?.focus();
     const key = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
@@ -45,11 +52,16 @@ export function Header() {
     document.addEventListener("keydown", key);
     return () => {
       document.removeEventListener("keydown", key);
+      background.forEach((element, index) => {
+        if (!wasInert[index]) element.removeAttribute("inert");
+      });
       if (previous?.isConnected) previous.focus();
     };
   }, [open]);
   return (
-    <header className="site-header">
+    <header
+      className={`site-header${scrolled ? " is-scrolled" : ""}${open ? " menu-open" : ""}`}
+    >
       <div className="container header-inner">
         <Link to="/" className="brand" aria-label={`${CLUB.name}, home`}>
           {/* The club's official masterbrand lockup. It carries the current
@@ -99,29 +111,41 @@ export function Header() {
         aria-label="Mobile"
         hidden={!open}
       >
-        {NAV_LINKS.map((l) => (
-          <NavLink key={l.href} to={l.href} onClick={() => setOpen(false)}>
-            {l.label}
-          </NavLink>
-        ))}
-        {/* Extras the compact nav has no room for. Leadership and Membership
-            are primary items above, so they are not repeated here — the course
-            is the part of membership that is not in the bar. */}
-        <Link to="/membership/orientation" onClick={() => setOpen(false)}>
-          New member course
-        </Link>
-        <Link to="/awards" onClick={() => setOpen(false)}>
-          Awards &amp; recognition
-        </Link>
-        <Link to="/partnerships" onClick={() => setOpen(false)}>
-          Partnerships
-        </Link>
-        <Link to="/rotary" onClick={() => setOpen(false)}>
-          Rotary worldwide
-        </Link>
-        <Link to="/about/district-9215" onClick={() => setOpen(false)}>
-          Rotary District 9215
-        </Link>
+        <div className="mobile-nav-main">
+          {NAV_LINKS.map((l) => (
+            <NavLink key={l.href} to={l.href} onClick={() => setOpen(false)}>
+              {l.label}
+              <ArrowUpRight size={22} aria-hidden="true" />
+            </NavLink>
+          ))}
+        </div>
+        <div className="mobile-nav-extras">
+          <Link to="/learn" onClick={() => setOpen(false)}>
+            Learn about Rotaract
+          </Link>
+          <Link to="/membership/orientation" onClick={() => setOpen(false)}>
+            New member course
+          </Link>
+          <Link to="/awards" onClick={() => setOpen(false)}>
+            Awards &amp; recognition
+          </Link>
+          <Link to="/partnerships" onClick={() => setOpen(false)}>
+            Partnerships
+          </Link>
+          <Link to="/rotary" onClick={() => setOpen(false)}>
+            Rotary worldwide
+          </Link>
+          <Link to="/about/district-9215" onClick={() => setOpen(false)}>
+            Rotary District 9215
+          </Link>
+        </div>
+        <div className="mobile-nav-visit">
+          <p>Start with a Thursday.</p>
+          <span>5:30–6:30 PM · Nakuru Athletic Club</span>
+          <Link to="/membership#first-visit" onClick={() => setOpen(false)}>
+            Plan your visit <ArrowUpRight size={18} aria-hidden="true" />
+          </Link>
+        </div>
       </nav>
     </header>
   );
@@ -175,6 +199,7 @@ export function Footer() {
           <h2>Get involved</h2>
           <Link to="/membership">Become a member</Link>
           <Link to="/membership/orientation">New member course</Link>
+          <Link to="/learn">Rotaract glossary &amp; guide</Link>
           <Link to="/partnerships">Partner with us</Link>
           <Link to="/leadership">Leadership</Link>
           <Link to="/contact">Contact</Link>

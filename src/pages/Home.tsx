@@ -2,29 +2,30 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight, ArrowRight, Clock, MapPin } from "lucide-react";
 import { PageMeta, ButtonLink } from "../components/ui";
 import { PUBLIC_EVENTS, dateLabel } from "../content";
+import HeroGallery from "../components/HeroGallery";
 
-/**
- * The three most recent events that have photographs — the landing page shows
- * current activity, not the archive. Events without photos are skipped so every
- * card carries an image.
- */
+/** Current club photographs link to their event records. */
 const HERO_LEAD = [
   {
+    title: "Mazingira Day at Pangani",
     src: "/images/events/mazingira-day-pangani-2026/mazingira-2026-group-photo.webp",
     alt: "The club with learners at Pangani Special School on Mazingira Day",
     href: "/events/mazingira-day-pangani-2026",
   },
   {
+    title: "Mother packs at Kabatini",
     src: "/images/events/mother-pack-kabatini-2026/kabatini-2026-group-with-packs.webp",
     alt: "The club and the Rotaract Club of Bahati with mother packs at Kabatini Maternity",
     href: "/events/mother-pack-kabatini-august-2026",
   },
   {
+    title: "Art Day at Pangani",
     src: "/images/events/pangani-art-day-2026/pangani-art-day-2026-drawings-held-up.webp",
     alt: "Learners hold up their drawings at the art day, Pangani Special School",
     href: "/events/art-day-pangani-2026",
   },
   {
+    title: "Presidential Installation",
     src: "/images/events/installation-2026/installation-2026-group-photo.webp",
     alt: "Members and guests at the club's Presidential Installation",
     href: "/events/presidential-installation-june-2026",
@@ -68,36 +69,22 @@ const latestEvents = [...PUBLIC_EVENTS]
   .filter((e) => e.images.length > 0)
   .sort((a, b) => b.date.localeCompare(a.date))
   .slice(0, 3);
-import { useHeroPointer } from "../hooks";
 export default function HomePage() {
-  const heroRef = useHeroPointer<HTMLElement>();
   return (
     <>
       <PageMeta
         title="Rotaract Club of Menengai | Community service in Nakuru"
         description="Meet the Rotaract Club of Menengai: community service, young leadership and Thursday fellowship in Nakuru, Kenya. Join us or partner on a project."
       />
-      <section
-        className="menengai-hero"
-        ref={heroRef}
-        aria-labelledby="home-title"
-      >
-        {/* Depth planes: the copy panel and the photograph sit on separate
-            layers, the wash shifts the ground colour at the midpoint and the
-            scroll timeline lifts the copy away. All of it is additive — the
-            markup below is the full opening state with no animation support. */}
+      <section className="menengai-hero" aria-labelledby="home-title">
         <div className="hero-copy">
           <div className="hero-copy-inner">
             <p className="hero-location">
               <MapPin size={15} aria-hidden="true" /> Nakuru, Kenya
             </p>
-            {/* The club mantra. The two lines rise out of a mask in sequence and
-                the ellipsis ticks in over three beats, then breathes — the
-                phrase members say together at meetings. Accessible text stays
-                "Thee Magicals…" and reduced motion renders it settled. */}
             <h1 id="home-title">
               <span className="hero-line">
-                <span className="hero-line-inner">Thee{" "}</span>
+                <span className="hero-line-inner">Thee </span>
               </span>
               <span className="hero-line">
                 <span className="hero-line-inner">
@@ -120,29 +107,30 @@ export default function HomePage() {
             <p className="hero-signoff">Service Above Self</p>
           </div>
         </div>
-        <figure className="hero-photo">
-          {/* Recent activity, cycling: four current photographs crossfade. The
-              narrower 720px file is served on phones. */}
-          {/* The lead frame is always fully opaque, so the hero can never be
-              caught mid-fade or empty; the other frames cross-fade on top of it. */}
-          {HERO_LEAD.map((photo, index) => (
-            <img
-              key={photo.src}
-              className={index === 0 ? "hero-lead" : "hero-lead hero-cycle"}
-              src={photo.src}
-              srcSet={`${photo.src.replace(".webp", "-720.webp")} 720w, ${photo.src} 1280w`}
-              sizes="(max-width: 760px) 100vw, 57vw"
-              alt={photo.alt}
-              width="1280"
-              height="960"
-              {...(index === 0
-                ? { fetchpriority: "high" }
-                : { loading: "lazy" })}
-            />
-          ))}
-          {/* six more, each a tap away to its own event record */}
-          <ul className="hero-strip">
-            {HERO_STRIP.map((photo) => (
+        <HeroGallery photos={HERO_LEAD} />
+      </section>
+      <div className="fellowship-ribbon">
+        <div className="container ribbon-inner">
+          <p>
+            <Clock size={19} aria-hidden="true" />
+            <strong>Thursdays are for fellowship.</strong>
+            <span>5:30–6:30 PM EAT · Guests welcome</span>
+          </p>
+          <Link to="/membership#first-visit">
+            Plan your first visit <ArrowUpRight size={17} aria-hidden="true" />
+          </Link>
+        </div>
+      </div>
+      <section className="club-camera" aria-labelledby="club-camera-title">
+        <div className="container">
+          <div className="camera-heading">
+            <h2 id="club-camera-title">Club life, in pictures.</h2>
+            <Link to="/events">
+              Explore events <ArrowUpRight size={17} aria-hidden="true" />
+            </Link>
+          </div>
+          <ul className="camera-rail">
+            {HERO_STRIP.map((photo, index) => (
               <li key={photo.src}>
                 <Link to={photo.href}>
                   <img
@@ -153,26 +141,25 @@ export default function HomePage() {
                     loading="lazy"
                     decoding="async"
                   />
+                  <span>
+                    {
+                      [
+                        "Mother packs at Bondeni",
+                        "Mazingira Day",
+                        "Art at Pangani",
+                        "Installation day",
+                        "Menengai & Bahati",
+                        "Planting together",
+                      ][index]
+                    }
+                    <ArrowUpRight size={16} aria-hidden="true" />
+                  </span>
                 </Link>
               </li>
             ))}
           </ul>
-          <figcaption>Recent club activity · 2026</figcaption>
-        </figure>
-        <div className="hero-wash" aria-hidden="true" />
-      </section>
-      <div className="fellowship-ribbon">
-        <div className="container ribbon-inner">
-          <p>
-            <Clock size={19} aria-hidden="true" />
-            <strong>Thursdays are for fellowship.</strong>
-            <span>5:30–6:30 PM EAT · Guests welcome</span>
-          </p>
-          <Link to="/events">
-            Plan your first visit <ArrowUpRight size={17} aria-hidden="true" />
-          </Link>
         </div>
-      </div>
+      </section>
       <section className="section home-intro">
         <div className="container intro-grid">
           <p className="section-label">Our club</p>
@@ -260,9 +247,7 @@ export default function HomePage() {
               <Link to="/projects/book-club">
                 <span className="work-category">Community</span>
                 <h3>Book Club Review</h3>
-                <p>
-                  Reading and fellowship every second Sunday of the month.
-                </p>
+                <p>Reading and fellowship every second Sunday of the month.</p>
                 <ArrowUpRight aria-hidden="true" />
               </Link>
             </div>
@@ -278,9 +263,9 @@ export default function HomePage() {
               <br />a Thursday.
             </h2>
             <p>
-              You don’t need to know anyone before you come. Turn up at
-              Nakuru Athletic Club, sit in on a fellowship, and see whether the
-              club feels right for you.
+              You don’t need to know anyone before you come. Turn up at Nakuru
+              Athletic Club, sit in on a fellowship, and see whether the club
+              feels right for you.
             </p>
             <div className="meet-actions">
               <ButtonLink to="/membership" variant="dark">
@@ -311,7 +296,8 @@ export default function HomePage() {
               className="text-link"
               href="mailto:menengairc@gmail.com?subject=Coming%20to%20a%20Thursday%20fellowship"
             >
-              Tell us you’re coming <ArrowUpRight size={18} aria-hidden="true" />
+              Tell us you’re coming{" "}
+              <ArrowUpRight size={18} aria-hidden="true" />
             </a>
           </div>
         </div>

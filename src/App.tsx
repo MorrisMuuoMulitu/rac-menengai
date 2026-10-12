@@ -23,6 +23,7 @@ import LeadershipPage from "./pages/Leadership";
 import MembershipPage from "./pages/Membership";
 import OrientationPage from "./pages/Orientation";
 import ContactPage from "./pages/Contact";
+import LearnPage from "./pages/Learn";
 import NotFoundPage from "./pages/NotFound";
 
 export default function App() {
@@ -39,6 +40,7 @@ export default function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/about" element={<AboutPage />} />
           <Route path="/about/district-9215" element={<DistrictPage />} />
+          <Route path="/learn" element={<LearnPage />} />
           <Route path="/rotary" element={<RotaryPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/:slug" element={<ProjectDetailPage />} />
