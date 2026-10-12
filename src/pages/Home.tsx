@@ -240,13 +240,14 @@ export default function HomePage() {
                 </span>
               </div>
             </Link>
+            {/* Current programmes only, and nothing that repeats the feature
+                above: this section shows what the club is doing now. */}
             <div className="work-list">
-              <Link to="/projects/ndarugu-cleanup">
-                <span className="work-category">Environment &amp; water</span>
-                <h3>Along River Ndarugu</h3>
+              <Link to="/projects/pangani-special-school">
+                <span className="work-category">Art &amp; environment</span>
+                <h3>Pangani Special School</h3>
                 <p>
-                  A cleanup and conversations with riverside residents about
-                  waste and water.
+                  Art days and Mazingira Day planting with learners in Nakuru.
                 </p>
                 <ArrowUpRight aria-hidden="true" />
               </Link>
@@ -256,10 +257,12 @@ export default function HomePage() {
                 <p>Sanitary supplies and mentorship with students.</p>
                 <ArrowUpRight aria-hidden="true" />
               </Link>
-              <Link to="/projects/mother-packs">
-                <span className="work-category">Maternal health</span>
-                <h3>Mother packs at Bondeni and Kabatini</h3>
-                <p>Essentials and support for mothers welcoming a baby.</p>
+              <Link to="/projects/book-club">
+                <span className="work-category">Community</span>
+                <h3>Book Club Review</h3>
+                <p>
+                  Reading and fellowship every second Sunday of the month.
+                </p>
                 <ArrowUpRight aria-hidden="true" />
               </Link>
             </div>
