@@ -1,16 +1,5 @@
 [
   {
-    "slug": "adopt-a-river",
-    "status": "archived",
-    "publicationStatus": "published-existing",
-    "role": "club archive describes member and partner activity",
-    "date": null,
-    "yearLabel": "2022",
-    "sourceUrl": null,
-    "sourceConfidence": "inherited-record",
-    "verification": "Poster appears to show 2023, while archive says 2022; date unresolved. No new event date inferred."
-  },
-  {
     "slug": "mother-packs",
     "status": "archived",
     "publicationStatus": "published-existing",
@@ -31,17 +20,6 @@
     "sourceUrl": null,
     "sourceConfidence": "inherited-record",
     "verification": "405 figure and year need confirmation. Unrelated city clean-up image removed."
-  },
-  {
-    "slug": "ndarugu-cleanup",
-    "status": "archived",
-    "publicationStatus": "published-existing",
-    "role": "member participation with residents and partners",
-    "date": null,
-    "yearLabel": "2022",
-    "sourceUrl": null,
-    "sourceConfidence": "inherited-record",
-    "verification": "Photo retained from archive. Exact date and media attribution need confirmation."
   },
   {
     "slug": "pangani-special-school",

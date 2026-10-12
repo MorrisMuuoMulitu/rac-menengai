@@ -535,8 +535,7 @@ export const ROTARY = {
       global:
         "Wells, water purification, sanitation infrastructure and hygiene education in the places where access is most limited.",
       local:
-        "Adopt-a-River installed a water filtration set for Barut residents and cleans up River Njoro and River Ndarugu.",
-      projectSlug: "adopt-a-river",
+        "Water and hygiene needs run through our service: supplies for schools, mother packs for new mothers, and conservation work with learners at Pangani Special School.",
     },
     {
       id: "maternal",
@@ -574,8 +573,8 @@ export const ROTARY = {
       global:
         "The newest area of focus, added in 2021: reforestation, freshwater and ocean protection, sustainable agriculture and climate resilience.",
       local:
-        "River cleanups, tree planting, and the waste-disposal infrastructure we leave behind.",
-      projectSlug: "adopt-a-river",
+        "Planting and conservation with learners at Pangani Special School on Mazingira Day.",
+      projectSlug: "pangani-special-school",
     },
   ] as RotaryFocus[],
   polio: {
@@ -715,13 +714,6 @@ export const STATS: Stat[] = [
     year: "2026",
   },
   {
-    value: 2,
-    suffix: "",
-    label: "Rivers adopted",
-    context: "River Njoro & River Ndarugu cleanups",
-    year: "2022",
-  },
-  {
     value: 150,
     suffix: "+",
     label: "Mother packs",
@@ -736,7 +728,7 @@ export const SERVICES: ServiceArea[] = [
     icon: "leaf",
     title: "Environment & water",
     oneLiner:
-      "River cleanups, water filters and waste infrastructure — starting with our Adopt-a-River flagship.",
+      "Planting, conservation and environmental awareness with learners at Pangani Special School.",
   },
   {
     id: "health",
@@ -799,38 +791,6 @@ export const PROJECTS: Project[] = [
     caption: undefined,
   },
   {
-    slug: "adopt-a-river",
-    title: "Adopt-a-River",
-    tag: "Environment",
-    year: "2022",
-    image: "", // old archive photograph — no recent equivalent (see CONTENT_AUDIT.md)
-    summary:
-      "Our flagship environmental project: water filtration, mobilisation and cleanups on River Njoro and River Ndarugu.",
-    detail:
-      "Adopt-a-River is our flagship environmental project, tackling pollution at the source. On River Njoro, members installed a water filtration set for Barut residents, went door-to-door mobilising against single-use plastic, and ran a full cleanup at Mwariki Bridge. Waste-disposal containers now give the community a lasting place to keep the river clean. On River Ndarugu, volunteers and partners cleared solid waste and ran sensitisation on dumping, drainage and safe water handling.",
-    location: "Mwariki Bridge, Barut — River Njoro & River Ndarugu",
-    areasOfFocus: ["wash", "environment"],
-    featured: true,
-    challenge:
-      "Rivers in Nakuru carry untreated waste, plastic and runoff — affecting the communities that live and draw water along them.",
-    reached: [
-      "Residents of Barut and riverside communities along River Njoro and River Ndarugu",
-    ],
-    caption:
-      "Archived Adopt-a-River announcement poster. The date and activity details require confirmation.",
-    results: [
-      "Water filtration system installed for residents of Barut",
-      "Cleanups on River Njoro & River Ndarugu with youth volunteers (2022)",
-      "Community sensitisation on single-use plastic",
-      "Waste-disposal containers for lasting cleanliness",
-    ],
-    partners: [
-      "Nakuru County Government",
-      "Kenya Wildlife Service",
-      "NEMA Kenya",
-    ],
-  },
-  {
     slug: "mother-packs",
     title: "Mother Packs",
     tag: "Health",
@@ -871,25 +831,6 @@ export const PROJECTS: Project[] = [
     ],
     partners: ["Limuko Schools"],
   },
-  {
-    slug: "ndarugu-cleanup",
-    title: "River Ndarugu Cleanup",
-    tag: "Environment",
-    year: "2022",
-    image: "", // old archive photograph — no recent equivalent (see CONTENT_AUDIT.md)
-    summary:
-      "Cleanup and community sensitisation along River Ndarugu with partners and stakeholders.",
-    detail:
-      "Second river adoption: volunteers, partners and riverside residents cleared solid waste along River Ndarugu and ran sensitisation on dumping, drainage and safe water handling.",
-    location: "River Ndarugu",
-    areasOfFocus: ["environment", "wash"],
-    reached: ["Riverside residents and volunteers along River Ndarugu"],
-    caption: "Community cleanup along River Ndarugu.",
-    results: [
-      "Solid waste cleared with volunteers and partners",
-      "Sensitisation on dumping, drainage and safe water",
-    ],
-  },
 ];
 
 export const PROJECT_TAGS = [
@@ -897,7 +838,6 @@ export const PROJECT_TAGS = [
   ...Array.from(new Set(PROJECTS.map((p) => p.tag))),
 ] as string[];
 
-export const FEATURED_PROJECT_SLUG = "adopt-a-river";
 
 /**
  * How club projects are paid for. The fundraising line is already published on
@@ -1254,7 +1194,7 @@ export const ORIENTATION = {
         {
           kind: "list",
           items: [
-            "Environment & water — Adopt-a-River cleanups on River Njoro and River Ndarugu, water filtration for Barut residents, and waste-disposal containers.",
+            "Environment — planting, conservation and environmental awareness with learners at Pangani Special School.",
             "Maternal & child health — mother packs for new mothers at Bondeni Maternity.",
             "Education & girls’ empowerment — sanitary-towel donations and mentorship for Students at Limuko High & Primary School.",
             "Community & environment — cleanups, tree planting and conservation with schools across Nakuru.",
@@ -1407,17 +1347,17 @@ export const ORIENTATION = {
         "Guests may attend three fellowships before deciding — no pressure, no cost.",
     },
     {
-      id: "q-flagship",
-      question: "Which of these is the club’s flagship environmental project?",
+      id: "q-pangani",
+      question: "Which school does the club work with on art and Mazingira Day?",
       options: [
-        "Mother Packs",
-        "Adopt-a-River",
-        "Limuko Schools mentorship",
-        "Book Club Review",
+        "Limuko High & Primary School",
+        "Pangani Special School",
+        "Bondeni Maternity",
+        "Kabatini Maternity",
       ],
       correctIndex: 1,
       explanation:
-        "Adopt-a-River covers River Njoro and River Ndarugu cleanups, water filtration and waste containers.",
+        "Members and learners held an art day at Pangani Special School in September 2026 and planted seedlings there on Mazingira Day in October.",
     },
     {
       id: "q-district-coverage",
@@ -1520,7 +1460,7 @@ export const AUDIENCES: AudiencePath[] = [
   {
     id: "support",
     title: "I want to support a project",
-    text: "Fund or donate to Adopt-a-River, mother packs, girls’ education and more.",
+    text: "Fund or donate to mother packs, girls’ education, and school art and environment work.",
     cta: "Support a project",
     href: "/contact?interest=support-project",
   },
@@ -1539,7 +1479,7 @@ export const PAGE_INTROS: Record<string, PageIntro> = {
     title: "What we run, year after year",
     lead: "The club's ongoing programmes — the work itself, in health, education, environment and peacebuilding. For the dated record of what actually happened, see Events.",
     description:
-      "Verified service projects by the Rotaract Club of Menengai: Adopt-a-River, mother packs at Bondeni Maternity, girls’ education at Limuko schools and more.",
+      "Verified service projects by the Rotaract Club of Menengai: mother packs at Bondeni and Kabatini, girls’ education at Limuko schools, art and environment work at Pangani Special School, and more.",
   },
   awards: {
     eyebrow: "Recognition",

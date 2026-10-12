@@ -27,11 +27,6 @@ const MILESTONES = [
     text: "A year of growth and service under then-president Terry Muigai.",
   },
   {
-    year: "2022",
-    title: "Adopt-a-River launches",
-    text: "Our flagship environmental project begins on River Njoro and River Ndarugu.",
-  },
-  {
     year: "2025",
     title: "Ten years of service",
     text: "The club marks a decade of fellowship and impact across the district.",

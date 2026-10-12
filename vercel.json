@@ -73,10 +73,6 @@
       "dest": "/privacy/index.html"
     },
     {
-      "src": "^/projects/adopt-a-river/?$",
-      "dest": "/projects/adopt-a-river/index.html"
-    },
-    {
       "src": "^/projects/pangani-special-school/?$",
       "dest": "/projects/pangani-special-school/index.html"
     },
@@ -91,10 +87,6 @@
     {
       "src": "^/projects/limuko-girls/?$",
       "dest": "/projects/limuko-girls/index.html"
-    },
-    {
-      "src": "^/projects/ndarugu-cleanup/?$",
-      "dest": "/projects/ndarugu-cleanup/index.html"
     },
     {
       "src": "^/events/presidential-installation-june-2026/?$",
