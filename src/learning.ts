@@ -103,7 +103,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     abbreviation: "",
     category: "Club life",
     definition:
-      "An introduction to the club. Our online course includes six short modules and a quiz, with progress saved in your browser.",
+      "An introduction to the club. Our full course includes 14 lessons, reflection activities and an assessment. A club passcode unlocks the lessons; progress is saved in your browser.",
   },
   {
     term: "Rotaract club",

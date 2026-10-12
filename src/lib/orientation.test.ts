@@ -5,6 +5,7 @@
 import { describe, expect, it } from "vitest";
 import {
   EMPTY_PROGRESS,
+  resumeStep,
   ORIENTATION_STORAGE_KEY,
   clearProgress,
   completionDate,
@@ -161,5 +162,28 @@ describe("completionDate", () => {
   });
   it("returns an empty string for an invalid date", () => {
     expect(completionDate("not-a-date")).toBe("");
+  });
+});
+
+describe("full course resume", () => {
+  it("resumes at the first unfinished lesson and ignores retired lesson ids", () => {
+    expect(resumeStep({ completed: ["old", "a"] }, ["a", "b", "c"])).toEqual({
+      kind: "module",
+      index: 1,
+    });
+  });
+  it("opens the assessment only after every lesson is complete", () => {
+    expect(resumeStep({ completed: ["a", "b"] }, ["a", "b"])).toEqual({
+      kind: "quiz",
+    });
+    expect(resumeStep({ completed: ["a"], passed: true }, ["a", "b"])).toEqual({
+      kind: "module",
+      index: 1,
+    });
+  });
+  it("resumes a completed full course at the record", () => {
+    expect(
+      resumeStep({ completed: ["a", "b"], passed: true }, ["a", "b"]),
+    ).toEqual({ kind: "done" });
   });
 });

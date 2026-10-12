@@ -28,7 +28,7 @@ export interface QuizResult {
   unanswered: number[];
 }
 
-export const ORIENTATION_STORAGE_KEY = "rac-menengai.orientation.v1";
+export const ORIENTATION_STORAGE_KEY = "rac-menengai.orientation.2026.full.v1";
 
 export const EMPTY_PROGRESS: OrientationProgress = { completed: [] };
 
@@ -137,4 +137,18 @@ export function completionDate(iso: string = new Date().toISOString()): string {
   } catch {
     return d.toDateString();
   }
+}
+
+export type OrientationStep =
+  { kind: "module"; index: number } | { kind: "quiz" } | { kind: "done" };
+export function resumeStep(
+  progress: OrientationProgress,
+  modules: readonly string[],
+): OrientationStep {
+  const index = modules.findIndex((id) => !progress.completed.includes(id));
+  return index >= 0
+    ? { kind: "module", index }
+    : progress.passed
+      ? { kind: "done" }
+      : { kind: "quiz" };
 }

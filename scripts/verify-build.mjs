@@ -79,3 +79,34 @@ for (const file of readdirSync("dist/assets").filter((name) =>
       `Research draft leaked into ${file}: ${draft.slug}`,
     );
 }
+
+// The access gate must exclude lesson prose and assessment answers from public HTML and JS.
+const privateSignatures = [
+  "A sponsor offers supplies but wants an exaggerated success claim",
+  "What should happen before promising a Rotary Foundation grant?",
+  "Write a delegation message with a task",
+];
+for (const path of paths) {
+  const html = readFileSync(
+    path === "/" ? "dist/index.html" : `dist${path}/index.html`,
+    "utf8",
+  );
+  for (const signature of privateSignatures)
+    assert.ok(
+      !html.includes(signature),
+      `${path}: private course content excluded`,
+    );
+}
+for (const file of readdirSync("dist/assets").filter((name) =>
+  name.endsWith(".js"),
+)) {
+  const bundle = readFileSync(`dist/assets/${file}`, "utf8");
+  for (const signature of privateSignatures)
+    assert.ok(
+      !bundle.includes(signature),
+      `${file}: private course content excluded`,
+    );
+}
+console.log(
+  "Verified private course lessons and assessment are absent from public HTML and JavaScript.",
+);

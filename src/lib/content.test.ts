@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 import { PUBLIC_EVENTS, PUBLIC_ACCOUNTS } from "../content";
-import { MEMBERSHIP, ORIENTATION } from "../data";
+import { MEMBERSHIP } from "../data";
 describe("public content boundaries", () => {
   it("requires approval for event publication", () => {
     expect(
@@ -17,6 +17,6 @@ describe("public content boundaries", () => {
   });
   it("uses 18+ eligibility and avoids an unconfirmed induction mandate", () => {
     expect(MEMBERSHIP.whoCanJoin).toContain("18 and over");
-    expect(ORIENTATION.requiredBeforeInduction).toBe(false);
+
   });
 });

@@ -2,19 +2,19 @@
  * Membership — who can join, the three steps, what it costs (flagged), the
  * membership-focused FAQ, and the join-interest form.
  */
-import { ArrowRight, Users } from "lucide-react";
+import { ArrowRight, Users, LockKeyhole } from "lucide-react";
 import {
   CLUB,
   FAQS,
   JOIN_STEPS,
   MEMBERSHIP,
-  ORIENTATION,
   PAGE_INTROS,
   formatKes,
 } from "../data";
 import { ButtonLink, PageHero, PageMeta } from "../components/ui";
 import { FaqAccordion, OpportunityCard } from "../components/cards";
 import { ContactForm } from "../components/forms";
+import { COURSE_INFO } from "../course-info";
 import { FirstVisit } from "../components/FirstVisit";
 import { Reveal } from "../hooks";
 
@@ -149,17 +149,17 @@ export default function MembershipPage() {
             <div className="orientation-callout">
               <div className="orientation-callout-copy">
                 <span className="callout-badge">Learn about the club</span>
-                <h3>New member orientation</h3>
+                <h3>Rotaract, from the ground up</h3>
                 <p>
-                  A short course about Rotaract and RAC Menengai —{" "}
-                  {ORIENTATION.modules.length} modules, about{" "}
-                  {ORIENTATION.modules.reduce(
+                  A full course about Rotaract and RAC Menengai —{" "}
+                  {COURSE_INFO.lessons.length} modules, about{" "}
+                  {COURSE_INFO.lessons.reduce(
                     (total, m) => total + m.minutes,
                     0,
                   )}{" "}
-                  minutes, plus a {ORIENTATION.questions.length}-question check.
-                  Work through it at your own pace; your progress is saved in
-                  this browser.
+                  minutes, plus a {COURSE_INFO.questionCount}-question check.
+                  Lessons include practical reflection activities. Work at your
+                  own pace; your progress is saved in this browser.
                 </p>
                 <p>
                   <ButtonLink to="/learn" variant="secondary" size="sm">
@@ -167,7 +167,7 @@ export default function MembershipPage() {
                   </ButtonLink>
                 </p>
                 <ul className="callout-points">
-                  {ORIENTATION.modules.slice(0, 4).map((m) => (
+                  {COURSE_INFO.lessons.slice(0, 4).map((m) => (
                     <li key={m.id}>{m.title}</li>
                   ))}
                 </ul>
@@ -178,15 +178,31 @@ export default function MembershipPage() {
                   variant="primary"
                   size="lg"
                 >
-                  Start the course <ArrowRight aria-hidden="true" />
+                  Unlock the course <LockKeyhole aria-hidden="true" />
                 </ButtonLink>
                 <p className="form-hint">
-                  Ask the membership team how they confirm orientation.
+                  Passcode required. Ask the membership team for access.
                 </p>
               </div>
             </div>
           </Reveal>
 
+          <div className="course-syllabus" aria-labelledby="syllabus-title">
+            <h3 id="syllabus-title">Inside the course</h3>
+            <p>
+              {COURSE_INFO.lessons.length} lessons, around {COURSE_INFO.minutes}{" "}
+              minutes with reflection activities, followed by{" "}
+              {COURSE_INFO.questionCount} questions.
+            </p>
+            <ol>
+              {COURSE_INFO.lessons.map((lesson) => (
+                <li key={lesson.id}>
+                  <h4>{lesson.title}</h4>
+                  <p>{lesson.summary}</p>
+                </li>
+              ))}
+            </ol>
+          </div>
           <Reveal>
             <div className="fees-card">
               <h3>What it costs</h3>

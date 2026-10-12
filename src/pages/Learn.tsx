@@ -5,6 +5,7 @@ import { ButtonLink, PageMeta, SmartImage } from "../components/ui";
 import { GLOSSARY, LEARNING_SOURCES, PROJECT_JOURNEY } from "../learning";
 import { filterGlossary } from "../lib/glossary";
 import { PUBLIC_EVENTS, dateLabel } from "../content";
+import { COURSE_INFO } from "../course-info";
 import { ROTARY } from "../data";
 
 export default function LearnPage() {
@@ -383,13 +384,14 @@ export default function LearnPage() {
             <BookOpen aria-hidden="true" size={32} />
             <h2>Get to know your club.</h2>
             <p>
-              Six short modules. Nine questions. Your own pace.
+              {COURSE_INFO.lessons.length} lessons. {COURSE_INFO.questionCount}{" "}
+              questions. Your own pace.
               <br />
               Pick up where you left off in this browser.
             </p>
           </div>
           <ButtonLink to="/membership/orientation" variant="primary" size="lg">
-            Start the orientation <ArrowRight aria-hidden="true" />
+            Unlock the course <ArrowRight aria-hidden="true" />
           </ButtonLink>
         </div>
       </section>
