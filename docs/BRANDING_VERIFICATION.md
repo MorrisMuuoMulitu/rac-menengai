@@ -15,7 +15,21 @@ All original club assets remain in `assets/images/menengai/`. Unrelated Nairobi 
 | welcome.jpg | New-year get-together poster | No longer passed off as a health project photograph. |
 | logo / profile files | Joined-hands photograph | Not used as an official club logo. Existing social-preview/favicons are historical graphics, not approved marks. |
 
-No current officer photograph is available. Initials on the reported presidency page are clearly text avatars. Photo permission is not assumed from public availability; retaining existing site media is not a claim that its copyright paperwork has been verified.
+## Officer portraits (12 October 2026)
+
+The club supplied twelve leadership cards (WhatsApp, 12 October 2026) covering the 2026/27
+board: name, portfolio, biography and a portrait each. The portraits were cropped from the
+right-hand panel of those cards — a uniform 485x789 template region, verified across all twelve —
+and published as `public/images/leadership/<slug>-320.webp` and `-640.webp` (24 files, ~700 KB).
+
+Because the club supplied them, these replace the initials avatars that stood in while no
+approved portrait existed. They are the club's own officer photographs, not scraped imagery, and
+the club remains responsible for the photographers' permission; the cards carry no photographer
+credit, so none is claimed on the site.
+
+Earlier limitation, now lifted: no current officer photograph was available and initials were
+used as text avatars. Photo permission is still not assumed from public availability for any
+media the club did not supply.
 
 Fonts: Barlow Condensed and Manrope were fetched from Google Fonts and converted to Latin-subset WOFF2 for local delivery. Their upstream families use the SIL Open Font License. Source CDN locations are recorded in media-attributions/README.md.
 

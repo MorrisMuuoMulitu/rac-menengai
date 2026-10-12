@@ -200,21 +200,48 @@ export function LeaderCard({
   leader,
   delay = 0,
   linkTo,
+  featured = false,
 }: {
   leader: Leader;
   delay?: number;
   linkTo?: string;
+  featured?: boolean;
 }) {
+  // Standing when the role is a leadership position, otherwise the portfolio.
+  const roleLine = leader.standing
+    ? `${leader.standing}${leader.term ? ` · ${leader.term}` : ""}`
+    : leader.portfolio;
   const inner = (
-    <Reveal delay={delay} className="leader-card" as="article">
-      <span className="leader-avatar" aria-hidden="true">
-        {leader.initials}
-      </span>
+    <Reveal
+      delay={delay}
+      id={leader.slug}
+      className={`leader-card${leader.photo ? " leader-card--photo" : ""}`}
+      as="article"
+    >
+      {leader.photo ? (
+        <div className="leader-portrait">
+          <img
+            src={`${leader.photo}-320.webp`}
+            srcSet={`${leader.photo}-320.webp 320w, ${leader.photo}-640.webp 640w`}
+            sizes={
+              featured
+                ? "(max-width: 760px) 92vw, 420px"
+                : "(max-width: 640px) 88vw, (max-width: 1000px) 44vw, 340px"
+            }
+            alt={`${leader.name} — ${roleLine}`}
+            width={320}
+            height={520}
+            loading={featured ? "eager" : "lazy"}
+            decoding="async"
+          />
+        </div>
+      ) : (
+        <span className="leader-avatar" aria-hidden="true">
+          {leader.initials}
+        </span>
+      )}
+      <span className="leader-role">{roleLine}</span>
       <h3>{leader.name}</h3>
-      <span className="leader-role">
-        {leader.role}
-        {leader.term ? ` · ${leader.term}` : ""}
-      </span>
       <p>{leader.bio}</p>
     </Reveal>
   );

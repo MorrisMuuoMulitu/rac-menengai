@@ -14,6 +14,18 @@
 
 No latest-five-posts claim is made. The 11 discovered social records are drafts because their captions/timestamps are incomplete. No third-party article or photo was copied wholesale. New externally researched stories are not visible or bundled into the public client until approved. `scripts/prepare-content.mjs` generates a public-only input; build verification excludes drafts from routes and output.
 
+## Club-supplied content (October 2026)
+
+| Supplied | Content | Status |
+|---|---|---|
+| 12 October 2026, WhatsApp | Twelve 2026/27 leadership cards — names, portfolios, biographies, portraits | Published on `/leadership`; portraits cropped to `public/images/leadership/` |
+| 12 October 2026, club bulletin | Q1 2026–2027 activities: installation, two mother pack projects, art day, induction, Mazingira Day, Book Club anniversary, weekly venue, Book Club Review rhythm, upcoming Medical Camp | Published as event records; each detail page cites the bulletin as its approval source |
+| Earlier | Club logo lockup, "Thee Magicals" mantra artwork, membership fees (KES 3,000 + 500 pin), District 9215 | Published; see BRANDING_VERIFICATION.md |
+
+Nothing supplied so far has been altered beyond cropping, resizing and light copy-trimming. Where
+the club has not supplied a detail (Medical Camp venue, attendance figures, photographer credit),
+the site states the gap rather than filling it.
+
 ## Outstanding club confirmations
 
 - Full 2026–2027 board, approved officer biographies and portraits.

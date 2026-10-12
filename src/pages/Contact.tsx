@@ -177,7 +177,8 @@ export default function ContactPage() {
           </Reveal>
           <p className="fine-print">
             The email address is listed on the club’s public Facebook profile.
-            Ask the club directly for a phone number or meeting venue.
+            The club is working on publishing a phone number. Fellowship is
+            every Thursday at Nakuru Athletic Club.
           </p>
         </div>
       </section>

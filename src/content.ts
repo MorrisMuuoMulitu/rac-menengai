@@ -1,13 +1,49 @@
 import publicContent from "./.generated/public-content.json";
-const { stories, events, accounts } = publicContent;
-export const PUBLIC_STORIES = stories
-  .filter((s) => s.status === "published" && s.approval && s.published)
-  .sort((a, b) => (b.published ?? "").localeCompare(a.published ?? ""));
-export type Story = (typeof PUBLIC_STORIES)[number];
-export const PUBLIC_EVENTS = events.filter(
+const { events, accounts } = publicContent;
+
+/**
+ * The shapes are declared here rather than inferred from the generated JSON.
+ * Inference collapses to `never` when a collection is empty (for example when
+ * no story is yet published for the current Rotary year), which then breaks
+ * every consumer.
+ */
+export interface StoryPhoto {
+  src: string;
+  thumb: string;
+  alt: string;
+}
+export interface PublicEvent {
+  slug: string;
+  title: string;
+  date: string;
+  start: string | null;
+  end: string | null;
+  location: string;
+  description: string;
+  organizer: string;
+  partners: string[];
+  projectSlug: string | null;
+  sourceUrl: string | null;
+  status: string;
+  publicationStatus: string;
+  approval: string | null;
+  image: string | null;
+  images: StoryPhoto[];
+  registrationUrl: string | null;
+}
+export interface PublicAccount {
+  platform: string;
+  url: string | null;
+  public: boolean;
+  handle?: string;
+}
+
+export const PUBLIC_EVENTS: PublicEvent[] = (events as PublicEvent[]).filter(
   (e) => e.publicationStatus === "published" && e.approval,
 );
-export const PUBLIC_ACCOUNTS = accounts.filter((a) => a.public && a.url);
+
+export const PUBLIC_ACCOUNTS: PublicAccount[] = accounts as PublicAccount[];
+
 export const dateLabel = (date: string) =>
   new Intl.DateTimeFormat("en-KE", {
     day: "numeric",

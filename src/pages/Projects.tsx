@@ -2,6 +2,7 @@
  * Projects — filterable catalogue of verified service projects.
  */
 import { useState } from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight } from "lucide-react";
 import { PAGE_INTROS, PROJECTS, PROJECT_TAGS } from "../data";
 import { PageHero, PageMeta } from "../components/ui";
@@ -27,6 +28,10 @@ export default function ProjectsPage() {
         <div className="container">
           <h2 className="sr-only">All projects</h2>
           <ProjectFilter tags={PROJECT_TAGS} active={tag} onChange={setTag} />
+          <p className="page-crosslink">
+            Each programme is the work itself. For dated records and photographs
+            of what happened, see <Link to="/events">our events</Link>.
+          </p>
           {filtered.length > 0 ? (
             <ul className="projects-grid" aria-live="polite">
               {filtered.map((p, i) => (

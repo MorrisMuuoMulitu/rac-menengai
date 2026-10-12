@@ -1,22 +1,5 @@
 [
   {
-    "slug": "peace-in-colour-2025",
-    "title": "Peace in Colour Fest",
-    "date": "2025-09-27",
-    "start": null,
-    "end": null,
-    "location": "Nyayo Gardens, Nakuru",
-    "description": "A joint community event connecting art, peacebuilding and wellbeing. Menengai is named among the contributors in the organiser’s report.",
-    "organizer": "Rotaract Peace Kenya Campaign and collaborators",
-    "sourceUrl": "https://aforcf.org/peace-in-colour-fest-held-in-nakuru/",
-    "storySlug": "peace-in-colour-nakuru",
-    "status": "completed",
-    "publicationStatus": "published",
-    "approval": "Existing published club activity, corrected from primary participant report",
-    "image": null,
-    "registrationUrl": null
-  },
-  {
     "slug": "nexora-bloomx-2026",
     "title": "Nexora BloomX 2026",
     "date": "2026-07-02",
@@ -25,12 +8,468 @@
     "location": "Online",
     "description": "Sustainable entrepreneurship awareness session. Menengai representative name and exact involvement await approval.",
     "organizer": "ZeroPlastic Club of University of Ruhuna",
+    "partners": [],
+    "projectSlug": null,
     "sourceUrl": "https://www.zeroplastic.lk/zeroplastic-club-of-university-of-ruhuna-launches-nexora-bloomx-2026-with-online-session-on-sustainable-entrepreneurship/",
-    "storySlug": "nexora-bloomx-2026",
     "status": "completed",
     "publicationStatus": "draft",
     "approval": null,
     "image": null,
+    "images": [],
+    "registrationUrl": null
+  },
+  {
+    "slug": "presidential-installation-june-2026",
+    "title": "Presidential Installation",
+    "date": "2026-06-06",
+    "start": null,
+    "end": null,
+    "location": "Nakuru, Kenya",
+    "description": "Held on 6–7 June 2026 to mark the transition to new leadership for the 2026–2027 Rotary year, with Wanjiku Nguru taking over as President.",
+    "organizer": "Rotaract Club of Menengai",
+    "partners": [],
+    "projectSlug": null,
+    "sourceUrl": null,
+    "status": "completed",
+    "publicationStatus": "published",
+    "approval": "Club Q1 2026–2027 activities bulletin, October 2026",
+    "image": "/images/events/installation-2026/installation-2026-group-photo.webp",
+    "images": [
+      {
+        "src": "/images/events/installation-2026/installation-2026-group-photo.webp",
+        "thumb": "/images/events/installation-2026/installation-2026-group-photo-560.webp",
+        "alt": "Members and guests at the club's Presidential Installation, June 2026"
+      },
+      {
+        "src": "/images/events/installation-2026/installation-2026-president-speaking.webp",
+        "thumb": "/images/events/installation-2026/installation-2026-president-speaking-560.webp",
+        "alt": "A member speaks at the Presidential Installation"
+      },
+      {
+        "src": "/images/events/installation-2026/installation-2026-members-gathered.webp",
+        "thumb": "/images/events/installation-2026/installation-2026-members-gathered-560.webp",
+        "alt": "The club gathered for the installation ceremony"
+      },
+      {
+        "src": "/images/events/installation-2026/installation-2026-members-and-guests.webp",
+        "thumb": "/images/events/installation-2026/installation-2026-members-and-guests-560.webp",
+        "alt": "Members and guests at the installation"
+      },
+      {
+        "src": "/images/events/installation-2026/installation-2026-celebrations.webp",
+        "thumb": "/images/events/installation-2026/installation-2026-celebrations-560.webp",
+        "alt": "Members celebrating at the installation"
+      },
+      {
+        "src": "/images/events/installation-2026/installation-2026-dancing.webp",
+        "thumb": "/images/events/installation-2026/installation-2026-dancing-560.webp",
+        "alt": "Dancing at the installation celebration"
+      },
+      {
+        "src": "/images/events/installation-2026/installation-2026-ceremonial-dress.webp",
+        "thumb": "/images/events/installation-2026/installation-2026-ceremonial-dress-560.webp",
+        "alt": "Members in ceremonial dress at the installation"
+      },
+      {
+        "src": "/images/events/installation-2026/installation-2026-certificate-presented.webp",
+        "thumb": "/images/events/installation-2026/installation-2026-certificate-presented-560.webp",
+        "alt": "A certificate presented at the installation"
+      },
+      {
+        "src": "/images/events/installation-2026/installation-2026-officer-speaking.webp",
+        "thumb": "/images/events/installation-2026/installation-2026-officer-speaking-560.webp",
+        "alt": "An officer addresses the club at the installation"
+      },
+      {
+        "src": "/images/events/installation-2026/installation-2026-badge-pinned.webp",
+        "thumb": "/images/events/installation-2026/installation-2026-badge-pinned-560.webp",
+        "alt": "A badge is pinned during the installation ceremony"
+      },
+      {
+        "src": "/images/events/installation-2026/installation-2026-cake-cutting.webp",
+        "thumb": "/images/events/installation-2026/installation-2026-cake-cutting-560.webp",
+        "alt": "Cutting the installation cake"
+      },
+      {
+        "src": "/images/events/installation-2026/installation-2026-president-portrait.webp",
+        "thumb": "/images/events/installation-2026/installation-2026-president-portrait-560.webp",
+        "alt": "The club's President at the installation"
+      }
+    ],
+    "registrationUrl": null
+  },
+  {
+    "slug": "mother-pack-bondeni-july-2026",
+    "title": "Mother Pack Project at Bondeni Maternity",
+    "date": "2026-07-16",
+    "start": null,
+    "end": null,
+    "location": "Bondeni Maternity Hospital, Nakuru",
+    "description": "Mother packs delivered to support mothers and newborns at Bondeni Maternity Hospital.",
+    "organizer": "Rotaract Club of Menengai",
+    "partners": [],
+    "projectSlug": "mother-packs",
+    "sourceUrl": null,
+    "status": "completed",
+    "publicationStatus": "published",
+    "approval": "Club Q1 2026–2027 activities bulletin, October 2026",
+    "image": "/images/events/mother-pack-bondeni-2026/bondeni-2026-group-outside.webp",
+    "images": [
+      {
+        "src": "/images/events/mother-pack-bondeni-2026/bondeni-2026-group-outside.webp",
+        "thumb": "/images/events/mother-pack-bondeni-2026/bondeni-2026-group-outside-560.webp",
+        "alt": "Club members and hospital staff outside Bondeni Maternity Hospital"
+      },
+      {
+        "src": "/images/events/mother-pack-bondeni-2026/bondeni-2026-packs-prepared.webp",
+        "thumb": "/images/events/mother-pack-bondeni-2026/bondeni-2026-packs-prepared-560.webp",
+        "alt": "Mother packs laid out before distribution"
+      },
+      {
+        "src": "/images/events/mother-pack-bondeni-2026/bondeni-2026-pack-contents.webp",
+        "thumb": "/images/events/mother-pack-bondeni-2026/bondeni-2026-pack-contents-560.webp",
+        "alt": "A mother pack: pads, wipes and supplies in a basin"
+      },
+      {
+        "src": "/images/events/mother-pack-bondeni-2026/bondeni-2026-carrying-packs.webp",
+        "thumb": "/images/events/mother-pack-bondeni-2026/bondeni-2026-carrying-packs-560.webp",
+        "alt": "A member carries a mother pack through the maternity ward"
+      },
+      {
+        "src": "/images/events/mother-pack-bondeni-2026/bondeni-2026-distributing-packs.webp",
+        "thumb": "/images/events/mother-pack-bondeni-2026/bondeni-2026-distributing-packs-560.webp",
+        "alt": "Members distribute mother packs in the ward"
+      },
+      {
+        "src": "/images/events/mother-pack-bondeni-2026/bondeni-2026-handover-bedside.webp",
+        "thumb": "/images/events/mother-pack-bondeni-2026/bondeni-2026-handover-bedside-560.webp",
+        "alt": "A mother pack handed over at a bedside"
+      },
+      {
+        "src": "/images/events/mother-pack-bondeni-2026/bondeni-2026-supplies-handover.webp",
+        "thumb": "/images/events/mother-pack-bondeni-2026/bondeni-2026-supplies-handover-560.webp",
+        "alt": "Supplies handed to a mother at Bondeni Maternity"
+      },
+      {
+        "src": "/images/events/mother-pack-bondeni-2026/bondeni-2026-pack-delivered.webp",
+        "thumb": "/images/events/mother-pack-bondeni-2026/bondeni-2026-pack-delivered-560.webp",
+        "alt": "A mother pack delivered in the ward"
+      },
+      {
+        "src": "/images/events/mother-pack-bondeni-2026/bondeni-2026-mother-and-newborn.webp",
+        "thumb": "/images/events/mother-pack-bondeni-2026/bondeni-2026-mother-and-newborn-560.webp",
+        "alt": "A mother and newborn with a mother pack"
+      },
+      {
+        "src": "/images/events/mother-pack-bondeni-2026/bondeni-2026-meeting-hospital-staff.webp",
+        "thumb": "/images/events/mother-pack-bondeni-2026/bondeni-2026-meeting-hospital-staff-560.webp",
+        "alt": "The club meets hospital staff during the visit"
+      },
+      {
+        "src": "/images/events/mother-pack-bondeni-2026/bondeni-2026-maternity-ward.webp",
+        "thumb": "/images/events/mother-pack-bondeni-2026/bondeni-2026-maternity-ward-560.webp",
+        "alt": "The maternity ward at Bondeni Maternity Hospital"
+      },
+      {
+        "src": "/images/events/mother-pack-bondeni-2026/bondeni-2026-outside-in-charge-office.webp",
+        "thumb": "/images/events/mother-pack-bondeni-2026/bondeni-2026-outside-in-charge-office-560.webp",
+        "alt": "The club outside the in-charge's office at Bondeni Maternity"
+      }
+    ],
+    "registrationUrl": null
+  },
+  {
+    "slug": "mother-pack-kabatini-august-2026",
+    "title": "Mother Pack Project at Kabatini Maternity",
+    "date": "2026-08-22",
+    "start": null,
+    "end": null,
+    "location": "Kabatini Maternity, Nakuru",
+    "description": "A second mother pack project of the year, delivered in partnership with the Rotaract Club of Bahati at Kabatini Maternity.",
+    "organizer": "Rotaract Club of Menengai",
+    "partners": [
+      "Rotaract Club of Bahati"
+    ],
+    "projectSlug": "mother-packs",
+    "sourceUrl": null,
+    "status": "completed",
+    "publicationStatus": "published",
+    "approval": "Club Q1 2026–2027 activities bulletin, October 2026",
+    "image": "/images/events/mother-pack-kabatini-2026/kabatini-2026-group-with-packs.webp",
+    "images": [
+      {
+        "src": "/images/events/mother-pack-kabatini-2026/kabatini-2026-group-with-packs.webp",
+        "thumb": "/images/events/mother-pack-kabatini-2026/kabatini-2026-group-with-packs-560.webp",
+        "alt": "The club and the Rotaract Club of Bahati with the mother packs, Kabatini Maternity"
+      },
+      {
+        "src": "/images/events/mother-pack-kabatini-2026/kabatini-2026-packs-on-the-grass.webp",
+        "thumb": "/images/events/mother-pack-kabatini-2026/kabatini-2026-packs-on-the-grass-560.webp",
+        "alt": "Mother packs laid out on the grass before distribution"
+      },
+      {
+        "src": "/images/events/mother-pack-kabatini-2026/kabatini-2026-member-addressing-group.webp",
+        "thumb": "/images/events/mother-pack-kabatini-2026/kabatini-2026-member-addressing-group-560.webp",
+        "alt": "A member addresses the group before the distribution"
+      },
+      {
+        "src": "/images/events/mother-pack-kabatini-2026/kabatini-2026-gathering-under-shelter.webp",
+        "thumb": "/images/events/mother-pack-kabatini-2026/kabatini-2026-gathering-under-shelter-560.webp",
+        "alt": "Members and hospital staff gathering outside the clinic"
+      },
+      {
+        "src": "/images/events/mother-pack-kabatini-2026/kabatini-2026-immunisation-poster.webp",
+        "thumb": "/images/events/mother-pack-kabatini-2026/kabatini-2026-immunisation-poster-560.webp",
+        "alt": "Members beside the clinic's immunisation notice board"
+      },
+      {
+        "src": "/images/events/mother-pack-kabatini-2026/kabatini-2026-clinic-waiting-area.webp",
+        "thumb": "/images/events/mother-pack-kabatini-2026/kabatini-2026-clinic-waiting-area-560.webp",
+        "alt": "The clinic waiting area during the visit"
+      },
+      {
+        "src": "/images/events/mother-pack-kabatini-2026/kabatini-2026-clinic-room.webp",
+        "thumb": "/images/events/mother-pack-kabatini-2026/kabatini-2026-clinic-room-560.webp",
+        "alt": "Members at work in the clinic room"
+      },
+      {
+        "src": "/images/events/mother-pack-kabatini-2026/kabatini-2026-pack-handover.webp",
+        "thumb": "/images/events/mother-pack-kabatini-2026/kabatini-2026-pack-handover-560.webp",
+        "alt": "A mother pack handed to a mother in the ward"
+      },
+      {
+        "src": "/images/events/mother-pack-kabatini-2026/kabatini-2026-packs-presented.webp",
+        "thumb": "/images/events/mother-pack-kabatini-2026/kabatini-2026-packs-presented-560.webp",
+        "alt": "Members present mother packs in the ward"
+      },
+      {
+        "src": "/images/events/mother-pack-kabatini-2026/kabatini-2026-distributing-in-ward.webp",
+        "thumb": "/images/events/mother-pack-kabatini-2026/kabatini-2026-distributing-in-ward-560.webp",
+        "alt": "Distributing mother packs around the ward"
+      },
+      {
+        "src": "/images/events/mother-pack-kabatini-2026/kabatini-2026-group-outside-building.webp",
+        "thumb": "/images/events/mother-pack-kabatini-2026/kabatini-2026-group-outside-building-560.webp",
+        "alt": "The group outside the maternity building"
+      },
+      {
+        "src": "/images/events/mother-pack-kabatini-2026/kabatini-2026-menengai-and-bahati-banners.webp",
+        "thumb": "/images/events/mother-pack-kabatini-2026/kabatini-2026-menengai-and-bahati-banners-560.webp",
+        "alt": "Both clubs' banners at the Kabatini distribution"
+      },
+      {
+        "src": "/images/events/mother-pack-kabatini-2026/kabatini-2026-group-on-the-grass.webp",
+        "thumb": "/images/events/mother-pack-kabatini-2026/kabatini-2026-group-on-the-grass-560.webp",
+        "alt": "The group seated together after the distribution"
+      }
+    ],
+    "registrationUrl": null
+  },
+  {
+    "slug": "art-day-pangani-2026",
+    "title": "Art Day at Pangani Special School",
+    "date": "2026-09-05",
+    "start": null,
+    "end": null,
+    "location": "Pangani Special School, Nakuru",
+    "description": "A day of art with learners at Pangani Special School, promoting creativity and engagement.",
+    "organizer": "Rotaract Club of Menengai",
+    "partners": [],
+    "projectSlug": null,
+    "sourceUrl": null,
+    "status": "completed",
+    "publicationStatus": "published",
+    "approval": "Club Q1 2026–2027 activities bulletin, October 2026",
+    "image": "/images/events/pangani-art-day-2026/pangani-art-day-2026-drawings-held-up.webp",
+    "images": [
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-art-day-2026-drawings-held-up.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-art-day-2026-drawings-held-up-560.webp",
+        "alt": "Learners hold up their drawings at Pangani Special School"
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-art-day-2026-group-at-administration-block.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-art-day-2026-group-at-administration-block-560.webp",
+        "alt": "The club with learners and staff at the Administration Block"
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-art-day-2026-drawing-close-up.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-art-day-2026-drawing-close-up-560.webp",
+        "alt": "Crayons and paper at work during the art session"
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-art-day-2026-learner-drawing.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-art-day-2026-learner-drawing-560.webp",
+        "alt": "A learner works on a drawing during the art day"
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-art-day-2026-carrying-supplies.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-art-day-2026-carrying-supplies-560.webp",
+        "alt": "A member carries art materials into the hall"
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-art-day-2026-art-session.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-art-day-2026-art-session-560.webp",
+        "alt": "The art session under way in the school hall"
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-art-day-2026-showing-drawings.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-art-day-2026-showing-drawings-560.webp",
+        "alt": "Learners show the drawings they made"
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-art-day-2026-artwork-colourful.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-art-day-2026-artwork-colourful-560.webp",
+        "alt": "A colourful drawing made during the art day"
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-art-day-2026-artwork-on-the-wall.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-art-day-2026-artwork-on-the-wall-560.webp",
+        "alt": "A learner's drawing on the wall at Pangani Special School"
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-art-day-2026-members-with-banner.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-art-day-2026-members-with-banner-560.webp",
+        "alt": "Members with the club banner at Pangani Special School"
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-art-day-2026-materials-handover.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-art-day-2026-materials-handover-560.webp",
+        "alt": "Art materials handed over at Pangani Special School"
+      }
+    ],
+    "registrationUrl": null
+  },
+  {
+    "slug": "new-member-induction-2026",
+    "title": "Induction of New Members",
+    "date": "2026-09-15",
+    "start": null,
+    "end": null,
+    "location": "Nakuru, Kenya",
+    "description": "New members were formally inducted and welcomed into the club.",
+    "organizer": "Rotaract Club of Menengai",
+    "partners": [],
+    "projectSlug": null,
+    "sourceUrl": null,
+    "status": "completed",
+    "publicationStatus": "published",
+    "approval": "Club Q1 2026–2027 activities bulletin, October 2026",
+    "image": null,
+    "images": [],
+    "registrationUrl": null
+  },
+  {
+    "slug": "mazingira-day-pangani-2026",
+    "title": "Mazingira Day at Pangani Special School",
+    "date": "2026-10-10",
+    "start": null,
+    "end": null,
+    "location": "Pangani Special School, Nakuru",
+    "description": "Marking Mazingira Day with learners to promote environmental awareness and conservation.",
+    "organizer": "Rotaract Club of Menengai",
+    "partners": [],
+    "projectSlug": "adopt-a-river",
+    "sourceUrl": null,
+    "status": "completed",
+    "publicationStatus": "published",
+    "approval": "Club Q1 2026–2027 activities bulletin, October 2026",
+    "image": "/images/events/mazingira-day-pangani-2026/mazingira-2026-group-photo.webp",
+    "images": [
+      {
+        "src": "/images/events/mazingira-day-pangani-2026/mazingira-2026-group-photo.webp",
+        "thumb": "/images/events/mazingira-day-pangani-2026/mazingira-2026-group-photo-560.webp",
+        "alt": "The club with learners at Pangani Special School on Mazingira Day"
+      },
+      {
+        "src": "/images/events/mazingira-day-pangani-2026/mazingira-2026-gathering-on-the-field.webp",
+        "thumb": "/images/events/mazingira-day-pangani-2026/mazingira-2026-gathering-on-the-field-560.webp",
+        "alt": "The group gathered on the school field"
+      },
+      {
+        "src": "/images/events/mazingira-day-pangani-2026/mazingira-2026-planting-a-seedling.webp",
+        "thumb": "/images/events/mazingira-day-pangani-2026/mazingira-2026-planting-a-seedling-560.webp",
+        "alt": "A learner plants a tree seedling"
+      },
+      {
+        "src": "/images/events/mazingira-day-pangani-2026/mazingira-2026-planting-together.webp",
+        "thumb": "/images/events/mazingira-day-pangani-2026/mazingira-2026-planting-together-560.webp",
+        "alt": "A member and a learner plant a seedling together"
+      },
+      {
+        "src": "/images/events/mazingira-day-pangani-2026/mazingira-2026-members-and-learners-planting.webp",
+        "thumb": "/images/events/mazingira-day-pangani-2026/mazingira-2026-members-and-learners-planting-560.webp",
+        "alt": "Members and learners planting on the school grounds"
+      },
+      {
+        "src": "/images/events/mazingira-day-pangani-2026/mazingira-2026-planting-in-the-field.webp",
+        "thumb": "/images/events/mazingira-day-pangani-2026/mazingira-2026-planting-in-the-field-560.webp",
+        "alt": "Planting under way across the field"
+      },
+      {
+        "src": "/images/events/mazingira-day-pangani-2026/mazingira-2026-planting-with-a-learner.webp",
+        "thumb": "/images/events/mazingira-day-pangani-2026/mazingira-2026-planting-with-a-learner-560.webp",
+        "alt": "A member helps a learner plant a seedling"
+      },
+      {
+        "src": "/images/events/mazingira-day-pangani-2026/mazingira-2026-seedlings-held.webp",
+        "thumb": "/images/events/mazingira-day-pangani-2026/mazingira-2026-seedlings-held-560.webp",
+        "alt": "Members holding seedlings ready to plant"
+      },
+      {
+        "src": "/images/events/mazingira-day-pangani-2026/mazingira-2026-gathering-outside.webp",
+        "thumb": "/images/events/mazingira-day-pangani-2026/mazingira-2026-gathering-outside-560.webp",
+        "alt": "The group gathered outside the school buildings"
+      },
+      {
+        "src": "/images/events/mazingira-day-pangani-2026/mazingira-2026-digging.webp",
+        "thumb": "/images/events/mazingira-day-pangani-2026/mazingira-2026-digging-560.webp",
+        "alt": "Digging the ground ready for planting"
+      },
+      {
+        "src": "/images/events/mazingira-day-pangani-2026/mazingira-2026-learners-planting.webp",
+        "thumb": "/images/events/mazingira-day-pangani-2026/mazingira-2026-learners-planting-560.webp",
+        "alt": "Learners planting seedlings in the school grounds"
+      }
+    ],
+    "registrationUrl": null
+  },
+  {
+    "slug": "book-club-camping-affair-2026",
+    "title": "Book Club anniversary: Camping Affair",
+    "date": "2026-10-10",
+    "start": null,
+    "end": null,
+    "location": "Nakuru, Kenya",
+    "description": "The club’s Book Club marked its anniversary with a camping affair. Book Club Review meets every second Sunday of the month to encourage reading, learning and fellowship.",
+    "organizer": "Rotaract Club of Menengai",
+    "partners": [],
+    "projectSlug": null,
+    "sourceUrl": null,
+    "status": "completed",
+    "publicationStatus": "published",
+    "approval": "Club Q1 2026–2027 activities bulletin, October 2026",
+    "image": null,
+    "images": [],
+    "registrationUrl": null
+  },
+  {
+    "slug": "medical-camp-2026",
+    "title": "Medical Camp",
+    "date": "2026-11-18",
+    "start": null,
+    "end": null,
+    "location": "Nakuru, Kenya — venue to be announced",
+    "description": "A community medical camp promoting health and access to essential health services.",
+    "organizer": "Rotaract Club of Menengai",
+    "partners": [],
+    "projectSlug": null,
+    "sourceUrl": null,
+    "status": "scheduled",
+    "publicationStatus": "published",
+    "approval": "Club Q1 2026–2027 activities bulletin, October 2026",
+    "image": null,
+    "images": [],
     "registrationUrl": null
   }
 ]

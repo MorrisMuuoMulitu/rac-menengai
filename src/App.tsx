@@ -10,7 +10,6 @@ import {
   ScrollToTop,
 } from "./components/layout";
 import EventsPage, { EventDetail } from "./pages/Events";
-import StoryDetail from "./pages/StoryDetail";
 import Partnerships from "./pages/Partnerships";
 import Privacy from "./pages/Privacy";
 import HomePage from "./pages/Home";
@@ -21,7 +20,6 @@ import ProjectsPage from "./pages/Projects";
 import ProjectDetailPage from "./pages/ProjectDetail";
 import AwardsPage from "./pages/Awards";
 import LeadershipPage from "./pages/Leadership";
-import NewsPage from "./pages/News";
 import MembershipPage from "./pages/Membership";
 import OrientationPage from "./pages/Orientation";
 import ContactPage from "./pages/Contact";
@@ -46,8 +44,6 @@ export default function App() {
           <Route path="/projects/:slug" element={<ProjectDetailPage />} />
           <Route path="/awards" element={<AwardsPage />} />
           <Route path="/leadership" element={<LeadershipPage />} />
-          <Route path="/news" element={<NewsPage />} />
-          <Route path="/news/:slug" element={<StoryDetail />} />
           <Route path="/events" element={<EventsPage />} />
           <Route path="/events/:slug" element={<EventDetail />} />
           <Route path="/partnerships" element={<Partnerships />} />

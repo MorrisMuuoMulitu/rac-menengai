@@ -2,7 +2,7 @@ import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
 import App from "./App";
 import { PAGE_INTROS, PROJECTS } from "./data";
-import { PUBLIC_EVENTS, PUBLIC_STORIES } from "./content";
+import { PUBLIC_EVENTS } from "./content";
 export const routes = [
   "/",
   "/about",
@@ -11,7 +11,6 @@ export const routes = [
   "/projects",
   "/awards",
   "/leadership",
-  "/news",
   "/events",
   "/membership",
   "/membership/orientation",
@@ -19,7 +18,6 @@ export const routes = [
   "/partnerships",
   "/privacy",
   ...PROJECTS.map((p) => `/projects/${p.slug}`),
-  ...PUBLIC_STORIES.map((s) => `/news/${s.slug}`),
   ...PUBLIC_EVENTS.map((e) => `/events/${e.slug}`),
 ];
 const titles: Record<string, string> = {
@@ -33,13 +31,11 @@ const titles: Record<string, string> = {
 };
 export function render(path: string) {
   const project = PROJECTS.find((p) => path === `/projects/${p.slug}`);
-  const story = PUBLIC_STORIES.find((s) => path === `/news/${s.slug}`);
   const event = PUBLIC_EVENTS.find((e) => path === `/events/${e.slug}`);
   const intro = PAGE_INTROS[path.slice(1)];
-  const title = `${project?.title ?? story?.title ?? event?.title ?? titles[path] ?? intro?.eyebrow ?? "Rotaract"} | Rotaract Club of Menengai`;
+  const title = `${project?.title ?? event?.title ?? titles[path] ?? intro?.eyebrow ?? "Rotaract"} | Rotaract Club of Menengai`;
   const description =
     project?.summary ??
-    story?.summary ??
     event?.description ??
     intro?.description ??
     "Community service, professional development and fellowship with the Rotaract Club of Menengai in Nakuru, Kenya.";
@@ -61,7 +57,6 @@ export function render(path: string) {
               position: 2,
               name:
                 project?.title ??
-                story?.title ??
                 event?.title ??
                 titles[path] ??
                 intro?.eyebrow ??
@@ -71,19 +66,6 @@ export function render(path: string) {
           ],
         }
       : null;
-  const article = story
-    ? {
-        "@context": "https://schema.org",
-        "@type": "Article",
-        headline: story.title,
-        datePublished: story.published,
-        author: { "@type": "Organization", name: story.author },
-        mainEntityOfPage: canonical,
-        ...(story.image
-          ? { image: `https://rac-menengai.vercel.app${story.image}` }
-          : {}),
-      }
-    : null;
   return {
     html: renderToString(
       <StaticRouter location={path}>
@@ -93,6 +75,6 @@ export function render(path: string) {
     title,
     description,
     canonical,
-    schema: [breadcrumbs, article].filter(Boolean),
+    schema: [breadcrumbs].filter(Boolean),
   };
 }

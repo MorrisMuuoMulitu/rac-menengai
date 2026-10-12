@@ -92,10 +92,22 @@ export interface Award {
 
 export interface Leader {
   name: string;
-  role: string;
+  /** Board portfolio, e.g. "Community Service". */
+  portfolio: string;
+  /** Leadership standing when it is a role rather than a portfolio. */
+  standing?: string;
   term?: string;
   bio: string;
+  /** Anchor id and photo stem, e.g. "issa-telot". */
+  slug: string;
   initials: string;
+  /**
+   * Officer portrait stem. Images live at `/images/leadership/<stem>-320.webp`
+   * and `-640.webp`, cropped from the leadership cards the club supplied on
+   * 12 October 2026 (see docs/BRANDING_VERIFICATION.md).
+   */
+  photo?: string;
+  group?: "executive" | "officers" | "service";
   kind: "board" | "past";
   confirm?: boolean; // awaiting officer confirmation (see CONTENT_AUDIT.md)
 }
@@ -168,16 +180,18 @@ const img = (file: string) => {
 };
 
 export const HERO_IMAGES = {
-  background: img("banner.jpg"),
+  background: "", // old archive frame removed — recent photographs live under /images/events
   logo: img("logo-transparent.png"),
 };
 
 export const ABOUT_IMAGES = {
-  tall: img("adopt-river.jpg"),
-  wide: img("cleanup-campaign.jpg"),
+  // recent club photographs only; the older derivatives were posters or archive
+  // frames that could not be captioned honestly (see docs/CONTENT_AUDIT.md)
+  tall: "/images/events/mother-pack-bondeni-2026/bondeni-2026-carrying-packs.webp",
+  wide: "/images/events/mazingira-day-pangani-2026/mazingira-2026-group-photo.webp",
 };
 
-export const SIGNATURE_IMAGE = img("river-cleanup.jpg");
+export const SIGNATURE_IMAGE = ""; // old archive frame removed
 
 /* ============================= Identity ============================= */
 export const CLUB: ClubMeta = {
@@ -208,25 +222,37 @@ export const SOCIALS: Socials = {
 
 export const NAV_LINKS = [
   { href: "/about", label: "About" },
-  { href: "/events", label: "Events" },
   { href: "/projects", label: "Projects" },
-
-  { href: "/news", label: "News" },
+  { href: "/events", label: "Events" },
+  { href: "/leadership", label: "Leadership" },
   { href: "/contact", label: "Contact" },
 ] as const;
+
+/* The club's sponsor, supplied by the club on 12 October 2026. */
+export const MOTHER_CLUB = {
+  name: "The Rotary Club of Nakuru",
+  chartered: "1952",
+  meetingDay: "Every Tuesday",
+  meetingTime: "12:45–2:00 PM",
+  venue: "Rift Valley Sports Club, Nakuru",
+  president: "Col. (Rtd.) Raymond Cheruiyot",
+  presidentNote: "installed July 2026",
+  summary:
+    "The Rotary Club of Nakuru is a community service organisation chartered in 1952 and part of Rotary International. It is our mother club.",
+} as const;
 
 /* ============================= Home copy ============================= */
 export const HERO = {
   eyebrow: `${CLUB.district} · ${CLUB.city}`,
   title: "A Decade of Service Above Self",
   titleAccent: "Service Above Self",
-  lead: "Rotaract Club of Menengai — young professionals and students in Nakuru, Kenya, turning service into community impact. We meet every Thursday from 5:30–6:30 PM in Nakuru for fellowship.",
+  lead: "Rotaract Club of Menengai — young professionals and students in Nakuru, Kenya, turning service into community impact. We meet every Thursday from 5:30–6:30 PM at Nakuru Athletic Club for fellowship.",
   primaryCta: "Attend a fellowship",
   secondaryCta: "Explore our projects",
 };
 
 export const ANNOUNCEMENT = {
-  text: "Next fellowship: Thursday, 5:30–6:30 PM · Nakuru",
+  text: "Next fellowship: Thursday, 5:30–6:30 PM · Nakuru Athletic Club",
   action: "Plan your visit",
 };
 
@@ -490,8 +516,7 @@ export const ROTARY = {
       global:
         "Rotary works for peace at every level — peace fellowships, community-led reconciliation, and the Positive Peace framework with the Institute for Economics and Peace.",
       local:
-        "Our Peace in Colour Fest brought art, mental wellness and dialogue to young people in Nakuru.",
-      projectSlug: "peace-fest",
+        "Our programmes connect local service with Rotary's worldwide work for peace.",
     },
     {
       id: "disease",
@@ -731,7 +756,7 @@ export const SERVICES: ServiceArea[] = [
     icon: "handshake",
     title: "Community & peacebuilding",
     oneLiner:
-      "Outreach for street-connected families, plus art and dialogue through Peace in Colour Fest.",
+      "Environmental and community work that builds common ground in Nakuru.",
   },
 ];
 
@@ -747,7 +772,7 @@ export const PROJECTS: Project[] = [
     title: "Adopt-a-River",
     tag: "Environment",
     year: "2022",
-    image: img("adopt-river.jpg"),
+    image: "", // old archive photograph — no recent equivalent (see CONTENT_AUDIT.md)
     summary:
       "Our flagship environmental project: water filtration, mobilisation and cleanups on River Njoro and River Ndarugu.",
     detail:
@@ -779,7 +804,8 @@ export const PROJECTS: Project[] = [
     title: "Mother Packs at Bondeni Maternity",
     tag: "Health",
     year: "2026",
-    image: "",
+    image:
+      "/images/events/mother-pack-kabatini-2026/kabatini-2026-group-with-packs.webp",
     summary:
       "Mother packs for new mothers and their babies at Bondeni Maternity, launching our Rotary year in service.",
     detail:
@@ -819,7 +845,7 @@ export const PROJECTS: Project[] = [
     title: "River Ndarugu Cleanup",
     tag: "Environment",
     year: "2022",
-    image: img("river-cleanup.jpg"),
+    image: "", // old archive photograph — no recent equivalent (see CONTENT_AUDIT.md)
     summary:
       "Cleanup and community sensitisation along River Ndarugu with partners and stakeholders.",
     detail:
@@ -832,35 +858,6 @@ export const PROJECTS: Project[] = [
       "Solid waste cleared with volunteers and partners",
       "Sensitisation on dumping, drainage and safe water",
     ],
-  },
-  {
-    slug: "peace-fest",
-    title: "Peace in Colour Fest",
-    tag: "Community",
-    year: "2025",
-    image: "",
-    summary:
-      "Art, mental wellness and peacebuilding for young people in Nakuru.",
-    detail:
-      "Peace in Colour Fest took place at Nyayo Gardens on 27 September 2025. Art for Children Foundation’s report lists Menengai among the contributors and records a panel moderated by Janet Nkirote, the club’s president at the time.",
-    location: "Nakuru",
-    areasOfFocus: ["peace"],
-    reached: ["Young people across Nakuru"],
-    caption: undefined,
-  },
-  {
-    slug: "street-families",
-    title: "Street Families Outreach",
-    tag: "Service",
-    year: "2021",
-    image: "",
-    summary:
-      "Clothes, diapers and amenities for families on the streets of Nakuru.",
-    detail:
-      "Members pooled clothes, diapers, foodstuffs and hygiene amenities for street-connected families — delivered directly, with dignity, and followed up through partner homes.",
-    location: "Nakuru CBD",
-    reached: ["Street-connected families in Nakuru CBD"],
-    caption: undefined,
   },
 ];
 
@@ -889,123 +886,176 @@ export const AWARDS: Award[] = [
     title: "DEI Champion — Legacy Award 2026",
     tag: "Rotary District 9212",
     year: "2026",
-    image: img("welcome.jpg"),
+    image: "", // old archive photograph — no recent equivalent (see CONTENT_AUDIT.md)
     gold: true,
   },
   {
     title: "Ten Years of Service",
     tag: "Milestone",
     year: "2025",
-    image: img("banner.jpg"),
-  },
-  {
-    title: "City Clean-up Campaign · Nakuru County",
-    tag: "Recognition",
-    year: "2024",
-    image: img("cleanup-campaign.jpg"),
-  },
-  {
-    title: "DRR Meet & Greet, Hyrax Hill",
-    tag: "Fellowship",
-    year: "2023",
-    image: img("river-cleanup.jpg"),
-  },
-  {
-    title: "Adopt-a-River Launch",
-    tag: "Flagship",
-    year: "2022",
-    image: img("adopt-river.jpg"),
+    image: "", // old archive photograph — no recent equivalent (see CONTENT_AUDIT.md)
   },
 ];
 
 /* ============================= Leadership ============================= */
 export const LEADERS: Leader[] = [
   {
-    name: "Joyce Wanjiku Nguru",
-    role: "President",
+    name: "Wanjiku Nguru",
+    standing: "President",
+    portfolio: "Executive",
     term: "2026/27",
-    bio: "Publicly reported her installation for the 2026–2027 year on 6–7 June 2026. Club roster confirmation is pending.",
-    initials: "JW",
+    slug: "wanjiku-nguru",
+    initials: "WN",
+    photo: "/images/leadership/wanjiku-nguru",
+    group: "executive",
     kind: "board",
-    confirm: true,
+    bio: "A youth leader, environmental advocate and strategic thinker, Wanjiku holds a Bachelor of Commerce in Information Systems from the University of Nairobi and works as a Relationship Officer at ACK Imani Talent Sacco, driving member engagement and financial inclusion. She joined Rotaract in 2023 and has held progressive roles including GRC Chair and Rotaract East Africa Impact Country Director for Kenya, and now leads the club as President. A daily farmer and travel enthusiast, she is guided by faith and purpose — championing environmental sustainability, youth empowerment and collective action for lasting community impact.",
   },
   {
-    name: "Phylis Kanja",
-    role: "DEI Director",
-    term: "2025/26",
-    bio: "Champion of diversity, equity and inclusion across the club’s work.",
-    initials: "PK",
-    kind: "past",
-    confirm: true,
-  },
-  {
-    name: "John Brodrick",
-    role: "Charter President",
-    bio: "Founder president who guided the club’s charter under the Rotary Club of Nakuru.",
-    initials: "JB",
-    kind: "past",
+    name: "Racheal Kyalo",
+    standing: "President Elect",
+    portfolio: "Executive",
+    slug: "racheal-kyalo",
+    initials: "RK",
+    photo: "/images/leadership/racheal-kyalo",
+    group: "executive",
+    kind: "board",
+    bio: "A Rotaractor, sales and marketing professional and dedicated leader committed to personal growth, service and youth empowerment. Racheal served as Professional and Leadership Development Director for two consecutive Rotary years, was Merchandise Lead for RYLA Kenya in 2025, and held the role of President Nominee for the 2025–2026 Rotary year. She is passionate about sales, marketing and building meaningful connections, and loves travelling, exploring new experiences and networking with people from diverse backgrounds.",
   },
   {
     name: "Janet Nkirote",
-    role: "President",
-    term: "2025/26",
-    bio: "Hosted Peace in Colour Fest — art, wellness and dialogue for young Nakuru.",
+    standing: "Immediate Past President & Club Advisor",
+    portfolio: "Executive",
+    slug: "janet-nkirote",
     initials: "JN",
+    photo: "/images/leadership/janet-nkirote",
+    group: "executive",
+    kind: "board",
+    bio: "An educator and servant leader with a degree from Machakos University specialising in Special Needs Education, Biology and Agriculture. Janet’s Rotaract journey began at RAC Machakos University, and she joined RAC Menengai in 2022, going on to serve as Club Secretary and as Club President for 2025/26. A Polio Plus Fellow and aspiring Paul Harris Fellow, she is committed to mentorship, youth empowerment and inclusive education, and works at Mirema School as a Class Manager and Autism Pioneer.",
+  },
+  {
+    name: "Sally Kimani",
+    portfolio: "Secretary & Membership",
+    slug: "sally-kimani",
+    initials: "SK",
+    photo: "/images/leadership/sally-kimani",
+    group: "officers",
+    kind: "board",
+    bio: "Sally’s classification is hair and beauty, and she is known across the club for her love of laughter and her bright smile. Within Rotaract she has served as both Secretary and Club Service Director in different years, bringing energy, creativity and dedication to every role — and a calming sense of humour to the room.",
+  },
+  {
+    name: "Justin Mwaura",
+    portfolio: "Finance",
+    slug: "justin-mwaura",
+    initials: "JM",
+    photo: "/images/leadership/justin-mwaura",
+    group: "officers",
+    kind: "board",
+    bio: "Justin enjoys digging into numbers and drawing insight from statistics and economics, and he works best in a data-driven decision-making environment. An Arsenal supporter through the tough and fruitful times, he also enjoys looking at football from a statistical point of view. Outside work and his hobbies he is a firm believer in community outreach and self-improvement.",
+  },
+  {
+    name: "Felix Bett",
+    portfolio: "Public Relations",
+    slug: "felix-bett",
+    initials: "FB",
+    photo: "/images/leadership/felix-bett",
+    group: "officers",
+    kind: "board",
+    bio: "A media professional, videographer and photographer based in Nakuru, currently studying Communication and Media at Egerton University. Through his work with Tami Series and Tash Photography Kenya he specialises in cinematic videography, photography and digital storytelling, with a focus on youth empowerment, environmental awareness and community impact. Felix served as Centennial Champion for the Rotaract Club of Menengai during the 2024/2025 service year, and is steadily growing as a content creator and YouTuber.",
+  },
+  {
+    name: "Jacob Endurance",
+    portfolio: "Sergeant-at-Arms",
+    slug: "jacob-endurance",
+    initials: "JE",
+    photo: "/images/leadership/jacob-endurance",
+    group: "officers",
+    kind: "board",
+    bio: "Founder and Executive Director of MACTEDENT Enterprise, a social enterprise championing youth empowerment through theatre, film, creative arts and community engagement. A skilled electrician, actor, scriptwriter, director and certified GCED trainer, Jacob previously served as TRF/Fundraising Director and Foundation Chair at the Rotaract Club of Menengai, and played a key role in the formation of the Rotary Creative Community in District 9212. He is also Programmes Director at CESRA.",
+  },
+  {
+    name: "Allan Leyian",
+    portfolio: "International Service & Professional Leadership Development",
+    slug: "allan-leyian",
+    initials: "AL",
+    photo: "/images/leadership/allan-leyian",
+    group: "service",
+    kind: "board",
+    bio: "Sena Allan Leyian is a music enthusiast and creative professional holding a Bachelor’s degree in Music Technology from Kenyatta University. With a background across various music institutions he has built expertise in sound, music production and creative development within the industry. Beyond music he is a committed animal rights advocate, collaborating with the Kenya Society for the Protection and Care of Animals (KSPCA), and his deep curiosity for science and innovation shows in a personal interest in quantum physics.",
+  },
+  {
+    name: "Issa Telot",
+    portfolio: "Community Service",
+    slug: "issa-telot",
+    initials: "IT",
+    photo: "/images/leadership/issa-telot",
+    group: "service",
+    kind: "board",
+    bio: "Emmanuel Issa Telot is a dedicated leader, public servant and community advocate based in Nakuru, holding a Bachelor’s degree in Criminology with IT. He serves in Administration and Records Management at the National Police Service Commission, while also leading the MLIFE Foundation Executive Board, Kenya Chapter, championing youth empowerment, minority rights and inclusivity. A VirtueLead Fellow at the Emerging Leaders Foundation, he is passionate about anime, football and community service.",
+  },
+  {
+    name: "Sophia Muthoni",
+    portfolio: "The Rotary Foundation, Fundraising & Grants",
+    slug: "sophia-muthoni",
+    initials: "SM",
+    photo: "/images/leadership/sophia-muthoni",
+    group: "service",
+    kind: "board",
+    bio: "A proud mother, devoted wife and adventurous soul who believes life is best lived through purpose, passion and meaningful human connection. Sophia is deeply committed to fluorosis awareness, safe water access and sustainable health solutions that uplift and transform communities, and she holds firm to the belief that every act of kindness creates a lasting ripple of hope.",
+  },
+  {
+    name: "Jessica Njeri",
+    portfolio: "New Generation",
+    slug: "jessica-njeri",
+    initials: "JN",
+    photo: "/images/leadership/jessica-njeri",
+    group: "service",
+    kind: "board",
+    bio: "A young leader, creative strategist and community advocate, Jessica steps into the role of New Generation Director. With a strong background in stakeholder engagement, event coordination, branding and youth empowerment, she is driven by creating opportunities that inspire growth and positive community impact. Outside her professional pursuits she is an avid reader, adventure enthusiast and lover of food, music, hiking and biking.",
+  },
+  {
+    name: "John Ngugi",
+    portfolio: "Government & Ethics",
+    slug: "john-ngugi",
+    initials: "JN",
+    photo: "/images/leadership/john-ngugi",
+    group: "service",
+    kind: "board",
+    bio: "A dedicated Rotaract leader currently serving as Assistant District Rotaract Representative for the Nakuru Region. John first joined the Rotaract Club of Menengai, where he served as both President and Service Project Director and elevated the club’s public profile through impactful projects, member engagement and visibility in the community. He is passionate about bridging generations, fostering youth leadership, and making sure every member feels empowered to serve and make a difference.",
+  },
+
+  /* Past presidents — archive */
+  {
+    name: "John Brodrick",
+    portfolio: "Charter President",
+    slug: "john-brodrick",
+    initials: "JB",
     kind: "past",
+    bio: "Founder president who guided the club’s charter under the Rotary Club of Nakuru.",
   },
   {
     name: "Terry Muigai",
-    role: "President",
+    portfolio: "President",
     term: "2019",
-    bio: "Led the club through a key year of growth and service.",
+    slug: "terry-muigai",
     initials: "TM",
     kind: "past",
+    bio: "Led the club through a key year of growth and service.",
+  },
+  {
+    // Retained as a record only: the 2025/26 DEI role is unconfirmed, so it is
+    // filtered out of the public page (see docs/CONTENT_AUDIT.md).
+    name: "Phylis Kanja",
+    portfolio: "DEI Director",
+    term: "2025/26",
+    slug: "phylis-kanja",
+    initials: "PK",
+    kind: "past",
+    confirm: true,
+    bio: "Champion of diversity, equity and inclusion across the club’s work.",
   },
 ];
 
-/* ============================= News ============================= */
-export const NEWS: NewsItem[] = [
-  {
-    title: "President’s first month — mother packs & 405 girls reached",
-    category: "President",
-    date: "2026",
-    image: img("welcome.jpg"),
-    excerpt:
-      "A first month of service at Bondeni Maternity, Limuko schools and unforgettable Thursday fellowships.",
-  },
-  {
-    title: "Deputy Governor launches city clean-up",
-    category: "Community",
-    date: "2024",
-    image: img("cleanup-campaign.jpg"),
-    excerpt:
-      "With KWS, NEMA and Red Cross for Nakuru’s inaugural city clean-up campaign.",
-  },
-  {
-    title: "Rotary Nakuru & RAC Menengai partnership visit",
-    category: "Partnership",
-    date: "2025",
-    image: img("banner.jpg"),
-    excerpt:
-      "A joint visit between Rotary Nakuru, RAC Menengai and RAC Bahati.",
-  },
-  {
-    title: "Peace in Colour Fest, Nakuru",
-    category: "Community",
-    date: "2025",
-    image: img("river-cleanup.jpg"),
-    excerpt:
-      "Art, health, mental wellness and reconciliation for young people across Nakuru.",
-  },
-  {
-    title: "Book club turns one",
-    category: "Fellowship",
-    date: "2026",
-    image: img("adopt-river.jpg"),
-    excerpt:
-      "A year of meaningful conversations and fresh perspectives in our book club.",
-  },
-];
 
 /* ============================= Partners ============================= */
 export const PARTNERS: Partner[] = [
@@ -1176,7 +1226,7 @@ export const ORIENTATION = {
             "Environment & water — Adopt-a-River cleanups on River Njoro and River Ndarugu, water filtration for Barut residents, and waste-disposal containers.",
             "Maternal & child health — mother packs for new mothers at Bondeni Maternity.",
             "Education & girls’ empowerment — sanitary-towel donations and mentorship for Students at Limuko High & Primary School.",
-            "Community & peacebuilding — Peace in Colour Fest, and outreach for street-connected families in Nakuru.",
+            "Community & environment — cleanups, tree planting and conservation with schools across Nakuru.",
           ],
         },
         {
@@ -1331,8 +1381,8 @@ export const ORIENTATION = {
       options: [
         "Mother Packs",
         "Adopt-a-River",
-        "Peace in Colour Fest",
-        "Street Families Outreach",
+        "Limuko Schools mentorship",
+        "Book Club Review",
       ],
       correctIndex: 1,
       explanation:
@@ -1396,7 +1446,7 @@ export const VALUES: Value[] = [
 export const FAQS: Faq[] = [
   {
     q: "When and where do you meet?",
-    a: `Fellowship every Thursday, 5:30–6:30 PM in Nakuru, Kenya (${CLUB.district}). Guests are welcome — come to three meetings to get a feel for the family before joining.`,
+    a: `Fellowship every Thursday, 5:30–6:30 PM at Nakuru Athletic Club (${CLUB.district}). Guests are welcome — come to three meetings to get a feel for the family before joining.`,
   },
   {
     q: "Who can join Rotaract?",
@@ -1454,9 +1504,9 @@ export const PAGE_INTROS: Record<string, PageIntro> = {
     description: `Who we are: a Rotaract club of young professionals and students in Nakuru, Kenya, chartered by the Rotary Club of Nakuru and part of ${CLUB.district}.`,
   },
   projects: {
-    eyebrow: "Impact in action",
-    title: "Projects that change lives",
-    lead: "Six to eight hands-on projects a year across health, education, environment and peacebuilding.",
+    eyebrow: "Our programmes",
+    title: "What we run, year after year",
+    lead: "The club's ongoing programmes — the work itself, in health, education, environment and peacebuilding. For the dated record of what actually happened, see Events.",
     description:
       "Verified service projects by the Rotaract Club of Menengai: Adopt-a-River, mother packs at Bondeni Maternity, girls’ education at Limuko schools and more.",
   },

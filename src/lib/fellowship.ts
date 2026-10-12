@@ -18,7 +18,8 @@ export const fellowship = {
   endHour: 18,
   endMinute: 30,
   timezone: "Africa/Nairobi",
-  location: "Nakuru, Kenya",
+  /** Club-confirmed in the Q1 2026–2027 activities bulletin (October 2026). */
+  location: "Nakuru Athletic Club, Nakuru",
   /** Set via data.ts override when the club changes the weekly schedule. */
   override: null as null | { message: string },
 };

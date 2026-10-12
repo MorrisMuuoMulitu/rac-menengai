@@ -47,7 +47,139 @@ Legend — `[V]` verified · `[C]` confirm · `[MISSING]` no source available.
 | Weekday / time | Every Thursday 17:30–18:30 East Africa Time | [V] |
 | Timezone | `Africa/Nairobi` — all UI and JSON-LD use it explicitly | [V] |
 | Override | `FELLOWSHIP_OVERRIDE` in `src/data.ts` (null = weekly schedule) | [C] — set when the club pauses a week |
-| Venue | "Nakuru, Kenya" (city level only — no invented address) | [C] — add a confirmed venue when officers provide one |
+| Venue | **Nakuru Athletic Club, Nakuru** | [V] — club-confirmed in the Q1 2026–2027 activities bulletin (12 October 2026). Published across the site, the calendar export and page metadata. |
+| Book Club Review | Every second Sunday of the month | [V] — same bulletin; shown on `/events` beside the weekly fellowship |
+
+## Q1 2026–2027 activities (club bulletin, 12 October 2026)
+Recorded as published event records with the bulletin as their approval source (no external URLs
+exist for them, so the event detail page shows the provenance line instead of a report link).
+
+| Date | Activity | Venue |
+|---|---|---|
+| 6–7 June 2026 | Presidential Installation — transition to the 2026/27 leadership | Nakuru |
+| 16 July 2026 | Mother Pack Project | Bondeni Maternity Hospital |
+| 22 August 2026 | Mother Pack Project, with the Rotaract Club of Bahati | Nakuru |
+| 5 September 2026 | Art Day | Pangani Special School |
+| 15 September 2026 | Induction of New Members | Nakuru |
+| 10 October 2026 | Mazingira Day | Pangani Special School |
+| 10 October 2026 | Book Club anniversary — Camping Affair | Nakuru |
+| 18 November 2026 | **Medical Camp (upcoming)** | Nakuru — venue to be announced |
+
+The bulletin also confirms the weekly Thursday fellowship venue and the Book Club Review rhythm.
+
+**Mother pack photographs** are published on `/events/mother-pack-bondeni-july-2026` (twelve
+photographs, 16 July 2026) and `/events/mother-pack-kabatini-august-2026` (thirteen photographs,
+22 August 2026 at Kabatini Maternity, with the Rotaract Club of Bahati — the venue the club's
+bulletin described only as "Nakuru"). These images show identifiable patients; the club supplied
+them and holds the consent question.
+
+The second event was renamed on the club's wording: **Mother Pack Project at Kabatini Maternity**
+(slug `mother-pack-kabatini-august-2026`, replacing the placeholder `mother-pack-bahati-august-2026`).
+
+The **Rotaract Club of Bahati** partnership is carried in a dedicated `partners` field rather than
+buried in the organiser text, so the record shows `Organiser: Rotaract Club of Menengai` and
+`With: Rotaract Club of Bahati`, and the events list reads "Kabatini Maternity, Nakuru · with the
+Rotaract Club of Bahati". One of the published photographs shows both clubs' banners, which is what
+substantiates the joint attribution.
+
+**Photo attributions were verified against the images themselves**, not just the folders: the
+installation batch is the June ceremony (balloons, badge pinning), the Bondeni batch carries
+16 July capture dates and Bondeni signage, and the Kabatini batch carries 21–22 August dates and
+includes both clubs' banners.
+
+**Art day photographs (11 of 13 images)** are published on `/events/art-day-pangani-2026`,
+   including the learners' artwork and the session in the school hall. Two near-duplicate wide
+   frames were dropped. These show identifiable learners at a special school: the club supplied
+   them and **guardian consent is the club's to confirm** (see media-attributions).
+
+**Installation photographs (12 images)** were supplied by the club and are published on
+`/events/presidential-installation-june-2026` — one hero photograph plus a twelve-image gallery,
+each thumbnail linking to the full 1280px file. Alt text describes each scene only; no individual
+is named in a caption. The event records for the other Q1 activities carry no photographs yet, and
+the Medical Camp (18 November 2026) has no confirmed venue — neither gap is filled by inference.
+
+## Landing page, About and the projects/events split (12 October 2026)
+
+- **The landing page now leads with current activity.** The old "From the archive" block, which
+  surfaced only 2024/2025 stories, is replaced by *"Latest from the club / Just back from the
+  field"* — the three most recent events **that have photographs**, newest first, each linking to
+  its record. Written stories remain on `/news`, linked from the same section.
+- **About no longer carries an event.** The 2024 city clean-up milestone was removed from the club
+  timeline; About now holds club-level history only (2019 presidency, 2022 Adopt-a-River launch,
+  2025 ten years of service). Dated activities belong on `/events`.
+- **Projects and events are complementary, not duplicates.** A *project* is an ongoing programme
+  (what the club runs, with its challenge, funding and reach); an *event* is one dated occasion
+  (when, where, photographs). They are now linked rather than repeated: events carry a
+  `projectSlug` where one applies — Peace in Colour Fest, both mother pack distributions and
+  Mazingira Day — the event page states "Part of the <programme> programme", and each programme
+  page lists its **Recent activity** with links and thumbnails. The two pages answer different
+  questions: `/projects` answers "what do you do?", `/events` answers "what happened, and when?".
+
+
+## Photographs: recent only (12 October 2026)
+
+Every photograph on the site now comes from the club's 2026 activity batches (installation, Bondeni,
+Kabatini, art day, Mazingira Day — 59 photographs). The older derivatives under
+`public/images/projects/` and `public/images/gallery/` were deleted; the originals remain in
+`assets/images/menengai/` as repository history.
+
+Replaced or removed:
+
+| Where | Was | Now |
+|---|---|---|
+| Home hero | archive banner frame | Mazingira Day group photograph |
+| Home "In the community" feature | River Ndarugu (old river frame) | Mother Packs, with the Kabatini photograph; Ndarugu moved to the text list |
+| About visual | a project poster captioned as members at a launch | a recent Bondeni photograph, captioned honestly |
+| Awards archive | five old certificate images | text-only archive |
+| Stories | old county and festival images | text-only (they retain their sources and dates) |
+| Project programmes | adopt-a-river and ndarugu frames | no image — no recent equivalent exists, so none is shown rather than reusing an old one |
+
+Only the mother-packs programme keeps a photograph, because only that programme has recent
+photographs that genuinely depict it.
+
+## Old records: what was kept and why
+
+The club asked whether old events with no updated information should be removed. They were **not**
+deleted, for these reasons:
+
+- **Peace in Colour Fest (27 Sep 2025)** is the only pre-2026 event. It is substantiated by an
+  external organiser's report, and the peace-fest programme page links to that report; deleting the
+  event would orphan the citation. It now carries no photograph.
+- **The two published stories** (peace in colour, city clean-up) carry real publication dates and
+  primary sources. They are text-only, and they are the only content on `/news`.
+- Old award entries are archive records, which is what an archive page is for.
+
+If the club prefers a current-Rotary-year-only site, the removal is: the 2025 event record, the two
+2024/2025 stories, and the pre-2026 award entries. Each is a one-line change; say the word.
+
+Still open from the bulletin: the draft story "Joint medical camp at Kabati" may relate to the
+Medical Camp on 18 November 2026 — publish, correct or drop it.
+
+## Mother club (12 October 2026)
+
+The club supplied its sponsor's details, now published on `/about`: **The Rotary Club of Nakuru**,
+chartered **1952**, part of Rotary International, meeting **every Tuesday 12:45–2:00 PM at the Rift
+Valley Sports Club, Nakuru**, with **Col. (Rtd.) Raymond Cheruiyot** as President (installed July
+2026). Held in `MOTHER_CLUB` in `src/data.ts` so an officer can update it in one place.
+
+
+## News removed; pre-2026 activity purged (12 October 2026)
+
+At the club's instruction the site now carries no pre-2026 activity and no News section.
+
+- **News removed entirely**: `/news` and `/news/:slug` routes, the News and story-detail pages, the
+  nav and footer links, the story pipeline (`content/stories/`), the `Story` type, story routes in
+  the prerenderer, the Article schema, the story tests and the `storySlug` field on events. Every
+  home-page and awards-page link that pointed at News now points at Events.
+- **Pre-2026 events gone**: the Peace in Colour Fest event (27 Sep 2025), its project page, and the
+  two pre-2026 stories. Events now run June–November 2026 only.
+- **Awards**: the three entries that recorded pre-2026 *events* were removed (City Clean-up 2024,
+  DRR Meet & Greet 2023, Adopt-a-River Launch 2022). The two that are recognitions rather than
+  events were kept — Ten Years of Service (2025) and DEI Champion (2026).
+- **About** keeps its club-history milestones (2019, 2022, 2025); they are history, not activity.
+- **Types**: `Story`/`PublicEvent`/`PublicAccount` are now declared explicitly in `src/content.ts`.
+  Inferring them from the generated JSON collapsed to `never` once a collection emptied, which
+  broke 50+ type references — that fragility is gone.
 
 ## Impact figures
 | Figure | Context | Status |
@@ -83,13 +215,31 @@ communities") — they introduce no new figures.
 | Adopt-a-River Launch | 2022 | [V] |
 
 ## Leadership
-| Person | Role | Status |
+Closed by the club's own leadership cards (WhatsApp, 12 October 2026): twelve officers with
+portfolios, biographies and portraits, published on `/leadership`.
+
+| Person | Role as published | Status |
 |---|---|---|
-| Joyce Wanjiku Nguru | President 2026/27 | [V] |
-| John Brodrick | Charter President | [V] |
-| Janet Nkirote | President 2025/26 (moderated Peace in Colour Fest) | [V] |
-| Terry Muigai | President 2019 | [V] |
-| Phylis Kanja | DEI Director 2025/26 · DEI Champion 2026 | [C] — role & term + whether title “DEI Champion 2026” is hers |
+| Wanjiku Nguru | President 2026/27 | [V] club card — card is titled “Incoming President”; confirm the public title |
+| Racheal Kyalo | President Elect | [V] club card |
+| Janet Nkirote | Immediate Past President & Club Advisor | [V] club card (President 2025/26) |
+| Sally Kimani | Secretary & Membership | [V] club card |
+| Justin Mwaura | Finance | [V] club card |
+| Felix Bett | Public Relations | [V] club card |
+| Jacob Endurance | Sergeant-at-Arms | [V] club card |
+| Allan Leyian | International Service & Professional Leadership Development | [V] club card |
+| Issa Telot | Community Service | [V] club card |
+| Sophia Muthoni | The Rotary Foundation, Fundraising & Grants | [V] club card |
+| Jessica Njeri | New Generation | [V] club card |
+| John Ngugi | Government & Ethics (past President, ADRR Nakuru Region) | [V] club card |
+| John Brodrick | Charter President | [V] archive |
+| Terry Muigai | President 2019 | [V] archive |
+| Phylis Kanja | DEI Director 2025/26 · DEI Champion 2026 | [C] unconfirmed — kept in data, withheld from the page |
+
+Notes: the card for Wanjiku Nguru supersedes the earlier public-source entry for “Joyce Wanjiku
+Nguru” (treated as the same person); Janet Nkirote is published once, on the board, with her
+presidency in her biography; John Ngugi's past presidency is described in his biography rather
+than as a second immediate-past title. Portraits are cropped from the same cards.
 
 ## Partners
 Rotary Club of Nakuru · Rotary District 9215 · Nakuru County Government · Kenya Wildlife Service ·
@@ -177,9 +327,17 @@ published District/Global Grant model), with no amounts or award claims.
 ## Open items (action needed by club officer)
 1. Official email + phone (enables a real form endpoint + contact block).
 2. Exact charter year (2015 or 2016).
-3. Leadership roster confirmation (Phylis Kanja title/term; fill out past-president list).
+3. Leadership: the 2026/27 board is now club-supplied and published. Still open — confirm the
+   President's public title (card reads "Incoming President"), and Phylis Kanja's 2025/26 DEI
+   title/term if she is to be listed. The past-president archive remains thin (Brodrick, Muigai,
+   Nkirote).
 4. Confirm 405-girl and 150+ pack figures and years for public stats.
 5. Confirm the DEI Champion 2026 award card district (currently 9212, as awarded at the time).
 6. Confirm fee payment timing and whether the KES 500 pin is a one-off.
 6. Optional: partner logos for a more visual partner strip.
-7. Optional: photography of current officers (initials avatars used until then).
+7. Optional: photography of current officers (supplied October 2026 — portraits are now on the
+   board page, so this item is closed).
+8. Medical Camp (18 November 2026): venue and times, so the page can carry a calendar export, plus
+   any report or photographs afterwards.
+9. The draft story "Joint medical camp at Kabati" may relate to the Medical Camp above — confirm
+   whether it should be published, corrected or dropped.

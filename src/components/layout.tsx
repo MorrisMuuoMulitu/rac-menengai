@@ -107,11 +107,19 @@ export function Header() {
         <Link to="/membership" onClick={() => setOpen(false)}>
           Join the club
         </Link>
-        <Link to="/leadership" onClick={() => setOpen(false)}>
-          Leadership
+        {/* Extras the compact nav has no room for. Leadership is already a
+            primary item above, so it is not repeated here. */}
+        <Link to="/awards" onClick={() => setOpen(false)}>
+          Awards &amp; recognition
+        </Link>
+        <Link to="/partnerships" onClick={() => setOpen(false)}>
+          Partnerships
         </Link>
         <Link to="/rotary" onClick={() => setOpen(false)}>
           Rotary worldwide
+        </Link>
+        <Link to="/about/district-9215" onClick={() => setOpen(false)}>
+          Rotary District 9215
         </Link>
       </nav>
     </header>
@@ -160,12 +168,12 @@ export function Footer() {
           <Link to="/about">About the club</Link>
           <Link to="/projects">Our projects</Link>
           <Link to="/events">Events & fellowship</Link>
-          <Link to="/news">News & stories</Link>
           <Link to="/awards">Club archive</Link>
         </div>
         <div className="footer-col">
           <h2>Get involved</h2>
           <Link to="/membership">Become a member</Link>
+          <Link to="/membership/orientation">New member course</Link>
           <Link to="/partnerships">Partner with us</Link>
           <Link to="/leadership">Leadership</Link>
           <Link to="/contact">Contact</Link>
@@ -178,7 +186,7 @@ export function Footer() {
             <br />
             5:30–6:30 PM EAT
           </p>
-          <p>Check the venue with the club before visiting.</p>
+          <p>Thursday fellowship at Nakuru Athletic Club.</p>
           <a href="mailto:menengairc@gmail.com">menengairc@gmail.com</a>
           <Link to="/about/district-9215">Rotary District 9215</Link>
           <Link to="/rotary">Rotary worldwide</Link>

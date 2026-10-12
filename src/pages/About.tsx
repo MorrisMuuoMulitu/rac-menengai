@@ -3,7 +3,14 @@
  */
 import { ArrowRight } from "lucide-react";
 import { Heart, Star, Users } from "lucide-react";
-import { ABOUT_IMAGES, CLUB, DISTRICT, PAGE_INTROS, VALUES } from "../data";
+import {
+  ABOUT_IMAGES,
+  CLUB,
+  DISTRICT,
+  MOTHER_CLUB,
+  PAGE_INTROS,
+  VALUES,
+} from "../data";
 import { Reveal } from "../hooks";
 import { ButtonLink, PageHero, PageMeta } from "../components/ui";
 
@@ -25,11 +32,6 @@ const MILESTONES = [
     text: "Our flagship environmental project begins on River Njoro and River Ndarugu.",
   },
   {
-    year: "2024",
-    title: "City clean-up, Nakuru County",
-    text: "Participated in the inaugural city clean-up campaign with KWS, NEMA and Red Cross.",
-  },
-  {
     year: "2025",
     title: "Ten years of service",
     text: "The club marks a decade of fellowship and impact across the district.",
@@ -48,9 +50,9 @@ export default function AboutPage() {
           <Reveal className="about-visual">
             <img
               src={ABOUT_IMAGES.tall}
-              alt="Club members at the Adopt-a-River launch on River Njoro"
-              width={640}
-              height={760}
+              alt="A member carries mother packs through the maternity ward at Bondeni"
+              width={960}
+              height={1280}
               loading="lazy"
             />
           </Reveal>
@@ -181,15 +183,60 @@ export default function AboutPage() {
                   </li>
                 ))}
               </ul>
-              <ButtonLink
-                to="/about/district-9215"
-                variant="secondary"
-                size="sm"
-              >
-                Explore our district <ArrowRight aria-hidden="true" />
-              </ButtonLink>
+              <div className="district-actions">
+                <ButtonLink
+                  to="/about/district-9215"
+                  variant="secondary"
+                  size="sm"
+                >
+                  Explore our district <ArrowRight aria-hidden="true" />
+                </ButtonLink>
+                <ButtonLink to="/leadership" variant="secondary" size="sm">
+                  Meet the board <ArrowRight aria-hidden="true" />
+                </ButtonLink>
+              </div>
             </div>
           </Reveal>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="container">
+          <div className="section-head-block">
+            <span className="eyebrow">Our mother club</span>
+            <h2 className="sec-title">Chartered by the Rotary Club of Nakuru</h2>
+            <p className="section-lead">{MOTHER_CLUB.summary}</p>
+          </div>
+          <dl className="mother-club-details">
+            <div>
+              <dt>Chartered</dt>
+              <dd>{MOTHER_CLUB.chartered}</dd>
+            </div>
+            <div>
+              <dt>Meets</dt>
+              <dd>
+                {MOTHER_CLUB.meetingDay}, {MOTHER_CLUB.meetingTime}
+              </dd>
+            </div>
+            <div>
+              <dt>Venue</dt>
+              <dd>{MOTHER_CLUB.venue}</dd>
+            </div>
+            <div>
+              <dt>President</dt>
+              <dd>
+                {MOTHER_CLUB.president}{" "}
+                <span className="mother-club-note">
+                  ({MOTHER_CLUB.presidentNote})
+                </span>
+              </dd>
+            </div>
+          </dl>
+          <div className="section-more">
+            <ButtonLink to="/rotary" variant="secondary" size="sm">
+              How Rotaract fits into Rotary <ArrowRight aria-hidden="true" />
+            </ButtonLink>
+          </div>
         </div>
       </section>
 
@@ -216,6 +263,11 @@ export default function AboutPage() {
             The exact charter date and anniversary year are awaiting club
             confirmation.
           </p>
+          <div className="section-more">
+            <ButtonLink to="/awards" variant="secondary" size="sm">
+              Awards &amp; recognition <ArrowRight aria-hidden="true" />
+            </ButtonLink>
+          </div>
         </div>
       </section>
     </>

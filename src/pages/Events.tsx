@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { PUBLIC_EVENTS, dateLabel } from "../content";
 import { PageHero, PageMeta, ButtonLink } from "../components/ui";
 import { fellowship, fellowshipStatus } from "../lib/fellowship";
-import { FELLOWSHIP_OVERRIDE } from "../data";
+import { FELLOWSHIP_OVERRIDE, PROJECTS } from "../data";
 import { downloadCalendar } from "../lib/events";
 import NotFoundPage from "./NotFound";
 export default function EventsPage() {
@@ -26,8 +26,8 @@ export default function EventsPage() {
       />
       <PageHero
         eyebrow="Events & fellowship"
-        title="Come along."
-        lead="Meet the club at fellowship. Take part in a project. Start with a conversation."
+        title="What happened, and when."
+        lead="The dated record of club life — fellowships, distributions, school visits and camps, each with its own photographs. The programmes behind them live on Projects."
       />
       <section className="section">
         <div className="container">
@@ -48,6 +48,10 @@ export default function EventsPage() {
               </button>
             ))}
           </div>
+          <p className="page-crosslink">
+            These are occasions, one at a time. For the ongoing work they belong
+            to, see <Link to="/projects">our programmes</Link>.
+          </p>
           <div className="event-records" aria-live="polite">
             {records.length ? (
               records.map((e) => (
@@ -59,7 +63,12 @@ export default function EventsPage() {
                   <time dateTime={e.date}>{dateLabel(e.date)}</time>
                   <div>
                     <h2>{e.title}</h2>
-                    <p>{e.location}</p>
+                    <p>
+                      {e.location}
+                      {e.partners.length
+                        ? ` · with the ${e.partners.join(" and the ")}`
+                        : ""}
+                    </p>
                   </div>
                   <span>{view === "past" ? "Completed" : "View event"}</span>
                 </Link>
@@ -93,16 +102,23 @@ export function FellowshipVisit() {
       <div>
         <p className="section-label">Weekly fellowship</p>
         <h2>Thursday, 5:30–6:30 PM</h2>
-        <p>Nakuru · Africa/Nairobi (EAT)</p>
-        <p>Guests are welcome. Ask for the venue before travelling.</p>
+        <p>Nakuru Athletic Club, Nakuru · Africa/Nairobi (EAT)</p>
+        <p>
+          Guests are welcome at Nakuru Athletic Club — just come along on a
+          Thursday.
+        </p>
+        <p className="recurring-note">
+          <strong>Book Club Review</strong> every second Sunday of the month:
+          reading, learning and fellowship with members.
+        </p>
         {state.kind === "override" && <p role="status">{state.message}</p>}
       </div>
       <div>
         <a
           className="btn btn-primary btn-md"
-          href="mailto:menengairc@gmail.com?subject=Fellowship%20venue%20and%20visit"
+          href="mailto:menengairc@gmail.com?subject=Coming%20to%20a%20Thursday%20fellowship"
         >
-          Ask for the venue
+          Tell us you’re coming
         </a>
         {state.kind !== "override" && (
           <button
@@ -118,13 +134,13 @@ export function FellowshipVisit() {
                 title: "Rotaract Club of Menengai fellowship",
                 start: current.start.toISOString(),
                 end: current.end.toISOString(),
-                location: "Nakuru, Kenya; confirm venue with club",
+                location: "Nakuru Athletic Club, Nakuru",
                 description:
-                  "Thursday fellowship, 17:30–18:30 EAT. Confirm the venue with menengairc@gmail.com before visiting.",
+                  "Thursday fellowship, 17:30–18:30 EAT at Nakuru Athletic Club. Guests are welcome.",
                 status: "scheduled",
               });
               setFeedback(
-                "Calendar file prepared. Confirm the venue with the club before attending.",
+                "Calendar file prepared for Nakuru Athletic Club.",
               );
             }}
           >
@@ -142,6 +158,9 @@ export function EventDetail() {
   const { slug } = useParams();
   const event = PUBLIC_EVENTS.find((e) => e.slug === slug);
   if (!event) return <NotFoundPage />;
+  const programme = event.projectSlug
+    ? PROJECTS.find((p) => p.slug === event.projectSlug)
+    : undefined;
   const past = new Date(`${event.date}T23:59:59+03:00`) < new Date();
   return (
     <>
@@ -152,8 +171,23 @@ export function EventDetail() {
         lead={event.description}
       />
       <section className="section">
-        <div className="container article-body">
+        <div className="container">
           <Link to="/events">Back to events</Link>
+          {/* Club-supplied photograph: sits full width above the record, at the
+              container's measure rather than the prose column's. */}
+          {event.image ? (
+            <figure className="event-hero-photo">
+              <img
+                src={event.image}
+                alt={event.images[0]?.alt ?? event.title}
+                width={1280}
+                height={962}
+                {...{ fetchpriority: "high" }}
+              />
+            </figure>
+          ) : null}
+        </div>
+        <div className="container article-body">
           <dl className="event-details">
             <div>
               <dt>Date</dt>
@@ -167,24 +201,78 @@ export function EventDetail() {
               <dt>Organiser</dt>
               <dd>{event.organizer}</dd>
             </div>
+            {event.partners.length ? (
+              <div>
+                <dt>With</dt>
+                <dd>{event.partners.join(" and ")}</dd>
+              </div>
+            ) : null}
             <div>
               <dt>Status</dt>
               <dd>{past ? "Completed" : event.status}</dd>
             </div>
           </dl>
           <p>
-            Exact start and end times were not recorded in the source. Calendar
-            export is available only for events with confirmed times.
+            {event.start
+              ? `Confirmed times: ${event.start}.`
+              : "Exact start and end times were not recorded in the source. Calendar export is available only for events with confirmed times."}
           </p>
+          {/* Records differ: some cite an external report, others come from the
+              club's own bulletin. Render only what the record actually has. */}
           <p>
-            <a href={event.sourceUrl} target="_blank" rel="noopener noreferrer">
-              Original event report
-            </a>
+            {event.sourceUrl?.startsWith("http") ? (
+              <a
+                href={event.sourceUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Original event report
+              </a>
+            ) : (
+              <span className="fine-print">{event.approval}</span>
+            )}
           </p>
-          <ButtonLink to={`/news/${event.storySlug}`} variant="secondary">
-            Read the event story
-          </ButtonLink>
+          {programme ? (
+            <p className="event-programme">
+              Part of the{" "}
+              <Link to={`/projects/${programme.slug}`}>{programme.title}</Link>{" "}
+              programme.
+            </p>
+          ) : null}
         </div>
+        {event.images.length > 1 ? (
+          <div className="container">
+            <div className="event-gallery-block">
+              <h2 className="event-gallery-title">
+                Photographs from the day
+                <span>
+                  {event.images.length} images · supplied by the club
+                </span>
+              </h2>
+              <ul className="event-gallery">
+                {event.images.map((photo) => (
+                  <li key={photo.thumb}>
+                    <a
+                      href={photo.src}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={`Open full size: ${photo.alt}`}
+                    >
+                      <img
+                        src={photo.thumb}
+                        alt={photo.alt}
+                        width={560}
+                        height={421}
+                        loading="lazy"
+                        decoding="async"
+                      />
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        ) : null}
       </section>
     </>
   );

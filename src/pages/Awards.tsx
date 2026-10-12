@@ -1,9 +1,9 @@
 /**
  * Awards — historical records awaiting club confirmation.
  */
-import { Award as AwardIcon } from "lucide-react";
+import { ArrowRight, Award as AwardIcon } from "lucide-react";
 import { AWARDS, PAGE_INTROS } from "../data";
-import { PageHero, PageMeta } from "../components/ui";
+import { ButtonLink, PageHero, PageMeta } from "../components/ui";
 import { Reveal } from "../hooks";
 
 export default function AwardsPage() {
@@ -53,6 +53,14 @@ export default function AwardsPage() {
             on District 9212 — awards dated before that transition carry the
             district name in use at the time.
           </p>
+          <div className="section-more">
+            <ButtonLink to="/projects" variant="primary" size="sm">
+              See the work behind them <ArrowRight aria-hidden="true" />
+            </ButtonLink>
+            <ButtonLink to="/events" variant="secondary" size="sm">
+              See the event record <ArrowRight aria-hidden="true" />
+            </ButtonLink>
+          </div>
         </div>
       </section>
     </>

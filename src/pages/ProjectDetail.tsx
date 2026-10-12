@@ -17,9 +17,13 @@ import { ProjectCard } from "../components/cards";
 import { OpportunityCard } from "../components/cards";
 import NotFoundPage from "./NotFound";
 import projectRecords from "../../content/projects.json";
+import { PUBLIC_EVENTS, dateLabel } from "../content";
 
 export default function ProjectDetailPage() {
   const { slug } = useParams<{ slug: string }>();
+  const relatedEvents = PUBLIC_EVENTS.filter(
+    (e) => e.projectSlug === slug,
+  ).sort((a, b) => b.date.localeCompare(a.date));
   const project = PROJECTS.find((p) => p.slug === slug);
 
   if (!project) return <NotFoundPage />;
@@ -57,7 +61,7 @@ export default function ProjectDetailPage() {
 
         <div className="container detail-hero-media">
           <SmartImage
-            src={project.image}
+            src={project.image || undefined}
             alt={project.caption ?? "Image associated with this archive record"}
             width={1200}
             height={675}
@@ -102,6 +106,35 @@ export default function ProjectDetailPage() {
               <h2>Activity record</h2>
               <p>{project.detail}</p>
             </section>
+            {relatedEvents.length > 0 ? (
+              <section className="detail-block">
+                <h2>Recent activity</h2>
+                <p>
+                  This programme runs through dated events. Each one has its own
+                  record and photographs:
+                </p>
+                <ul className="project-events">
+                  {relatedEvents.map((e) => (
+                    <li key={e.slug}>
+                      <Link to={`/events/${e.slug}`}>
+                        <time dateTime={e.date}>{dateLabel(e.date)}</time>
+                        <span className="project-event-title">{e.title}</span>
+                        {e.images.length > 0 ? (
+                          <img
+                            src={e.images[0].thumb}
+                            alt=""
+                            width={160}
+                            height={120}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : null}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
             {project.reached && project.reached.length > 0 ? (
               <section className="detail-block">
                 <h2>People & communities reached</h2>

@@ -156,7 +156,7 @@ export default function MembershipPage() {
             <Reveal delay={80}>
               <p className="lede">
                 Leave your details and one of our officers will invite you to
-                the next fellowship — ask for the venue before visiting on a{" "}
+                the next fellowship at Nakuru Athletic Club on a{" "}
                 {CLUB.meeting.dayLabel}; guests are welcome.
               </p>
             </Reveal>

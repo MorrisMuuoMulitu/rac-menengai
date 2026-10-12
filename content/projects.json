@@ -42,27 +42,5 @@
     "sourceUrl": null,
     "sourceConfidence": "inherited-record",
     "verification": "Photo retained from archive. Exact date and media attribution need confirmation."
-  },
-  {
-    "slug": "peace-fest",
-    "status": "completed",
-    "publicationStatus": "published-existing",
-    "role": "joint contributor; club president moderated the panel",
-    "date": "2025-09-27",
-    "yearLabel": "2025",
-    "sourceUrl": "https://aforcf.org/peace-in-colour-fest-held-in-nakuru/",
-    "sourceConfidence": "primary-participant-report",
-    "verification": "Corrected venue to Nyayo Gardens. No unrelated photo displayed."
-  },
-  {
-    "slug": "street-families",
-    "status": "archived",
-    "publicationStatus": "published-existing",
-    "role": "inherited club activity",
-    "date": null,
-    "yearLabel": "2021",
-    "sourceUrl": null,
-    "sourceConfidence": "inherited-record",
-    "verification": "Narrative retained. Unrelated welcome poster removed; no new metrics."
   }
 ]

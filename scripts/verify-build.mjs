@@ -7,8 +7,17 @@ const paths = [
     /<loc>https:\/\/rac-menengai\.vercel\.app([^<]*)<\/loc>/g,
   ),
 ].map((m) => m[1] || "/");
-const drafts = JSON.parse(readFileSync("content/stories/index.json")).filter(
-  (s) => s.status === "draft",
+// Draft stories must not reach the bundle. A draft slug that is also a
+// *published* record in another collection (e.g. an event) legitimately appears
+// in the bundle, so it is excluded rather than reported as a leak.
+const eventRecords = JSON.parse(readFileSync("content/events/index.json"));
+const publishedSlugs = new Set(
+  eventRecords
+    .filter((e) => e.publicationStatus === "published")
+    .map((e) => e.slug),
+);
+const drafts = eventRecords.filter(
+  (e) => e.publicationStatus !== "published" && !publishedSlugs.has(e.slug),
 );
 let links = 0,
   images = 0;

@@ -49,10 +49,6 @@
       "dest": "/leadership/index.html"
     },
     {
-      "src": "^/news/?$",
-      "dest": "/news/index.html"
-    },
-    {
       "src": "^/events/?$",
       "dest": "/events/index.html"
     },
@@ -93,24 +89,36 @@
       "dest": "/projects/ndarugu-cleanup/index.html"
     },
     {
-      "src": "^/projects/peace-fest/?$",
-      "dest": "/projects/peace-fest/index.html"
+      "src": "^/events/presidential-installation-june-2026/?$",
+      "dest": "/events/presidential-installation-june-2026/index.html"
     },
     {
-      "src": "^/projects/street-families/?$",
-      "dest": "/projects/street-families/index.html"
+      "src": "^/events/mother-pack-bondeni-july-2026/?$",
+      "dest": "/events/mother-pack-bondeni-july-2026/index.html"
     },
     {
-      "src": "^/news/peace-in-colour-nakuru/?$",
-      "dest": "/news/peace-in-colour-nakuru/index.html"
+      "src": "^/events/mother-pack-kabatini-august-2026/?$",
+      "dest": "/events/mother-pack-kabatini-august-2026/index.html"
     },
     {
-      "src": "^/news/nakuru-city-cleanup/?$",
-      "dest": "/news/nakuru-city-cleanup/index.html"
+      "src": "^/events/art-day-pangani-2026/?$",
+      "dest": "/events/art-day-pangani-2026/index.html"
     },
     {
-      "src": "^/events/peace-in-colour-2025/?$",
-      "dest": "/events/peace-in-colour-2025/index.html"
+      "src": "^/events/new-member-induction-2026/?$",
+      "dest": "/events/new-member-induction-2026/index.html"
+    },
+    {
+      "src": "^/events/mazingira-day-pangani-2026/?$",
+      "dest": "/events/mazingira-day-pangani-2026/index.html"
+    },
+    {
+      "src": "^/events/book-club-camping-affair-2026/?$",
+      "dest": "/events/book-club-camping-affair-2026/index.html"
+    },
+    {
+      "src": "^/events/medical-camp-2026/?$",
+      "dest": "/events/medical-camp-2026/index.html"
     },
     {
       "src": "^/404/?$",
