@@ -15,10 +15,17 @@ export interface HeroPhoto {
   title: string;
 }
 
-/** Photo stories stay still until a visitor opts into playback. */
+/**
+ * Club photo stories, rotating automatically every seven seconds.
+ *
+ * Playback pauses — and the control stays available to pause it outright — on
+ * hover, on keyboard focus, when the tab is hidden, when the gallery scrolls out
+ * of view, and entirely for visitors who prefer reduced motion. Manual arrows
+ * take over and stop the rotation so a visitor who has chosen a photo keeps it.
+ */
 export default function HeroGallery({ photos }: { photos: HeroPhoto[] }) {
   const [active, setActive] = useState(0);
-  const [playing, setPlaying] = useState(false);
+  const [playing, setPlaying] = useState(true); // automatic by default
   const [reduced, setReduced] = useState(false);
   const [visible, setVisible] = useState(true);
   const [hovered, setHovered] = useState(false);
