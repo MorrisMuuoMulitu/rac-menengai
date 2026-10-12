@@ -1562,9 +1562,9 @@ export const PAGE_INTROS: Record<string, PageIntro> = {
       "Recent Rotaract Club of Menengai stories: service projects, fellowships and partnerships in Nakuru, Kenya.",
   },
   membership: {
-    eyebrow: "Membership",
-    title: "Join the Rotaract Club of Menengai",
-    lead: "Attend a fellowship, get to know the members, and take part in community service.",
+    eyebrow: "Become a member",
+    title: "Become a Member",
+    lead: "Membership is a two-way thing: come to fellowship, serve on a project, and see whether the club fits. Here is exactly what joining asks of you — and what it costs.",
     description:
       "How to join the Rotaract Club of Menengai: attend three Thursday fellowships in Nakuru, serve on a project, and get inducted. Adults aged 18 and over are welcome.",
   },

@@ -181,6 +181,28 @@ At the club's instruction the site now carries no pre-2026 activity and no News 
   Inferring them from the generated JSON collapsed to `never` once a collection emptied, which
   broke 50+ type references — that fragility is gone.
 
+
+## Become a Member page (12 October 2026)
+
+The club asked for a membership page. A block of text from **another Rotary club** was supplied as
+inspiration, and it was deliberately **not** reused: it describes a different club in a different
+city. Specifically, none of the following was imported, because none of it is true of RAC Menengai:
+
+| In the supplied text | Why it is not on our site |
+|---|---|
+| Venues "Laico Regency" / "Golden Tulip Hotel, Muthithi Road" | Nairobi venues; our fellowship is at Nakuru Athletic Club |
+| Thursday 12:30 PM | our fellowship is 5:30–6:30 PM |
+| "at least 30 years old", Rotaract "18–30" | our published eligibility is 18 and over |
+| "attend at least 50% of all weekly meetings per year" | a Rotary club rule; we publish no attendance quota |
+| Joining fee and weekly lunch costs | no joining fee is confirmed for our club, and we have no lunch arrangements to describe |
+| Membership by proposal, classification and vocation | we do not claim a proposal requirement; our published path is fellowship, a project, orientation, induction |
+
+The page was written from facts already verified elsewhere in `src/data.ts`: 18+, three fellowships
+as a guest at no cost, the four join steps, the orientation course, KES 3,000 annual subscription
+and the KES 500 pin, with projects funded separately by fundraising. It adds **"What we ask of
+you"** — time, service, dues, and what we expressly do not ask (no published joining fee, no minimum
+donation) — which is the useful part of the supplied text without borrowing its specifics.
+
 ## Impact figures
 | Figure | Context | Status |
 |---|---|---|

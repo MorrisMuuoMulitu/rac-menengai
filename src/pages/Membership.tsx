@@ -29,6 +29,61 @@ export default function MembershipPage() {
       </PageHero>
 
       <section className="section section-tint">
+        <div className="container">
+          <div className="section-head-block">
+            <span className="eyebrow">What we ask of you</span>
+            <h2 className="sec-title">An hour a week, and a hand on a project</h2>
+            <p className="section-lead">
+              Service Above Self is the whole idea, so membership asks for your
+              time as well as your dues. Here is the honest version, before you
+              decide anything.
+            </p>
+          </div>
+          <div className="audience-grid">
+            <div className="audience-card">
+              <h3>Time</h3>
+              <p>
+                Fellowship runs every {CLUB.meeting.dayLabel}, 5:30–6:30 PM at
+                Nakuru Athletic Club. Guests may attend three fellowships before
+                deciding — no pressure, no cost.
+              </p>
+            </div>
+            <div className="audience-card">
+              <h3>Service</h3>
+              <p>
+                Members take part in the club’s hands-on work — cleanups,
+                donation drives, school visits and mother pack distributions.
+                That is where the club actually happens.
+              </p>
+            </div>
+            <div className="audience-card">
+              <h3>Dues</h3>
+              <p>
+                {formatKes(MEMBERSHIP.fees.subscription)} a year, which covers
+                Rotary International dues and club running costs, plus a{" "}
+                {formatKes(MEMBERSHIP.fees.pin)} Rotaract pin. Service projects
+                are funded separately by fundraising — members are not billed
+                for them.
+              </p>
+            </div>
+            <div className="audience-card">
+              <h3>What we don’t ask</h3>
+              <p>
+                No joining fee is published and no minimum donation is expected.
+                Ask an officer about payment timing. Whatever your profession or
+                campus, there is a place for it here.
+              </p>
+            </div>
+          </div>
+          <div className="section-more">
+            <ButtonLink to="/rotary" variant="secondary" size="sm">
+              What Rotary stands for <ArrowRight aria-hidden="true" />
+            </ButtonLink>
+          </div>
+        </div>
+      </section>
+
+      <section className="section section-tint">
         <div className="container membership-grid">
           <div className="membership-copy">
             <Reveal>
