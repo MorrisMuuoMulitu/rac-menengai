@@ -7,6 +7,7 @@ import "./styles.css";
 import "./ui-polish.css";
 import "./learning.css";
 import "./course.css";
+import "./redesign.css";
 
 const root = document.getElementById("root");
 if (!root) throw new Error("#root element missing");

@@ -20,3 +20,8 @@ graphify-out/
 # large local QA screenshot sets (kept out of git, excluded from deploys too)
 docs/audit/screenshots/
 docs/audit/scroll-check/*.jpg
+
+# large local screenshot sets (43 MB); regenerate with scripts/verify-redesign.mjs
+docs/audit/redesign/
+docs/audit/redesign-v2/
+docs/audit/hero-autoplay/
