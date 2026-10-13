@@ -193,9 +193,11 @@ export function EventDetail() {
             <figure className="event-hero-photo">
               <img
                 src={event.image}
+                srcSet={event.images[0]?.srcSet}
+                sizes="(max-width: 700px) 100vw, 1080px"
                 alt={event.images[0]?.alt ?? event.title}
-                width={1280}
-                height={962}
+                width={event.images[0]?.width ?? 1280}
+                height={event.images[0]?.height ?? 962}
                 {...{ fetchpriority: "high" }}
               />
             </figure>
@@ -226,6 +228,15 @@ export function EventDetail() {
               <dd>{past ? "Completed" : event.status}</dd>
             </div>
           </dl>
+          {event.story?.map((paragraph) => (
+            <p key={paragraph}>{paragraph}</p>
+          ))}
+          {event.outcome ? (
+            <section aria-label="Exchange outcome">
+              <h2>What the exchange brought to Menengai</h2>
+              <p>{event.outcome}</p>
+            </section>
+          ) : null}
           <p>
             {event.start
               ? `Confirmed times: ${event.start}.`
@@ -258,7 +269,9 @@ export function EventDetail() {
           <div className="container">
             <div className="event-gallery-block">
               <h2 className="event-gallery-title">
-                Photographs from the day
+                {event.story
+                  ? "Photographs from the exchange"
+                  : "Photographs from the day"}
                 <span>{event.images.length} images · supplied by the club</span>
               </h2>
               <ul className="event-gallery">
@@ -272,9 +285,11 @@ export function EventDetail() {
                     >
                       <img
                         src={photo.thumb}
+                        srcSet={photo.srcSet}
+                        sizes="(max-width: 700px) 100vw, 560px"
                         alt={photo.alt}
-                        width={560}
-                        height={421}
+                        width={photo.width ?? 560}
+                        height={photo.height ?? 421}
                         loading="lazy"
                         decoding="async"
                       />

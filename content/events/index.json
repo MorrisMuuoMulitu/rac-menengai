@@ -1,5 +1,79 @@
 [
   {
+    "slug": "india-friendship-exchange-2026",
+    "title": "Menengai joins the Friendship Exchange in India",
+    "date": "2026-09-17",
+    "start": null,
+    "end": null,
+    "location": "Mumbai, Palghar and Pune, India",
+    "description": "President Wanjiku represented Menengai on a 10-day Friendship Exchange as part of a six-person Rotary District 9215 delegation, visiting Mumbai, Palghar and Pune.",
+    "organizer": "Rotary District 9215 Friendship Exchange delegation",
+    "partners": ["Rotary and Rotaract members in India", "Host families"],
+    "projectSlug": null,
+    "sourceUrl": null,
+    "status": "completed",
+    "publicationStatus": "published",
+    "approval": "Club-supplied Friendship Exchange account and photographs, October 2026",
+    "image": "/images/events/india-friendship-exchange-2026/india-kenyan-delegation-palghar.webp",
+    "images": [
+      {
+        "src": "/images/events/india-friendship-exchange-2026/india-kenyan-delegation-palghar.webp",
+        "thumb": "/images/events/india-friendship-exchange-2026/india-kenyan-delegation-palghar-560.webp",
+        "alt": "The six Kenyan delegates hold the national flag at a Rotary gathering in Palghar",
+        "srcSet": "/images/events/india-friendship-exchange-2026/india-kenyan-delegation-palghar-560.webp 560w, /images/events/india-friendship-exchange-2026/india-kenyan-delegation-palghar.webp 1080w",
+        "width": 1080,
+        "height": 1080
+      },
+      {
+        "src": "/images/events/india-friendship-exchange-2026/india-district-9215-rotaract-fellowship.webp",
+        "thumb": "/images/events/india-friendship-exchange-2026/india-district-9215-rotaract-fellowship-560.webp",
+        "alt": "Exchange participants hold a Rotaract District 9215 banner with fellow members",
+        "srcSet": "/images/events/india-friendship-exchange-2026/india-district-9215-rotaract-fellowship-560.webp 560w, /images/events/india-friendship-exchange-2026/india-district-9215-rotaract-fellowship.webp 1080w",
+        "width": 1080,
+        "height": 1080
+      },
+      {
+        "src": "/images/events/india-friendship-exchange-2026/india-fellowship-stage-presentation.webp",
+        "thumb": "/images/events/india-friendship-exchange-2026/india-fellowship-stage-presentation-560.webp",
+        "alt": "Exchange participants and hosts gathered on stage during a presentation",
+        "srcSet": "/images/events/india-friendship-exchange-2026/india-fellowship-stage-presentation-560.webp 560w, /images/events/india-friendship-exchange-2026/india-fellowship-stage-presentation.webp 1080w",
+        "width": 1080,
+        "height": 1080
+      },
+      {
+        "src": "/images/events/india-friendship-exchange-2026/india-ganpati-celebrations.webp",
+        "thumb": "/images/events/india-friendship-exchange-2026/india-ganpati-celebrations-560.webp",
+        "alt": "The Kenyan delegation together beneath decorations during Ganpati celebrations",
+        "srcSet": "/images/events/india-friendship-exchange-2026/india-ganpati-celebrations-560.webp 560w, /images/events/india-friendship-exchange-2026/india-ganpati-celebrations.webp 1080w",
+        "width": 1080,
+        "height": 1080
+      },
+      {
+        "src": "/images/events/india-friendship-exchange-2026/india-university-visit.webp",
+        "thumb": "/images/events/india-friendship-exchange-2026/india-university-visit-560.webp",
+        "alt": "Exchange participants outside a university building during the India visit",
+        "srcSet": "/images/events/india-friendship-exchange-2026/india-university-visit-560.webp 560w, /images/events/india-friendship-exchange-2026/india-university-visit.webp 1080w",
+        "width": 1080,
+        "height": 1080
+      },
+      {
+        "src": "/images/events/india-friendship-exchange-2026/india-historic-stone-gateway.webp",
+        "thumb": "/images/events/india-friendship-exchange-2026/india-historic-stone-gateway-560.webp",
+        "alt": "Exchange participants and hosts at a historic stone gateway",
+        "srcSet": "/images/events/india-friendship-exchange-2026/india-historic-stone-gateway-560.webp 560w, /images/events/india-friendship-exchange-2026/india-historic-stone-gateway.webp 1080w",
+        "width": 1080,
+        "height": 1080
+      }
+    ],
+    "registrationUrl": null,
+    "story": [
+      "On 17 September 2026, Menengai joined a 10-day Friendship Exchange in India through President Wanjiku. She travelled as part of a six-person delegation from Rotary District 9215, with a programme across Mumbai, Palghar and Pune.",
+      "Families welcomed the delegates into their homes. Time with hosts, Rotary meetings and Rotaract fellowship gave the visitors a chance to share club experiences and learn how fellow members organised their work. Letterhead exchanges marked those meetings between clubs.",
+      "The visit also included Ganpati celebrations, university visits, historic sites, temples and beaches. These encounters placed the fellowship alongside the places and traditions of the communities receiving the delegation."
+    ],
+    "outcome": "For Menengai, Wanjiku’s participation brought the club into direct fellowship with Rotary and Rotaract members in India. The exchange created personal connections through shared homes, club meetings and cultural visits, with host families central to the experience."
+  },
+  {
     "slug": "nexora-bloomx-2026",
     "title": "Nexora BloomX 2026",
     "date": "2026-07-02",
@@ -187,9 +261,7 @@
     "location": "Kabatini Maternity, Nakuru",
     "description": "A second mother pack project of the year, delivered in partnership with the Rotaract Club of Bahati at Kabatini Maternity.",
     "organizer": "Rotaract Club of Menengai",
-    "partners": [
-      "Rotaract Club of Bahati"
-    ],
+    "partners": ["Rotaract Club of Bahati"],
     "projectSlug": "mother-packs",
     "sourceUrl": null,
     "status": "completed",

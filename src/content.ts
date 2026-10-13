@@ -11,6 +11,9 @@ export interface StoryPhoto {
   src: string;
   thumb: string;
   alt: string;
+  srcSet?: string;
+  width?: number;
+  height?: number;
 }
 export interface PublicEvent {
   slug: string;
@@ -30,6 +33,8 @@ export interface PublicEvent {
   image: string | null;
   images: StoryPhoto[];
   registrationUrl: string | null;
+  story?: string[];
+  outcome?: string;
 }
 export interface PublicAccount {
   platform: string;
