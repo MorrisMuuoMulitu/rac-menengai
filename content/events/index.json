@@ -1,5 +1,81 @@
 [
   {
+    "slug": "nakuru-region-district-governor-meeting-inductions",
+    "title": "Nakuru Region meets the District Governor — and welcomes six members",
+    "date": "2026-09-08",
+    "start": null,
+    "end": null,
+    "location": "Nakuru Region, Kenya",
+    "description": "Rotaractors from across the Nakuru Region met the District Governor to connect, share ideas and learn from leadership. Menengai also welcomed six new members during the occasion.",
+    "organizer": "Rotaract Club of Menengai and Nakuru Region Rotaractors",
+    "partners": [
+      "Rotaract clubs across the Nakuru Region"
+    ],
+    "projectSlug": null,
+    "sourceUrl": null,
+    "status": "completed",
+    "publicationStatus": "published",
+    "approval": "Club owner supplied meeting account, photographs and induction graphic, 13 October 2026; date confirmed as the Tuesday before 10 September 2026.",
+    "image": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-2.webp",
+    "images": [
+      {
+        "src": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-1.webp",
+        "thumb": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-1-560.webp",
+        "alt": "Rotaractors gathered with the District Governor during the Nakuru Region meeting",
+        "srcSet": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-1-560.webp 560w, /images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-1.webp 1600w",
+        "width": 1600,
+        "height": 1202
+      },
+      {
+        "src": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-2.webp",
+        "thumb": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-2-560.webp",
+        "alt": "Rotaractors gathered with the District Governor during the Nakuru Region meeting",
+        "srcSet": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-2-560.webp 560w, /images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-2.webp 1600w",
+        "width": 1600,
+        "height": 1202
+      },
+      {
+        "src": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-3.webp",
+        "thumb": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-3-560.webp",
+        "alt": "Rotaractors gathered with the District Governor during the Nakuru Region meeting",
+        "srcSet": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-3-560.webp 560w, /images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-3.webp 1600w",
+        "width": 1600,
+        "height": 1202
+      },
+      {
+        "src": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-4.webp",
+        "thumb": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-4-560.webp",
+        "alt": "Rotaractors gathered with the District Governor during the Nakuru Region meeting",
+        "srcSet": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-4-560.webp 560w, /images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-4.webp 1600w",
+        "width": 1600,
+        "height": 1202
+      },
+      {
+        "src": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-6.webp",
+        "thumb": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-6-560.webp",
+        "alt": "Rotaractors gathered with the District Governor during the Nakuru Region meeting",
+        "srcSet": "/images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-6-560.webp 560w, /images/events/nakuru-region-district-governor-meeting-inductions/nakuru-region-governor-meeting-6.webp 1600w",
+        "width": 1600,
+        "height": 1202
+      },
+      {
+        "src": "/images/events/nakuru-region-district-governor-meeting-inductions/menengai-six-new-members.webp",
+        "thumb": "/images/events/nakuru-region-district-governor-meeting-inductions/menengai-six-new-members-560.webp",
+        "alt": "Menengai welcome graphic naming Mitchelle Blessings, Marion Kaggia, Hannah Maina, Morris Mulitu, Eliah Kinyanjui and June Wanja",
+        "srcSet": "/images/events/nakuru-region-district-governor-meeting-inductions/menengai-six-new-members-560.webp 526w, /images/events/nakuru-region-district-governor-meeting-inductions/menengai-six-new-members.webp 526w",
+        "width": 526,
+        "height": 526
+      }
+    ],
+    "registrationUrl": null,
+    "story": [
+      "Rotaractors from across the Nakuru Region came together for a meeting with the District Governor. The engagement offered time to connect, share ideas and learn from leadership while strengthening the clubs’ commitment to community service.",
+      "During the same occasion, Rotaract Club of Menengai inducted six members: Mitchelle Blessings (Lawyer), Marion Kaggia (Nurse), Hannah Maina (Social Work), Morris Mulitu (Software Engineer), Eliah Kinyanjui (Business) and June Wanja (Sales & Marketing).",
+      "The club welcomed the new members and the skills and experience they bring to its service and fellowship."
+    ],
+    "outcome": "Six members joined Menengai during a regional engagement with the District Governor."
+  },
+  {
     "slug": "india-friendship-exchange-2026",
     "title": "Menengai joins the Friendship Exchange in India",
     "date": "2026-09-17",
@@ -8,7 +84,10 @@
     "location": "Mumbai, Palghar and Pune, India",
     "description": "President Wanjiku represented Menengai on a 10-day Friendship Exchange as part of a six-person Rotary District 9215 delegation, visiting Mumbai, Palghar and Pune.",
     "organizer": "Rotary District 9215 Friendship Exchange delegation",
-    "partners": ["Rotary and Rotaract members in India", "Host families"],
+    "partners": [
+      "Rotary and Rotaract members in India",
+      "Host families"
+    ],
     "projectSlug": null,
     "sourceUrl": null,
     "status": "completed",
@@ -63,12 +142,61 @@
         "srcSet": "/images/events/india-friendship-exchange-2026/india-historic-stone-gateway-560.webp 560w, /images/events/india-friendship-exchange-2026/india-historic-stone-gateway.webp 1080w",
         "width": 1080,
         "height": 1080
+      },
+      {
+        "src": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-1.webp",
+        "thumb": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-1-560.webp",
+        "alt": "Club presidents displaying exchanged official letterheads during the India visit",
+        "srcSet": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-1-560.webp 560w, /images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-1.webp 1200w",
+        "width": 1200,
+        "height": 1600
+      },
+      {
+        "src": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-2.webp",
+        "thumb": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-2-560.webp",
+        "alt": "Club presidents displaying exchanged official letterheads during the India visit",
+        "srcSet": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-2-560.webp 560w, /images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-2.webp 1200w",
+        "width": 1200,
+        "height": 1600
+      },
+      {
+        "src": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-3.webp",
+        "thumb": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-3-560.webp",
+        "alt": "Club presidents displaying exchanged official letterheads during the India visit",
+        "srcSet": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-3-560.webp 560w, /images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-3.webp 1200w",
+        "width": 1200,
+        "height": 1600
+      },
+      {
+        "src": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-4.webp",
+        "thumb": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-4-560.webp",
+        "alt": "Club presidents displaying exchanged official letterheads during the India visit",
+        "srcSet": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-4-560.webp 560w, /images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-4.webp 1200w",
+        "width": 1200,
+        "height": 1600
+      },
+      {
+        "src": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-6.webp",
+        "thumb": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-6-560.webp",
+        "alt": "Club presidents displaying exchanged official letterheads during the India visit",
+        "srcSet": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-6-560.webp 560w, /images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-6.webp 1200w",
+        "width": 1200,
+        "height": 1600
+      },
+      {
+        "src": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-7.webp",
+        "thumb": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-7-560.webp",
+        "alt": "Club presidents displaying exchanged official letterheads during the India visit",
+        "srcSet": "/images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-7-560.webp 560w, /images/events/india-friendship-exchange-2026/menengai-letterhead-exchange-7.webp 1200w",
+        "width": 1200,
+        "height": 1600
       }
     ],
     "registrationUrl": null,
     "story": [
       "On 17 September 2026, Menengai joined a 10-day Friendship Exchange in India through President Wanjiku. She travelled as part of a six-person delegation from Rotary District 9215, with a programme across Mumbai, Palghar and Pune.",
       "Families welcomed the delegates into their homes. Time with hosts, Rotary meetings and Rotaract fellowship gave the visitors a chance to share club experiences and learn how fellow members organised their work. Letterhead exchanges marked those meetings between clubs.",
+      "During the visit, club presidents exchanged official club letterheads. For Menengai, the exchange marked friendship across borders and an opportunity to share culture, ideas and approaches to service with fellow Rotaract clubs.",
       "The visit also included Ganpati celebrations, university visits, historic sites, temples and beaches. These encounters placed the fellowship alongside the places and traditions of the communities receiving the delegation."
     ],
     "outcome": "For Menengai, Wanjiku’s participation brought the club into direct fellowship with Rotary and Rotaract members in India. The exchange created personal connections through shared homes, club meetings and cultural visits, with host families central to the experience."
@@ -179,9 +307,14 @@
     "start": null,
     "end": null,
     "location": "Bondeni Maternity Hospital, Nakuru",
-    "description": "Mother packs delivered to support mothers and newborns at Bondeni Maternity Hospital.",
+    "description": "Menengai’s first service project of the Rotary year donated 48 Mother Packs at Bondeni Maternity; 22 new mothers received packs on the day.",
     "organizer": "Rotaract Club of Menengai",
-    "partners": [],
+    "partners": [
+      "Rotary Club of Davis",
+      "Rotary Club of Nakuru",
+      "Bondeni Maternity",
+      "County Government"
+    ],
     "projectSlug": "mother-packs",
     "sourceUrl": null,
     "status": "completed",
@@ -250,7 +383,13 @@
         "alt": "The club outside the in-charge's office at Bondeni Maternity"
       }
     ],
-    "registrationUrl": null
+    "registrationUrl": null,
+    "story": [
+      "Menengai opened its Rotary-year service programme at Bondeni Maternity with a donation of 48 Mother Packs. Twenty-two new mothers received packs on the day; the donation total and same-day recipients are separate counts.",
+      "Rotary Club of Davis supported the initiative in partnership with Menengai’s sponsor club, Rotary Club of Nakuru.",
+      "County Government CEC Roselyn Mungai and Dr. Joyce Yator, Doctor in Charge at Bondeni Maternity, attended. Rotarians, Rotaractors, donors and volunteers supported the preparation and delivery."
+    ],
+    "outcome": "48 Mother Packs donated; 22 new mothers received packs during the visit."
   },
   {
     "slug": "mother-pack-kabatini-august-2026",
@@ -258,10 +397,16 @@
     "date": "2026-08-22",
     "start": null,
     "end": null,
-    "location": "Kabatini Maternity, Nakuru",
-    "description": "A second mother pack project of the year, delivered in partnership with the Rotaract Club of Bahati at Kabatini Maternity.",
+    "location": "Kabatini Health Center, Nakuru",
+    "description": "Menengai and Rotaract Club of Bahati delivered Mother Packs at Kabatini Health Center alongside partner Rotary and Rotaract clubs.",
     "organizer": "Rotaract Club of Menengai",
-    "partners": ["Rotaract Club of Bahati"],
+    "partners": [
+      "Rotaract Club of Bahati",
+      "Rotaract Club of Naivasha",
+      "Rotaract Club of Thika TTI",
+      "Rotaract Club of University of Embu",
+      "Rotary Club of Kisumu Winam"
+    ],
     "projectSlug": "mother-packs",
     "sourceUrl": null,
     "status": "completed",
@@ -335,16 +480,21 @@
         "alt": "The group seated together after the distribution"
       }
     ],
-    "registrationUrl": null
+    "registrationUrl": null,
+    "story": [
+      "Menengai and Rotaract Club of Bahati came together for the Mother Pack Project at Kabatini Health Center, supporting mothers and families with essential items.",
+      "Each pack included a basin, uji flour, soap, tissue, a face towel, heavy-flow pads, diapers, cooking oil and other essentials.",
+      "The clubs served alongside Rotaract Club of Naivasha, Rotaract Club of Thika TTI, Rotaract Club of University of Embu and Rotary Club of Kisumu Winam."
+    ]
   },
   {
     "slug": "art-day-pangani-2026",
-    "title": "Art Day at Pangani Special School",
+    "title": "Empowering Minds: art and learning at Pangani Special School",
     "date": "2026-09-05",
     "start": null,
     "end": null,
     "location": "Pangani Special School, Nakuru",
-    "description": "A day of art with learners at Pangani Special School, promoting creativity and engagement.",
+    "description": "Art and creativity, writing clinics, reading and storytelling with learners at Pangani Special School, alongside essential supplies and the Girls’ Support Drive.",
     "organizer": "Rotaract Club of Menengai",
     "partners": [],
     "projectSlug": "pangani-special-school",
@@ -408,9 +558,46 @@
         "src": "/images/events/pangani-art-day-2026/pangani-art-day-2026-materials-handover.webp",
         "thumb": "/images/events/pangani-art-day-2026/pangani-art-day-2026-materials-handover-560.webp",
         "alt": "Art materials handed over at Pangani Special School"
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-empowering-minds-8.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-empowering-minds-8-560.webp",
+        "alt": "Club volunteers beside donated essential supplies at Pangani Special School",
+        "srcSet": "/images/events/pangani-art-day-2026/pangani-empowering-minds-8-560.webp 560w, /images/events/pangani-art-day-2026/pangani-empowering-minds-8.webp 1372w",
+        "width": 1372,
+        "height": 889
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-empowering-minds-10.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-empowering-minds-10-560.webp",
+        "alt": "Learners drawing and colouring during the art session",
+        "srcSet": "/images/events/pangani-art-day-2026/pangani-empowering-minds-10-560.webp 560w, /images/events/pangani-art-day-2026/pangani-empowering-minds-10.webp 1200w",
+        "width": 1200,
+        "height": 777
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-empowering-minds-4.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-empowering-minds-4-560.webp",
+        "alt": "A colourful drawing created during Pangani art day",
+        "srcSet": "/images/events/pangani-art-day-2026/pangani-empowering-minds-4-560.webp 560w, /images/events/pangani-art-day-2026/pangani-empowering-minds-4.webp 1200w",
+        "width": 1200,
+        "height": 777
+      },
+      {
+        "src": "/images/events/pangani-art-day-2026/pangani-empowering-minds-6.webp",
+        "thumb": "/images/events/pangani-art-day-2026/pangani-empowering-minds-6-560.webp",
+        "alt": "Learners and volunteers gathered around tables during Empowering Minds",
+        "srcSet": "/images/events/pangani-art-day-2026/pangani-empowering-minds-6-560.webp 560w, /images/events/pangani-art-day-2026/pangani-empowering-minds-6.webp 1600w",
+        "width": 1600,
+        "height": 1036
       }
     ],
-    "registrationUrl": null
+    "registrationUrl": null,
+    "story": [
+      "During Empowering Minds, Menengai members spent time with learners at Pangani Special School through art and creativity sessions, writing clinics, reading and storytelling.",
+      "The club donated essential supplies and sanitary products through its Girls’ Support Drive to support the learners.",
+      "District Rotaract Representative Brian Magana joined the activity. Members, donors and volunteers contributed materials, time and encouragement throughout the day."
+    ]
   },
   {
     "slug": "new-member-induction-2026",
@@ -543,5 +730,71 @@
     "image": null,
     "images": [],
     "registrationUrl": null
+  },
+  {
+    "slug": "nakuru-region-drr-hyrax-hill",
+    "title": "Nakuru Region fellowship with DRR Brian Magana at Hyrax Hill",
+    "date": "2026-09-05",
+    "start": null,
+    "end": null,
+    "location": "Hyrax Hill Museum, Nakuru",
+    "description": "A meet-and-greet with DRR Brian Magana and Rotaract clubs from across the Nakuru Region at Hyrax Hill Museum.",
+    "organizer": "Nakuru Region Rotaract clubs",
+    "partners": [
+      "Rotaract clubs across the Nakuru Region"
+    ],
+    "projectSlug": null,
+    "sourceUrl": null,
+    "status": "completed",
+    "publicationStatus": "published",
+    "approval": "Club owner supplied account and photographs; date confirmed as Saturday before 6 September 2026.",
+    "image": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-8.webp",
+    "images": [
+      {
+        "src": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-8.webp",
+        "thumb": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-8-560.webp",
+        "alt": "Rotaractors gathered for a regional group photograph at Hyrax Hill Museum",
+        "srcSet": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-8-560.webp 560w, /images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-8.webp 1600w",
+        "width": 1600,
+        "height": 1200
+      },
+      {
+        "src": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-1.webp",
+        "thumb": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-1-560.webp",
+        "alt": "Participants presenting artwork during the Hyrax Hill fellowship",
+        "srcSet": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-1-560.webp 560w, /images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-1.webp 1600w",
+        "width": 1600,
+        "height": 1200
+      },
+      {
+        "src": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-3.webp",
+        "thumb": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-3-560.webp",
+        "alt": "Participants sharing conversation outdoors at Hyrax Hill",
+        "srcSet": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-3-560.webp 560w, /images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-3.webp 1600w",
+        "width": 1600,
+        "height": 1200
+      },
+      {
+        "src": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-5.webp",
+        "thumb": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-5-560.webp",
+        "alt": "Rotaractors gathered beneath trees at the museum",
+        "srcSet": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-5-560.webp 560w, /images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-5.webp 1600w",
+        "width": 1600,
+        "height": 1200
+      },
+      {
+        "src": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-10.webp",
+        "thumb": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-10-560.webp",
+        "alt": "Fellow members together during the Nakuru Region meet-and-greet",
+        "srcSet": "/images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-10-560.webp 560w, /images/events/nakuru-region-drr-hyrax-hill/hyrax-region-fellowship-10.webp 1600w",
+        "width": 1600,
+        "height": 1200
+      }
+    ],
+    "registrationUrl": null,
+    "story": [
+      "Menengai joined Rotaract clubs from across the Nakuru Region at Hyrax Hill Museum for a meet-and-greet with District Rotaract Representative Brian Magana.",
+      "The gathering offered time to share ideas, build friendships and enjoy the museum surroundings together. Conversations and shared activities brought members from different clubs together beyond their regular meetings and projects."
+    ]
   }
 ]

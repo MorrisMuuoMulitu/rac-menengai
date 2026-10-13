@@ -14,8 +14,8 @@ export default function EventsPage() {
   const now = new Date();
   const records = PUBLIC_EVENTS.filter((e) =>
     view === "past"
-      ? new Date(`${e.date}T23:59:59+03:00`) < now
-      : e.status !== "cancelled" && new Date(`${e.date}T23:59:59+03:00`) >= now,
+      ? e.status === "completed" || new Date(`${e.date}T23:59:59+03:00`) < now
+      : e.status !== "cancelled" && e.status !== "completed" && new Date(`${e.date}T23:59:59+03:00`) >= now,
   ).sort((a, b) =>
     view === "past"
       ? b.date.localeCompare(a.date)
@@ -30,7 +30,7 @@ export default function EventsPage() {
       <PageHero
         eyebrow="Events & fellowship"
         title="What happened, and when."
-        lead="The dated record of club life — fellowships, distributions, school visits and camps, each with its own photographs. The programmes behind them live on Projects."
+        lead="The record of club life — fellowships, distributions, school visits and camps, each with its own photographs. The programmes behind them live on Projects."
       />
       <section className="section">
         <div className="container">
@@ -74,7 +74,7 @@ export default function EventsPage() {
                       decoding="async"
                     />
                   )}
-                  <time dateTime={e.date}>{dateLabel(e.date)}</time>
+                  <time dateTime={e.date || undefined}>{dateLabel(e.date)}</time>
                   <div>
                     <h2>{e.title}</h2>
                     <p>
@@ -175,7 +175,7 @@ export function EventDetail() {
   const programme = event.projectSlug
     ? PROJECTS.find((p) => p.slug === event.projectSlug)
     : undefined;
-  const past = new Date(`${event.date}T23:59:59+03:00`) < new Date();
+  const past = event.status === "completed" || new Date(`${event.date}T23:59:59+03:00`) < new Date();
   return (
     <>
       <PageMeta title={event.title} description={event.description} />
@@ -232,8 +232,8 @@ export function EventDetail() {
             <p key={paragraph}>{paragraph}</p>
           ))}
           {event.outcome ? (
-            <section aria-label="Exchange outcome">
-              <h2>What the exchange brought to Menengai</h2>
+            <section aria-label="Event outcome">
+              <h2>{event.slug === "india-friendship-exchange-2026" ? "What the exchange brought to Menengai" : "The outcome"}</h2>
               <p>{event.outcome}</p>
             </section>
           ) : null}
@@ -269,7 +269,7 @@ export function EventDetail() {
           <div className="container">
             <div className="event-gallery-block">
               <h2 className="event-gallery-title">
-                {event.story
+                {event.slug === "india-friendship-exchange-2026"
                   ? "Photographs from the exchange"
                   : "Photographs from the day"}
                 <span>{event.images.length} images · supplied by the club</span>

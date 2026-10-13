@@ -770,7 +770,7 @@ export const PROJECTS: Project[] = [
     summary:
       "Art days and environmental work with learners at Pangani Special School in Nakuru.",
     detail:
-      "The club's ongoing relationship with Pangani Special School: an art day in September 2026 where learners drew, coloured and showed their work, and Mazingira Day in October 2026 when members and learners planted seedlings and talked about conservation. Both visits put the learners at the centre — making, planting and presenting their own work.",
+      "The club's ongoing relationship with Pangani Special School: the Empowering Minds art day in September 2026, with creativity sessions, writing clinics, reading and storytelling, essential supplies and sanitary-product donations through the Girls’ Support Drive, joined by DRR Brian Magana, and Mazingira Day in October 2026 when members and learners planted seedlings and talked about conservation. Both visits put the learners at the centre — making, planting and presenting their own work.",
     location: "Pangani Special School, Nakuru",
     areasOfFocus: ["education", "environment"],
     reached: ["Learners at Pangani Special School"],
@@ -801,16 +801,16 @@ export const PROJECTS: Project[] = [
     summary:
       "Mother packs of essentials for new mothers and their babies, delivered at Bondeni and Kabatini Maternity.",
     detail:
-      "To open the 2026 Rotary year, members assembled and distributed mother packs — diapers, wraps, soap and essentials — to new mothers at Bondeni Maternity in Nakuru. Each pack carries a simple message: practical support for a new family.",
+      "To open the Rotary year, Menengai donated 48 Mother Packs at Bondeni Maternity, with 22 new mothers receiving packs during the visit. Rotary Club of Davis supported the initiative with Rotary Club of Nakuru. At Kabatini Health Center, Menengai and Rotaract Club of Bahati served alongside partner clubs. Packs included basins, uji flour, soap, tissue, face towels, heavy-flow pads, diapers, cooking oil and other essentials.",
     location: "Bondeni and Kabatini Maternity, Nakuru",
     areasOfFocus: ["maternal"],
     reached: ["New mothers and their babies at Bondeni Maternity"],
     caption: undefined,
     results: [
-      "Mother packs distributed; count awaiting confirmation",
+      "48 Mother Packs donated at Bondeni; 22 new mothers received packs on the day",
       "New-year service launch at Bondeni Maternity",
     ],
-    partners: ["Bondeni Maternity"],
+    partners: ["Bondeni Maternity", "Rotary Club of Davis", "Rotary Club of Nakuru", "Rotaract Club of Bahati", "Rotaract Club of Naivasha", "Rotaract Club of Thika TTI", "Rotaract Club of University of Embu", "Rotary Club of Kisumu Winam"],
   },
   {
     slug: "limuko-girls",

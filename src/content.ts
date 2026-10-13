@@ -50,6 +50,7 @@ export const PUBLIC_EVENTS: PublicEvent[] = (events as PublicEvent[]).filter(
 export const PUBLIC_ACCOUNTS: PublicAccount[] = accounts as PublicAccount[];
 
 export const dateLabel = (date: string) =>
+  !date ? "Date not supplied" :
   new Intl.DateTimeFormat("en-KE", {
     day: "numeric",
     month: "long",
