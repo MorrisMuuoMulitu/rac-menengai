@@ -64,20 +64,18 @@ export function Header() {
     >
       <div className="container header-inner">
         <Link to="/" className="brand" aria-label={`${CLUB.name}, home`}>
-          {/* The club's official masterbrand lockup. It carries the current
-              Rotary year theme, so refresh it when the theme changes (see
-              docs/BRANDING_VERIFICATION.md). */}
+          {/* Current club logo supplied by the club owner, October 2026. */}
           <picture>
             <source
-              srcSet="/images/branding/rotaract-menengai-lockup.webp"
+              srcSet="/images/branding/menengai-logo-current.webp"
               type="image/webp"
             />
             <img
               className="brand-lockup"
-              src="/images/branding/rotaract-menengai-lockup.png"
+              src="/images/branding/menengai-logo-current.webp"
               alt={CLUB.name}
-              width={560}
-              height={119}
+              width={800}
+              height={346}
             />
           </picture>
         </Link>

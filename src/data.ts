@@ -761,6 +761,14 @@ export const FINAL_CTA = {
 /* ============================= Projects ============================= */
 export const PROJECTS: Project[] = [
   {
+    slug: "sports-legacy", title: "Sports Legacy", tag: "Community", year: "2025",
+    image: "/images/events/sports-legacy-district-grant-2025/sports-legacy-27.webp",
+    summary: "Youth engagement, teamwork and talent development through sport.",
+    detail: "On 31 May 2025, the Sports Legacy Project brought young people together through sports, promoting teamwork, discipline, leadership and healthy living. District Grant DG2677765 supported opportunities for youth engagement, talent development and positive community interaction. The initiative strengthened relationships through shared sporting activities.",
+    location: "Venue not supplied", areasOfFocus: ["community"], reached: ["Young participants"],
+    results: ["District Grant Project DG2677765", "Youth sports activities held on 31 May 2025"],
+  },
+  {
     slug: "pangani-special-school",
     title: "Pangani Special School",
     tag: "Education",

@@ -384,6 +384,14 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      <section className="club-magazine-section">
+        <div className="container club-magazine-layout">
+          <a className="club-magazine-cover" href="/publications/menengai-magazine-2025-2026.pdf" target="_blank" rel="noopener noreferrer" aria-label="Read the Menengai magazine, opens PDF in a new tab">
+            <img src="/publications/menengai-magazine-2025-2026-cover.webp" alt="Cover of Menengai’s June 2026 club magazine" width={638} height={900} loading="lazy" />
+          </a>
+          <div><p className="kicker">Club magazine · Issue 1 · June 2026</p><h2>A year in our own words.</h2><p>Explore the 2025–2026 club magazine: leadership, membership, club service and a year of community work.</p><p className="magazine-file-note">25 pages · PDF · 19 MB</p><div className="magazine-actions"><a className="btn btn-primary" href="/publications/menengai-magazine-2025-2026.pdf" target="_blank" rel="noopener noreferrer">Read the magazine <ArrowUpRight size={18}/><span className="sr-only"> (PDF, opens in a new tab)</span></a><a className="text-link" href="/publications/menengai-magazine-2025-2026.pdf" download>Download PDF <ArrowRight size={18}/></a></div></div>
+        </div>
+      </section>
       <section className="home-invitation">
         <div className="container invitation-inner">
           <h2>

@@ -5461,3 +5461,15 @@ figcaption {
   color: var(--pink-700);
   font-weight: 600;
 }
+.club-magazine-section { padding: 80px 0; background: #eee9df; }
+.club-magazine-layout { display: grid; grid-template-columns: .8fr 1.2fr; align-items: center; gap: 80px; }
+.club-magazine-cover { display: block; max-width: 380px; box-shadow: 12px 16px 0 #d2cabc; }
+.club-magazine-cover img { display: block; width: 100%; height: auto; }
+.club-magazine-layout h2 { font-size: clamp(40px,5vw,66px); line-height: 1.05; margin: 18px 0; }
+.club-magazine-layout p { max-width: 48ch; line-height: 1.8; }
+.magazine-file-note { font-size: 13px; }
+.magazine-actions { display: flex; flex-wrap: wrap; gap: 22px; align-items: center; margin-top: 28px; }
+@media(max-width:760px) { .club-magazine-section { padding: 48px 0; } .club-magazine-layout { grid-template-columns: minmax(0,1fr); gap: 42px; } .club-magazine-cover { width: 78%; margin: auto; } }
+/* The new lockup has a taller ratio than the previous themed artwork. */
+.brand .brand-lockup { width: 210px; height: auto; max-height: 76px; object-fit: contain; }
+@media(max-width:600px) { .brand .brand-lockup { width: 170px; max-height: 68px; } }

@@ -57,6 +57,26 @@
       "dest": "/leadership/index.html"
     },
     {
+      "src": "^/events/nakuru-region-drr-hyrax-hill/?$",
+      "dest": "/events/nakuru-region-drr-hyrax-hill/index.html"
+    },
+    {
+      "src": "^/events/nakuru-region-district-governor-meeting-inductions/?$",
+      "dest": "/events/nakuru-region-district-governor-meeting-inductions/index.html"
+    },
+    {
+      "src": "^/events/india-friendship-exchange-2026/?$",
+      "dest": "/events/india-friendship-exchange-2026/index.html"
+    },
+    {
+      "src": "^/events/sports-legacy-district-grant-2025/?$",
+      "dest": "/events/sports-legacy-district-grant-2025/index.html"
+    },
+    {
+      "src": "^/projects/sports-legacy/?$",
+      "dest": "/projects/sports-legacy/index.html"
+    },
+    {
       "src": "^/events/?$",
       "dest": "/events/index.html"
     },
