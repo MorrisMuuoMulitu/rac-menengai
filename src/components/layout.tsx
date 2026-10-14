@@ -222,6 +222,7 @@ export function Footer() {
             © {new Date().getFullYear()} {CLUB.name}
           </span>
           <span>Service Above Self</span>
+          <a className="design-credit" href="https://www.impelweb.studio/" target="_blank" rel="noopener noreferrer">Designed by Impel Web ↗</a>
         </div>
       </div>
     </footer>
