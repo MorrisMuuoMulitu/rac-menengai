@@ -1,6 +1,6 @@
 # Rotaract Club of Menengai
 
-React, Vite and TypeScript website for community service and fellowship in Nakuru. The October 2026 redesign uses locally hosted Manrope and Barlow Condensed, a large cranberry Menengai masthead, a photographic contact sheet, a forest-green membership invitation and an interactive project chooser. Public routes are prerendered during build; project and orientation URLs are preserved.
+React, Vite and TypeScript website for community service and fellowship in Nakuru. The 2026 redesign uses locally hosted Manrope and Barlow Condensed, cranberry panels and existing club photography. Public routes are prerendered during build; project and orientation URLs are preserved.
 
 ```bash
 npm ci
@@ -16,5 +16,3 @@ Content: `src/data.ts`, `content/stories/index.json`, `content/events/index.json
 Enquiries default to an explicit email draft. Direct delivery requires configured server credentials and a real delivery test; see `.env.example` and docs/MAINTENANCE.md. The orientation course retains local progress and quiz functionality.
 
 Documentation: WEBSITE_AUDIT.md, DESIGN_SYSTEM.md, SOCIAL_ACCOUNT_VERIFICATION.md, BRANDING_VERIFICATION.md, CONTENT_SOURCES.md, QA_REPORT.md and MAINTENANCE.md in `docs/`. The original audit and legacy files are historical records.
-
-Browser QA for the redesign: build and run the preview, then run `node scripts/verify-redesign.mjs` with `BASE_URL` set to that preview URL. It needs `playwright-core` and Chrome; `PLAYWRIGHT_MODULE` and `CHROME_PATH` can point to existing installations. The browser check does not submit contact forms. Current evidence lives in `docs/audit/redesign-v2/`; the rejected first pass remains in `docs/audit/redesign/`. Use `OUTPUT_DIR` to save a separate verification run.

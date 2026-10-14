@@ -16,7 +16,7 @@ export interface HeroPhoto {
 }
 
 /**
- * Club photo stories, rotating every seven seconds unless motion is reduced.
+ * Club photo stories, rotating automatically every seven seconds.
  *
  * Playback pauses — and the control stays available to pause it outright — on
  * hover, on keyboard focus, when the tab is hidden, when the gallery scrolls out
@@ -25,7 +25,7 @@ export interface HeroPhoto {
  */
 export default function HeroGallery({ photos }: { photos: HeroPhoto[] }) {
   const [active, setActive] = useState(0);
-  const [playing, setPlaying] = useState(true); // slow autoplay; visitors can pause or choose a photograph
+  const [playing, setPlaying] = useState(true); // automatic by default
   const [reduced, setReduced] = useState(false);
   const [visible, setVisible] = useState(true);
   const [hovered, setHovered] = useState(false);
@@ -71,15 +71,6 @@ export default function HeroGallery({ photos }: { photos: HeroPhoto[] }) {
     return () => window.clearInterval(interval);
   }, [playing, reduced, visible, hovered, focused, photos.length]);
 
-  // Warm the next responsive photograph before it becomes the visible story.
-  useEffect(() => {
-    const next = photos[(active + 1) % photos.length];
-    const image = new Image();
-    image.srcset = `${next.src.replace(".webp", "-720.webp")} 720w, ${next.src} 1280w`;
-    image.sizes = "(max-width: 760px) calc(100vw - 40px), 70vw";
-    image.src = next.src;
-  }, [active, photos]);
-
   const select = (index: number) => {
     const next = (index + photos.length) % photos.length;
     setActive(next);
@@ -107,14 +98,14 @@ export default function HeroGallery({ photos }: { photos: HeroPhoto[] }) {
         className="photo-story-image"
         src={photo.src}
         srcSet={`${photo.src.replace(".webp", "-720.webp")} 720w, ${photo.src} 1280w`}
-        sizes="(max-width: 760px) calc(100vw - 40px), 70vw"
+        sizes="(max-width: 760px) 100vw, 57vw"
         alt={photo.alt}
         width="1280"
         height="960"
         {...{ fetchpriority: active === 0 ? "high" : "auto" }}
         decoding="async"
       />
-      <span className="photo-story-label">From the field</span>
+      <span className="photo-story-label">Menengai in action</span>
       <figcaption className="photo-story-caption">
         <div className="photo-story-description">
           <span>Recent club activity · 2026</span>
@@ -163,23 +154,6 @@ export default function HeroGallery({ photos }: { photos: HeroPhoto[] }) {
           )}
         </div>
       </figcaption>
-      <div
-        className="photo-story-indicators"
-        role="group"
-        aria-label="Jump to a photograph"
-      >
-        {photos.map((item, index) => (
-          <button
-            key={item.src}
-            type="button"
-            aria-label={`Show ${item.title}`}
-            aria-pressed={active === index}
-            onClick={() => select(index)}
-          >
-            <span />
-          </button>
-        ))}
-      </div>
       <span className="sr-only" role="status">
         {announcement}
       </span>
