@@ -31,25 +31,66 @@ export function reviewerAllowlist(value: string | undefined): Set<string> {
   );
 }
 
-type ClerkUser = {
-  primaryEmailAddressId?: string | null;
-  emailAddresses?: { id: string; emailAddress: string }[];
-  firstName?: string | null;
-  lastName?: string | null;
-  username?: string | null;
-};
+/**
+ * The user object arrives camelCase from `@clerk/backend` and snake_case from
+ * the REST API directly. Both are accepted, because reading only one shape
+ * means a future change to the SDK silently resolves nobody as an officer.
+ */
+interface ClerkEmail {
+  id: string;
+  emailAddress?: string;
+  email_address?: string;
+  verification?: { status?: string } | null;
+}
 
+export interface ClerkUser {
+  primaryEmailAddressId?: string | null;
+  primary_email_address_id?: string | null;
+  emailAddresses?: ClerkEmail[];
+  email_addresses?: ClerkEmail[];
+  firstName?: string | null;
+  first_name?: string | null;
+  lastName?: string | null;
+  last_name?: string | null;
+  username?: string | null;
+}
+
+function addressesOf(user: ClerkUser): ClerkEmail[] {
+  return user.emailAddresses ?? user.email_addresses ?? [];
+}
+
+function choosePrimary(user: ClerkUser): ClerkEmail | null {
+  const addresses = addressesOf(user);
+  const primaryId =
+    user.primaryEmailAddressId ?? user.primary_email_address_id ?? null;
+  return addresses.find((address) => address.id === primaryId) ?? addresses[0] ?? null;
+}
+
+function readAddress(entry: ClerkEmail | null): string | null {
+  const value = entry?.emailAddress ?? entry?.email_address;
+  return typeof value === "string" && value.trim()
+    ? value.trim().toLowerCase()
+    : null;
+}
+
+/** The account's primary address, verified or not. Used for display and contact. */
 export function primaryEmail(user: ClerkUser): string | null {
-  const addresses = user.emailAddresses ?? [];
-  const primary = addresses.find(
-    (address) => address.id === user.primaryEmailAddressId,
-  );
-  const chosen = primary ?? addresses[0];
-  return chosen ? chosen.emailAddress.trim().toLowerCase() : null;
+  return readAddress(choosePrimary(user));
+}
+
+/**
+ * The primary address only when Clerk has confirmed it. Officer status is
+ * decided on this one: an unconfirmed address is a claim, not evidence.
+ */
+export function verifiedPrimaryEmail(user: ClerkUser): string | null {
+  const chosen = choosePrimary(user);
+  if (!chosen) return null;
+  if ((chosen.verification ?? {}).status !== "verified") return null;
+  return readAddress(chosen);
 }
 
 export function displayNameFor(user: ClerkUser): string | null {
-  const name = [user.firstName, user.lastName]
+  const name = [user.firstName ?? user.first_name, user.lastName ?? user.last_name]
     .filter((part): part is string => Boolean(part && part.trim()))
     .join(" ")
     .trim();
@@ -83,11 +124,12 @@ export function createActorResolver(
       if (!auth?.userId) return null;
       const user = (await clerk.users.getUser(auth.userId)) as ClerkUser;
       const email = primaryEmail(user);
+      const verified = verifiedPrimaryEmail(user);
       return {
         userId: auth.userId,
         email,
         displayName: displayNameFor(user),
-        reviewer: email !== null && allowed.has(email),
+        reviewer: verified !== null && allowed.has(verified),
       };
     } catch {
       return null;
