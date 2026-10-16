@@ -54,7 +54,17 @@ export interface AcademyDependencies {
   repository: AcademyRepository;
 }
 
-const LESSON_IDS = FULL_COURSE.modules.map((module) => module.id);
+/*
+ * The order the learner is actually shown, which is the curriculum, not the
+ * flat syllabus list. Those two disagree: the syllabus puts "Service, ethics
+ * and belonging" before "Fellowship and meeting practice", while the chapters
+ * present fellowship first. Gating on the syllabus order deadlocked the course
+ * at the end of chapter two — the next lesson the page offered was one the
+ * server insisted could not be reached yet.
+ */
+const LESSON_IDS = CURRICULUM.flatMap((chapter) =>
+  chapter.lessons.map((lesson) => lesson.id),
+);
 const REVIEWER_STATUSES = new Set<ApplicationStatus>([
   "in_review",
   "needs_more",

@@ -8,6 +8,7 @@ import type {
 } from "./academy-db";
 import type { Actor } from "./academy-auth";
 import { FULL_COURSE } from "./course";
+import { CURRICULUM } from "../shared/rotaract-academy/curriculum";
 import { SCENARIO_CHECKS } from "../shared/rotaract-academy/scenarios";
 import {
   emptyRecord,
@@ -196,6 +197,10 @@ beforeEach(() => {
 });
 
 const LESSON_IDS = FULL_COURSE.modules.map((module) => module.id);
+/** The order the page actually offers lessons in. */
+const PRESENTED_LESSON_IDS = CURRICULUM.flatMap((chapter) =>
+  chapter.lessons.map((lesson) => lesson.id),
+);
 
 async function post(user: string, body: Record<string, unknown>) {
   const res = response();
@@ -211,7 +216,7 @@ async function get(user?: string, url?: string) {
 
 /** Walk a learner through everything the club requires, via the API only. */
 async function completeCourse(user: string) {
-  for (const lessonId of LESSON_IDS) {
+  for (const lessonId of PRESENTED_LESSON_IDS) {
     const res = await post(user, { action: "lesson", lessonId });
     expect(res.statusCode, `lesson ${lessonId}`).toBe(200);
   }
@@ -314,6 +319,21 @@ describe("reading the course", () => {
 });
 
 describe("lesson progress", () => {
+  it("offers every lesson the chapter order promises, with no deadlock", async () => {
+    /*
+     * Walk the course exactly as the page presents it. Gating used to follow
+     * the flat syllabus list instead, which orders chapter three's lesson
+     * before chapter two's last one — so the course jammed at the end of
+     * chapter two and every further attempt returned 409.
+     */
+    for (const lessonId of PRESENTED_LESSON_IDS) {
+      const res = await post(learner.userId, { action: "lesson", lessonId });
+      expect(res.statusCode, `lesson ${lessonId} was refused`).toBe(200);
+    }
+    const record = repository.data.get(`menengai:${learner.userId}`)!.record;
+    expect(record.completedLessons.sort()).toEqual([...LESSON_IDS].sort());
+  });
+
   it("records a lesson for the signed-in learner only", async () => {
     const res = await post(learner.userId, {
       action: "lesson",
@@ -416,7 +436,7 @@ describe("the assessment", () => {
   });
 
   it("grades on the server and ignores anything the browser claims", async () => {
-    for (const lessonId of LESSON_IDS)
+    for (const lessonId of PRESENTED_LESSON_IDS)
       await post(learner.userId, { action: "lesson", lessonId });
     const res = await post(learner.userId, {
       action: "assessment",
@@ -435,7 +455,7 @@ describe("the assessment", () => {
   });
 
   it("stores a wrong answer as a failed attempt", async () => {
-    for (const lessonId of LESSON_IDS)
+    for (const lessonId of PRESENTED_LESSON_IDS)
       await post(learner.userId, { action: "lesson", lessonId });
     const res = await post(learner.userId, {
       action: "assessment",
