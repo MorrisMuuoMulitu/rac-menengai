@@ -714,3 +714,58 @@ button:focus-visible {
     opacity: 1;
   }
 }
+
+/* Preserve the entire club photograph, including faces at the edges. */
+.event-gallery {
+  display: block;
+  columns: 3;
+  column-gap: 1rem;
+}
+.event-gallery li {
+  display: inline-block;
+  width: 100%;
+  break-inside: avoid;
+  margin-bottom: 1rem;
+  vertical-align: top;
+}
+.event-gallery img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: auto;
+  object-fit: contain;
+  transform: none;
+  transition: none;
+}
+.event-gallery a:hover img { transform: none; }
+.camera-rail img,
+.latest-event-media img,
+.event-record--photo img,
+.project-events img,
+.work-feature img { object-fit: contain; background: var(--paper-2); }
+.photo-stories {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: #1b2d29;
+  height: auto;
+}
+.photo-stories .photo-story-image {
+  position: relative;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  object-fit: contain;
+  transform: none;
+  animation: none;
+}
+.photo-stories::after { display: none; }
+.photo-story-label { display: none; }
+.photo-stories .photo-story-caption {
+  position: relative;
+  inset: auto;
+  flex: 0 0 auto;
+  width: 100%;
+  background: #1b2d29;
+}
+@media (max-width: 900px) { .event-gallery { columns: 2; } }
+@media (max-width: 560px) { .event-gallery { columns: 1; } }
