@@ -28,6 +28,7 @@ import LearnPage from "./pages/Learn";
 import NotFoundPage from "./pages/NotFound";
 import AcademyLayout from "./academy/AcademyLayout";
 import AcademyPage from "./pages/Academy";
+import AcademyLessonPage from "./pages/AcademyLesson";
 import ReviewQueuePage from "./pages/ReviewQueue";
 
 const SignInPage = lazy(() =>
@@ -69,6 +70,10 @@ export default function App() {
           <Route path="/membership/orientation" element={<OrientationPage />} />
           <Route element={<AcademyLayout />}>
             <Route path="/membership/academy" element={<AcademyPage />} />
+            <Route
+              path="/membership/academy/:step"
+              element={<AcademyLessonPage />}
+            />
             <Route path="/membership/queue" element={<ReviewQueuePage />} />
           </Route>
           {/* Its own chunk, so Clerk is fetched only when someone signs in. */}
