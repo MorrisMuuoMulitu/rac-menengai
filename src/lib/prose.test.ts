@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { splitSentences, toParagraphs } from "./prose";
+import {
+  markTerms,
+  parseInline,
+  splitSentences,
+  toParagraphs,
+} from "./prose";
 
 describe("splitting lesson prose", () => {
   it("splits on sentence boundaries and keeps every word", () => {
@@ -39,5 +44,42 @@ describe("splitting lesson prose", () => {
 
   it("returns nothing for empty input", () => {
     expect(toParagraphs("   ")).toEqual([]);
+  });
+});
+
+describe("terms of art", () => {
+  it("marks a term once per lesson, at its first mention", () => {
+    const marked = markTerms([
+      "Rotary clubs and Rotaract clubs are different.",
+      "Rotary clubs appear again here.",
+    ]);
+    expect(marked[0]).toContain("**Rotary**");
+    expect(marked[0]).toContain("**Rotaract**");
+    /* Second mention is left alone, so the page is not a wall of bold. */
+    expect(marked[1]).toBe("Rotary clubs appear again here.");
+  });
+
+  it("prefers the longer term when several could match", () => {
+    const [marked] = markTerms(["Rotary International sets policy."]);
+    expect(marked).toContain("**Rotary International**");
+  });
+
+  it("does not match inside a longer word", () => {
+    const [marked] = markTerms(["Rotaractors are members."]);
+    expect(marked).toBe("Rotaractors are members.");
+  });
+});
+
+describe("inline emphasis", () => {
+  it("splits marked runs out of plain text", () => {
+    expect(parseInline("a **b** c")).toEqual([
+      { text: "a ", strong: false },
+      { text: "b", strong: true },
+      { text: " c", strong: false },
+    ]);
+  });
+
+  it("returns the text unchanged when nothing is marked", () => {
+    expect(parseInline("plain")).toEqual([{ text: "plain", strong: false }]);
   });
 });

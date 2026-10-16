@@ -642,11 +642,26 @@
   max-width: 58ch;
   font-size: 1.02rem;
   line-height: 1.72;
+  color: var(--ink-600);
+}
+/* Terms of art carry weight and colour, so the eye can find them. */
+.academy-prose strong {
+  font-weight: 700;
+  color: var(--pink-700);
+}
+/* The first paragraph after a heading is the lead: bigger, darker, no indent
+   competition from the rest. */
+.academy-prose p:first-of-type {
+  font-size: 1.1rem;
+  color: var(--ink-800);
 }
 .academy-prose ul {
   margin: 0 0 1.2rem 1.1rem;
   display: grid;
   gap: 0.4rem;
+}
+.academy-prose ul li {
+  color: var(--ink-600);
 }
 .academy-note {
   border-left: 3px solid var(--gold);

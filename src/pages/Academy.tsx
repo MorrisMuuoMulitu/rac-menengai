@@ -32,7 +32,7 @@ import {
 import { PageMeta } from "../components/ui";
 import { CHAPTERS, COURSE_INFO } from "../course-info";
 import { useAccount } from "../academy/account";
-import { toParagraphs } from "../lib/prose";
+import { markTerms, parseInline, toParagraphs } from "../lib/prose";
 import { Flashcards } from "../academy/Flashcards";
 import { flashcardsForChapter } from "../../shared/rotaract-academy/flashcards";
 import { AccountChip } from "../academy/AccountChip";
@@ -751,17 +751,39 @@ export default function AcademyPage() {
               </section>
 
               <div className="academy-prose">
-                {lessonBody.blocks.map((block, blockIndex) =>
-                  block.kind === "p" ? (
-                    /* One idea per paragraph. The words are unchanged; the
-                       block is just broken at sentence boundaries. */
-                    <Fragment key={blockIndex}>
-                      {toParagraphs(block.text ?? "", 2).map(
-                        (paragraph, index) => (
-                          <p key={index}>{paragraph}</p>
-                        ),
-                      )}
-                    </Fragment>
+                {(() => {
+                  /*
+                   * Split the lesson's paragraphs, then mark Rotary's own
+                   * vocabulary once per lesson. Doing it across the whole
+                   * lesson is what keeps the page from becoming a wall of
+                   * bold: each term is picked out at its first mention only.
+                   */
+                  const prose = markTerms(
+                    lessonBody.blocks
+                      .filter((block) => block.kind === "p")
+                      .flatMap((block) => toParagraphs(block.text ?? "", 2)),
+                  );
+                  let paragraphIndex = 0;
+                  return lessonBody.blocks.map((block, blockIndex) =>
+                    block.kind === "p" ? (
+                      <Fragment key={blockIndex}>
+                        {toParagraphs(block.text ?? "", 2).map(() => {
+                          const marked = prose[paragraphIndex++] ?? "";
+                          return (
+                            <p key={marked}>
+                              {parseInline(marked).map((piece, pieceIndex) =>
+                                piece.strong ? (
+                                  <strong key={pieceIndex}>{piece.text}</strong>
+                                ) : (
+                                  <Fragment key={pieceIndex}>
+                                    {piece.text}
+                                  </Fragment>
+                                ),
+                              )}
+                            </p>
+                          );
+                        })}
+                      </Fragment>
                   ) : block.kind === "note" ? (
                     <aside className="academy-note" key={blockIndex}>
                       {block.text}
@@ -771,7 +793,8 @@ export default function AcademyPage() {
                       {block.items?.map((item) => <li key={item}>{item}</li>)}
                     </ul>
                   ),
-                )}
+                  );
+                })()}
               </div>
 
               <section className="academy-activity">
