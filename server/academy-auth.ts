@@ -109,9 +109,17 @@ export function createActorResolver(
   env: Record<string, string | undefined>,
 ): ActorResolver {
   const secretKey = env.CLERK_SECRET_KEY;
+  /*
+   * The publishable key is not optional here. This instance serves its
+   * Frontend API from a custom domain, and without the key the SDK cannot work
+   * out which host to verify tokens against — `authenticateRequest` throws
+   * "Publishable key is missing" and every request looks signed out.
+   */
+  const publishableKey =
+    env.CLERK_PUBLISHABLE_KEY ?? env.VITE_CLERK_PUBLISHABLE_KEY;
   const allowed = reviewerAllowlist(env.ACADEMY_REVIEWER_EMAILS);
-  if (!secretKey) return async () => null;
-  const clerk = createClerkClient({ secretKey });
+  if (!secretKey || !publishableKey) return async () => null;
+  const clerk = createClerkClient({ secretKey, publishableKey });
 
   return async function resolveActor(request: AuthRequest) {
     try {
@@ -132,6 +140,12 @@ export function createActorResolver(
         reviewer: verified !== null && allowed.has(verified),
       };
     } catch {
+      /*
+       * Swallowing this is what hid a broken sign-in for hours: requests came
+       * back signed out and looked like a client problem. Log it, so the next
+       * misconfiguration shows up in the deployment logs.
+       */
+      console.error("[academy] clerk authentication failed");
       return null;
     }
   };

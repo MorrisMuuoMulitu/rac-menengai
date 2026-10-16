@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import {
+  createActorResolver,
   displayNameFor,
   primaryEmail,
   reviewerAllowlist,
@@ -120,5 +121,39 @@ describe("officer status", () => {
     const verified = verifiedPrimaryEmail(claimant);
     expect(verified).toBeNull();
     expect(verified !== null && allow.has(verified)).toBe(false);
+  });
+});
+
+describe("building the resolver", () => {
+  const denied = async () => null;
+
+  it("declines every request when the secret key is missing", async () => {
+    const resolve = createActorResolver({
+      VITE_CLERK_PUBLISHABLE_KEY: "pk_test_abc",
+    });
+    expect(await resolve({ headers: {} })).toBeNull();
+  });
+
+  it("declines every request when the publishable key is missing", async () => {
+    /*
+     * The publishable key names the Frontend API host. On an instance serving
+     * its Frontend API from a custom domain, leaving it out makes
+     * `authenticateRequest` throw and every signed-in request come back signed
+     * out — the bug that made the sign-in button look broken.
+     */
+    const resolve = createActorResolver({ CLERK_SECRET_KEY: "sk_test_abc" });
+    expect(await resolve({ headers: {} })).toBeNull();
+  });
+
+  it("accepts either spelling of the publishable key", async () => {
+    for (const name of ["CLERK_PUBLISHABLE_KEY", "VITE_CLERK_PUBLISHABLE_KEY"]) {
+      const resolve = createActorResolver({
+        CLERK_SECRET_KEY: "sk_test_abc",
+        [name]: "pk_test_abc",
+      });
+      // With both keys present the resolver stops short-circuiting; a request
+      // with no session is simply not signed in.
+      expect(await resolve({ headers: {} })).toEqual(await denied());
+    }
   });
 });
