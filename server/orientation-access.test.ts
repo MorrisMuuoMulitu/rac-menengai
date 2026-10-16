@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { createOrientationHandler } from "./orientation-access";
+import { FULL_COURSE } from "./course";
 const env = {
   ORIENTATION_PASSCODE: "test-code-long-enough",
   ORIENTATION_SESSION_SECRET: "a".repeat(64),
@@ -65,7 +66,7 @@ describe("orientation access boundary", () => {
     ({ result, res } = response());
     await handler(req("GET", undefined, cookie.split(";")[0]), res);
     expect(result.status).toBe(200);
-    expect(result.body.course.modules.length).toBe(14);
+    expect(result.body.course.modules.length).toBe(FULL_COURSE.modules.length);
   });
   it("rejects expired sessions and passcode rotation invalidates existing sessions", async () => {
     let now = 1700000000000;
