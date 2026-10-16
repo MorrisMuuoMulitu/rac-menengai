@@ -37,7 +37,9 @@ import { useAccount } from "../academy/account";
 import { markTerms, parseInline, toParagraphs } from "../lib/prose";
 import { Flashcards } from "../academy/Flashcards";
 import { FollowTheClub } from "../academy/FollowTheClub";
+import { OrderingActivity } from "../academy/OrderingActivity";
 import { flashcardsForChapter } from "../../shared/rotaract-academy/flashcards";
+import { orderingForLesson } from "../../shared/rotaract-academy/activities";
 import { AccountChip } from "../academy/AccountChip";
 import {
   AcademyError,
@@ -792,6 +794,11 @@ export default function AcademyPage() {
                   Nothing is submitted from this box.
                 </p>
               </section>
+
+              {/* An activity, where the lesson has one, before the recap. */}
+              {orderingForLesson(lesson.id) ? (
+                <OrderingActivity activity={orderingForLesson(lesson.id)!} />
+              ) : null}
 
               {/* One deck per chapter, as a recap before the chapter's check. */}
               {chapter &&

@@ -133,6 +133,112 @@
    LEARNING DASHBOARD
    ============================================================ */
 
+/* ------------------------------------------------- put these in order ---- */
+
+.ordering {
+  margin: 2.4rem 0 0.5rem;
+  padding-top: 1.8rem;
+  border-top: 1px solid var(--line);
+}
+.ordering-head h3 {
+  font-size: 1.25rem;
+  margin-bottom: 0.3rem;
+}
+.ordering-head p {
+  font-size: 0.95rem;
+  color: var(--ink-600);
+  margin-bottom: 1.1rem;
+  max-width: 62ch;
+}
+.ordering-list {
+  list-style: none;
+  display: grid;
+  gap: 0.45rem;
+  counter-reset: none;
+  margin-bottom: 1.1rem;
+}
+.ordering-item {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.7rem 0.9rem;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius);
+}
+.ordering-position {
+  display: grid;
+  place-items: center;
+  width: 1.7rem;
+  height: 1.7rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--navy-950);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+}
+.ordering-text {
+  font-size: 0.96rem;
+  color: var(--ink-800);
+}
+.ordering-move {
+  display: flex;
+  gap: 0.25rem;
+}
+.ordering-move button {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 6px;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  color: var(--ink-600);
+  cursor: pointer;
+  transition: background 150ms var(--ease), border-color 150ms var(--ease);
+}
+.ordering-move button:hover:not(:disabled) {
+  border-color: var(--pink-600);
+  color: var(--pink-700);
+}
+.ordering-move button:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+.ordering-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+.ordering-feedback {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.45rem;
+  margin-top: 1rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius);
+  font-size: 0.92rem;
+  background: var(--paper-2);
+  color: var(--ink-600);
+  max-width: 70ch;
+}
+.ordering-feedback.is-right {
+  background: #eef7f1;
+  border: 1px solid rgba(47, 125, 82, 0.3);
+  color: #1f5d3a;
+}
+.ordering-feedback.is-wrong {
+  background: #fdeef3;
+  border: 1px solid rgba(189, 22, 75, 0.25);
+  color: #7d0f33;
+}
+.ordering-feedback svg {
+  flex: none;
+  margin-top: 0.15rem;
+}
+
 /* -------------------------------------------------------- lesson bar ----- */
 
 .lesson-bar {
