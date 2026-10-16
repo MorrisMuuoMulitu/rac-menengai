@@ -2,6 +2,23 @@ import assert from "node:assert/strict";
 import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 const sitemap = readFileSync("dist/sitemap.xml", "utf8");
+/*
+ * Links are checked against the deployment's own routing table, not against a
+ * one-file-per-route assumption. A route like `/membership/academy/:step` is
+ * served from the academy's index.html, and that is exactly what vercel.json
+ * says.
+ */
+const routing = JSON.parse(readFileSync("vercel.json", "utf8")).routes ?? [];
+const rewrites = routing
+  .filter((route) => route.src && route.dest?.endsWith(".html"))
+  .map((route) => ({ pattern: new RegExp(route.src), dest: route.dest }));
+function servedByRewrite(target) {
+  for (const { pattern, dest } of rewrites) {
+    if (!pattern.test(target)) continue;
+    return existsSync(resolve("dist", dest.replace(/^\//, "")));
+  }
+  return false;
+}
 const paths = [
   ...sitemap.matchAll(/<loc>https:\/\/rotaractmenengai\.org([^<]*)<\/loc>/g),
 ].map((m) => m[1] || "/");
@@ -64,7 +81,8 @@ for (const path of paths) {
     assert.ok(
       target === "/" ||
         paths.includes(target) ||
-        existsSync(resolve("dist", target.slice(1))),
+        existsSync(resolve("dist", target.slice(1))) ||
+        servedByRewrite(target),
       `${path}: missing internal destination ${target}`,
     );
   }

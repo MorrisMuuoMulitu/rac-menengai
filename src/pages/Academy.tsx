@@ -41,6 +41,49 @@ import {
 import { CHAPTERS, COURSE_INFO } from "../course-info";
 import "../academy.css";
 
+interface ChapterLesson {
+  id: string;
+  title: string;
+  summary: string;
+  minutes: number;
+}
+
+/**
+ * The course outline, without needing the API.
+ *
+ * The dashboard has to render something real before the course arrives —
+ * otherwise the page is an empty shell for a crawler, and a spinner for anyone
+ * on a slow connection. The syllabus is static, so use it.
+ */
+function staticLessons(chapterId: string): ChapterLesson[] {
+  const chapter = CHAPTERS.find((item) => item.id === chapterId);
+  if (!chapter) return [];
+  return chapter.lessons
+    .map((id) => COURSE_INFO.lessons.find((lesson) => lesson.id === id))
+    .filter((lesson): lesson is (typeof COURSE_INFO.lessons)[number] =>
+      Boolean(lesson),
+    )
+    .map((lesson) => ({ ...lesson }));
+}
+
+function staticChapters() {
+  return CHAPTERS.map((chapter) => {
+    const lessons = staticLessons(chapter.id);
+    return {
+      id: chapter.id,
+      title: chapter.title,
+      description: chapter.description,
+      minutes: lessons.reduce((total, lesson) => total + lesson.minutes, 0),
+      lessonsTotal: lessons.length,
+      lessonsDone: 0,
+      scenarioDone: false,
+      complete: false,
+      current: false,
+      entrySlug: lessons[0]?.id ?? "",
+    };
+  });
+}
+
 /** Badges are derived from the record, never stored twice. */
 function badges(data: AcademyBootstrap | null, chapters: ReturnType<typeof chapterSummaries>) {
   const record = data?.record;
@@ -125,11 +168,20 @@ export default function AcademyPage() {
   }, [account]);
 
   const course = data?.course;
-  const chapters = useMemo(() => chapterSummaries(course, data), [course, data]);
+  /* Falls back to the static outline until the course arrives. */
+  const chapters = useMemo(
+    () => (course ? chapterSummaries(course, data) : staticChapters()),
+    [course, data],
+  );
   const steps = useMemo(() => courseSteps(course), [course]);
-  const resume = resumeSlug(course, data);
+  const resume = course ? resumeSlug(course, data) : (COURSE_INFO.lessons[0]?.id ?? "");
   const summary = data?.summary;
   const earned = badges(data, chapters);
+  const lessonsFor = useCallback(
+    (chapterId: string): ChapterLesson[] =>
+      course?.chapters.find((item) => item.id === chapterId)?.lessons ?? staticLessons(chapterId),
+    [course],
+  );
 
   /* Open the chapter the learner is in, so the page explains itself. */
   const currentChapter = chapters.find((chapter) => chapter.current)?.id ?? null;
@@ -140,43 +192,6 @@ export default function AcademyPage() {
   const toggle = useCallback((id: string) => {
     setOpenChapter((open) => (open === id ? null : id));
   }, []);
-
-  if (loading)
-    return (
-      <>
-        <PageMeta
-          title="Membership academy"
-          description="The Rotaract Club of Menengai’s membership course."
-        />
-        <div className="academy-loading" role="status">
-          <Loader2 className="academy-spin" aria-hidden="true" />
-          <p>Opening your course…</p>
-        </div>
-      </>
-    );
-
-  if (!course)
-    return (
-      <>
-        <PageMeta
-          title="Membership academy"
-          description="The membership course is unavailable right now."
-        />
-        <section className="section academy-narrow">
-          <div className="container">
-            <h1 className="academy-h1">The course is not open yet</h1>
-            <p className="academy-notice info">
-              {error || "The club has not published the course here yet."}
-            </p>
-            <p>
-              While it is being set up you can read{" "}
-              <Link to="/learn">how Rotaract works</Link>, or{" "}
-              <Link to="/membership">start with a visit</Link>.
-            </p>
-          </div>
-        </section>
-      </>
-    );
 
   const signedIn = Boolean(data?.signedIn);
   const percent = summary?.percent ?? 0;
@@ -239,6 +254,18 @@ export default function AcademyPage() {
                 How to join the club
               </Link>
             </div>
+            {loading ? (
+              <p className="dashboard-status" role="status">
+                <Loader2 className="academy-spin" size={15} aria-hidden="true" />{" "}
+                Opening your progress…
+              </p>
+            ) : null}
+            {!loading && !course ? (
+              <p className="academy-notice info">
+                {error ||
+                  "The interactive course is not open on this deployment yet. The full outline is below."}
+              </p>
+            ) : null}
           </div>
 
           <aside className="dashboard-progress" aria-label="Your progress">
@@ -297,7 +324,10 @@ export default function AcademyPage() {
 
           <ol className="chapter-cards">
             {chapters.map((chapter, index) => {
-              const full = course.chapters.find((item) => item.id === chapter.id);
+              const lessons = lessonsFor(chapter.id);
+              const scenario = course?.chapters.find(
+                (item) => item.id === chapter.id,
+              )?.scenario;
               const open = openChapter === chapter.id;
               const state = chapter.complete
                 ? "done"
@@ -357,13 +387,11 @@ export default function AcademyPage() {
                     <div className="chapter-card-body" id={`chapter-${chapter.id}`}>
                       <p className="chapter-card-objectives">
                         <strong>By the end of this chapter</strong>{" "}
-                        {full?.lessons
-                          .map((lesson) => lesson.title.toLowerCase())
-                          .join(", ")}
+                        {lessons.map((lesson) => lesson.title.toLowerCase()).join(", ")}
                         .
                       </p>
                       <ol className="chapter-lessons">
-                        {full?.lessons.map((lesson) => {
+                        {lessons.map((lesson) => {
                           const done = Boolean(
                             data?.record?.completedLessons.includes(lesson.id),
                           );
@@ -408,7 +436,9 @@ export default function AcademyPage() {
                             </li>
                           );
                         })}
-                        {full?.scenario ? (
+                        {/* Every chapter has a situation, so the outline shows
+                            the row even before the course loads. */}
+                        {scenario || !course ? (
                           <li>
                             <Link
                               className="chapter-lesson chapter-lesson-check"
@@ -419,7 +449,10 @@ export default function AcademyPage() {
                               </span>
                               <span className="chapter-lesson-body">
                                 <strong>In your shoes</strong>
-                                <small>{full.scenario.prompt}</small>
+                                <small>
+                                  {scenario?.prompt ??
+                                    "A situation to work through at the end of this chapter."}
+                                </small>
                               </span>
                               <span className="chapter-lesson-time">
                                 {chapter.scenarioDone ? "Done" : "Discussion"}
