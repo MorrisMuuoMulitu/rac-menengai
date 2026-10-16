@@ -165,13 +165,17 @@ export function summarise(
     done: record.scenarioAnswers[check.id] === check.bestOptionId,
   }));
   const proposalSubmitted = record.proposal !== null;
+  const stage = courseStage(record, course);
+  const joined = stage === "complete";
   const completed =
     lessons.filter((lesson) => lesson.done).length +
     scenarios.filter((scenario) => scenario.done).length +
     (record.passed ? 1 : 0) +
-    (proposalSubmitted ? 1 : 0);
-  const total = lessons.length + scenarios.length + 2;
-  const stage = courseStage(record, course);
+    (proposalSubmitted ? 1 : 0) +
+    (joined ? 1 : 0);
+  /* Lessons, then the chapter checks, the assessment, the proposal and
+     joining — the same number of steps the contents rail lists. */
+  const total = lessons.length + scenarios.length + 3;
 
   return {
     stage,

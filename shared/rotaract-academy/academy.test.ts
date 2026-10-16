@@ -219,6 +219,11 @@ describe("progress", () => {
     const summary = summarise(record, course);
     expect(summary.canApply).toBe(true);
     expect(summary.percent).toBe(100);
+    /* The rail counts the same steps the bar does. */
+    expect(summary.total).toBe(
+      course.modules.length + SCENARIO_CHECKS.length + 3,
+    );
+    expect(summary.completed).toBe(summary.total);
     expect(courseStage(record, course)).toBe("complete");
     expect(outstandingScenarios(record)).toEqual([]);
   });
