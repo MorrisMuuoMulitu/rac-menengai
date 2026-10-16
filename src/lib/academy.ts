@@ -51,6 +51,51 @@ export interface ReviewQueueResponse {
   queue: (MembershipApplication & { userId: string })[];
 }
 
+/**
+ * One learner as the membership team sees them.
+ *
+ * Counts and dates only. The server never sends the stored record to this
+ * screen, so an officer cannot be shown an answer or an explanation.
+ */
+export interface LearnerProgressRow {
+  userId: string;
+  displayName: string | null;
+  email: string | null;
+  startedAt: string | null;
+  lastProgressAt: string | null;
+  lastSeenAt: string | null;
+  completed: number;
+  total: number;
+  percent: number;
+  stage: string;
+  lessonsDone: number;
+  lessonsTotal: number;
+  checksDone: number;
+  checksTotal: number;
+  bestScore: number;
+  attempts: number;
+  assessmentPassed: boolean;
+  proposalSubmitted: boolean;
+  canApply: boolean;
+  applicationStatus: ApplicationStatus | null;
+  cohort: "not-started" | "needs-nudge" | "in-progress" | "done";
+  daysIdle: number | null;
+}
+
+export interface LearnerProgressResponse {
+  signedIn: boolean;
+  reviewer: boolean;
+  nudgeAfterDays: number;
+  totals: {
+    all: number;
+    needsNudge: number;
+    inProgress: number;
+    notStarted: number;
+    done: number;
+  };
+  learners: LearnerProgressRow[];
+}
+
 export interface GradedResponse {
   correct: number;
   total: number;
@@ -166,6 +211,14 @@ export function saveLessonNote(
 export function loadReviewQueue(token: string | null) {
   return call<ReviewQueueResponse>(
     "/api/academy?view=review",
+    { method: "GET" },
+    token,
+  );
+}
+
+export function loadLearnerProgress(token: string | null) {
+  return call<LearnerProgressResponse>(
+    "/api/academy?view=learners",
     { method: "GET" },
     token,
   );

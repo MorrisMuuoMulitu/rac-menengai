@@ -20,6 +20,8 @@ import {
 import {
   chapterProgress,
   emptyRecord,
+  learnerCohort,
+  NUDGE_AFTER_DAYS,
   normaliseProposal,
   normaliseRecord,
   summarise,
@@ -37,7 +39,11 @@ import {
 } from "../shared/rotaract-academy/application.js";
 import { SCENARIO_CHECKS } from "../shared/rotaract-academy/scenarios.js";
 import { CURRICULUM } from "../shared/rotaract-academy/curriculum.js";
-import { CLUB_ID, type AcademyRepository } from "./academy-db.js";
+import {
+  CLUB_ID,
+  type AcademyRepository,
+  type LearnerProgressRow,
+} from "./academy-db.js";
 import type { Actor, ActorResolver, AuthRequest } from "./academy-auth.js";
 
 export interface AcademyResponse {
@@ -141,6 +147,92 @@ async function withLearner(dependencies: AcademyDependencies, actor: Actor) {
  * A lesson can be marked done only if everything before it is done, so a
  * tampered request cannot mark the whole course complete in one call.
  */
+/**
+ * Everyone on the course, shaped for the membership team's progress screen.
+ *
+ * Each learner's own view is generated from the same `summarise` call, so an
+ * officer and the learner can never be shown different numbers. No answers
+ * and no explanations leave here: the payload carries counts and dates only.
+ */
+function learnerProgressPayload(
+  rows: LearnerProgressRow[],
+  applicationStatus: Map<string, ApplicationStatus>,
+) {
+  const now = new Date();
+  const learners = rows.map((row) => {
+    const summary = summarise(row.record, FULL_COURSE);
+    /*
+     * Progress writes are stamped; the learner row's own timestamp also moves
+     * on sign-in. Prefer the progress stamp so a learner who keeps opening the
+     * page without moving is not reported as active.
+     */
+    const lastProgressAt = row.record.updatedAt ?? row.lastSeenAt;
+    const { cohort, daysIdle } = learnerCohort({
+      completed: summary.completed,
+      total: summary.total,
+      lastActiveAt: lastProgressAt,
+      now,
+    });
+    return {
+      userId: row.userId,
+      displayName: row.displayName,
+      email: row.email,
+      startedAt: row.startedAt,
+      lastProgressAt,
+      lastSeenAt: row.lastSeenAt,
+      completed: summary.completed,
+      total: summary.total,
+      percent: summary.percent,
+      stage: summary.stage,
+      lessonsDone: summary.lessons.filter((lesson) => lesson.done).length,
+      lessonsTotal: summary.lessons.length,
+      checksDone: summary.scenarios.filter((item) => item.done).length,
+      checksTotal: summary.scenarios.length,
+      bestScore: row.record.bestScore,
+      attempts: row.record.attempts,
+      assessmentPassed: summary.assessmentPassed,
+      proposalSubmitted: summary.proposalSubmitted,
+      canApply: summary.canApply,
+      applicationStatus: applicationStatus.get(row.userId) ?? null,
+      cohort,
+      daysIdle,
+    };
+  });
+  /*
+   * Officer order: the people who need a nudge come first, then everyone still
+   * moving, then those who have not opened it. Within a group, longest quiet
+   * first, so the top of the list is always the next person to contact.
+   */
+  const rank: Record<string, number> = {
+    "needs-nudge": 0,
+    "in-progress": 1,
+    "not-started": 2,
+    done: 3,
+  };
+  learners.sort(
+    (a, b) =>
+      rank[a.cohort] - rank[b.cohort] ||
+      (b.daysIdle ?? -1) - (a.daysIdle ?? -1) ||
+      (a.displayName ?? a.email ?? "").localeCompare(
+        b.displayName ?? b.email ?? "",
+      ),
+  );
+  return {
+    nudgeAfterDays: NUDGE_AFTER_DAYS,
+    totals: {
+      all: learners.length,
+      needsNudge: learners.filter((item) => item.cohort === "needs-nudge")
+        .length,
+      inProgress: learners.filter((item) => item.cohort === "in-progress")
+        .length,
+      notStarted: learners.filter((item) => item.cohort === "not-started")
+        .length,
+      done: learners.filter((item) => item.cohort === "done").length,
+    },
+    learners,
+  };
+}
+
 function lessonIsUnlocked(record: LearningRecord, lessonId: string): boolean {
   const index = LESSON_IDS.indexOf(lessonId);
   if (index < 0) return false;
@@ -228,6 +320,28 @@ export function createAcademyHandler(
           queue,
         });
       }
+      if (readUrl.searchParams.get("view") === "learners") {
+        if (!actor?.reviewer)
+          return response
+            .status(403)
+            .json({ error: "Learner progress is for club officers." });
+        /*
+         * Both reads are scoped to the club and neither accepts a user id from
+         * the caller, so an officer can only ever see their own club's roster.
+         */
+        const [rows, applications] = await Promise.all([
+          dependencies.repository.listLearners(CLUB_ID),
+          dependencies.repository.listApplications(CLUB_ID),
+        ]);
+        const statuses = new Map(
+          applications.map((item) => [item.userId, item.status]),
+        );
+        return response.status(200).json({
+          signedIn: true,
+          reviewer: true,
+          ...learnerProgressPayload(rows, statuses),
+        });
+      }
       if (!actor)
         return response.status(200).json({
           signedIn: false,
@@ -276,12 +390,10 @@ export function createAcademyHandler(
         signedIn.email &&
         body.ownerEmail.toLowerCase() !== signedIn.email?.toLowerCase()
       )
-        return response
-          .status(409)
-          .json({
-            error:
-              "Your signed-in account changed. Open the lesson again before saving.",
-          });
+        return response.status(409).json({
+          error:
+            "Your signed-in account changed. Open the lesson again before saving.",
+        });
       const lessonId = typeof body.lessonId === "string" ? body.lessonId : "";
       if (!LESSON_IDS.includes(lessonId))
         return response.status(400).json({ error: "Unknown lesson." });

@@ -211,6 +211,71 @@ export function summarise(
 }
 
 /**
+ * How long a learner may go quiet before the membership team should reach out.
+ *
+ * Three weeks is long enough that a holiday, a placement or an exam week is
+ * not a false alarm, and short enough that someone who has genuinely stopped
+ * is still reachable while the course is fresh in their mind.
+ */
+export const NUDGE_AFTER_DAYS = 21;
+
+/**
+ * What the membership team needs to know about a learner at a glance.
+ *
+ * Derived only from recorded facts: how much of the course is done, and when
+ * they were last making progress. Nothing here is a judgement about the
+ * person, and nothing is inferred that was not recorded.
+ */
+export type LearnerCohort =
+  "not-started" | "needs-nudge" | "in-progress" | "done";
+
+export interface LearnerCohortResult {
+  cohort: LearnerCohort;
+  /** Whole days since their last recorded progress, or null when unknown. */
+  daysIdle: number | null;
+}
+
+export function learnerCohort(input: {
+  completed: number;
+  total: number;
+  lastActiveAt: string | null;
+  now?: Date;
+}): LearnerCohortResult {
+  const now = input.now ?? new Date();
+  let daysIdle: number | null = null;
+  if (typeof input.lastActiveAt === "string" && input.lastActiveAt) {
+    const then = new Date(input.lastActiveAt);
+    if (!Number.isNaN(then.getTime()))
+      daysIdle = Math.max(
+        0,
+        Math.floor((now.getTime() - then.getTime()) / 86_400_000),
+      );
+  }
+  /* An empty record is not started, whatever timestamps happen to be on it. */
+  if (input.completed <= 0) return { cohort: "not-started", daysIdle };
+  if (input.total > 0 && input.completed >= input.total)
+    return { cohort: "done", daysIdle };
+  if (daysIdle !== null && daysIdle >= NUDGE_AFTER_DAYS)
+    return { cohort: "needs-nudge", daysIdle };
+  return { cohort: "in-progress", daysIdle };
+}
+
+/**
+ * Stamp a record with the moment its progress was written.
+ *
+ * Every progress write goes through the repository's `saveRecord`, so this is
+ * the one place that knows when a learner last actually moved. Without it a
+ * stored record has no way to tell "stopped three weeks ago" from "started
+ * this morning", and the membership team cannot see who has stalled.
+ */
+export function withProgressStamp(
+  record: LearningRecord,
+  at: Date = new Date(),
+): LearningRecord {
+  return { ...record, updatedAt: at.toISOString() };
+}
+
+/**
  * Coerce whatever came back from storage or the API into a record we are
  * willing to render. Unknown lessons are dropped; a record from a different
  * curriculum version is emptied rather than silently upgraded, so old progress
@@ -223,8 +288,7 @@ export function normaliseRecord(
 ): LearningRecord {
   if (!input || typeof input !== "object") return emptyRecord(courseVersion);
   const source = input as Partial<LearningRecord>;
-  if (source.courseVersion !== courseVersion)
-    return emptyRecord(courseVersion);
+  if (source.courseVersion !== courseVersion) return emptyRecord(courseVersion);
 
   /*
    * Ids from an earlier curriculum are carried forward before anything is

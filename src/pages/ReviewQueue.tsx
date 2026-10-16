@@ -16,6 +16,7 @@ import {
   ShieldAlert,
   ThumbsUp,
   Undo2,
+  Users,
 } from "lucide-react";
 import { PageMeta } from "../components/ui";
 import { useAccount } from "../academy/account";
@@ -45,9 +46,9 @@ function when(value: string | null): string {
 export default function ReviewQueuePage() {
   const account = useAccount();
   const [queue, setQueue] = useState<QueueItem[] | null>(null);
-  const [status, setStatus] = useState<"loading" | "ready" | "denied" | "error">(
-    "loading",
-  );
+  const [status, setStatus] = useState<
+    "loading" | "ready" | "denied" | "error"
+  >("loading");
   const [error, setError] = useState("");
   const [busyId, setBusyId] = useState("");
   const [notes, setNotes] = useState<Record<string, string>>({});
@@ -119,6 +120,12 @@ export default function ReviewQueuePage() {
             People who have finished the course and asked to join. Reading one
             is not a decision; record the decision here so the applicant sees
             it, and so the club has a record of who did what.
+          </p>
+          <p className="academy-queue-links">
+            <Link to="/membership/learners">
+              <Users size={15} aria-hidden="true" /> Who has started the course
+              and stalled
+            </Link>
           </p>
 
           {error ? (

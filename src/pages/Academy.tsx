@@ -340,9 +340,14 @@ export default function AcademyPage() {
               </div>
             </dl>
             {data?.actor?.reviewer ? (
-              <Link className="academy-review-link" to="/membership/queue">
-                Review applications
-              </Link>
+              <div className="academy-review-links">
+                <Link className="academy-review-link" to="/membership/queue">
+                  Review applications
+                </Link>
+                <Link className="academy-review-link" to="/membership/learners">
+                  Learner progress
+                </Link>
+              </div>
             ) : null}
           </aside>
         </div>

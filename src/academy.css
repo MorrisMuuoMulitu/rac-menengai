@@ -396,7 +396,9 @@
   background: var(--paper);
   color: var(--ink-600);
   cursor: pointer;
-  transition: background 150ms var(--ease), border-color 150ms var(--ease);
+  transition:
+    background 150ms var(--ease),
+    border-color 150ms var(--ease);
 }
 .ordering-move button:hover:not(:disabled) {
   border-color: var(--pink-600);
@@ -498,7 +500,9 @@
   background: rgba(255, 255, 255, 0.08);
   color: #fff;
   cursor: pointer;
-  transition: background 160ms var(--ease), border-color 160ms var(--ease);
+  transition:
+    background 160ms var(--ease),
+    border-color 160ms var(--ease);
 }
 .lesson-nav:hover:not(:disabled) {
   background: var(--pink-600);
@@ -679,11 +683,15 @@
   border-radius: var(--radius-lg);
   background: var(--surface);
   overflow: hidden;
-  transition: border-color 200ms var(--ease), box-shadow 200ms var(--ease);
+  transition:
+    border-color 200ms var(--ease),
+    box-shadow 200ms var(--ease);
 }
 .chapter-card.is-current {
   border-color: var(--pink-600);
-  box-shadow: 0 0 0 1px var(--pink-600), var(--shadow-sm);
+  box-shadow:
+    0 0 0 1px var(--pink-600),
+    var(--shadow-sm);
 }
 .chapter-card.is-open {
   box-shadow: var(--shadow-sm);
@@ -1682,11 +1690,7 @@ a.chapter-lesson:hover {
   cursor: pointer;
   color: #eef1f6;
   background:
-    radial-gradient(
-      circle at 30% 25%,
-      rgba(189, 22, 75, 0.5),
-      transparent 55%
-    ),
+    radial-gradient(circle at 30% 25%, rgba(189, 22, 75, 0.5), transparent 55%),
     linear-gradient(140deg, var(--navy-850), var(--navy-950));
   font: inherit;
   text-align: center;
@@ -1705,7 +1709,9 @@ a.chapter-lesson:hover {
   background: rgba(255, 255, 255, 0.14);
   border: 1px solid rgba(255, 255, 255, 0.4);
   color: #fff;
-  transition: transform 220ms var(--ease), background 220ms var(--ease);
+  transition:
+    transform 220ms var(--ease),
+    background 220ms var(--ease);
 }
 .academy-video-poster:hover .academy-video-play {
   transform: scale(1.06);
@@ -1877,7 +1883,9 @@ a.chapter-lesson:hover {
   background: var(--surface);
   color: var(--ink-800);
   resize: vertical;
-  transition: border-color 160ms var(--ease), box-shadow 160ms var(--ease);
+  transition:
+    border-color 160ms var(--ease),
+    box-shadow 160ms var(--ease);
 }
 .academy-field textarea:focus-visible,
 .academy-field input:focus-visible,
@@ -2147,6 +2155,270 @@ a.chapter-lesson:hover {
   }
   .academy-choice {
     padding: 0.85rem 0.9rem;
+  }
+}
+
+/* ---------------------------------------- officer view: learner progress -- */
+
+.academy-review-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem 1.2rem;
+}
+.academy-queue-links {
+  margin: 0 0 1.4rem;
+}
+.academy-queue-links a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+.academy-cohort-totals {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.75rem;
+  margin: 0 0 1.6rem;
+}
+.academy-cohort-totals > div {
+  background: var(--paper-2);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+}
+.academy-cohort-totals dt {
+  font-size: 0.76rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+.academy-cohort-totals dd {
+  margin: 0.15rem 0 0;
+  font-family: var(--font-display);
+  font-size: 1.7rem;
+  line-height: 1.1;
+  color: var(--ink-800);
+  font-variant-numeric: tabular-nums;
+}
+.academy-cohort-totals > .is-attention {
+  background: #fdf3e6;
+  border-color: #e6c79a;
+}
+.academy-cohort-totals > .is-attention dd,
+.academy-cohort-totals > .is-attention dt {
+  color: #8a5a15;
+}
+
+.academy-progress-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.9rem;
+  margin-bottom: 1.2rem;
+}
+.academy-filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.academy-filter-row button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 40px;
+  padding: 0.4rem 0.85rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: #fff;
+  color: var(--ink-700);
+  font: inherit;
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.academy-filter-row button span {
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-500);
+}
+.academy-filter-row button[aria-pressed="true"] {
+  background: var(--pink-600);
+  border-color: var(--pink-600);
+  color: #fff;
+}
+.academy-filter-row button[aria-pressed="true"] span {
+  color: rgba(255, 255, 255, 0.8);
+}
+.academy-search {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  background: #fff;
+  padding: 0 0.7rem;
+  min-height: 40px;
+}
+.academy-search input {
+  border: 0;
+  outline: none;
+  font: inherit;
+  font-size: 0.88rem;
+  min-width: 12rem;
+  padding: 0.4rem 0;
+  background: transparent;
+  color: var(--ink-800);
+}
+
+.academy-learner-list {
+  list-style: none;
+  display: grid;
+  gap: 0.9rem;
+  margin: 0;
+  padding: 0;
+}
+.academy-learner {
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  padding: clamp(1rem, 2.4vw, 1.4rem);
+}
+.academy-learner.is-needs-nudge {
+  border-color: #e6c79a;
+  box-shadow: inset 3px 0 0 #d08322;
+}
+.academy-learner-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.academy-learner-head h2 {
+  font-family: var(--font-display);
+  font-size: 1.15rem;
+  margin: 0 0 0.2rem;
+}
+.academy-learner-mail {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.84rem;
+  color: var(--ink-500);
+}
+.academy-cohort {
+  flex: none;
+  padding: 0.28rem 0.6rem;
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.academy-cohort.is-needs-nudge {
+  background: #fdf3e6;
+  color: #8a5a15;
+}
+.academy-cohort.is-in-progress {
+  background: var(--blush);
+  color: var(--pink-700);
+}
+.academy-cohort.is-not-started {
+  background: var(--paper-2);
+  color: var(--ink-600);
+}
+.academy-cohort.is-done {
+  background: #e4f0e6;
+  color: #1f5c3f;
+}
+
+.academy-learner-bar {
+  height: 6px;
+  border-radius: 999px;
+  background: var(--paper-2);
+  overflow: hidden;
+  margin: 0.85rem 0 0.7rem;
+}
+.academy-learner-bar span {
+  display: block;
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--pink-600), var(--gold));
+}
+
+.academy-learner-where {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 0.4rem 1rem;
+  margin: 0 0 0.9rem;
+  font-size: 0.92rem;
+  color: var(--ink-700);
+}
+.academy-learner-where span {
+  color: var(--ink-500);
+  font-size: 0.84rem;
+}
+
+.academy-learner-meta {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.6rem 1.2rem;
+  margin: 0;
+  border-top: 1px solid var(--line);
+  padding-top: 0.8rem;
+}
+.academy-learner-meta dt {
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+.academy-learner-meta dd {
+  margin: 0.1rem 0 0;
+  font-size: 0.88rem;
+  color: var(--ink-700);
+  font-variant-numeric: tabular-nums;
+}
+.academy-learner-application {
+  margin: 0.9rem 0 0;
+  font-size: 0.86rem;
+  color: var(--ink-600);
+}
+
+@media (max-width: 860px) {
+  .academy-cohort-totals {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .academy-learner-meta {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 560px) {
+  .academy-progress-controls {
+    align-items: stretch;
+  }
+  .academy-filter-row {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: 0.35rem;
+    scroll-snap-type: x proximity;
+  }
+  .academy-filter-row button {
+    flex: none;
+    scroll-snap-align: start;
+  }
+  .academy-search {
+    width: 100%;
+  }
+  .academy-search input {
+    min-width: 0;
+    width: 100%;
+  }
+  .academy-learner-head {
+    flex-direction: column;
   }
 }
 

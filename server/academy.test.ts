@@ -12,6 +12,8 @@ import { CURRICULUM } from "../shared/rotaract-academy/curriculum";
 import { SCENARIO_CHECKS } from "../shared/rotaract-academy/scenarios";
 import {
   emptyRecord,
+  NUDGE_AFTER_DAYS,
+  withProgressStamp,
   type LearningRecord,
 } from "../shared/rotaract-academy/progress";
 import type { MembershipApplication } from "../shared/rotaract-academy/application";
@@ -22,6 +24,8 @@ function fakeRepository(): AcademyRepository & {
   data: Map<string, LearnerRow>;
 } {
   const data = new Map<string, LearnerRow>();
+  /* Timestamps live beside the rows, the way the real table has its columns. */
+  const times = new Map<string, { createdAt: string; updatedAt: string }>();
   const applications = new Map<string, ReviewQueueItem>();
   const events: string[] = [];
   const notes = new Map<string, { text: string; updatedAt: string }>();
@@ -39,7 +43,11 @@ function fakeRepository(): AcademyRepository & {
     },
     async ensureLearner({ userId, clubId, email, displayName }) {
       const existing = data.get(key(userId, clubId));
-      if (existing) return existing;
+      if (existing) {
+        const stamp = times.get(key(userId, clubId));
+        if (stamp) stamp.updatedAt = new Date().toISOString();
+        return existing;
+      }
       const learner: LearnerRow = {
         userId,
         clubId,
@@ -48,12 +56,16 @@ function fakeRepository(): AcademyRepository & {
         record: emptyRecord(FULL_COURSE.version),
       };
       data.set(key(userId, clubId), learner);
+      const now = new Date().toISOString();
+      times.set(key(userId, clubId), { createdAt: now, updatedAt: now });
       return learner;
     },
     async saveRecord(userId, clubId, record) {
       const learner = data.get(key(userId, clubId));
       if (!learner) throw new Error("learner-missing");
-      learner.record = record as LearningRecord;
+      learner.record = withProgressStamp(record as LearningRecord);
+      const stamp = times.get(key(userId, clubId));
+      if (stamp) stamp.updatedAt = new Date().toISOString();
       return learner.record;
     },
     async recordAttempt(userId, clubId, attempt): Promise<AttemptRow> {
@@ -83,6 +95,21 @@ function fakeRepository(): AcademyRepository & {
       return [...applications.values()].filter(
         (item) => item.status !== "draft",
       );
+    },
+    async listLearners(clubId) {
+      return [...data.values()]
+        .filter((learner) => learner.clubId === clubId)
+        .map((learner) => {
+          const stamp = times.get(key(learner.userId, clubId));
+          return {
+            userId: learner.userId,
+            email: learner.email,
+            displayName: learner.displayName,
+            record: learner.record,
+            startedAt: stamp?.createdAt ?? null,
+            lastSeenAt: stamp?.updatedAt ?? null,
+          };
+        });
     },
     async findApplication(_clubId, applicationId) {
       return (
@@ -687,5 +714,137 @@ describe("the reviewer queue", () => {
     expect(body.application.status).toBe("approved");
     expect(body.application.decidedBy).toBe(officer.email);
     expect(body.application.decidedAt).toBeTruthy();
+  });
+});
+
+/* ---------------- officer view: who started and where they stopped ---------- */
+
+type ProgressBody = {
+  nudgeAfterDays: number;
+  totals: {
+    all: number;
+    needsNudge: number;
+    inProgress: number;
+    notStarted: number;
+    done: number;
+  };
+  learners: {
+    userId: string;
+    email: string | null;
+    displayName: string | null;
+    completed: number;
+    total: number;
+    percent: number;
+    stage: string;
+    lessonsDone: number;
+    lessonsTotal: number;
+    assessmentPassed: boolean;
+    proposalSubmitted: boolean;
+    canApply: boolean;
+    applicationStatus: string | null;
+    cohort: string;
+    daysIdle: number | null;
+    lastProgressAt: string | null;
+  }[];
+};
+
+const learnersUrl = "/api/academy?view=learners";
+
+describe("officer learner progress", () => {
+  it("is refused to a signed-in learner and to a visitor", async () => {
+    expect((await get(learner.userId, learnersUrl)).statusCode).toBe(403);
+    expect((await get(undefined, learnersUrl)).statusCode).toBe(403);
+  });
+
+  it("shows the officer every learner on the course, with counts only", async () => {
+    await post(learner.userId, { action: "lesson", lessonId: "roots" });
+    const res = await get(officer.userId, learnersUrl);
+    expect(res.statusCode).toBe(200);
+    const body = res.body as ProgressBody;
+    expect(body.nudgeAfterDays).toBe(NUDGE_AFTER_DAYS);
+    const row = body.learners.find((item) => item.userId === learner.userId)!;
+    expect(row.lessonsDone).toBe(1);
+    expect(row.lessonsTotal).toBe(FULL_COURSE.modules.length);
+    expect(row.cohort).toBe("in-progress");
+    expect(row.lastProgressAt).toBeTruthy();
+    expect(row.email).toBe(learner.email);
+    expect(body.totals).toEqual({
+      all: 1,
+      needsNudge: 0,
+      inProgress: 1,
+      notStarted: 0,
+      done: 0,
+    });
+    /* The officer sees counts and dates; never an answer or an explanation. */
+    const serialised = JSON.stringify(body);
+    expect(serialised).not.toContain("correctIndex");
+    expect(serialised).not.toContain("explanation");
+    expect(serialised).not.toContain("bestOptionId");
+    expect(serialised).not.toContain("completedLessons");
+  });
+
+  it("counts a learner who has opened the course but done nothing as not started", async () => {
+    await get(secondLearner.userId);
+    const body = (await get(officer.userId, learnersUrl)).body as ProgressBody;
+    expect(body.learners[0].cohort).toBe("not-started");
+    expect(body.totals.notStarted).toBe(1);
+  });
+
+  it("puts a stalled learner above one who is still moving, quietest first", async () => {
+    await post(learner.userId, { action: "lesson", lessonId: "roots" });
+    await post(secondLearner.userId, { action: "lesson", lessonId: "roots" });
+    const stalled = repository.data.get(`menengai:${learner.userId}`)!;
+    stalled.record = {
+      ...stalled.record,
+      updatedAt: new Date(Date.now() - 60 * 86_400_000).toISOString(),
+    };
+    const body = (await get(officer.userId, learnersUrl)).body as ProgressBody;
+    expect(body.learners[0].userId).toBe(learner.userId);
+    expect(body.learners[0].cohort).toBe("needs-nudge");
+    expect(body.learners[0].daysIdle).toBeGreaterThanOrEqual(59);
+    expect(body.learners[1].userId).toBe(secondLearner.userId);
+    expect(body.learners[1].cohort).toBe("in-progress");
+    expect(body.totals.needsNudge).toBe(1);
+  });
+
+  it("reports a finished learner as done rather than stalled, however long ago", async () => {
+    await completeCourse(learner.userId);
+    const finished = repository.data.get(`menengai:${learner.userId}`)!;
+    finished.record = {
+      ...finished.record,
+      updatedAt: new Date(Date.now() - 300 * 86_400_000).toISOString(),
+    };
+    const body = (await get(officer.userId, learnersUrl)).body as ProgressBody;
+    const row = body.learners.find((item) => item.userId === learner.userId)!;
+    expect(row.cohort).toBe("done");
+    expect(row.percent).toBe(100);
+    expect(row.assessmentPassed).toBe(true);
+    expect(row.proposalSubmitted).toBe(true);
+    expect(body.totals.done).toBe(1);
+    expect(body.totals.needsNudge).toBe(0);
+  });
+
+  it("carries the application state so both officer screens agree", async () => {
+    await completeCourse(learner.userId);
+    await fillDraft(learner.userId);
+    await post(learner.userId, { action: "apply" });
+    const body = (await get(officer.userId, learnersUrl)).body as ProgressBody;
+    const row = body.learners.find((item) => item.userId === learner.userId)!;
+    expect(row.applicationStatus).toBe("submitted");
+    /* The officer sees the same "ready to join" flag the learner does. */
+    expect(row.canApply).toBe(true);
+  });
+
+  it("shows only this club's learners", async () => {
+    await post(learner.userId, { action: "lesson", lessonId: "roots" });
+    const other = repository.data.get(`menengai:${learner.userId}`)!;
+    repository.data.set("otherclub:outsider", {
+      ...other,
+      userId: "outsider",
+      clubId: "otherclub",
+      displayName: "Someone Else",
+    });
+    const body = (await get(officer.userId, learnersUrl)).body as ProgressBody;
+    expect(body.learners.map((item) => item.userId)).toEqual([learner.userId]);
   });
 });

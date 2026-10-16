@@ -15,6 +15,7 @@ import { attachDatabasePool } from "@vercel/functions";
 import {
   emptyRecord,
   normaliseRecord,
+  withProgressStamp,
   type LearningRecord,
 } from "../shared/rotaract-academy/progress.js";
 import type {
@@ -37,6 +38,23 @@ export interface AttemptRow {
   total: number;
   passed: boolean;
   createdAt: string;
+}
+
+/**
+ * One learner as the membership team sees them.
+ *
+ * The record is the same one the learner's own screen is built from, so the
+ * officer view can never disagree with what the learner is shown.
+ */
+export interface LearnerProgressRow {
+  userId: string;
+  email: string | null;
+  displayName: string | null;
+  record: LearningRecord;
+  /** When the learner first appeared on this club's course. */
+  startedAt: string | null;
+  /** Last sign-in or progress write, whichever is more recent. */
+  lastSeenAt: string | null;
 }
 
 export interface ReviewQueueItem extends MembershipApplication {
@@ -87,6 +105,14 @@ export interface AcademyRepository {
     application: MembershipApplication,
   ): Promise<MembershipApplication>;
   listApplications(clubId: string): Promise<ReviewQueueItem[]>;
+  /**
+   * Everyone who has ever opened the course for this club.
+   *
+   * Applications answer "who asked to join". This answers the different
+   * question the membership team asks when someone goes quiet: who started
+   * and where did they stop.
+   */
+  listLearners(clubId: string): Promise<LearnerProgressRow[]>;
   findApplication(
     clubId: string,
     applicationId: string,
@@ -306,7 +332,11 @@ export function createPostgresRepository(
 
     async saveRecord(userId, clubId, record) {
       await ready();
-      const safe = normaliseRecord(record, FULL_COURSE.version, validLessonIds);
+      const safe = normaliseRecord(
+        withProgressStamp(record),
+        FULL_COURSE.version,
+        validLessonIds,
+      );
       const { rows } = await database.query(
         `update academy_learner
             set record = $3, updated_at = now()
@@ -416,6 +446,30 @@ export function createPostgresRepository(
       return rows.map((row) => ({
         ...toApplication(row),
         userId: String(row.user_id),
+      }));
+    },
+
+    async listLearners(clubId) {
+      await ready();
+      const { rows } = await database.query(
+        `select user_id, email, display_name, record, created_at, updated_at
+           from academy_learner
+          where club_id = $1
+          order by updated_at desc
+          limit 1000`,
+        [clubId],
+      );
+      return rows.map((row) => ({
+        userId: String(row.user_id),
+        email: row.email ? String(row.email) : null,
+        displayName: row.display_name ? String(row.display_name) : null,
+        record: normaliseRecord(
+          row.record,
+          FULL_COURSE.version,
+          validLessonIds,
+        ),
+        startedAt: asIso(row.created_at),
+        lastSeenAt: asIso(row.updated_at),
       }));
     },
 

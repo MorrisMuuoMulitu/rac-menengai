@@ -30,6 +30,7 @@ import AcademyLayout from "./academy/AcademyLayout";
 import AcademyPage from "./pages/Academy";
 import AcademyLessonPage from "./pages/AcademyLesson";
 import ReviewQueuePage from "./pages/ReviewQueue";
+import LearnerProgressPage from "./pages/LearnerProgress";
 
 const SignInPage = lazy(() =>
   import("./academy/AuthPage").then((module) => ({
@@ -76,6 +77,10 @@ export default function App() {
               element={<AcademyLessonPage />}
             />
             <Route path="/membership/queue" element={<ReviewQueuePage />} />
+            <Route
+              path="/membership/learners"
+              element={<LearnerProgressPage />}
+            />
           </Route>
           {/* Its own chunk, so Clerk is fetched only when someone signs in. */}
           <Route
