@@ -32,6 +32,7 @@ import {
 import { PageMeta } from "../components/ui";
 import { CHAPTERS, COURSE_INFO } from "../course-info";
 import { useAccount } from "../academy/account";
+import { AccountChip } from "../academy/AccountChip";
 import {
   AcademyError,
   answerScenario,
@@ -464,6 +465,7 @@ export default function AcademyPage() {
           </div>
           {signedIn ? (
             <div className="academy-progress-card">
+              <AccountChip />
               <div
                 className="academy-progress-track"
                 role="progressbar"

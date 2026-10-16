@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { PageMeta } from "../components/ui";
 import { useAccount } from "../academy/account";
+import { AccountChip } from "../academy/AccountChip";
 import {
   AcademyError,
   loadReviewQueue,
@@ -113,6 +114,7 @@ export default function ReviewQueuePage() {
           <h1 className="academy-h1">
             <ClipboardCheck size={26} aria-hidden="true" /> Applications
           </h1>
+          <AccountChip tone="light" />
           <p className="academy-lede">
             People who have finished the course and asked to join. Reading one
             is not a decision; record the decision here so the applicant sees

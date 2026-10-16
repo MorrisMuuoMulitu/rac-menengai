@@ -8,7 +8,7 @@
  */
 
 import { useEffect, useMemo } from "react";
-import { ClerkProvider, useAuth, useUser } from "@clerk/react";
+import { ClerkProvider, useAuth, useClerk, useUser } from "@clerk/react";
 import { useAccountPublisher, type Account } from "./account";
 
 const PUBLISHABLE_KEY = String(
@@ -37,6 +37,7 @@ function Publisher() {
   const publish = useAccountPublisher();
   const { isLoaded, isSignedIn, getToken } = useAuth();
   const { user } = useUser();
+  const clerk = useClerk();
 
   const value = useMemo<Account>(
     () => ({
@@ -55,8 +56,10 @@ function Publisher() {
           return null;
         }
       },
+      signOut: () =>
+        clerk.signOut({ redirectUrl: "/membership/academy" }),
     }),
-    [isLoaded, isSignedIn, getToken, user],
+    [isLoaded, isSignedIn, getToken, user, clerk],
   );
 
   useEffect(() => {

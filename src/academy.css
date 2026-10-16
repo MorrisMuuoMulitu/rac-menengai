@@ -5,6 +5,71 @@
    spine in the contents rail that fills as lessons are finished.
    ============================================================ */
 
+/* ------------------------------------------------------- account chip ---- */
+
+.account-chip {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  padding-bottom: 0.8rem;
+  margin-bottom: 0.9rem;
+  border-bottom: 1px solid currentColor;
+  border-color: rgba(255, 255, 255, 0.16);
+}
+.account-chip.light {
+  border-color: var(--line-strong);
+}
+.account-chip-avatar {
+  display: grid;
+  place-items: center;
+  width: 2.1rem;
+  height: 2.1rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--pink-600);
+  color: #fff;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+}
+.account-chip-who {
+  display: grid;
+  line-height: 1.25;
+  margin-right: auto;
+}
+.account-chip-who strong {
+  font-size: 0.95rem;
+}
+.account-chip-who small {
+  font-size: 0.8rem;
+  opacity: 0.72;
+}
+.account-chip-signout {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: 0;
+  padding: 0.25rem 0;
+  font: inherit;
+  font-size: 0.84rem;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.account-chip.dark .account-chip-who strong,
+.account-chip.dark .account-chip-signout {
+  color: #eef1f6;
+}
+.account-chip.light .account-chip-who strong,
+.account-chip.light .account-chip-signout {
+  color: var(--ink-800);
+}
+.account-chip-signout:hover {
+  color: var(--gold);
+}
+
 .academy-signin-page {
   background: var(--paper);
   padding: clamp(2rem, 5vw, 4rem) 0 clamp(3rem, 7vw, 5rem);

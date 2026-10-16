@@ -27,6 +27,8 @@ export interface Account {
   email: string | null;
   /** Short-lived session token for the API. Resolves to null when signed out. */
   token: () => Promise<string | null>;
+  /** Ends the session, or null when no provider is configured. */
+  signOut: (() => Promise<void>) | null;
 }
 
 const HAS_SIGN_IN_PROVIDER = Boolean(
@@ -40,6 +42,7 @@ export const ANONYMOUS: Account = {
   name: null,
   email: null,
   token: async () => null,
+  signOut: null,
 };
 
 const AccountContext = createContext<Account>(ANONYMOUS);
