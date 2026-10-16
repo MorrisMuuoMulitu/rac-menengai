@@ -133,6 +133,76 @@
    LEARNING DASHBOARD
    ============================================================ */
 
+/* --------------------------------------------------- scenario result ---- */
+
+.scenario-result {
+  display: grid;
+  gap: 0.6rem;
+  margin: 1.4rem 0;
+  padding: clamp(1.1rem, 2.6vw, 1.5rem);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+}
+.scenario-result.is-right {
+  border-color: #2f7d52;
+  background: #eef7f1;
+}
+.scenario-result.is-wrong {
+  border-color: var(--pink-600);
+  background: var(--blush);
+}
+.scenario-verdict {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-family: var(--font-display);
+  font-size: clamp(1.1rem, 2.4vw, 1.35rem);
+  margin: 0;
+}
+.scenario-result.is-right .scenario-verdict {
+  color: #1f5d3a;
+}
+.scenario-result.is-wrong .scenario-verdict {
+  color: #7d0f33;
+}
+.scenario-verdict svg {
+  flex: none;
+}
+.scenario-best {
+  display: grid;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0.7rem 0.9rem;
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.7);
+  font-size: 0.95rem;
+  color: var(--ink-700);
+}
+.scenario-best strong {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ink-500);
+}
+.scenario-why {
+  margin: 0;
+  font-size: 0.97rem;
+  line-height: 1.65;
+  color: var(--ink-700);
+  max-width: 68ch;
+}
+.scenario-result-actions {
+  margin-top: 0.4rem;
+}
+/* The answer the club would give, marked once the learner has committed. */
+.academy-choice.is-best {
+  border-color: #2f7d52;
+  background: #eef7f1;
+  box-shadow: inset 3px 0 0 #2f7d52;
+}
+
 /* ----------------------------------------------------- protocol tags ----- */
 
 .protocol-tag {

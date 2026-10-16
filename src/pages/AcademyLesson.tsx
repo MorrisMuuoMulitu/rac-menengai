@@ -254,6 +254,9 @@ export default function AcademyPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [scenarioResult, setScenarioResult] = useState<ScenarioResponse | null>(
+    null,
+  );
   const headingRef = useRef<HTMLHeadingElement>(null);
   const navigate = useNavigate();
   const { step: slug } = useParams<{ step: string }>();
@@ -322,6 +325,8 @@ export default function AcademyPage() {
   useEffect(() => {
     if (!slug || focusedSlug.current === slug) return;
     focusedSlug.current = slug;
+    /* A new step starts with no verdict from the last one on screen. */
+    setScenarioResult(null);
     headingRef.current?.focus();
   }, [slug]);
 
@@ -894,6 +899,7 @@ export default function AcademyPage() {
             <ScenarioStep
               key={chapter.scenario.id}
               scenario={chapter.scenario}
+              result={scenarioResult}
               busy={busy}
               signedIn={signedIn}
               headingRef={headingRef}
@@ -911,9 +917,17 @@ export default function AcademyPage() {
                           }
                         : previous,
                     );
-                    if (next.correct) go(steps[Math.min(index + 1, steps.length - 1)]);
+                    /*
+                     * Show the result rather than sliding past it. The copy
+                     * promised the reasoning either way, and advancing on a
+                     * correct answer meant the learner never saw any of it.
+                     */
+                    setScenarioResult(next);
                   },
                 )
+              }
+              onContinue={() =>
+                go(steps[Math.min(index + 1, steps.length - 1)])
               }
             />
           ) : null}
@@ -1031,10 +1045,12 @@ export default function AcademyPage() {
 
 function ScenarioStep({
   scenario,
+  result,
   busy,
   signedIn,
   headingRef,
   onAnswer,
+  onContinue,
 }: {
   scenario: {
     id: string;
@@ -1042,12 +1058,15 @@ function ScenarioStep({
     prompt: string;
     options: { id: string; text: string }[];
   };
+  result: ScenarioResponse | null;
   busy: boolean;
   signedIn: boolean;
   headingRef: React.RefObject<HTMLHeadingElement>;
   onAnswer: (optionId: string) => void;
+  onContinue: () => void;
 }) {
   const [picked, setPicked] = useState<string | null>(null);
+  const best = scenario.options.find((option) => option.id === result?.bestOptionId);
   return (
     <>
       <span className="academy-eyebrow">
@@ -1057,6 +1076,55 @@ function ScenarioStep({
         {scenario.prompt}
       </h2>
       <p className="academy-lede">{scenario.situation}</p>
+
+      {result ? (
+        <div
+          className={`scenario-result is-${result.correct ? "right" : "wrong"}`}
+          role="status"
+          aria-live="polite"
+        >
+          <p className="scenario-verdict">
+            {result.correct ? (
+              <>
+                <CircleCheck size={20} aria-hidden="true" /> Right — that is the
+                answer the club can stand behind.
+              </>
+            ) : (
+              <>
+                <AlertCircle size={20} aria-hidden="true" /> Not quite. The
+                answer the club would give is below.
+              </>
+            )}
+          </p>
+          {!result.correct && best ? (
+            <p className="scenario-best">
+              <strong>The club’s answer</strong> {best.text}
+            </p>
+          ) : null}
+          <p className="scenario-why">{result.feedback}</p>
+          <div className="scenario-result-actions">
+            {result.correct ? (
+              <button
+                type="button"
+                className="btn btn-primary btn-md"
+                onClick={onContinue}
+              >
+                Continue <ArrowRight aria-hidden="true" />
+              </button>
+            ) : (
+              <button
+                type="button"
+                className="btn btn-secondary btn-md"
+                onClick={() => setPicked(null)}
+              >
+                <RotateCcw aria-hidden="true" /> Try again
+              </button>
+            )}
+          </div>
+        </div>
+      ) : null}
+
+      {/* The choices stay available while they are still choosing or retrying. */}
       <fieldset className="academy-choices" disabled={busy || !signedIn}>
         <legend className="academy-hint">
           Pick what you would actually do. There is one answer the club can
@@ -1065,7 +1133,9 @@ function ScenarioStep({
         {scenario.options.map((option) => (
           <label
             key={option.id}
-            className={`academy-choice${picked === option.id ? " is-picked" : ""}`}
+            className={`academy-choice${picked === option.id ? " is-picked" : ""}${
+              result && best?.id === option.id ? " is-best" : ""
+            }`}
           >
             <input
               type="radio"
@@ -1081,10 +1151,11 @@ function ScenarioStep({
       <button
         type="button"
         className="btn btn-primary btn-md"
-        disabled={!picked || busy || !signedIn}
+        disabled={!picked || busy || !signedIn || Boolean(result?.correct)}
         onClick={() => picked && onAnswer(picked)}
       >
-        Commit to this answer <ArrowRight aria-hidden="true" />
+        {result ? "Send this answer" : "Commit to this answer"}{" "}
+        <ArrowRight aria-hidden="true" />
       </button>
       {!signedIn ? (
         <p className="academy-hint">
