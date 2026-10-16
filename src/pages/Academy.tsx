@@ -345,18 +345,18 @@ export default function AcademyPage() {
   const step = steps[index];
 
   /*
-   * Move focus to the new heading when the learner changes step, so a screen
-   * reader is told where they are. Not on first paint: arriving on the page
-   * should not pull focus into the middle of the course.
+   * Move focus to the new heading when the learner moves themselves, so a
+   * screen reader is told where they are. Keyed to `cursor`, which only the
+   * learner sets — keying it to the resolved step also fired when the course
+   * finished loading and on arrival, drawing a focus ring around the title
+   * for no reason.
    */
-  const firstPaint = useRef(true);
+  const focusedStep = useRef<number | null>(null);
   useEffect(() => {
-    if (firstPaint.current) {
-      firstPaint.current = false;
-      return;
-    }
+    if (cursor === null || focusedStep.current === cursor) return;
+    focusedStep.current = cursor;
     headingRef.current?.focus();
-  }, [index]);
+  }, [cursor]);
 
   const run = async <T,>(
     work: (token: string | null) => Promise<T>,
