@@ -1,3 +1,4 @@
+import { CLUB_ORIGIN, trustedSiteOrigins } from "../server/site-origin.js";
 declare const process: { env: Record<string, string | undefined> };
 async function hash(text: string) {
   const bytes = await crypto.subtle.digest(
@@ -32,8 +33,8 @@ export default async function handler(req: Request, res: Response) {
   }
   const origin = getHeader(req, "origin");
   const permitted =
-    process.env.SITE_ORIGIN ?? "https://rac-menengai.vercel.app";
-  if (!origin || origin !== permitted)
+    process.env.SITE_ORIGIN ?? CLUB_ORIGIN;
+  if (!origin || !trustedSiteOrigins(permitted).has(origin))
     return res.status(403).json({ error: "Origin not allowed." });
   if (!getHeader(req, "content-type")?.startsWith("application/json"))
     return res.status(415).json({ error: "Use application/json." });

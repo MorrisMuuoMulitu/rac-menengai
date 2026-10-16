@@ -4,9 +4,10 @@ import { resolve } from "node:path";
 const sitemap = readFileSync("dist/sitemap.xml", "utf8");
 const paths = [
   ...sitemap.matchAll(
-    /<loc>https:\/\/rac-menengai\.vercel\.app([^<]*)<\/loc>/g,
+    /<loc>https:\/\/rotaractmenengai\.org([^<]*)<\/loc>/g,
   ),
 ].map((m) => m[1] || "/");
+assert.ok(paths.length > 0, "Sitemap must contain public club-domain routes");
 // Draft stories must not reach the bundle. A draft slug that is also a
 // *published* record in another collection (e.g. an event) legitimately appears
 // in the bundle, so it is excluded rather than reported as a leak.
@@ -26,7 +27,7 @@ for (const path of paths) {
   const html = readFileSync(file, "utf8");
   assert.equal([...html.matchAll(/<h1(?:\s|>)/g)].length, 1, `${path}: one h1`);
   assert.ok(
-    html.includes(`href="https://rac-menengai.vercel.app${path}"`),
+    html.includes(`href="https://rotaractmenengai.org${path}"`),
     `${path}: canonical`,
   );
   assert.ok(html.includes("<main"), `${path}: initial HTML contains content`);

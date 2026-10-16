@@ -44,7 +44,7 @@ export function render(path: string) {
       ? "A plain-language Rotaract glossary, a short history and real service stories from Menengai in Nakuru."
       : undefined) ??
     "Community service, professional development and fellowship with the Rotaract Club of Menengai in Nakuru, Kenya.";
-  const canonical = `https://rac-menengai.vercel.app${path === "/" ? "/" : path}`;
+  const canonical = `https://rotaractmenengai.org${path === "/" ? "/" : path}`;
   const breadcrumbs =
     path !== "/" && path !== "/404"
       ? {
@@ -55,7 +55,7 @@ export function render(path: string) {
               "@type": "ListItem",
               position: 1,
               name: "Home",
-              item: "https://rac-menengai.vercel.app/",
+              item: "https://rotaractmenengai.org/",
             },
             {
               "@type": "ListItem",

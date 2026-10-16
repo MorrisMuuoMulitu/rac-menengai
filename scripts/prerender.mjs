@@ -45,7 +45,7 @@ for (const route of [...routes, "/404"]) {
 }
 await writeFile(
   "dist/sitemap.xml",
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes.map((route) => `<url><loc>https://rac-menengai.vercel.app${route}</loc></url>`).join("")}</urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes.map((route) => `<url><loc>https://rotaractmenengai.org${route}</loc></url>`).join("")}</urlset>\n`,
 );
 await rm(".prerender", { recursive: true, force: true });
 console.log(

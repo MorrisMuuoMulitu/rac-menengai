@@ -1,3 +1,4 @@
+import { CLUB_ORIGIN, trustedSiteOrigins } from "./site-origin.js";
 import { FULL_COURSE } from "./course.js";
 export interface CourseRequest {
   method?: string;
@@ -35,7 +36,8 @@ export function createOrientationHandler(
   now = Date.now,
 ) {
   const attempts = new Map<string, { count: number; expires: number }>();
-  const origin = env.SITE_ORIGIN ?? "https://rac-menengai.vercel.app";
+  const origin = env.SITE_ORIGIN ?? CLUB_ORIGIN;
+  const permittedOrigins = trustedSiteOrigins(origin);
   const secure = origin.startsWith("https://") ? "; Secure" : "";
   const cookie = (value: string, age: number) =>
     `${COOKIE}=${value}; Path=/api/orientation; HttpOnly; SameSite=Strict; Max-Age=${age}${secure}`;
@@ -83,7 +85,7 @@ export function createOrientationHandler(
       res.setHeader("Allow", "GET, POST, DELETE");
       return res.status(405).json({ error: "Method not allowed." });
     }
-    if (req.method !== "GET" && header(req, "origin") !== origin)
+    if (req.method !== "GET" && !permittedOrigins.has(header(req, "origin") ?? ""))
       return res.status(403).json({ error: "Origin not allowed." });
     if (req.method === "DELETE") {
       res.setHeader("Set-Cookie", cookie("", 0));

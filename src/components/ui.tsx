@@ -258,7 +258,7 @@ export function PageMeta({
     setMeta(
       'meta[property="og:url"]',
       "og:url",
-      `https://rac-menengai.vercel.app${window.location.pathname}`,
+      `https://rotaractmenengai.org${window.location.pathname}`,
     );
 
     let canonical = document.head.querySelector<HTMLLinkElement>(
@@ -271,7 +271,7 @@ export function PageMeta({
     }
     canonical.setAttribute(
       "href",
-      `https://rac-menengai.vercel.app${window.location.pathname}`,
+      `https://rotaractmenengai.org${window.location.pathname}`,
     );
   }, [title, description]);
   return null;
