@@ -2,7 +2,7 @@
  * App — layout + route table. One primary CTA label everywhere:
  * "Attend a fellowship".
  */
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useLocation, Link } from "react-router-dom";
 import { Suspense, lazy } from "react";
 import {
   AnnouncementBar,
@@ -43,14 +43,15 @@ const SignUpPage = lazy(() =>
 );
 
 export default function App() {
+  const learning = useLocation().pathname.startsWith("/membership/academy");
   return (
     <>
       <ScrollToTop />
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <AnnouncementBar />
-      <Header />
+      {!learning && <AnnouncementBar />}
+      {!learning && <Header />}
       <main id="main" tabIndex={-1}>
         <Routes>
           <Route path="/" element={<HomePage />} />
@@ -109,7 +110,21 @@ export default function App() {
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </main>
-      <Footer />
+      {learning ? (
+        <footer className="academy-simple-footer">
+          <Link to="/">Rotaract Club of Menengai</Link>
+          <Link to="/privacy">Privacy</Link>
+          <a
+            href="https://www.impelweb.studio/"
+            target="_blank"
+            rel="noreferrer"
+          >
+            Designed by Impel Web
+          </a>
+        </footer>
+      ) : (
+        <Footer />
+      )}
     </>
   );
 }

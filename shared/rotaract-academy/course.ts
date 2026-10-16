@@ -143,7 +143,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
       ],
       blocks: [
         p(
-          `Fellowship makes room for people as well as plans. ${profile.shortName} describes a relaxed weekly hour with service updates and time to get to know each other. A guest can listen, introduce themselves and ask questions without already knowing Rotary terminology.`,
+          `Fellowship makes room for people as well as plans. ${profile.meeting}. Expect service updates and time to get to know each other. A guest can listen, introduce themselves and ask questions without already knowing Rotary terminology.`,
         ),
         p(
           "A useful meeting has a purpose and an agenda: welcome people, review outstanding actions, hear reports, discuss decisions and confirm next steps. Speakers, learning or social time may be included. This is a practical model, not a claim that every club follows the same order.",
@@ -229,11 +229,11 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
           "The Object of Rotary is its companion. In plain language, it sets out that service is the basis of a worthwhile enterprise, and that this shows up four ways: friendship that becomes an opportunity to serve, high ethical standards in work and life, service applied in your own business and community, and understanding across borders.",
         ),
         note(
-          "Rotary publishes the official sentence of the Object of Rotary. It is not quoted here because it could not be checked against the source while this lesson was written. The exact wording is with the club to confirm; the plain-language version above carries the same four commitments.",
+          "This is a plain-language overview of the Object of Rotary. Use Rotary’s official statement when reading it at a meeting.",
         ),
       ],
       activity:
-        "Take the supplier’s offer and write one sentence for each question of the Four-Way Test. Then write the reply you would send — one that keeps the money without misleading the donor you already have.",
+        "Apply each question of the Four-Way Test to the supplier’s offer. Draft a truthful reply that recognises both partners. Be prepared to decline conditions that would mislead people.",
     },
     {
       objectives: [
@@ -246,7 +246,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
           "It is your third meeting. Under any other business the chair asks whether anyone has something to raise. You have a question about how a project budget was spent.",
         ),
         p(
-          "An agenda is a running order, and its job is to get a room of volunteers through the business in about an hour without anyone being ambushed. That is why the same items return in the same order.",
+          "An agenda sets out the business, the available time and the decisions needed. Circulating it beforehand helps members prepare and gives the chair a clear running order.",
         ),
         list(
           "Call to order — the president opens the meeting and confirms it can proceed.",
@@ -256,7 +256,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
           "Reports — the secretary, the treasurer, and any project lead with something to report.",
           "Programme or Rotary moment — a speaker, a learning slot, or a project update.",
           "Announcements and next steps — what happens between now and the next meeting.",
-          "Close — the president closes, and the Four-Way Test is frequently said again.",
+          "Close: confirm next steps and follow the club’s agreed closing practice.",
         ),
         tag(
           "example",
@@ -280,9 +280,9 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
           "The sergeant-at-arms keeps time and order, and often the club’s customs.",
         ),
         tag(
-          "recommendation",
-          "Rotary guidance is that members listen without interrupting, speak to the item rather than the person, and keep to the time the chair sets.",
-          "Rotary meeting practice guidance",
+          "example",
+          "Good meeting practice: listen without interrupting, address the issue respectfully and keep to the agreed time.",
+          "Academy practical guidance",
         ),
       ],
       activity:
@@ -302,17 +302,17 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
           "Introductions go wrong in one way: someone guesses a title. The fix is dull and always works — ask the visitor or their club beforehand how they would like to be introduced, and write it down.",
         ),
         tag(
-          "recommendation",
+          "example",
           "Use a person’s current title and full name, and check the preferred form of address with the visitor or their club before a formal occasion.",
-          "Rotary Brand Center; district guidance",
+          "Academy practical guidance",
         ),
         p(
           "Precedence is the order in which people are recognised, seated or introduced. It exists so that a formal occasion does not become a negotiation about status, and it is a courtesy, not a ranking of worth.",
         ),
         tag(
-          "district",
-          "Order of speaking and seating at district events follows current district guidance, which changes with each district leadership year.",
-          `${profile.district} — current guidance to be confirmed`,
+          "example",
+          "For a district occasion, ask the organisers which current protocol applies to introductions, speaking and seating. Do not assume an old event programme is the rule.",
+          `${profile.district}: confirm with the organisers`,
         ),
         tag(
           "custom",
@@ -339,9 +339,9 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
           "Fellowship discussion is how a club thinks. A decision is how it acts, and the two need separating, because people leave meetings believing different things were agreed.",
         ),
         tag(
-          "requirement",
-          "Whether a decision is binding, who may vote, and how many members must be present all come from the club’s own adopted constitution and bylaws. These differ between clubs, so a show of hands is only binding if those documents say it is.",
-          "Club governing documents — see the confirmation list",
+          "example",
+          "Before a formal vote, check the Standard Rotaract Club Constitution and the club’s adopted bylaws for authority, notice, eligibility and quorum. Ask the secretary which provisions apply; a show of hands alone does not establish that the process was valid.",
+          "Rotary’s Rotaract policy updates; club bylaws to be confirmed",
         ),
         p(
           "A minute is not a transcript. It records the decision, who owns the next step, the deadline, and any approved cost — which is what lets someone who missed the meeting act on it.",

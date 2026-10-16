@@ -40,13 +40,15 @@ export function loadDraft(
   version: string,
   questionCount: number,
   storage: StorageLike | null = defaultStorage(),
+  scope = "",
 ): (number | null)[] | null {
   if (!storage) return null;
   try {
-    const raw = storage.getItem(DRAFT_KEY);
+    const raw = storage.getItem(scope ? `${DRAFT_KEY}:${scope}` : DRAFT_KEY);
     if (!raw) return null;
     const parsed = JSON.parse(raw) as Partial<StoredDraft>;
-    if (parsed.version !== version || !Array.isArray(parsed.answers)) return null;
+    if (parsed.version !== version || !Array.isArray(parsed.answers))
+      return null;
     const answers: (number | null)[] = new Array(questionCount).fill(null);
     for (let index = 0; index < questionCount; index += 1) {
       const value = parsed.answers[index];
@@ -63,10 +65,14 @@ export function saveDraft(
   version: string,
   answers: (number | null)[],
   storage: StorageLike | null = defaultStorage(),
+  scope = "",
 ): boolean {
   if (!storage) return false;
   try {
-    storage.setItem(DRAFT_KEY, JSON.stringify({ version, answers }));
+    storage.setItem(
+      scope ? `${DRAFT_KEY}:${scope}` : DRAFT_KEY,
+      JSON.stringify({ version, answers }),
+    );
     return true;
   } catch {
     return false;
@@ -75,10 +81,11 @@ export function saveDraft(
 
 export function clearDraft(
   storage: StorageLike | null = defaultStorage(),
+  scope = "",
 ): void {
   if (!storage) return;
   try {
-    storage.removeItem(DRAFT_KEY);
+    storage.removeItem(scope ? `${DRAFT_KEY}:${scope}` : DRAFT_KEY);
   } catch {
     /* ignore */
   }

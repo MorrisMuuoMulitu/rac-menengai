@@ -5,18 +5,20 @@ Edit that file, not this one.
 
 ## Sources relied on
 
-| Source | Version | Section used | Scope | Reviewed | Reviewer |
+Suggested review owners below have not provided club sign-off. Checked dates refer to the source review, not a club approval.
+
+| Source | Version | Section used | Scope | Source checked | Suggested review owner |
 |---|---|---|---|---|---|
-| [The Four-Way Test](https://www.rotary.org/en/about-rotary/four-way-test) | Page consulted 16 October 2026 | The test itself, its wording and its attribution to Herbert J. Taylor, 1932 | Rotary International — applies to every Rotary and Rotaract club | 2026-10-16 | Club secretary |
-| [The Object of Rotary](https://www.rotary.org/en/about-rotary) | Page consulted 16 October 2026 | The object statement, quoted verbatim and explained separately | Rotary International — applies to every Rotary and Rotaract club | 2026-10-16 | Club secretary |
+| [The Four-Way Test](https://blog.rotary.org/2026/04/09/the-four-way-test-a-road-map-we-need-now-more-than-ever/) | Page consulted 16 October 2026 | The test itself, its wording and its attribution to Herbert J. Taylor, 1932 | Rotary ethical framework; not evidence of a mandatory meeting recital | 2026-10-16 | Club secretary |
+| [The Object of Rotary](https://www.rotary.org/en/about-rotary) | Exact statement pending source confirmation | General background only; course uses a labelled plain-language overview | Rotary guiding principle; no verbatim text published here | Pending | Club secretary |
 | [Rotaract clubs](https://www.rotary.org/en/get-involved/our-clubs/rotaract-clubs) | Page consulted 16 October 2026 | What Rotaract is, who may join, and its relationship to Rotary | Rotary International — global membership guidance | 2026-10-16 | Membership director |
 | [Recent Rotaract policy updates](https://my-cms.rotary.org/en/recent-rotaract-policy-updates) | Page consulted 16 October 2026 | Removal of the upper age limit and the mandatory sponsor requirement from 1 July 2020; Rotaract recognised as a membership type of Rotary International | Rotary International — global policy | 2026-10-16 | Club secretary |
-| [Rotary Brand Center](https://brandcenter.rotary.org/) | Accessed 16 October 2026 | Logo use, club naming, and the people-of-action voice | Rotary International — brand and trademark use | 2026-10-16 | Public image director |
+| [Rotary Brand Center](https://brandcenter.rotary.org/) | Direct access unavailable during 16 October 2026 review | Logo use, club naming, and the people-of-action voice | Rotary International — brand and trademark use | Pending | Public image director |
 | [Our causes](https://www.rotary.org/en/our-causes) | Page consulted 16 October 2026 | The seven areas of focus | Rotary International — programme guidance | 2026-10-16 | Service projects director |
 
 ## Awaiting club confirmation — not published in the course
 
-Each of these is deliberately absent from the published lesson text. The reusable interface and the general learning content are complete; only the club-specific detail is withheld, as the brief requires.
+Items below need club review. Some current published club facts and the assessment pass mark are included for annual confirmation; unconfirmed ritual wording and formal local procedures remain unpublished.
 
 | Question | Why it is not published | Owner | Appears in |
 |---|---|---|---|

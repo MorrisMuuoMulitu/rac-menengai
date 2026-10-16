@@ -50,7 +50,7 @@ export default function MembershipPage() {
           <div className="membership-fact-grid">
             <div className="membership-fact">
               <Clock size={20} aria-hidden="true" />
-              <h2>One hour a week</h2>
+              <h2>Thursday fellowship</h2>
               <p>
                 Fellowship runs every {CLUB.meeting.dayLabel},{" "}
                 {CLUB.meeting.timeLabel} at Nakuru Athletic Club. Short service

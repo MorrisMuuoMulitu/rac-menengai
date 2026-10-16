@@ -17,7 +17,9 @@ import { MENENGAI_LEARNING_PROFILE } from "../club-learning-profile";
 
 const course = publicCourse(createCourse(MENENGAI_LEARNING_PROFILE));
 
-function bootstrap(patch: Partial<NonNullable<AcademyBootstrap["record"]>> = {}): AcademyBootstrap {
+function bootstrap(
+  patch: Partial<NonNullable<AcademyBootstrap["record"]>> = {},
+): AcademyBootstrap {
   const record = {
     courseVersion: course.version,
     completedLessons: [] as string[],
@@ -34,8 +36,7 @@ function bootstrap(patch: Partial<NonNullable<AcademyBootstrap["record"]>> = {})
     chapterId: scenario.chapterId,
     done:
       record.scenarioAnswers[scenario.id] ===
-      course.scenarios.find((item) => item.id === scenario.id)?.id &&
-      false,
+        course.scenarios.find((item) => item.id === scenario.id)?.id && false,
   }));
   return {
     signedIn: true,
@@ -64,9 +65,15 @@ describe("steps as routes", () => {
     const slugs = steps.map(stepSlug);
     expect(slugs[0]).toBe("roots");
     /* The chapter check sits after the chapter's lessons, before the next. */
-    expect(slugs.indexOf("check-discover")).toBeGreaterThan(slugs.indexOf("family"));
-    expect(slugs.indexOf("check-club")).toBeGreaterThan(slugs.indexOf("meeting"));
-    expect(slugs.indexOf("check-integrity")).toBeGreaterThan(slugs.indexOf("ethics"));
+    expect(slugs.indexOf("check-discover")).toBeGreaterThan(
+      slugs.indexOf("family"),
+    );
+    expect(slugs.indexOf("check-club")).toBeGreaterThan(
+      slugs.indexOf("meeting"),
+    );
+    expect(slugs.indexOf("check-integrity")).toBeGreaterThan(
+      slugs.indexOf("ethics"),
+    );
     expect(slugs.slice(-3)).toEqual(["assessment", "proposal", "join"]);
   });
 
@@ -131,6 +138,8 @@ describe("chapter cards", () => {
       bootstrap({ completedLessons: lessons }),
     );
     expect(withoutCheck[0].complete).toBe(false);
+    expect(withoutCheck[0].current).toBe(true);
+    expect(withoutCheck[0].entrySlug).toBe("check-discover");
 
     const check = course.scenarios.find(
       (scenario) => scenario.chapterId === course.chapters[0].id,

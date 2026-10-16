@@ -151,10 +151,17 @@ export function chapterSummaries(
       lessonsDone: done,
       scenarioDone,
       complete,
-      current: chapter.lessons.some(
-        (lesson) => stepSlug({ kind: "lesson", lessonId: lesson.id }) === currentSlug,
-      ),
-      entrySlug: firstUnfinished ? firstUnfinished.id : chapter.lessons[0].id,
+      current:
+        currentSlug === `${SCENARIO_PREFIX}${chapter.id}` ||
+        chapter.lessons.some(
+          (lesson) =>
+            stepSlug({ kind: "lesson", lessonId: lesson.id }) === currentSlug,
+        ),
+      entrySlug: firstUnfinished
+        ? firstUnfinished.id
+        : chapter.scenario && !scenarioDone
+          ? `${SCENARIO_PREFIX}${chapter.id}`
+          : chapter.lessons[0].id,
     };
   });
 }

@@ -1,15 +1,15 @@
 /**
  * The membership academy.
  *
- * Six chapters, fourteen lessons, a situation to work through at the end of
- * each chapter, a twenty-eight question assessment and a one-page proposal.
+ * Seven chapters, twenty lessons, chapter checks, a twenty-question
+ * assessment and a practical proposal.
  * Finish all of it and the joining journey unlocks — the club still decides.
  *
  * The page is a view over server state. Nothing is scored here, and nothing
  * is marked complete here; every button posts and waits.
  */
 
-import { Fragment, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
 import {
   AlertCircle,
@@ -34,13 +34,14 @@ import {
 import { PageMeta } from "../components/ui";
 import { CHAPTERS, COURSE_INFO } from "../course-info";
 import { useAccount } from "../academy/account";
-import { markTerms, parseInline, toParagraphs } from "../lib/prose";
+import { LessonExplorer } from "../academy/LessonExplorer";
+import { FourWayPractice, RolePractice } from "../academy/RolePractice";
+import { assessmentDraftIdentity } from "../academy/learning-experience";
 import { Flashcards } from "../academy/Flashcards";
 import { FollowTheClub } from "../academy/FollowTheClub";
 import { OrderingActivity } from "../academy/OrderingActivity";
 import { flashcardsForChapter } from "../../shared/rotaract-academy/flashcards";
 import { orderingForLesson } from "../../shared/rotaract-academy/activities";
-import { PROTOCOL_LEVEL_LABEL } from "../../shared/rotaract-academy/types";
 import { AccountChip } from "../academy/AccountChip";
 import {
   AcademyError,
@@ -95,7 +96,10 @@ function Notice({
   tone?: "error" | "info" | "good";
 }) {
   return (
-    <p className={`academy-notice ${tone}`} role={tone === "error" ? "alert" : "status"}>
+    <p
+      className={`academy-notice ${tone}`}
+      role={tone === "error" ? "alert" : "status"}
+    >
       {tone === "error" ? (
         <AlertCircle size={18} aria-hidden="true" />
       ) : tone === "good" ? (
@@ -153,7 +157,7 @@ function StaticSyllabus({ note }: { note?: string }) {
           {note ? <Notice tone="info">{note}</Notice> : null}
           <h2 className="academy-step-title">What the course covers</h2>
           <p className="academy-lede">
-            Six chapters, read in order. At the end of each one there is a
+            Seven chapters, read in order. At the end of each one there is a
             situation to work through, and the course finishes with a short
             assessment and a one-page proposal you write yourself.
           </p>
@@ -260,6 +264,11 @@ export default function AcademyPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [assessmentResult, setAssessmentResult] =
+    useState<GradedResponse | null>(null);
+  useEffect(() => {
+    setAssessmentResult(null);
+  }, [account.email]);
   const [scenarioResult, setScenarioResult] = useState<ScenarioResponse | null>(
     null,
   );
@@ -288,7 +297,10 @@ export default function AcademyPage() {
     /* Everything done: nothing left to unlock, so nothing is locked. */
     return firstUnfinished === -1 ? steps.length - 1 : firstUnfinished;
   }, [steps, data]);
-  const unlocked = (target: number) => target <= resumeIndex;
+  const unlocked = (target: number) =>
+    !data?.signedIn ||
+    target <= resumeIndex ||
+    Boolean(steps[target] && stepIsDone(steps[target], data));
 
   /*
    * Read the course as soon as the page opens, and read it again with a
@@ -343,11 +355,12 @@ export default function AcademyPage() {
    */
   const [openRail, setOpenRail] = useState<string[]>([]);
   const currentChapterId =
-    data?.course?.chapters.find((item) =>
-      item.lessons.some(
-        (lesson) =>
-          step?.kind === "lesson" && step.lessonId === lesson.id,
-      ) || (step?.kind === "scenario" && step.chapterId === item.id),
+    data?.course?.chapters.find(
+      (item) =>
+        item.lessons.some(
+          (lesson) => step?.kind === "lesson" && step.lessonId === lesson.id,
+        ) ||
+        (step?.kind === "scenario" && step.chapterId === item.id),
     )?.id ?? data?.course?.chapters[0]?.id;
   useEffect(() => {
     if (currentChapterId) setOpenRail([currentChapterId]);
@@ -408,7 +421,7 @@ export default function AcademyPage() {
       <>
         <PageMeta
           title="Membership academy"
-          description="The Rotaract Club of Menengai’s membership course: six chapters, fourteen lessons, a situation to work through and a one-page proposal."
+          description="Twenty lessons on Rotaract, club leadership and practical service, with activities and a personal service proposal."
         />
         <StaticSyllabus />
       </>
@@ -440,9 +453,19 @@ export default function AcademyPage() {
    * promised they can read the course, so nothing is locked to them.
    */
   if (!step)
-    return <Navigate to={`/membership/academy/${steps[resumeIndex] ? stepSlug(steps[resumeIndex]) : ""}`} replace />;
-  if (data?.signedIn && index > resumeIndex)
-    return <Navigate to={`/membership/academy/${stepSlug(steps[resumeIndex])}`} replace />;
+    return (
+      <Navigate
+        to={`/membership/academy/${steps[resumeIndex] ? stepSlug(steps[resumeIndex]) : ""}`}
+        replace
+      />
+    );
+  if (!unlocked(index))
+    return (
+      <Navigate
+        to={`/membership/academy/${stepSlug(steps[resumeIndex])}`}
+        replace
+      />
+    );
 
   const summary = data?.summary;
   const signedIn = Boolean(data?.signedIn);
@@ -452,7 +475,7 @@ export default function AcademyPage() {
     <>
       <PageMeta
         title="Membership academy"
-        description="Six chapters on Rotaract, service and leadership, finished with a practical proposal — the course the Rotaract Club of Menengai asks members to complete."
+        description="Seven chapters on Rotaract, service and leadership, with activities, feedback and a practical service proposal."
       />
 
       <header className="lesson-bar">
@@ -475,16 +498,16 @@ export default function AcademyPage() {
                 onClick={() => go(steps[index - 1])}
                 aria-label="Previous step"
               >
-                <ChevronLeft size={18} aria-hidden="true" />
+                <ChevronLeft size={18} aria-hidden="true" /> Previous
               </button>
               <button
                 type="button"
                 className="lesson-nav"
-                disabled={index >= resumeIndex}
+                disabled={index >= steps.length - 1 || !unlocked(index + 1)}
                 onClick={() => go(steps[index + 1])}
                 aria-label="Next step"
               >
-                <ChevronRight size={18} aria-hidden="true" />
+                Next <ChevronRight size={18} aria-hidden="true" />
               </button>
             </div>
           </div>
@@ -498,6 +521,37 @@ export default function AcademyPage() {
           >
             <span style={{ width: `${summary?.percent ?? 0}%` }} />
           </div>
+          <label className="lesson-jump">
+            Jump to a step
+            <select
+              aria-label="Jump to a step"
+              value={slug}
+              onChange={(event) =>
+                navigate(`/membership/academy/${event.target.value}`)
+              }
+            >
+              {steps.map((item, at) => (
+                <option
+                  key={stepSlug(item)}
+                  value={stepSlug(item)}
+                  disabled={!unlocked(at)}
+                >
+                  {at + 1}.{" "}
+                  {item.kind === "lesson"
+                    ? course.modules.find(
+                        (module) => module.id === item.lessonId,
+                      )?.title
+                    : item.kind === "scenario"
+                      ? `${course.chapters.find((chapter) => chapter.id === item.chapterId)?.title}: practice check`
+                      : item.kind === "assessment"
+                        ? "Final assessment"
+                        : item.kind === "proposal"
+                          ? "My service proposal"
+                          : "Membership journey"}
+                </option>
+              ))}
+            </select>
+          </label>
         </div>
       </header>
 
@@ -505,34 +559,13 @@ export default function AcademyPage() {
         <section className="academy-signin">
           <div className="container academy-signin-inner">
             <div>
-              <h2>Read it now. Keep it when you sign in.</h2>
               <p>
-                Every lesson, situation and video on this page is open. An
-                account is what makes it yours: your place is saved, your
-                answers are marked on the club’s server, and finishing the
-                course unlocks the joining steps.
+                Explore freely. Create an account to save progress and complete
+                the course.
               </p>
-              <ul className="academy-signin-list">
-                <li>
-                  <Check size={16} aria-hidden="true" /> Progress saved on any
-                  device you sign in from
-                </li>
-                <li>
-                  <Check size={16} aria-hidden="true" /> Assessment marked by
-                  the club, not by your browser
-                </li>
-                <li>
-                  <Check size={16} aria-hidden="true" /> Your proposal reaches
-                  the membership team
-                </li>
-              </ul>
             </div>
             <div className="academy-signin-action">
-              {!account.ready ? (
-                <p className="academy-hint" role="status">
-                  Checking how to sign you in…
-                </p>
-              ) : account.available ? (
+              {!account.ready || account.available ? (
                 /*
                  * A link, not Clerk's modal. The modal is an overlay that
                  * decides for itself whether to render, and when it declined
@@ -549,7 +582,7 @@ export default function AcademyPage() {
                     className="btn btn-secondary btn-md"
                     to="/membership/sign-in"
                   >
-                    I already have one
+                    Sign in
                   </Link>
                 </>
               ) : (
@@ -559,10 +592,6 @@ export default function AcademyPage() {
                   fellowship and they will walk you through this one.
                 </p>
               )}
-              <p className="academy-hint">
-                We ask for a name and an email address. Nothing else, and
-                nothing shared with anyone outside the club.
-              </p>
             </div>
           </div>
         </section>
@@ -606,7 +635,10 @@ export default function AcademyPage() {
                       <BadgeCheck size={15} aria-label="Chapter complete" />
                     ) : null}
                   </button>
-                  <ul id={`rail-${item.id}`} hidden={!openRail.includes(item.id)}>
+                  <ul
+                    id={`rail-${item.id}`}
+                    hidden={!openRail.includes(item.id)}
+                  >
                     {item.lessons.map((entry) => {
                       const done = record?.completedLessons.includes(entry.id);
                       const active =
@@ -628,7 +660,10 @@ export default function AcademyPage() {
                             }}
                             disabled={!unlocked(stepIndex) && !done}
                           >
-                            <span className="academy-rail-mark" aria-hidden="true">
+                            <span
+                              className="academy-rail-mark"
+                              aria-hidden="true"
+                            >
                               {done ? <Check size={13} /> : entry.minutes}
                             </span>
                             {entry.title}
@@ -650,14 +685,19 @@ export default function AcademyPage() {
                             if (unlocked(stepIndex)) go(steps[stepIndex]);
                           }}
                           disabled={
-                            steps.findIndex(
-                              (candidate) =>
-                                candidate.kind === "scenario" &&
-                                candidate.chapterId === item.id,
-                            ) > resumeIndex
+                            !unlocked(
+                              steps.findIndex(
+                                (candidate) =>
+                                  candidate.kind === "scenario" &&
+                                  candidate.chapterId === item.id,
+                              ),
+                            )
                           }
                         >
-                          <span className="academy-rail-mark" aria-hidden="true">
+                          <span
+                            className="academy-rail-mark"
+                            aria-hidden="true"
+                          >
                             {stepIsDone(
                               { kind: "scenario", chapterId: item.id },
                               data,
@@ -677,7 +717,7 @@ export default function AcademyPage() {
             })}
             <li className="academy-rail-chapter">
               <p className="academy-rail-chapter-title">
-                <span aria-hidden="true">07</span>Finish
+                <span aria-hidden="true">✓</span>Finish
               </p>
               <ul>
                 {(
@@ -698,15 +738,15 @@ export default function AcademyPage() {
                         type="button"
                         className={`academy-rail-item${active ? " is-current" : ""}${done ? " is-done" : ""}`}
                         aria-current={active ? "step" : undefined}
-                        disabled={stepIndex > resumeIndex}
+                        disabled={!unlocked(stepIndex)}
                         onClick={() => {
-                          if (stepIndex <= resumeIndex) go(steps[stepIndex]);
+                          if (unlocked(stepIndex)) go(steps[stepIndex]);
                         }}
                       >
                         <span className="academy-rail-mark" aria-hidden="true">
                           {done ? (
                             <Check size={13} />
-                          ) : stepIndex > resumeIndex ? (
+                          ) : !unlocked(stepIndex) ? (
                             <Lock size={12} />
                           ) : (
                             "•"
@@ -731,108 +771,48 @@ export default function AcademyPage() {
 
           {step?.kind === "lesson" && lesson && lessonBody ? (
             <>
-              <h2 className="academy-step-title" tabIndex={-1} ref={headingRef}>
+              <h1 className="academy-step-title" tabIndex={-1} ref={headingRef}>
                 {lesson.title}
-              </h2>
+              </h1>
               <p className="academy-lede">{lesson.summary}</p>
 
               {/* A chapter's films belong to the chapter, so they open it
                   rather than reappearing on every lesson inside it. */}
               {chapter?.videos.length &&
               chapter.lessons[0]?.id === lesson.id ? (
-                <div className="academy-videos">
-                  {chapter.videos.map((video) => (
-                    <VideoPlate key={video.id} video={video} />
-                  ))}
-                </div>
+                <details className="lesson-video-option">
+                  <summary>
+                    <Play size={16} aria-hidden="true" /> Watch a related Rotary
+                    video ({chapter.videos.length})
+                  </summary>
+                  <div className="academy-videos">
+                    {chapter.videos.map((video) => (
+                      <VideoPlate key={video.id} video={video} />
+                    ))}
+                  </div>
+                </details>
               ) : null}
 
-              <section className="academy-objectives">
-                <h3>By the end of this lesson</h3>
-                <ul>
-                  {lessonBody.objectives.map((objective) => (
-                    <li key={objective}>{objective}</li>
-                  ))}
-                </ul>
-              </section>
-
-              <div className="academy-prose">
-                {(() => {
-                  /*
-                   * Split the lesson's paragraphs, then mark Rotary's own
-                   * vocabulary once per lesson. Doing it across the whole
-                   * lesson is what keeps the page from becoming a wall of
-                   * bold: each term is picked out at its first mention only.
-                   */
-                  const prose = markTerms(
-                    lessonBody.blocks
-                      .filter((block) => block.kind === "p")
-                      .flatMap((block) => toParagraphs(block.text ?? "", 2)),
-                  );
-                  let paragraphIndex = 0;
-                  return lessonBody.blocks.map((block, blockIndex) =>
-                    block.kind === "p" ? (
-                      <Fragment key={blockIndex}>
-                        {toParagraphs(block.text ?? "", 2).map(() => {
-                          const marked = prose[paragraphIndex++] ?? "";
-                          return (
-                            <p key={marked}>
-                              {parseInline(marked).map((piece, pieceIndex) =>
-                                piece.strong ? (
-                                  <strong key={pieceIndex}>{piece.text}</strong>
-                                ) : (
-                                  <Fragment key={pieceIndex}>
-                                    {piece.text}
-                                  </Fragment>
-                                ),
-                              )}
-                            </p>
-                          );
-                        })}
-                      </Fragment>
-                  ) : block.kind === "note" ? (
-                    <aside className="academy-note" key={blockIndex}>
-                      {block.text}
-                    </aside>
-                  ) : block.kind === "tag" ? (
-                    /*
-                     * Rotary material mixes global policy, district guidance
-                     * and club custom. Saying which one a statement is stops a
-                     * local habit being read as a rule.
-                     */
-                    <aside
-                      className={`protocol-tag is-${block.level ?? "example"}`}
-                      key={blockIndex}
-                    >
-                      <span className="protocol-tag-level">
-                        {PROTOCOL_LEVEL_LABEL[block.level ?? "example"]}
-                      </span>
-                      <p>{block.text}</p>
-                      {block.source ? <cite>{block.source}</cite> : null}
-                    </aside>
-                  ) : (
-                    <ul key={blockIndex}>
-                      {block.items?.map((item) => <li key={item}>{item}</li>)}
-                    </ul>
-                  ),
-                  );
-                })()}
-              </div>
-
-              <section className="academy-activity">
-                <h3>
-                  <Sparkles size={17} aria-hidden="true" /> Put it into practice
-                </h3>
-                <p>{lessonBody.activity}</p>
-                <p className="academy-hint">
-                  Write it, say it out loud, or bring it to a fellowship.
-                  Nothing is submitted from this box.
-                </p>
-              </section>
+              <LessonExplorer
+                key={`reading-${lesson.id}`}
+                blocks={lessonBody.blocks}
+                objectives={lessonBody.objectives}
+                activity={lessonBody.activity}
+              />
+              {(lesson.id === "structure" ||
+                lesson.id === "club-leadership") && (
+                <RolePractice key={`roles-${lesson.id}`} />
+              )}
+              {(lesson.id === "protocol-ethics" || lesson.id === "ethics") && (
+                <FourWayPractice key={`four-way-${lesson.id}`} />
+              )}
 
               {/* An activity, where the lesson has one, before the recap. */}
               {orderingForLesson(lesson.id) ? (
-                <OrderingActivity activity={orderingForLesson(lesson.id)!} />
+                <OrderingActivity
+                  key={`order-${lesson.id}`}
+                  activity={orderingForLesson(lesson.id)!}
+                />
               ) : null}
 
               {/* One deck per chapter, as a recap before the chapter's check. */}
@@ -843,6 +823,40 @@ export default function AcademyPage() {
                   chapterTitle={chapter.title}
                 />
               ) : null}
+
+              <aside
+                className="lesson-source-links"
+                aria-label="Further reading"
+              >
+                <strong>Go to the source</strong>
+                <a
+                  href="https://www.rotary.org/en/get-involved/our-clubs/rotaract-clubs"
+                  target="_blank"
+                  rel="noreferrer"
+                >
+                  Rotary International: Rotaract clubs{" "}
+                  <ExternalLink size={14} aria-hidden="true" />
+                </a>
+                {chapter?.id === "protocols" || chapter?.id === "integrity" ? (
+                  <a
+                    href="https://blog.rotary.org/2026/04/09/the-four-way-test-a-road-map-we-need-now-more-than-ever/"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Rotary: applying the Four-Way Test{" "}
+                    <ExternalLink size={14} aria-hidden="true" />
+                  </a>
+                ) : chapter?.id === "service" ? (
+                  <a
+                    href="https://www.rotary.org/our-work"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Rotary’s work and causes{" "}
+                    <ExternalLink size={14} aria-hidden="true" />
+                  </a>
+                ) : null}
+              </aside>
 
               <div className="academy-actions">
                 {index > 0 ? (
@@ -859,31 +873,33 @@ export default function AcademyPage() {
                   className="btn btn-primary btn-md"
                   disabled={
                     busy ||
-                    !signedIn ||
-                    Boolean(record?.completedLessons.includes(lesson.id))
+                    (Boolean(record?.completedLessons.includes(lesson.id)) &&
+                      !unlocked(index + 1))
                   }
                   onClick={() =>
-                    void run(
-                      (token) => markLesson(token, lesson.id),
-                      (next) => {
-                        setData((previous) =>
-                          previous
-                            ? {
-                                ...previous,
-                                record: next.record,
-                                summary: next.summary,
-                                chapters: next.chapters,
-                              }
-                            : previous,
-                        );
-                        go(steps[Math.min(index + 1, steps.length - 1)]);
-                      },
-                    )
+                    !signedIn || record?.completedLessons.includes(lesson.id)
+                      ? go(steps[Math.min(index + 1, steps.length - 1)])
+                      : void run(
+                          (token) => markLesson(token, lesson.id),
+                          (next) => {
+                            setData((previous) =>
+                              previous
+                                ? {
+                                    ...previous,
+                                    record: next.record,
+                                    summary: next.summary,
+                                    chapters: next.chapters,
+                                  }
+                                : previous,
+                            );
+                            go(steps[Math.min(index + 1, steps.length - 1)]);
+                          },
+                        )
                   }
                 >
-                  {record?.completedLessons.includes(lesson.id) ? (
+                  {!signedIn || record?.completedLessons.includes(lesson.id) ? (
                     <>
-                      <Check aria-hidden="true" /> Finished
+                      Continue <ArrowRight aria-hidden="true" />
                     </>
                   ) : (
                     <>
@@ -940,12 +956,26 @@ export default function AcademyPage() {
 
           {step?.kind === "assessment" ? (
             <AssessmentStep
-              key="assessment"
+              key={assessmentDraftIdentity(
+                course.version,
+                account.email ?? "guest",
+                course.questions,
+              )}
               course={course}
               record={data?.record}
               busy={busy}
               signedIn={signedIn}
               headingRef={headingRef}
+              result={assessmentResult}
+              draftIdentity={assessmentDraftIdentity(
+                course.version,
+                account.email ?? "guest",
+                course.questions,
+              )}
+              onContinue={() =>
+                go(steps[Math.min(index + 1, steps.length - 1)])
+              }
+              onRetry={() => setAssessmentResult(null)}
               onSubmit={(answers) =>
                 run(
                   (token) => submitAssessment(token, answers),
@@ -959,7 +989,7 @@ export default function AcademyPage() {
                           }
                         : previous,
                     );
-                    if (next.passed) go(steps[Math.min(index + 1, steps.length - 1)]);
+                    setAssessmentResult(next);
                   },
                 )
               }
@@ -1073,7 +1103,9 @@ function ScenarioStep({
   onContinue: () => void;
 }) {
   const [picked, setPicked] = useState<string | null>(null);
-  const best = scenario.options.find((option) => option.id === result?.bestOptionId);
+  const best = scenario.options.find(
+    (option) => option.id === result?.bestOptionId,
+  );
   return (
     <>
       <span className="academy-eyebrow">
@@ -1175,12 +1207,16 @@ function ScenarioStep({
 
 /* ------------------------------------------------------------- assessment -- */
 
-function AssessmentStep({
+export function AssessmentStep({
   course,
   record,
   busy,
   signedIn,
   headingRef,
+  result,
+  draftIdentity,
+  onContinue,
+  onRetry,
   onSubmit,
 }: {
   course: NonNullable<AcademyBootstrap["course"]>;
@@ -1188,6 +1224,10 @@ function AssessmentStep({
   busy: boolean;
   signedIn: boolean;
   headingRef: React.RefObject<HTMLHeadingElement>;
+  result: GradedResponse | null;
+  draftIdentity: string;
+  onContinue: () => void;
+  onRetry: () => void;
   onSubmit: (answers: (number | null)[]) => void;
 }) {
   /*
@@ -1197,17 +1237,27 @@ function AssessmentStep({
    */
   const [answers, setAnswers] = useState<(number | null)[]>(
     () =>
-      loadDraft(course.version, course.questions.length) ??
-      course.questions.map(() => null),
+      loadDraft(
+        draftIdentity,
+        course.questions.length,
+        undefined,
+        draftIdentity,
+      ) ?? course.questions.map(() => null),
   );
-  const [result, setResult] = useState<GradedResponse | null>(null);
   const [draftSaved, setDraftSaved] = useState(true);
   const [retaking, setRetaking] = useState(false);
+  const [groupIndex, setGroupIndex] = useState(0);
+  const resultRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (result) resultRef.current?.focus();
+  }, [result]);
 
   const update = (index: number, value: number) => {
     setAnswers((previous) => {
       const next = previous.map((entry, at) => (at === index ? value : entry));
-      setDraftSaved(saveAssessmentDraft(course.version, next));
+      setDraftSaved(
+        saveAssessmentDraft(draftIdentity, next, undefined, draftIdentity),
+      );
       return next;
     });
   };
@@ -1226,7 +1276,7 @@ function AssessmentStep({
     }))
     .filter((group) => group.questions.length > 0);
 
-  const alreadyPassed = Boolean(record?.passed) && !retaking;
+  const alreadyPassed = Boolean(record?.passed) && !retaking && !result;
 
   if (alreadyPassed)
     return (
@@ -1239,7 +1289,9 @@ function AssessmentStep({
         </h2>
         <div className="assessment-passed" role="status">
           <p className="assessment-passed-score">
-            {record?.bestScore ?? 0} of {course.questions.length} correct
+            {(record?.bestScore ?? 0) <= course.questions.length
+              ? `${record?.bestScore ?? 0} of ${course.questions.length} correct`
+              : "Pass recorded on an earlier assessment"}
           </p>
           <p>
             Passed{" "}
@@ -1264,7 +1316,7 @@ function AssessmentStep({
             onClick={() => {
               setRetaking(true);
               setAnswers(course.questions.map(() => null));
-              clearDraft();
+              clearDraft(undefined, draftIdentity);
             }}
           >
             <RotateCcw aria-hidden="true" /> Sit it again
@@ -1279,13 +1331,87 @@ function AssessmentStep({
         <BadgeCheck size={15} aria-hidden="true" /> Final check
       </span>
       <h2 className="academy-step-title" tabIndex={-1} ref={headingRef}>
-        What stayed with you
+        Your final assessment
       </h2>
       <p className="academy-lede">
         {course.questions.length} questions. You need {course.passMark} right.
         Every answer is in the lessons you have just read, and you can sit it
         again as often as you like — the club records your best score.
       </p>
+      {result ? (
+        <div
+          ref={resultRef}
+          tabIndex={-1}
+          className={`assessment-outcome ${result.passed ? "is-pass" : "is-retry"}`}
+          role="status"
+        >
+          <strong>
+            {result.passed
+              ? "Assessment passed"
+              : "Keep going. Review your answers below."}
+          </strong>
+          <p>
+            {result.correct} of {result.total} correct. Pass mark:{" "}
+            {result.passMark}.
+          </p>
+          <p>
+            Each answer below shows whether you got it right and explains why.
+          </p>
+          {result.passed && (
+            <button
+              type="button"
+              className="btn btn-primary btn-md"
+              onClick={onContinue}
+            >
+              Continue to my service proposal <ArrowRight size={18} />
+            </button>
+          )}
+          <button
+            type="button"
+            className="btn btn-secondary btn-md"
+            onClick={() => {
+              onRetry();
+              setRetaking(true);
+              setGroupIndex(0);
+            }}
+          >
+            Review and try again
+          </button>
+        </div>
+      ) : (
+        <div className="assessment-session-status">
+          <strong>
+            {answered} of {course.questions.length} answered
+          </strong>
+          <span>
+            {draftSaved
+              ? "Draft kept in this browser for your account"
+              : "Draft could not be saved. Keep this tab open."}
+          </span>
+          <progress
+            max={course.questions.length}
+            value={answered}
+            aria-label="Assessment answers"
+          />
+        </div>
+      )}
+      {!result && (
+        <nav
+          className="assessment-section-nav"
+          aria-label="Assessment sections"
+        >
+          {groups.map((group, at) => (
+            <button
+              type="button"
+              key={group.id}
+              aria-current={at === groupIndex ? "step" : undefined}
+              onClick={() => setGroupIndex(at)}
+            >
+              {at + 1}. {group.title}
+            </button>
+          ))}
+        </nav>
+      )}
       <form
         onSubmit={(event) => {
           event.preventDefault();
@@ -1294,7 +1420,11 @@ function AssessmentStep({
       >
         <ol className="academy-exam">
           {groups.map((group) => (
-            <li key={group.id} className="assessment-group">
+            <li
+              key={group.id}
+              className="assessment-group"
+              hidden={!result && groups.indexOf(group) !== groupIndex}
+            >
               <h3 className="assessment-group-title">
                 {group.title}
                 <span>
@@ -1323,13 +1453,19 @@ function AssessmentStep({
                               type="radio"
                               name={question.id}
                               checked={answers[questionIndex] === optionIndex}
-                              onChange={() => update(questionIndex, optionIndex)}
+                              disabled={Boolean(result) || busy}
+                              onChange={() =>
+                                update(questionIndex, optionIndex)
+                              }
                             />
                             <span>{option}</span>
                           </label>
                         ))}
                         {result ? (
                           <p className="academy-exam-feedback">
+                            <strong>
+                              {verdict ? "Correct. " : "Not quite. "}
+                            </strong>
                             {verdict ? (
                               <Check size={15} aria-hidden="true" />
                             ) : null}
@@ -1349,10 +1485,24 @@ function AssessmentStep({
           ))}
         </ol>
         <div className="academy-actions">
+          {!result && groupIndex < groups.length - 1 && (
+            <button
+              type="button"
+              className="btn btn-secondary btn-md"
+              onClick={() => setGroupIndex(groupIndex + 1)}
+            >
+              Next section <ArrowRight size={18} />
+            </button>
+          )}
           <button
             type="submit"
             className="btn btn-primary btn-lg"
-            disabled={busy || !signedIn}
+            disabled={
+              busy ||
+              !signedIn ||
+              answered !== course.questions.length ||
+              Boolean(result)
+            }
           >
             {result ? "Send again" : "Send my answers"}{" "}
             <Send aria-hidden="true" />
@@ -1361,8 +1511,7 @@ function AssessmentStep({
           course.questions.length ? (
             <p className="academy-hint">
               {answers.filter((answer) => answer !== null).length} of{" "}
-              {course.questions.length} answered — anything you leave out
-              counts as wrong.
+              {course.questions.length} answered. Answer every question before submitting.
             </p>
           ) : null}
         </div>

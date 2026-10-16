@@ -22,7 +22,9 @@ lines.push("Edit that file, not this one.");
 lines.push("");
 lines.push("## Sources relied on");
 lines.push("");
-lines.push("| Source | Version | Section used | Scope | Reviewed | Reviewer |");
+lines.push("Suggested review owners below have not provided club sign-off. Checked dates refer to the source review, not a club approval.");
+lines.push("");
+lines.push("| Source | Version | Section used | Scope | Source checked | Suggested review owner |");
 lines.push("|---|---|---|---|---|---|");
 for (const record of SOURCES)
   lines.push(
@@ -32,7 +34,7 @@ lines.push("");
 lines.push("## Awaiting club confirmation — not published in the course");
 lines.push("");
 lines.push(
-  "Each of these is deliberately absent from the published lesson text. The reusable interface and the general learning content are complete; only the club-specific detail is withheld, as the brief requires.",
+  "Items below need club review. Some current published club facts and the assessment pass mark are included for annual confirmation; unconfirmed ritual wording and formal local procedures remain unpublished.",
 );
 lines.push("");
 lines.push("| Question | Why it is not published | Owner | Appears in |");

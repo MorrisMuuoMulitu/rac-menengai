@@ -50,7 +50,7 @@ export function Flashcards({
         aria-pressed={revealed}
         onClick={() => setRevealed((open) => !open)}
       >
-        <span className="flashcard-face flashcard-front">
+        <span className="flashcard-face flashcard-front" aria-hidden={revealed}>
           <span className="flashcard-label">Term</span>
           <strong>{card.term}</strong>
           <span className="flashcard-hint">

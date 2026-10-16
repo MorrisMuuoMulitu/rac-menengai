@@ -53,11 +53,13 @@ const CHAPTER_OUTCOMES: Record<string, string> = {
   club: "Describe how Menengai runs, who does what, and what membership asks of you.",
   protocols:
     "Walk into any Rotary room, follow what is happening, and take part accurately.",
-  integrity: "Test a real decision against the Four-Way Test and say why it holds.",
+  integrity:
+    "Test a real decision against the Four-Way Test and say why it holds.",
   service:
     "Plan a project from a community’s stated need through to how you will follow it up.",
   lead: "Delegate clearly, handle a disagreement, and tell the story without overclaiming.",
-  begin: "Hand the membership team a one-page proposal they can actually decide on.",
+  begin:
+    "Hand the membership team a one-page proposal they can actually decide on.",
 };
 
 interface ChapterLesson {
@@ -104,7 +106,10 @@ function staticChapters() {
 }
 
 /** Badges are derived from the record, never stored twice. */
-function badges(data: AcademyBootstrap | null, chapters: ReturnType<typeof chapterSummaries>) {
+function badges(
+  data: AcademyBootstrap | null,
+  chapters: ReturnType<typeof chapterSummaries>,
+) {
   const record = data?.record;
   const summary = data?.summary;
   if (!record || !summary) return [];
@@ -193,17 +198,21 @@ export default function AcademyPage() {
     [course, data],
   );
   const steps = useMemo(() => courseSteps(course), [course]);
-  const resume = course ? resumeSlug(course, data) : (COURSE_INFO.lessons[0]?.id ?? "");
+  const resume = course
+    ? resumeSlug(course, data)
+    : (COURSE_INFO.lessons[0]?.id ?? "");
   const summary = data?.summary;
   const earned = badges(data, chapters);
   const lessonsFor = useCallback(
     (chapterId: string): ChapterLesson[] =>
-      course?.chapters.find((item) => item.id === chapterId)?.lessons ?? staticLessons(chapterId),
+      course?.chapters.find((item) => item.id === chapterId)?.lessons ??
+      staticLessons(chapterId),
     [course],
   );
 
   /* Open the chapter the learner is in, so the page explains itself. */
-  const currentChapter = chapters.find((chapter) => chapter.current)?.id ?? null;
+  const currentChapter =
+    chapters.find((chapter) => chapter.current)?.id ?? null;
   useEffect(() => {
     if (currentChapter) setOpenChapter((open) => open ?? currentChapter);
   }, [currentChapter]);
@@ -219,7 +228,7 @@ export default function AcademyPage() {
     <>
       <PageMeta
         title="Membership academy"
-        description="Six chapters and fifteen lessons on Rotaract, service and leadership, with a situation to work through in every chapter and a one-page proposal at the end."
+        description="Seven chapters and twenty lessons on Rotaract, club leadership and service, with practice activities and a personal service proposal."
       />
 
       <header className="dashboard-hero">
@@ -240,7 +249,7 @@ export default function AcademyPage() {
                   : percent === 100
                     ? "Every lesson, check and the proposal are done. The joining steps are open below."
                     : `You are ${percent}% of the way through. Pick up where you left off — the next step takes a few minutes.`
-                : "Fifteen lessons across six chapters, a situation to work through in each one, and a one-page proposal at the end. Read it without an account; sign in to keep your place."}
+                : "Twenty short lessons. Learn how Rotaract works, meet your club and plan your first contribution. Explore freely; sign in to keep your place."}
             </p>
 
             <div className="dashboard-actions">
@@ -260,12 +269,15 @@ export default function AcademyPage() {
                 <>
                   <Link
                     className="btn btn-primary btn-lg"
+                    to="/membership/academy/roots"
+                  >
+                    Explore the first lesson
+                  </Link>
+                  <Link
+                    className="btn btn-secondary btn-md"
                     to="/membership/register"
                   >
                     Create an account
-                  </Link>
-                  <Link className="btn btn-secondary btn-md" to="/membership/sign-in">
-                    I already have one
                   </Link>
                 </>
               )}
@@ -275,7 +287,11 @@ export default function AcademyPage() {
             </div>
             {loading ? (
               <p className="dashboard-status" role="status">
-                <Loader2 className="academy-spin" size={15} aria-hidden="true" />{" "}
+                <Loader2
+                  className="academy-spin"
+                  size={15}
+                  aria-hidden="true"
+                />{" "}
                 Opening your progress…
               </p>
             ) : null}
@@ -336,11 +352,11 @@ export default function AcademyPage() {
         <div className="container">
           <div className="section-head-block">
             <span className="eyebrow">The learning path</span>
-            <h2 className="sec-title">Six chapters, in order</h2>
+            <h2 className="sec-title">Your learning path</h2>
             <p className="section-lead">
-              Each chapter ends with a situation to work through. Finish all six,
-              pass the {COURSE_INFO.questionCount}-question assessment, write
-              your proposal, and the joining steps open.
+              Each chapter ends with a situation to work through. Finish all
+              six, pass the {COURSE_INFO.questionCount}-question assessment,
+              write your proposal, and the joining steps open.
             </p>
           </div>
 
@@ -406,7 +422,10 @@ export default function AcademyPage() {
                   </h3>
 
                   {open ? (
-                    <div className="chapter-card-body" id={`chapter-${chapter.id}`}>
+                    <div
+                      className="chapter-card-body"
+                      id={`chapter-${chapter.id}`}
+                    >
                       <p className="chapter-card-objectives">
                         <strong>By the end of this chapter you can</strong>{" "}
                         {CHAPTER_OUTCOMES[chapter.id] ??
@@ -436,8 +455,15 @@ export default function AcademyPage() {
                                   className={`chapter-lesson${done ? " is-done" : ""}${current ? " is-current" : ""}`}
                                   to={`/membership/academy/${lesson.id}`}
                                 >
-                                  <span className="chapter-lesson-mark" aria-hidden="true">
-                                    {done ? <BadgeCheck size={15} /> : index + 1}
+                                  <span
+                                    className="chapter-lesson-mark"
+                                    aria-hidden="true"
+                                  >
+                                    {done ? (
+                                      <BadgeCheck size={15} />
+                                    ) : (
+                                      index + 1
+                                    )}
                                   </span>
                                   <span className="chapter-lesson-body">
                                     <strong>{lesson.title}</strong>
@@ -449,7 +475,10 @@ export default function AcademyPage() {
                                 </Link>
                               ) : (
                                 <span className="chapter-lesson is-locked">
-                                  <span className="chapter-lesson-mark" aria-hidden="true">
+                                  <span
+                                    className="chapter-lesson-mark"
+                                    aria-hidden="true"
+                                  >
                                     <Lock size={13} />
                                   </span>
                                   <span className="chapter-lesson-body">
@@ -472,7 +501,10 @@ export default function AcademyPage() {
                               className="chapter-lesson chapter-lesson-check"
                               to={`/membership/academy/check-${chapter.id}`}
                             >
-                              <span className="chapter-lesson-mark" aria-hidden="true">
+                              <span
+                                className="chapter-lesson-mark"
+                                aria-hidden="true"
+                              >
                                 <Sparkles size={13} />
                               </span>
                               <span className="chapter-lesson-body">
@@ -605,11 +637,11 @@ export default function AcademyPage() {
       ) : null}
 
       {/*
-        * The curriculum used to be printed in full on the dashboard as well as
-        * inside the chapter cards — the same information twice. It stays, but
-        * closed, behind a summary a learner can open when they want the whole
-        * picture.
-        */}
+       * The curriculum used to be printed in full on the dashboard as well as
+       * inside the chapter cards — the same information twice. It stays, but
+       * closed, behind a summary a learner can open when they want the whole
+       * picture.
+       */}
       <section className="section dashboard-syllabus">
         <div className="container">
           <details className="curriculum-panel">
@@ -617,36 +649,36 @@ export default function AcademyPage() {
               <span className="eyebrow">Everything on the course</span>
               <strong>View the full curriculum</strong>
               <span className="curriculum-panel-meta">
-                {CHAPTERS.length} chapters · {COURSE_INFO.lessons.length} lessons ·{" "}
-                {COURSE_INFO.minutes} minutes
+                {CHAPTERS.length} chapters · {COURSE_INFO.lessons.length}{" "}
+                lessons · {COURSE_INFO.minutes} minutes
               </span>
             </summary>
             <ol className="academy-syllabus-list">
-            {CHAPTERS.map((chapter, index) => (
-              <li key={chapter.id}>
-                <h3>
-                  <span aria-hidden="true">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  {chapter.title}
-                </h3>
-                <p>{chapter.description}</p>
-                <ul>
-                  {chapter.lessons.map((lessonId) => {
-                    const lesson = COURSE_INFO.lessons.find(
-                      (entry) => entry.id === lessonId,
-                    );
-                    if (!lesson) return null;
-                    return (
-                      <li key={lesson.id}>
-                        <strong>{lesson.title}</strong>
-                        <span>{lesson.summary}</span>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </li>
-            ))}
+              {CHAPTERS.map((chapter, index) => (
+                <li key={chapter.id}>
+                  <h3>
+                    <span aria-hidden="true">
+                      {String(index + 1).padStart(2, "0")}
+                    </span>
+                    {chapter.title}
+                  </h3>
+                  <p>{chapter.description}</p>
+                  <ul>
+                    {chapter.lessons.map((lessonId) => {
+                      const lesson = COURSE_INFO.lessons.find(
+                        (entry) => entry.id === lessonId,
+                      );
+                      if (!lesson) return null;
+                      return (
+                        <li key={lesson.id}>
+                          <strong>{lesson.title}</strong>
+                          <span>{lesson.summary}</span>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                </li>
+              ))}
             </ol>
           </details>
         </div>

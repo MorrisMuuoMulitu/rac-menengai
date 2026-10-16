@@ -20,11 +20,11 @@ export interface SourceRecord {
   version: string;
   /** The part relied on. */
   section: string;
-  /** ISO date this was last checked. */
+  /** Last source check, or an explicit pending status. */
   reviewed: string;
   /** What it can speak to. */
   scope: string;
-  /** Who is accountable for keeping it current. */
+  /** Suggested club owner for future review; not an attestation of sign-off. */
   reviewer: string;
 }
 
@@ -32,21 +32,21 @@ export const SOURCES: SourceRecord[] = [
   {
     id: "rotary-4way",
     title: "The Four-Way Test",
-    url: "https://www.rotary.org/en/about-rotary/four-way-test",
+    url: "https://blog.rotary.org/2026/04/09/the-four-way-test-a-road-map-we-need-now-more-than-ever/",
     version: "Page consulted 16 October 2026",
     section: "The test itself, its wording and its attribution to Herbert J. Taylor, 1932",
     reviewed: "2026-10-16",
-    scope: "Rotary International — applies to every Rotary and Rotaract club",
+    scope: "Rotary ethical framework; not evidence of a mandatory meeting recital",
     reviewer: "Club secretary",
   },
   {
     id: "rotary-object",
     title: "The Object of Rotary",
     url: "https://www.rotary.org/en/about-rotary",
-    version: "Page consulted 16 October 2026",
-    section: "The object statement, quoted verbatim and explained separately",
-    reviewed: "2026-10-16",
-    scope: "Rotary International — applies to every Rotary and Rotaract club",
+    version: "Exact statement pending source confirmation",
+    section: "General background only; course uses a labelled plain-language overview",
+    reviewed: "Pending",
+    scope: "Rotary guiding principle; no verbatim text published here",
     reviewer: "Club secretary",
   },
   {
@@ -74,9 +74,9 @@ export const SOURCES: SourceRecord[] = [
     id: "brand-center",
     title: "Rotary Brand Center",
     url: "https://brandcenter.rotary.org/",
-    version: "Accessed 16 October 2026",
+    version: "Direct access unavailable during 16 October 2026 review",
     section: "Logo use, club naming, and the people-of-action voice",
-    reviewed: "2026-10-16",
+    reviewed: "Pending",
     scope: "Rotary International — brand and trademark use",
     reviewer: "Public image director",
   },

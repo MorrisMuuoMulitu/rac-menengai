@@ -17,6 +17,15 @@ function memoryStorage(): Pick<Storage, "getItem" | "setItem" | "removeItem"> {
 }
 
 describe("assessment draft", () => {
+  it("keeps separate account drafts when another learner answers or clears theirs", () => {
+    const storage = memoryStorage();
+    saveDraft("questions-v2", [0, 2], storage, "learner-a");
+    saveDraft("questions-v2", [1, null], storage, "learner-b");
+    expect(loadDraft("questions-v2", 2, storage, "learner-a")).toEqual([0, 2]);
+    clearDraft(storage, "learner-b");
+    expect(loadDraft("questions-v2", 2, storage, "learner-a")).toEqual([0, 2]);
+    expect(loadDraft("questions-v2", 2, storage, "learner-b")).toBeNull();
+  });
   it("round-trips answers for the same curriculum version", () => {
     const storage = memoryStorage();
     const answers = [0, null, 2, null];
