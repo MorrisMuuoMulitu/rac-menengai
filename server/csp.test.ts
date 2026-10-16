@@ -58,6 +58,16 @@ describe("Content-Security-Policy", () => {
     expect(directive("worker-src")).toEqual(["'self'", "blob:"]);
   });
 
+  it("lets Clerk's own UI load its webfont", () => {
+    /*
+     * Clerk's sign-in UI injects a Google Fonts stylesheet and then loads the
+     * font files. Blocking the stylesheet stops the modal mounting at all —
+     * the button simply does nothing, with no error of our own to show.
+     */
+    expect(directive("style-src")).toContain("https://fonts.googleapis.com");
+    expect(directive("font-src")).toContain("https://fonts.gstatic.com");
+  });
+
   it("still refuses inline script, framing and plugins", () => {
     expect(directive("script-src")).not.toContain("'unsafe-inline'");
     expect(directive("script-src")).not.toContain("'unsafe-eval'");
