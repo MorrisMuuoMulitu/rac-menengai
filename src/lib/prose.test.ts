@@ -29,6 +29,15 @@ describe("splitting lesson prose", () => {
     ).toHaveLength(2);
   });
 
+  it("does not split after an initial", () => {
+    const text =
+      "Herbert J. Taylor wrote it in 1932. Rotary International adopted it in 1943.";
+    const sentences = splitSentences(text);
+    expect(sentences).toHaveLength(2);
+    expect(sentences[0]).toBe("Herbert J. Taylor wrote it in 1932.");
+    expect(sentences.join(" ")).toBe(text);
+  });
+
   it("groups sentences into short paragraphs without changing them", () => {
     const text = "One. Two. Three. Four. Five.";
     const paragraphs = toParagraphs(text, 2);

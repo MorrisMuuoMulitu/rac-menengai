@@ -27,12 +27,22 @@ export function splitSentences(text: string): string[] {
   ABBREVIATIONS.forEach((abbreviation, index) => {
     guarded = guarded.split(abbreviation).join(`\u0000${index}\u0000`);
   });
+  /*
+   * Initials. "Herbert J. Taylor" is one sentence, and a single capital
+   * followed by a full stop is not the end of one.
+   */
+  guarded = guarded.replace(/\b([A-Z])\.(?=\s)/g, "$1\u0000init\u0000");
   const parts = guarded
     .split(/(?<=[.!?])\s+(?=[A-Z\u2018\u201c"(\u2014\d])/)
     .map((part) => part.trim())
     .filter(Boolean);
   return parts.map((part) =>
-    part.replace(/\u0000(\d+)\u0000/g, (_, index) => ABBREVIATIONS[Number(index)]),
+    part
+      .replace(/\u0000init\u0000/g, ".")
+      .replace(
+        /\u0000(\d+)\u0000/g,
+        (_, index) => ABBREVIATIONS[Number(index)],
+      ),
   );
 }
 

@@ -652,8 +652,10 @@
 /* The first paragraph after a heading is the lead: bigger, darker, no indent
    competition from the rest. */
 .academy-prose p:first-of-type {
-  font-size: 1.1rem;
+  font-size: 1.16rem;
+  font-weight: 500;
   color: var(--ink-800);
+  margin-bottom: 1.3rem;
 }
 .academy-prose ul {
   margin: 0 0 1.2rem 1.1rem;
