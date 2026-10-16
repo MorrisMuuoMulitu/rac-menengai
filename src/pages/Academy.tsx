@@ -344,7 +344,17 @@ export default function AcademyPage() {
   const index = cursor ?? resolved;
   const step = steps[index];
 
+  /*
+   * Move focus to the new heading when the learner changes step, so a screen
+   * reader is told where they are. Not on first paint: arriving on the page
+   * should not pull focus into the middle of the course.
+   */
+  const firstPaint = useRef(true);
   useEffect(() => {
+    if (firstPaint.current) {
+      firstPaint.current = false;
+      return;
+    }
     headingRef.current?.focus();
   }, [index]);
 
