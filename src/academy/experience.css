@@ -576,6 +576,15 @@
   }
 }
 @media (max-width: 600px) {
+  .academy-workspace .dashboard-ring-label {
+    font-size: 0.72rem;
+  }
+  /* Footer links were 22px tall, which is not a thumb target. */
+  .academy-simple-footer a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
   .lesson-jump {
     display: block;
     font-size: 0;

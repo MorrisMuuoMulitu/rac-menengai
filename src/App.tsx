@@ -44,7 +44,14 @@ const SignUpPage = lazy(() =>
 );
 
 export default function App() {
-  const learning = useLocation().pathname.startsWith("/membership/academy");
+  /*
+   * The academy shell renders its own header and a plain footer. Officer pages
+   * live inside that shell too, so matching only "/membership/academy" gave
+   * them two stacked headers and the full marketing footer.
+   */
+  const learning = /^\/membership\/(academy|queue|learners)(\/|$)/.test(
+    useLocation().pathname,
+  );
   return (
     <>
       <ScrollToTop />

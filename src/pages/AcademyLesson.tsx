@@ -530,6 +530,8 @@ export default function AcademyPage() {
                 aria-label={`Next: ${nextTitle}`}
               >
                 <span className="lesson-next-title">Next: {nextTitle}</span>
+                {/* Phones get the short label; the title is clipped otherwise. */}
+                <span className="lesson-next-short">Next</span>
                 <ChevronRight size={18} aria-hidden="true" />
               </button>
             </div>

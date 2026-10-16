@@ -101,6 +101,9 @@
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.lesson-next-short {
+  display: none;
+}
 .visual-instruction {
   color: #53685e;
   font-size: 0.78rem;
@@ -354,6 +357,39 @@
   }
 }
 @media (max-width: 600px) {
+  /* A summary is a button in everything but name, and it was 34px tall. */
+  .lesson-video-option summary {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .lesson-full-reading summary,
+  .lesson-goals-compact summary,
+  .academy-video figcaption a {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .lesson-source-links a {
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+  }
+  .history-years button span {
+    font-size: 0.78rem;
+  }
+  .lesson-team summary {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+  }
+  .lesson-team-grid small {
+    font-size: 0.78rem;
+  }
+  .note-save-row > small,
+  .academy-workspace .lesson-section-label {
+    font-size: 0.8rem;
+  }
   .lesson-next-title {
     display: none;
   }
@@ -384,15 +420,19 @@
   .lesson-next-title {
     max-width: 130px;
   }
+  .lesson-next-short {
+    display: inline;
+  }
   .lesson-overall-progress {
-    font-size: 0.65rem;
+    font-size: 0.75rem;
   }
   .academy-workspace .lesson-jump {
     padding-bottom: 6px;
   }
   .lesson-contents-toggle {
-    padding: 8px;
-    font-size: 0.7rem;
+    min-height: 44px;
+    padding: 8px 12px;
+    font-size: 0.8rem;
   }
   .academy-workspace .lesson-section-picker button {
     padding: 8px 10px;

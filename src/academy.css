@@ -2397,6 +2397,36 @@ a.chapter-lesson:hover {
   }
 }
 @media (max-width: 560px) {
+  /* Thumb-sized on the narrowest screens: exam rows, decks and officer links. */
+  .academy-exam-option {
+    min-height: 48px;
+  }
+  .flashcards-reset {
+    min-height: 44px;
+    padding: 0.5rem 0.8rem;
+  }
+  .academy-back,
+  .academy-queue-links a,
+  .academy-filter-row button {
+    min-height: 44px;
+  }
+  .academy-back,
+  .academy-queue-links a {
+    display: inline-flex;
+    align-items: center;
+  }
+  .academy-count {
+    font-size: 0.8rem;
+  }
+  /* Numerals inside a 1.6rem circle were 10.6px, which is a squint on a phone. */
+  .chapter-lesson-mark {
+    width: 1.75rem;
+    height: 1.75rem;
+    font-size: 0.75rem;
+  }
+  .flashcard-label {
+    font-size: 0.75rem;
+  }
   .academy-progress-controls {
     align-items: stretch;
   }
