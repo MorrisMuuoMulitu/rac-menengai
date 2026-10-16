@@ -31,6 +31,21 @@ const titles: Record<string, string> = {
   "/learn": "Learn about Rotaract",
   "/404": "Page not found",
 };
+const descriptions: Record<string, string> = {
+  "/": "Meet the Rotaract Club of Menengai: community service, young leadership and Thursday fellowship in Nakuru, Kenya. Join us or partner on a project.",
+  "/about/district-9215":
+    "Meet Rotary District 9215 and discover how the Rotaract Club of Menengai connects with clubs across Kenya and South Sudan.",
+  "/rotary":
+    "Explore Rotary International, its seven areas of focus, the Four-Way Test and the Rotary family that includes the Rotaract Club of Menengai.",
+  "/events":
+    "Plan a visit to Menengai’s Thursday fellowship in Nakuru and explore the club’s community projects, event reports and photo galleries.",
+  "/membership/orientation":
+    "The Rotaract Club of Menengai’s passcode-protected member orientation course: Rotaract foundations, service, leadership and club participation.",
+  "/partnerships":
+    "Collaborate with the Rotaract Club of Menengai on community service in Nakuru: share expertise, volunteer or support a project.",
+  "/privacy":
+    "How enquiry details and local orientation progress are handled on the Menengai club website.",
+};
 export function render(path: string) {
   const project = PROJECTS.find((p) => path === `/projects/${p.slug}`);
   const event = PUBLIC_EVENTS.find((e) => path === `/events/${e.slug}`);
@@ -40,6 +55,7 @@ export function render(path: string) {
     project?.summary ??
     event?.description ??
     intro?.description ??
+    descriptions[path] ??
     (path === "/learn"
       ? "A plain-language Rotaract glossary, a short history and real service stories from Menengai in Nakuru."
       : undefined) ??
