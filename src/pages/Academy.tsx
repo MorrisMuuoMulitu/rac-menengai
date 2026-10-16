@@ -354,9 +354,9 @@ export default function AcademyPage() {
             <span className="eyebrow">The learning path</span>
             <h2 className="sec-title">Your learning path</h2>
             <p className="section-lead">
-              Each chapter ends with a situation to work through. Finish all
-              six, pass the {COURSE_INFO.questionCount}-question assessment,
-              write your proposal, and the joining steps open.
+              Each chapter ends with a situation to work through. Finish all{" "}
+              {CHAPTERS.length}, pass the {COURSE_INFO.questionCount}-question
+              assessment, write your proposal, and the joining steps open.
             </p>
           </div>
 

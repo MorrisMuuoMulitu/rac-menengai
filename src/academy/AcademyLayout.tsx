@@ -10,7 +10,7 @@ const ClerkBridge = lazy(() => import("./clerk"));
 function AcademyIdentity() {
   const account = useAccount();
   return account.signedIn ? (
-    <AccountChip />
+    <AccountChip tone="light" />
   ) : (
     <Link className="academy-header-signin" to="/membership/sign-in">
       Sign in

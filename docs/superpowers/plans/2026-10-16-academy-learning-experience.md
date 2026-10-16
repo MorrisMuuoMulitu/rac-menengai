@@ -12,12 +12,13 @@
 - [x] Repair assessment feedback and draft isolation; cover identity and chapter-resume bugs with tests.
 - [x] Add dedicated learning navigation, section-based reading, accessible recap cards and clearer previous/next controls.
 - [x] Check available official sources, remove stale schedule wording, distinguish local customs and source limitations.
-- [ ] Run the complete suite/build; inspect desktop/mobile and real practice interactions; review changes and publish the verified result.
+- [x] Run the complete suite/build; inspect desktop/mobile and real practice interactions; review changes and publish the verified result.
 
 ## Review focus
 Account switching must not restore another person's draft. Changed question ordering must not reuse index-based answers. Passing must show results before continuing. Completed steps must stay accessible. Guests must be able to read material without pretending to have saved progress.
 
 ## Verification record
+Full verification passes: 181 tests in 22 files; TypeScript and production builds; 32 indexed pages, 1327 links and 229 image references. Production release reached READY on rotaractmenengai.org. Read-only live verification confirmed Morris's profile, the 27/30 saved progress record and the new learning shell. A live contrast check prompted the final header account-chip light-theme correction. No new test account was created.
 Independent review found that a single storage key still let another learner overwrite a draft. Fixed with scoped storage keys; the A → B → A regression test failed before the fix and passes afterward. No learner record, test attempt or membership application was submitted during browser testing.
 
 Checked section navigation, role matching (4/4 feedback), mobile lesson selection and flashcard reveal. Inspected 390, 768 and 1280 pixel viewports; no horizontal overflow at phone/tablet sizes. Reduced-motion emulation reports a 0s flashcard transition. Evidence lives under `docs/audit/academy-experience/` (local audit files).

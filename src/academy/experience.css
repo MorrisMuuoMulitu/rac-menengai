@@ -45,6 +45,10 @@
 .academy-topbar .account-chip small {
   color: #425957;
 }
+.academy-topbar .account-chip-signout {
+  min-height: 44px;
+  padding: 8px;
+}
 .academy-header-signin {
   margin-left: auto;
   min-height: 44px;
