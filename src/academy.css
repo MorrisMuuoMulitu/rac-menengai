@@ -127,6 +127,90 @@
 
 /* ------------------------------------------------------- account chip ---- */
 
+/* ---------------------------------------------------- follow the club ---- */
+
+.follow-club {
+  margin: 1.8rem 0;
+  padding: clamp(1.3rem, 3vw, 1.9rem);
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+.follow-club header h3 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  margin: 0.35rem 0 0.5rem;
+}
+.follow-club header p {
+  font-size: 0.95rem;
+  color: var(--ink-600);
+  max-width: 62ch;
+  margin-bottom: 1.2rem;
+}
+.follow-club-list {
+  list-style: none;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+  gap: 0.6rem;
+}
+.follow-club-list a {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--paper);
+  text-decoration: none;
+  transition:
+    border-color 180ms var(--ease),
+    background 180ms var(--ease);
+}
+.follow-club-list a:hover {
+  border-color: var(--pink-600);
+  background: var(--blush);
+  text-decoration: none;
+}
+.follow-club-icon {
+  display: grid;
+  place-items: center;
+  width: 2.2rem;
+  height: 2.2rem;
+  flex: none;
+  border-radius: 50%;
+  background: var(--navy-950);
+  color: #fff;
+}
+.follow-club-who {
+  display: grid;
+  line-height: 1.25;
+  margin-right: auto;
+  min-width: 0;
+}
+.follow-club-who strong {
+  font-size: 0.95rem;
+  color: var(--ink-800);
+}
+.follow-club-who small {
+  font-size: 0.78rem;
+  color: var(--ink-500);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.follow-club-cta {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--pink-700);
+  white-space: nowrap;
+}
+.follow-club-note {
+  margin-top: 1.1rem;
+  font-size: 0.86rem;
+  color: var(--ink-500);
+  max-width: 62ch;
+}
+
 .academy-auth-points {
   list-style: none;
   display: grid;

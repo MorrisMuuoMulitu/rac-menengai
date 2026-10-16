@@ -34,6 +34,7 @@ import { CHAPTERS, COURSE_INFO } from "../course-info";
 import { useAccount } from "../academy/account";
 import { markTerms, parseInline, toParagraphs } from "../lib/prose";
 import { Flashcards } from "../academy/Flashcards";
+import { FollowTheClub } from "../academy/FollowTheClub";
 import { flashcardsForChapter } from "../../shared/rotaract-academy/flashcards";
 import { AccountChip } from "../academy/AccountChip";
 import {
@@ -1368,6 +1369,8 @@ function JoinStep({
           ))}
         </ul>
       </section>
+
+      <FollowTheClub />
 
       {sent ? (
         <section className="academy-sent">
