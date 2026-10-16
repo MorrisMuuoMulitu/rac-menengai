@@ -3,8 +3,8 @@ export const COURSE_INFO = {
   lead: "Understand the movement. Find your place in your club. Learn to plan, lead and follow through on service.",
   version: "2026.academy.v2",
   minutes: 132,
-  questionCount: 42,
-  passMark: 34,
+  questionCount: 20,
+  passMark: 16,
   lessons: [
     {
       id: "roots",

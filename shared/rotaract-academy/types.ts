@@ -25,6 +25,16 @@ export interface ClubLearningProfile {
    * stale in a course is worse than a name the reader can check.
    */
   leadershipLine: string;
+  /** Name of the current president, so a club question can ask for it. */
+  president: string;
+  /** What the published annual subscription and pin cost, as one line. */
+  costLine: string;
+  /**
+   * One recorded piece of the club's work, with the area of focus it
+   * addresses. Structured rather than prose, so a question built from it is
+   * grammatical rather than a sentence spliced into a question.
+   */
+  exampleProject: { label: string; cause: string };
 }
 /**
  * How a protocol statement is grounded.

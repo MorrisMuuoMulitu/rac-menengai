@@ -170,10 +170,18 @@ export const CLUB_CONFIRMATIONS: ClubConfirmation[] = [
   {
     id: "pass-mark",
     question:
-      "Should the assessment pass mark stay at roughly 82%, and who signs off a change to it?",
-    why: "The mark was 23 of 28 before the assessment was extended. It is now 34 of 42, which holds the same standard — but the standard itself has never been a deliberate club decision, and it should be.",
+      "Is 16 correct out of 20 the right pass mark, and who signs off a change to it?",
+    why: "The mark was 23 of 28, about 82%. The paper is now 20 questions, one per lesson, so 16 correct is 80% — close, but this has never been a deliberate club decision and it should be.",
     owner: "Membership director with the president",
     landsIn: "Assessment, not published in lesson text",
+  },
+  {
+    id: "club-questions",
+    question:
+      "Are the five club questions in the assessment factually right for this year?",
+    why: "The sponsor, meeting day and venue, president, district coverage and example project are read from the club profile. They are correct as recorded, but a president changes every July and the profile is not updated automatically.",
+    owner: "Club secretary",
+    landsIn: "Assessment — roots, membership, club leadership, frameworks and district questions",
   },
   {
     id: "committees",

@@ -192,11 +192,18 @@ describe("assessment", () => {
     expect(serialised).not.toContain("correctIndex");
     expect(serialised).not.toContain("explanation");
     expect(serialised).not.toContain("bestOptionId");
-    for (const question of course.questions) {
-      expect(serialised).not.toContain(question.explanation.slice(0, 40));
-    }
     const parsed = JSON.parse(serialised);
     expect(parsed.questions).toHaveLength(course.questions.length);
+    /* No question carries an explanation field at all. */
+    expect(
+      parsed.questions.every(
+        (question: Record<string, unknown>) =>
+          "lessonId" in question &&
+          "options" in question &&
+          !("explanation" in question) &&
+          !("correctIndex" in question),
+      ),
+    ).toBe(true);
     expect(parsed.scenarios).toHaveLength(SCENARIO_CHECKS.length);
     for (const scenario of parsed.scenarios) {
       expect(scenario.options.length).toBeGreaterThan(1);

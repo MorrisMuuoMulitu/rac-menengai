@@ -25,6 +25,16 @@ function leadershipLine(): string {
   return `For ${term} that is ${president.name}, and the rest of the board is on the Leadership page.`;
 }
 
+/** The current president, by name, from the club's own Leadership data. */
+function presidentName(): string {
+  const president = LEADERS.find(
+    (leader) =>
+      leader.kind === "board" &&
+      (leader.standing ?? leader.portfolio) === "President",
+  );
+  return president?.name ?? "";
+}
+
 export const MENENGAI_LEARNING_PROFILE: ClubLearningProfile = {
   id: "menengai",
   name: CLUB.name,
@@ -48,4 +58,11 @@ export const MENENGAI_LEARNING_PROFILE: ClubLearningProfile = {
   partnership:
     "Menengai’s Kabatini mother-pack activity was recorded with the Rotaract Club of Bahati.",
   leadershipLine: leadershipLine(),
+  president: presidentName(),
+  costLine: `${formatKes(MEMBERSHIP.fees.subscription)} a year and ${formatKes(MEMBERSHIP.fees.pin)} for a Rotaract pin`,
+  /* Drawn from the club's own recorded work, not invented. */
+  exampleProject: {
+    label: "distributing mother packs to mothers and newborns",
+    cause: "Maternal and child health",
+  },
 };
