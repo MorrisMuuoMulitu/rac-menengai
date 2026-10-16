@@ -87,7 +87,7 @@ export async function buildSeed() {
     district: "Rotary District 9215",
     sponsor: "Rotary Club of Nakuru",
     meetingDay: "Thursday",
-    meetingTime: "5:30–6:30 PM EAT",
+    meetingTime: "5:00–7:00 PM EAT",
     meetingVenue: "Nakuru Athletic Club",
     fees: {
       subscription: 3000,

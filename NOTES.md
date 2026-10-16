@@ -5,7 +5,7 @@
 ## 品牌与事实（来源：club 社交主页 + LinkedIn + 新闻报道）
 - **Club:** Rotaract Club of Menengai (RAC Menengai) · Nakuru, Kenya · Rotary District 9212
 - **Sponsor mother club:** Rotary Club of Nakuru（宪章 ~2015/16，2025 庆祝 10 周年）
-- **Meeting:** Thursday fellowship 5:30–6:30 PM
+- **Meeting:** Thursday fellowship 5:00–7:00 PM
 - **Awards:** Legacy Award 2026 — DEI Champion（District 9212）；2019 总统 Terry Muigai；2025/26 总统 Janet Nkirote（Peace in Colour Fest 主持人）；宪章主席 John Brodrick；2026/27 总统 Joyce Wanjiku Nguru
 - **Projects:** Adopt-a-River (River Njoro/Barut, 水过滤装置 + Mwariki Bridge 清理 + 垃圾容器)、River Ndarugu 清理、Bondeni Maternity mother packs、Limuko High School 405 名女生卫生巾捐赠、Interact Club of Nakuru Day 150 份捐赠、Pangani Special School 植树、street families 街头援助、Peace in Colour Fest 2025、城市清洁活动（2024 副州长 David Kones 发起）
 - **Socials:** Facebook @RCmenengai · Instagram @racmenengai · X @RcMenengai · LinkedIn RAC Menengai · Threads @racmenengai

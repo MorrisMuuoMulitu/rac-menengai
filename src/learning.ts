@@ -75,7 +75,7 @@ export const GLOSSARY: GlossaryEntry[] = [
     abbreviation: "",
     category: "Club life",
     definition:
-      "Time together as a club. Menengai meets on Thursdays, 5:30–6:30 PM at Nakuru Athletic Club.",
+      "Time together as a club. Menengai meets on Thursdays, 5:00–7:00 PM at Nakuru Athletic Club.",
   },
   {
     term: "Four-Way Test",

@@ -118,7 +118,7 @@ export function FellowshipVisit() {
     <div className="fellowship-visit">
       <div>
         <p className="section-label">Weekly fellowship</p>
-        <h2>Thursday, 5:30–6:30 PM</h2>
+        <h2>Thursday, 5:00–7:00 PM</h2>
         <p>Nakuru Athletic Club, Nakuru · Africa/Nairobi (EAT)</p>
         <p>
           Guests are welcome at Nakuru Athletic Club — just come along on a
@@ -153,7 +153,7 @@ export function FellowshipVisit() {
                 end: current.end.toISOString(),
                 location: "Nakuru Athletic Club, Nakuru",
                 description:
-                  "Thursday fellowship, 17:30–18:30 EAT at Nakuru Athletic Club. Guests are welcome.",
+                  "Thursday fellowship, 17:00–19:00 EAT at Nakuru Athletic Club. Guests are welcome.",
                 status: "scheduled",
               });
               setFeedback("Calendar file prepared for Nakuru Athletic Club.");

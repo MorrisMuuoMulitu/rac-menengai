@@ -48,6 +48,7 @@ import {
   formatMeetingDate,
   meetingDayLabel,
   meetingTimeLabel,
+  meetingStartLabel,
   describeCountdown,
   type FellowshipState,
 } from "../lib/fellowship";
@@ -399,7 +400,7 @@ export function OpportunityCard({ compact = false }: { compact?: boolean }) {
           <span className="oc-day">Happening now</span>
           <span className="oc-date">{formatMeetingDate(s.start)}</span>
           <span className="oc-note">
-            Fellowship runs until 6:30 PM — come through now, guests welcome.
+            Fellowship runs until 7:00 PM — come through now, guests welcome.
           </span>
         </p>
         {meta}
@@ -419,7 +420,7 @@ export function OpportunityCard({ compact = false }: { compact?: boolean }) {
   const day = meetingDayLabel(s.start, now);
   const note =
     s.kind === "today"
-      ? `Fellowship starts today at 5:30 PM — see you there ${describeCountdown(s.start, s.end, now)}.`
+      ? `Fellowship starts today at ${meetingStartLabel()} — see you there ${describeCountdown(s.start, s.end, now)}.`
       : `Fellowship runs ${meetingTimeLabel()} — see you there ${describeCountdown(s.start, s.end, now)}.`;
 
   return (

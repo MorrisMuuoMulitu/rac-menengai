@@ -24,7 +24,7 @@ export interface ClubMeta {
   audience: string;
   meeting: {
     dayLabel: "Thursday";
-    timeLabel: "5:30–6:30 PM";
+    timeLabel: "5:00–7:00 PM";
     timeZoneNote: string;
     /** Set false when the club pauses its weekly schedule (graceful countdown fallback). */
     active: boolean;
@@ -206,7 +206,7 @@ export const CLUB: ClubMeta = {
   audience: "Young professionals and students, aged 18 and over",
   meeting: {
     dayLabel: "Thursday",
-    timeLabel: "5:30–6:30 PM",
+    timeLabel: "5:00–7:00 PM",
     timeZoneNote: "East Africa Time",
     active: true, // CONFIRM if the club ever pauses its weekly schedule
   },
@@ -247,13 +247,13 @@ export const HERO = {
   eyebrow: `${CLUB.district} · ${CLUB.city}`,
   title: "A Decade of Service Above Self",
   titleAccent: "Service Above Self",
-  lead: "Rotaract Club of Menengai — young professionals and students in Nakuru, Kenya, turning service into community impact. We meet every Thursday from 5:30–6:30 PM at Nakuru Athletic Club for fellowship.",
+  lead: "Rotaract Club of Menengai — young professionals and students in Nakuru, Kenya, turning service into community impact. We meet every Thursday from 5:00–7:00 PM at Nakuru Athletic Club for fellowship.",
   primaryCta: "Attend a fellowship",
   secondaryCta: "Explore our projects",
 };
 
 export const ANNOUNCEMENT = {
-  text: "Next fellowship: Thursday, 5:30–6:30 PM · Nakuru Athletic Club",
+  text: "Next fellowship: Thursday, 5:00–7:00 PM · Nakuru Athletic Club",
   action: "Plan your visit",
 };
 
@@ -1055,7 +1055,7 @@ export const formatKes = (amount: number): string =>
 export const JOIN_STEPS: JoinStep[] = [
   {
     title: "Come to fellowship",
-    text: "Attend three Thursday fellowships, 5:30–6:30 PM. Come as you are — guests are family.",
+    text: "Attend three Thursday fellowships, 5:00–7:00 PM. Come as you are — guests are family.",
   },
   {
     title: "Serve on a project",
@@ -1144,7 +1144,7 @@ export const VALUES: Value[] = [
 export const FAQS: Faq[] = [
   {
     q: "When and where do you meet?",
-    a: `Fellowship every Thursday, 5:30–6:30 PM at Nakuru Athletic Club (${CLUB.district}). Guests are welcome — come to three meetings to get a feel for the family before joining.`,
+    a: `Fellowship every Thursday, 5:00–7:00 PM at Nakuru Athletic Club (${CLUB.district}). Guests are welcome — come to three meetings to get a feel for the family before joining.`,
   },
   {
     q: "Who can join Rotaract?",
@@ -1176,7 +1176,7 @@ export const FAQS: Faq[] = [
   },
   {
     q: "How much time should I plan for?",
-    a: "Weekly fellowship is one hour, 5:30–6:30 PM on Thursdays. Projects take additional time and vary by activity. Ask about dates and responsibilities before committing.",
+    a: "Weekly fellowship runs two hours, 5:00–7:00 PM on Thursdays. Projects take additional time and vary by activity. Ask about dates and responsibilities before committing.",
   },
   {
     q: "What should I wear or bring?",

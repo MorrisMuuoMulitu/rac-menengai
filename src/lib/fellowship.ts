@@ -1,7 +1,7 @@
 /**
  * Recurring fellowship event system.
  *
- * The club meets weekly on Thursdays 17:30–18:30 East Africa Time (UTC+3,
+ * The club meets weekly on Thursdays 17:00–19:00 East Africa Time (UTC+3,
  * no DST). All calculations run against the Nairobi wall clock, so the shown
  * date/time and state are correct regardless of the visitor's timezone.
  *
@@ -14,9 +14,9 @@ export const fellowship = {
   weekday: "Thursday",
   weekdayIndex: 4, // JS Date.getDay(): 0=Sun … 4=Thu
   startHour: 17,
-  startMinute: 30,
-  endHour: 18,
-  endMinute: 30,
+  startMinute: 0,
+  endHour: 19,
+  endMinute: 0,
   timezone: "Africa/Nairobi",
   /** Club-confirmed in the Q1 2026–2027 activities bulletin (October 2026). */
   location: "Nakuru Athletic Club, Nakuru",
@@ -136,7 +136,7 @@ export function isFellowshipLive(now: Date = new Date()): boolean {
 
 /**
  * Convenience: the date (absolute instant) of the next fellowship that is not
- * yet over, resolving the "it is Thursday before / during / after 5:30 PM"
+ * yet over, resolving the "it is Thursday before / during / after 5:00 PM"
  * cases. For UI statuses, prefer `fellowshipStatus()`.
  */
 export function nextFellowshipDate(from: Date = new Date()): Date {
@@ -159,9 +159,9 @@ function addDays(date: Date, days: number): Date {
 
 /**
  * Full state for the UI:
- * - `live`     — Thursday 17:30–18:30 right now → "Fellowship is happening now"
- * - `today`    — Thursday before 17:30 → "Today at 5:30 PM"
- * - `upcoming` — otherwise → "Thursday, [date] · 5:30–6:30 PM"
+ * - `live`     — Thursday 17:00–19:00 right now → "Fellowship is happening now"
+ * - `today`    — Thursday before 17:00 → "Today at 5:00 PM"
+ * - `upcoming` — otherwise → "Thursday, [date] · 5:00–7:00 PM"
  * - `override` — holiday/special-event announcement (from data.ts)
  */
 export function fellowshipStatus(
@@ -188,7 +188,7 @@ export function fellowshipStatus(
   }
 
   // Next fellowship: same day when it's Thursday before the start, otherwise
-  // the following Thursday (handles "after 6:30 PM on Thursday" correctly).
+  // the following Thursday (handles "after 7:00 PM on Thursday" correctly).
   let diff = (cfg.weekdayIndex - dow + 7) % 7;
   if (diff === 0 && minutes >= startMinutes) diff = 7;
   const next = addDays(
@@ -226,17 +226,34 @@ export function formatMeetingDate(
   }
 }
 
-/** "5:30–6:30 PM" built from the config (not hardcoded). */
-export function meetingTimeLabel(cfg: typeof fellowship = fellowship): string {
-  const fmt = (h: number, m: number, period: boolean): string => {
-    if (!period)
-      return `${h % 12 === 0 ? 12 : h % 12}:${String(m).padStart(2, "0")}`;
-    return `${fmt(h, m, false)} ${h >= 12 ? "PM" : "AM"}`;
-  };
-  return `${fmt(cfg.startHour, cfg.startMinute, false)}–${fmt(cfg.endHour, cfg.endMinute, true)}`;
+/**
+ * "5:00 PM" from a 24-hour hour and minute.
+ *
+ * The single place a time is turned into words, so a schedule change is one
+ * edit in the config rather than a hunt for hard-coded strings.
+ */
+export function clockLabel(hour: number, minute: number): string {
+  const twelve = hour % 12 === 0 ? 12 : hour % 12;
+  return `${twelve}:${String(minute).padStart(2, "0")} ${hour >= 12 ? "PM" : "AM"}`;
 }
 
-/** "Thursday, [date] · 5:30–6:30 PM · Nakuru" — the canonical one-liner. */
+/** "5:00–7:00 PM" built from the config (not hardcoded). */
+export function meetingTimeLabel(cfg: typeof fellowship = fellowship): string {
+  const start = clockLabel(cfg.startHour, cfg.startMinute).replace(
+    /\s?(AM|PM)$/,
+    "",
+  );
+  return `${start}–${clockLabel(cfg.endHour, cfg.endMinute)}`;
+}
+
+/** "5:00 PM" — just the start, for "starts today at …". */
+export function meetingStartLabel(
+  cfg: typeof fellowship = fellowship,
+): string {
+  return clockLabel(cfg.startHour, cfg.startMinute);
+}
+
+/** "Thursday, [date] · 5:00–7:00 PM · Nakuru" — the canonical one-liner. */
 export function fellowshipLine(status: FellowshipState): string {
   switch (status.kind) {
     case "override":
@@ -244,7 +261,7 @@ export function fellowshipLine(status: FellowshipState): string {
     case "live":
       return `Fellowship is happening now · ${fellowship.location}`;
     case "today":
-      return `Fellowship today at 5:30 PM · ${fellowship.location}`;
+      return `Fellowship today at ${meetingStartLabel()} · ${fellowship.location}`;
     case "upcoming":
       return `Next fellowship: ${formatMeetingDate(status.start)} · ${meetingTimeLabel()} · ${fellowship.location}`;
   }

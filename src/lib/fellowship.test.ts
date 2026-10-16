@@ -13,6 +13,7 @@ import {
   formatMeetingDate,
   isFellowshipLive,
   meetingDayLabel,
+  meetingStartLabel,
   meetingTimeLabel,
   nextFellowshipDate,
   wallClock,
@@ -37,19 +38,24 @@ describe("fellowship status machine", () => {
     if (s.kind === "upcoming") {
       expect(formatMeetingDate(s.start)).toContain("Thursday");
       expect(s.start.getTime()).toBeGreaterThan(now.getTime());
-      expect(wallClock(s.start).h).toBe(17);
-      expect(wallClock(s.start).min).toBe(30);
+      /* Derived from the config, so a schedule change is one edit. */
+      expect(wallClock(s.start).h).toBe(fellowship.startHour);
+      expect(wallClock(s.start).min).toBe(fellowship.startMinute);
     }
   });
 
-  it('says "today" on Thursday before 5:30 PM', () => {
+  it('says "today" on Thursday before the start time', () => {
     const now = nairobi(2026, 3, 5, 10, 0); // Thu 10:00
     const s = fellowshipStatus(now);
     expect(s.kind).toBe("today");
-    expect(fellowshipLine(s)).toContain("Fellowship today at 5:30 PM");
+    expect(fellowshipLine(s)).toContain(
+      `Fellowship today at ${meetingStartLabel()}`,
+    );
     if (s.kind === "today") {
       expect(s.start.getTime()).toBe(
-        now.getTime() - (10 * 60 + 0) * 60_000 + (17 * 60 + 30) * 60_000,
+        now.getTime() -
+          (10 * 60) * 60_000 +
+          (fellowship.startHour * 60 + fellowship.startMinute) * 60_000,
       );
     }
   });
@@ -62,14 +68,23 @@ describe("fellowship status machine", () => {
     expect(fellowshipLine(s)).toContain("Fellowship is happening now");
   });
 
-  it("is live exactly at 17:30 and over exactly at 18:30", () => {
-    expect(isFellowshipLive(nairobi(2026, 3, 5, 17, 30))).toBe(true);
-    expect(isFellowshipLive(nairobi(2026, 3, 5, 17, 29))).toBe(false);
-    expect(isFellowshipLive(nairobi(2026, 3, 5, 18, 29))).toBe(true);
-    expect(isFellowshipLive(nairobi(2026, 3, 5, 18, 30))).toBe(false);
+  it("is live from the start minute until the end minute", () => {
+    const { startHour, startMinute, endHour, endMinute } = fellowship;
+    expect(
+      isFellowshipLive(nairobi(2026, 3, 5, startHour, startMinute)),
+    ).toBe(true);
+    expect(
+      isFellowshipLive(nairobi(2026, 3, 5, startHour, startMinute - 1)),
+    ).toBe(false);
+    expect(
+      isFellowshipLive(nairobi(2026, 3, 5, endHour, endMinute - 1)),
+    ).toBe(true);
+    expect(isFellowshipLive(nairobi(2026, 3, 5, endHour, endMinute))).toBe(
+      false,
+    );
   });
 
-  it("rolls to the following Thursday after 6:30 PM", () => {
+  it("rolls to the following Thursday after the meeting ends", () => {
     const now = nairobi(2026, 3, 5, 20, 0); // Thu 20:00
     const s = fellowshipStatus(now);
     expect(s.kind).toBe("upcoming");
@@ -108,7 +123,7 @@ describe("fellowship status machine", () => {
 
 describe("fellowship display helpers", () => {
   it("builds the time label from config", () => {
-    expect(meetingTimeLabel()).toBe("5:30–6:30 PM");
+    expect(meetingTimeLabel()).toBe("5:00–7:00 PM");
   });
 
   it("formats the real date", () => {
@@ -159,9 +174,10 @@ describe("production state matrix (exact audit states)", () => {
     const s = fellowshipStatus(nairobi(2026, 9, 24, 16, 0)); // Thu 24 Sep
     expect(s.kind).toBe("today");
     if (s.kind === "today") {
-      expect(wallClock(s.start).h).toBe(17);
-      expect(wallClock(s.start).min).toBe(30);
-      expect(fellowshipLine(s)).toContain("Fellowship today at 5:30 PM");
+      /* Derived from the config, so a schedule change is one edit. */
+      expect(wallClock(s.start).h).toBe(fellowship.startHour);
+      expect(wallClock(s.start).min).toBe(fellowship.startMinute);
+      expect(fellowshipLine(s)).toContain(`Fellowship today at ${meetingStartLabel()}`);
     }
   });
 

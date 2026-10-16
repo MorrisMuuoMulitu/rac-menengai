@@ -122,7 +122,7 @@ export default function HomePage() {
           <p>
             <Clock size={19} aria-hidden="true" />
             <strong>Thursdays are for fellowship.</strong>
-            <span>5:30–6:30 PM EAT · Guests welcome</span>
+            <span>5:00–7:00 PM EAT · Guests welcome</span>
           </p>
           <Link to="/membership#first-visit">
             Plan your first visit <ArrowUpRight size={17} aria-hidden="true" />
@@ -289,7 +289,7 @@ export default function HomePage() {
             <dl>
               <div>
                 <dt>When</dt>
-                <dd>Thursday, 5:30–6:30 PM</dd>
+                <dd>Thursday, 5:00–7:00 PM</dd>
               </div>
               <div>
                 <dt>Where</dt>
