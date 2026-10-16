@@ -133,6 +133,89 @@
    LEARNING DASHBOARD
    ============================================================ */
 
+/* -------------------------------------------------------- lesson bar ----- */
+
+.lesson-bar {
+  position: sticky;
+  top: var(--header-h);
+  z-index: 60;
+  background: var(--navy-950);
+  color: #eef1f6;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.lesson-bar-inner {
+  display: grid;
+  gap: 0.55rem;
+  padding: 0.6rem 0 0;
+}
+.lesson-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+.lesson-bar-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.85rem;
+  color: rgba(238, 241, 246, 0.8);
+  flex: none;
+}
+.lesson-bar-back:hover {
+  color: var(--gold);
+  text-decoration: none;
+}
+.lesson-bar-where {
+  margin-right: auto;
+  font-size: 0.85rem;
+  color: rgba(238, 241, 246, 0.66);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.lesson-bar-where strong {
+  color: #fff;
+  font-weight: 600;
+}
+.lesson-bar-controls {
+  display: flex;
+  gap: 0.4rem;
+  flex: none;
+}
+.lesson-nav {
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  background: rgba(255, 255, 255, 0.08);
+  color: #fff;
+  cursor: pointer;
+  transition: background 160ms var(--ease), border-color 160ms var(--ease);
+}
+.lesson-nav:hover:not(:disabled) {
+  background: var(--pink-600);
+  border-color: var(--pink-600);
+}
+.lesson-nav:disabled {
+  opacity: 0.32;
+  cursor: not-allowed;
+}
+.lesson-bar-track {
+  height: 3px;
+  background: rgba(255, 255, 255, 0.14);
+  border-radius: 0;
+  overflow: hidden;
+}
+.lesson-bar-track span {
+  display: block;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), var(--pink-500));
+  transition: width 400ms var(--ease);
+}
+
 .dashboard-status {
   display: inline-flex;
   align-items: center;
@@ -991,6 +1074,12 @@ a.chapter-lesson:hover {
   display: flex;
   align-items: center;
   gap: 0.55rem;
+  width: 100%;
+  background: none;
+  border: 0;
+  padding: 0.2rem 0;
+  cursor: pointer;
+  text-align: left;
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.14em;
@@ -998,6 +1087,15 @@ a.chapter-lesson:hover {
   color: var(--ink-700);
   font-weight: 700;
   margin-bottom: 0.35rem;
+}
+.academy-rail-chapter-title:hover {
+  color: var(--ink-800);
+}
+.academy-rail-chapter-title[aria-expanded="true"] {
+  color: var(--ink-800);
+}
+.academy-rail ul[hidden] {
+  display: none;
 }
 .academy-rail-chapter-title > span {
   display: grid;

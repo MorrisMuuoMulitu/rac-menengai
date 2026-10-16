@@ -18,6 +18,8 @@ import {
   BadgeCheck,
   BookOpen,
   Check,
+  ChevronLeft,
+  ChevronRight,
   CircleCheck,
   Clock,
   ExternalLink,
@@ -320,6 +322,23 @@ export default function AcademyPage() {
     headingRef.current?.focus();
   }, [slug]);
 
+  /*
+   * The rail is twenty-four rows tall. Showing only the chapter you are in
+   * turns that into something you can read at a glance, and the chapter
+   * headings become the switcher.
+   */
+  const [openRail, setOpenRail] = useState<string[]>([]);
+  const currentChapterId =
+    data?.course?.chapters.find((item) =>
+      item.lessons.some(
+        (lesson) =>
+          step?.kind === "lesson" && step.lessonId === lesson.id,
+      ) || (step?.kind === "scenario" && step.chapterId === item.id),
+    )?.id ?? data?.course?.chapters[0]?.id;
+  useEffect(() => {
+    if (currentChapterId) setOpenRail([currentChapterId]);
+  }, [currentChapterId]);
+
   const run = async <T,>(
     work: (token: string | null) => Promise<T>,
     apply: (value: T) => void,
@@ -415,61 +434,49 @@ export default function AcademyPage() {
         description="Six chapters on Rotaract, service and leadership, finished with a practical proposal — the course the Rotaract Club of Menengai asks members to complete."
       />
 
-      <header className="academy-hero">
-        <div className="container academy-hero-inner">
-          <div>
-            <span className="academy-eyebrow">
-              <BookOpen size={15} aria-hidden="true" /> Menengai learning
-            </span>
-            <h1>{course.title}</h1>
-            <p>{course.lead}</p>
-          </div>
-          <div className="academy-hero-meta">
-            <div>
-              <strong>{course.chapters.length}</strong>
-              <span>chapters</span>
-            </div>
-            <div>
-              <strong>{course.modules.length}</strong>
-              <span>lessons</span>
-            </div>
-            <div>
-              <strong>{course.questions.length}</strong>
-              <span>questions</span>
-            </div>
-            <div>
-              <strong>1</strong>
-              <span>proposal</span>
-            </div>
-          </div>
-          {signedIn ? (
-            <div className="academy-progress-card">
-              <AccountChip />
-              <div
-                className="academy-progress-track"
-                role="progressbar"
-                aria-valuemin={0}
-                aria-valuemax={summary?.total ?? 0}
-                aria-valuenow={summary?.completed ?? 0}
-                aria-valuetext={`${summary?.completed ?? 0} of ${summary?.total ?? 0} steps complete`}
+      <header className="lesson-bar">
+        <div className="container lesson-bar-inner">
+          <div className="lesson-bar-row">
+            <Link className="lesson-bar-back" to="/membership/academy">
+              <ArrowLeft size={15} aria-hidden="true" /> Course
+            </Link>
+            <p className="lesson-bar-where">
+              {chapter ? `${chapter.title} · ` : ""}
+              <strong>
+                Step {index + 1} of {steps.length}
+              </strong>
+            </p>
+            <div className="lesson-bar-controls">
+              <button
+                type="button"
+                className="lesson-nav"
+                disabled={index === 0}
+                onClick={() => go(steps[index - 1])}
+                aria-label="Previous step"
               >
-                <span style={{ width: `${summary?.percent ?? 0}%` }} />
-              </div>
-              <p>
-                <strong>{summary?.completed ?? 0}</strong> of{" "}
-                {summary?.total ?? 0} steps · {summary?.percent ?? 0}%
-                {record?.passed
-                  ? ` · best score ${record.bestScore}/${course.questions.length}`
-                  : ""}
-              </p>
-              {data?.actor?.reviewer ? (
-                <Link className="academy-review-link" to="/membership/queue">
-                  <UserRoundCheck size={15} aria-hidden="true" /> Review
-                  applications
-                </Link>
-              ) : null}
+                <ChevronLeft size={18} aria-hidden="true" />
+              </button>
+              <button
+                type="button"
+                className="lesson-nav"
+                disabled={index >= resumeIndex}
+                onClick={() => go(steps[index + 1])}
+                aria-label="Next step"
+              >
+                <ChevronRight size={18} aria-hidden="true" />
+              </button>
             </div>
-          ) : null}
+          </div>
+          <div
+            className="lesson-bar-track"
+            role="progressbar"
+            aria-valuemin={0}
+            aria-valuemax={summary?.total ?? 0}
+            aria-valuenow={summary?.completed ?? 0}
+            aria-valuetext={`${summary?.completed ?? 0} of ${summary?.total ?? 0} steps complete`}
+          >
+            <span style={{ width: `${summary?.percent ?? 0}%` }} />
+          </div>
         </div>
       </header>
 
@@ -557,7 +564,19 @@ export default function AcademyPage() {
               );
               return (
                 <li key={item.id} className="academy-rail-chapter">
-                  <p className="academy-rail-chapter-title">
+                  <button
+                    type="button"
+                    className="academy-rail-chapter-title"
+                    aria-expanded={openRail.includes(item.id)}
+                    aria-controls={`rail-${item.id}`}
+                    onClick={() =>
+                      setOpenRail((open) =>
+                        open.includes(item.id)
+                          ? open.filter((id) => id !== item.id)
+                          : [...open, item.id],
+                      )
+                    }
+                  >
                     <span aria-hidden="true">
                       {String(chapterIndex + 1).padStart(2, "0")}
                     </span>
@@ -565,8 +584,8 @@ export default function AcademyPage() {
                     {progress?.state === "complete" ? (
                       <BadgeCheck size={15} aria-label="Chapter complete" />
                     ) : null}
-                  </p>
-                  <ul>
+                  </button>
+                  <ul id={`rail-${item.id}`} hidden={!openRail.includes(item.id)}>
                     {item.lessons.map((entry) => {
                       const done = record?.completedLessons.includes(entry.id);
                       const active =
