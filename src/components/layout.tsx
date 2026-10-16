@@ -64,18 +64,18 @@ export function Header() {
     >
       <div className="container header-inner">
         <Link to="/" className="brand" aria-label={`${CLUB.name}, home`}>
-          {/* Current club logo supplied by the club owner, October 2026. */}
+          {/* Club-supplied mark with a transparent background for the header. */}
           <picture>
             <source
-              srcSet="/images/branding/menengai-logo-current.webp"
+              srcSet="/images/branding/menengai-logo-transparent.webp"
               type="image/webp"
             />
             <img
               className="brand-lockup"
-              src="/images/branding/menengai-logo-current.webp"
+              src="/images/branding/menengai-logo-transparent.png"
               alt={CLUB.name}
-              width={800}
-              height={346}
+              width={1908}
+              height={824}
             />
           </picture>
         </Link>
