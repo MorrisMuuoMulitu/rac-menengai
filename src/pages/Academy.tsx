@@ -9,7 +9,7 @@
  * is marked complete here; every button posts and waits.
  */
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   AlertCircle,
@@ -32,6 +32,9 @@ import {
 import { PageMeta } from "../components/ui";
 import { CHAPTERS, COURSE_INFO } from "../course-info";
 import { useAccount } from "../academy/account";
+import { toParagraphs } from "../lib/prose";
+import { Flashcards } from "../academy/Flashcards";
+import { flashcardsForChapter } from "../../shared/rotaract-academy/flashcards";
 import { AccountChip } from "../academy/AccountChip";
 import {
   AcademyError,
@@ -541,12 +544,20 @@ export default function AcademyPage() {
                  * decides for itself whether to render, and when it declined
                  * the button silently did nothing. A page cannot fail quietly.
                  */
-                <Link
-                  className="btn btn-primary btn-lg"
-                  to="/membership/sign-in"
-                >
-                  Sign in to save progress <ArrowRight aria-hidden="true" />
-                </Link>
+                <>
+                  <Link
+                    className="btn btn-primary btn-lg"
+                    to="/membership/register"
+                  >
+                    Create an account <ArrowRight aria-hidden="true" />
+                  </Link>
+                  <Link
+                    className="btn btn-secondary btn-md"
+                    to="/membership/sign-in"
+                  >
+                    I already have one
+                  </Link>
+                </>
               ) : (
                 <p className="academy-hint">
                   Sign-in is not switched on for this deployment yet. Ask the
@@ -742,7 +753,15 @@ export default function AcademyPage() {
               <div className="academy-prose">
                 {lessonBody.blocks.map((block, blockIndex) =>
                   block.kind === "p" ? (
-                    <p key={blockIndex}>{block.text}</p>
+                    /* One idea per paragraph. The words are unchanged; the
+                       block is just broken at sentence boundaries. */
+                    <Fragment key={blockIndex}>
+                      {toParagraphs(block.text ?? "", 2).map(
+                        (paragraph, index) => (
+                          <p key={index}>{paragraph}</p>
+                        ),
+                      )}
+                    </Fragment>
                   ) : block.kind === "note" ? (
                     <aside className="academy-note" key={blockIndex}>
                       {block.text}
@@ -765,6 +784,15 @@ export default function AcademyPage() {
                   Nothing is submitted from this box.
                 </p>
               </section>
+
+              {/* One deck per chapter, as a recap before the chapter's check. */}
+              {chapter &&
+              chapter.lessons[chapter.lessons.length - 1]?.id === lesson.id ? (
+                <Flashcards
+                  cards={flashcardsForChapter(chapter.id)}
+                  chapterTitle={chapter.title}
+                />
+              ) : null}
 
               <div className="academy-actions">
                 {index > 0 ? (

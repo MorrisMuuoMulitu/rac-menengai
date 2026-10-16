@@ -101,6 +101,10 @@
       "dest": "/membership/sign-in/index.html"
     },
     {
+      "src": "^/membership/register/?$",
+      "dest": "/membership/register/index.html"
+    },
+    {
       "src": "^/membership/queue/?$",
       "dest": "/membership/queue/index.html"
     },

@@ -4,6 +4,7 @@ import { CHAPTERS, COURSE_INFO } from "./syllabus";
 import { CURRICULUM, chapterForLesson, lessonPosition } from "./curriculum";
 import { SCENARIO_CHECKS, scenarioForChapter } from "./scenarios";
 import { COURSE_VIDEOS, videoWatchUrl } from "./videos";
+import { FLASHCARDS, flashcardsForChapter } from "./flashcards";
 import {
   answerKey,
   gradeAttempt,
@@ -62,13 +63,46 @@ describe("curriculum", () => {
       lessonIndex: 0,
       lessonNumber: 1,
     });
-    expect(lessonPosition("next-steps").lessonNumber).toBe(14);
+    expect(lessonPosition("next-steps").lessonNumber).toBe(COURSE_INFO.lessons.length);
+  });
+
+  it("orders the syllabus exactly as the chapters present it", () => {
+    /*
+     * These two lists disagreed once: the syllabus put chapter three's lesson
+     * before chapter two's last one, and the lesson gate followed the syllabus.
+     * The course deadlocked at the end of chapter two. Keep them identical.
+     */
+    expect(COURSE_INFO.lessons.map((lesson) => lesson.id)).toEqual(
+      CURRICULUM.flatMap((chapter) =>
+        chapter.lessons.map((lesson) => lesson.id),
+      ),
+    );
   });
 
   it("exposes chapters, scenarios and videos on the course payload", () => {
     expect(course.chapters).toHaveLength(6);
     expect(course.scenarios).toHaveLength(6);
     expect(course.videos.length).toBeGreaterThan(0);
+  });
+});
+
+describe("flash cards", () => {
+  it("gives every chapter a deck drawn from terms it teaches", () => {
+    for (const chapter of CHAPTERS) {
+      const cards = flashcardsForChapter(chapter.id);
+      expect(cards.length, `${chapter.id} has no cards`).toBeGreaterThanOrEqual(3);
+      for (const card of cards) {
+        expect(card.term.length).toBeGreaterThan(2);
+        expect(card.definition.length).toBeGreaterThan(60);
+      }
+    }
+  });
+
+  it("keeps every card in a chapter that exists, with unique terms", () => {
+    const chapterIds = new Set(CHAPTERS.map((chapter) => chapter.id));
+    for (const card of FLASHCARDS) expect(chapterIds.has(card.chapterId)).toBe(true);
+    const terms = FLASHCARDS.map((card) => card.term.toLowerCase());
+    expect(new Set(terms).size).toBe(terms.length);
   });
 });
 

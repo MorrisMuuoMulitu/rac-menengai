@@ -30,7 +30,16 @@ import AcademyLayout from "./academy/AcademyLayout";
 import AcademyPage from "./pages/Academy";
 import ReviewQueuePage from "./pages/ReviewQueue";
 
-const SignInPage = lazy(() => import("./academy/SignInPage"));
+const SignInPage = lazy(() =>
+  import("./academy/AuthPage").then((module) => ({
+    default: module.SignInPage,
+  })),
+);
+const SignUpPage = lazy(() =>
+  import("./academy/AuthPage").then((module) => ({
+    default: module.SignUpPage,
+  })),
+);
 
 export default function App() {
   return (
@@ -74,6 +83,20 @@ export default function App() {
                 }
               >
                 <SignInPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/membership/register"
+            element={
+              <Suspense
+                fallback={
+                  <div className="academy-loading" role="status">
+                    <p>Loading registration…</p>
+                  </div>
+                }
+              >
+                <SignUpPage />
               </Suspense>
             }
           />

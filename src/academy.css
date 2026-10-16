@@ -5,7 +5,146 @@
    spine in the contents rail that fills as lessons are finished.
    ============================================================ */
 
+/* -------------------------------------------------------- flashcards ----- */
+
+.flashcards {
+  margin: 2.4rem 0 0.5rem;
+  padding-top: 1.8rem;
+  border-top: 1px solid var(--line);
+}
+.flashcards-head h3 {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1.25rem;
+  margin-bottom: 0.25rem;
+}
+.flashcards-head p {
+  font-size: 0.9rem;
+  color: var(--ink-500);
+  margin-bottom: 1rem;
+}
+
+.flashcard {
+  display: block;
+  width: 100%;
+  min-height: 13rem;
+  border: 0;
+  padding: 0;
+  background: none;
+  cursor: pointer;
+  perspective: 1200px;
+  font: inherit;
+  text-align: left;
+}
+.flashcard-face {
+  display: grid;
+  align-content: center;
+  gap: 0.5rem;
+  min-height: 13rem;
+  padding: clamp(1.3rem, 3vw, 2rem);
+  border-radius: var(--radius-lg);
+  backface-visibility: hidden;
+  transition: transform 520ms var(--ease);
+}
+.flashcard-front {
+  background: linear-gradient(140deg, var(--navy-850), var(--navy-950));
+  color: #eef1f6;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+.flashcard-back {
+  position: absolute;
+  inset: 0;
+  background: var(--blush);
+  border: 1px solid var(--pink-200);
+  color: var(--ink-800);
+  transform: rotateY(180deg);
+}
+.flashcard {
+  position: relative;
+}
+.flashcard.is-revealed .flashcard-front {
+  transform: rotateY(-180deg);
+}
+.flashcard.is-revealed .flashcard-back {
+  transform: rotateY(0deg);
+}
+.flashcard-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.66;
+}
+.flashcard-front strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 3.4vw, 2.2rem);
+  line-height: 1.1;
+  color: #fff;
+}
+.flashcard-hint {
+  font-size: 0.84rem;
+  opacity: 0.7;
+}
+.flashcard-definition {
+  font-size: clamp(0.98rem, 1.6vw, 1.1rem);
+  line-height: 1.6;
+  color: var(--ink-700);
+}
+.flashcard:focus-visible {
+  outline: 2px solid var(--pink-600);
+  outline-offset: 4px;
+  border-radius: var(--radius-lg);
+}
+
+.flashcards-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
+.flashcards-count {
+  font-family: var(--font-mono);
+  font-size: 0.8rem;
+  color: var(--ink-500);
+  margin-right: auto;
+}
+.flashcards-reset {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: 0;
+  padding: 0.3rem 0;
+  font: inherit;
+  font-size: 0.84rem;
+  color: var(--ink-500);
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
 /* ------------------------------------------------------- account chip ---- */
+
+.academy-auth-points {
+  list-style: none;
+  display: grid;
+  gap: 0.5rem;
+  justify-items: center;
+  margin: 0.4rem 0 0.6rem;
+}
+.academy-auth-points li {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.92rem;
+  color: var(--ink-600);
+}
+.academy-auth-points svg {
+  color: var(--pink-600);
+  flex: none;
+}
 
 .account-chip {
   display: flex;
@@ -495,8 +634,14 @@
 }
 
 .academy-prose p {
-  margin-bottom: 1.1rem;
-  max-width: 68ch;
+  /*
+   * Shorter measure and more air. The lesson copy is dense by nature — this is
+   * what makes it readable rather than wall-like.
+   */
+  margin-bottom: 1rem;
+  max-width: 58ch;
+  font-size: 1.02rem;
+  line-height: 1.72;
 }
 .academy-prose ul {
   margin: 0 0 1.2rem 1.1rem;
@@ -1041,7 +1186,8 @@
   .academy-progress-track span,
   .academy-video-play,
   .academy-choice,
-  .academy-rail-item {
+  .academy-rail-item,
+  .flashcard-face {
     animation: none;
     transition: none;
   }

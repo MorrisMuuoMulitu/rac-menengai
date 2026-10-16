@@ -14,6 +14,7 @@ const NOINDEX = new Set([
   "/404",
   "/membership/queue",
   "/membership/sign-in",
+  "/membership/register",
 ]);
 for (const route of [...routes, "/404"]) {
   const result = render(route);

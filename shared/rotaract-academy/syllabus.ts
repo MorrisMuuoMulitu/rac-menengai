@@ -2,7 +2,7 @@ export const COURSE_INFO = {
   title: "Rotaract, from the ground up",
   lead: "Understand the movement. Find your place in your club. Learn to plan, lead and follow through on service.",
   version: "2026.academy.v2",
-  minutes: 85,
+  minutes: 92,
   questionCount: 28,
   passMark: 23,
   lessons: [
@@ -31,16 +31,23 @@ export const COURSE_INFO = {
       minutes: 5,
     },
     {
-      id: "ethics",
-      title: "Service, ethics and belonging",
-      summary: "The Four-Way Test, inclusion and everyday judgement.",
-      minutes: 6,
-    },
-    {
       id: "fellowship",
       title: "Fellowship and meeting practice",
       summary: "Arriving, contributing, recording decisions and following up.",
       minutes: 5,
+    },
+    {
+      id: "meeting",
+      title: "How a meeting runs",
+      summary:
+        "The Four-Way Test, the grace, the officers’ reports and the order every club meeting follows.",
+      minutes: 7,
+    },
+    {
+      id: "ethics",
+      title: "Service, ethics and belonging",
+      summary: "The Four-Way Test, inclusion and everyday judgement.",
+      minutes: 6,
     },
     {
       id: "frameworks",
@@ -104,7 +111,7 @@ export const CHAPTERS = [
     id: "club",
     title: "Inside your club",
     description: "People, meetings and what membership asks of you.",
-    lessons: ["structure", "membership", "fellowship"],
+    lessons: ["structure", "membership", "fellowship", "meeting"],
   },
   {
     id: "integrity",

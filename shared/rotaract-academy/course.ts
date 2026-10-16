@@ -127,31 +127,6 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
     },
     {
       objectives: [
-        "Use the Four-Way Test in a real decision.",
-        "Make inclusion and respectful conduct practical.",
-      ],
-      blocks: [
-        p(
-          "Service Above Self is a commitment to consider other people, not a request to ignore your own safety or boundaries. Integrity, fellowship, diversity, leadership and service should be visible in the way people are treated and decisions are made.",
-        ),
-        p(
-          "The Four-Way Test asks us to consider truth, fairness, goodwill and benefit to everyone concerned. Use it as a decision aid: is a claim supported, does a decision disadvantage someone without good reason, and does the approach build trust? It does not replace the law, safeguarding procedures or professional standards.",
-        ),
-        p(
-          "Suppose a project announcement promises that every seedling will survive, but no follow-up has happened. Truth requires a narrower claim: describe planting, then plan a survival check. Fairness means the host and volunteers understand responsibilities. Goodwill means acknowledging their work; benefit means asking whether the activity meets the community’s need.",
-        ),
-        p(
-          "Inclusion involves concrete choices: an accessible venue, understandable language, a chance to speak without being interrupted, and tasks suitable for different abilities. Ask what people need instead of guessing. Do not use a person’s disability, financial situation or background as material for jokes or publicity.",
-        ),
-        p(
-          "Handle disagreements with respectful questions and specific examples. Address harmful conduct through the designated club or district process rather than a public pile-on. A person raising a concern should not have to sacrifice privacy to be heard.",
-        ),
-      ],
-      activity:
-        "A sponsor offers supplies but wants an exaggerated success claim in return. Write a response that thanks them, corrects the claim and protects the club’s integrity. Apply each part of the Four-Way Test.",
-    },
-    {
-      objectives: [
         "Contribute effectively to fellowship.",
         "Understand meeting decisions and follow-through.",
       ],
@@ -174,6 +149,79 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
       ],
       activity:
         "Turn ‘We should do a school visit soon’ into a useful action note: the next step, responsible role, due date and decision that still needs approval.",
+    },
+    {
+      objectives: [
+        "Describe the parts of a club meeting and why each one exists.",
+        "Recite the Four-Way Test and say where it fits in the order.",
+        "Tell your club’s customs apart from Rotary’s own.",
+      ],
+      blocks: [
+        p(
+          "Every club runs its meeting a little differently, but the shape is broadly the same, and the shape is the point: it gets a room of volunteers through its business in about an hour and sends everyone home knowing what happens next.",
+        ),
+        list(
+          "Call to order — the president opens the meeting and confirms it can proceed.",
+          "Welcome and apologies — who is present, who sent apologies, and any guests.",
+          "The Four-Way Test — often recited together, at the opening or the close.",
+          "Invocation or grace — a short reflection. The words vary by club and by faith.",
+          "Reports — the secretary, the treasurer, and any project lead with something to report.",
+          "Programme or Rotary moment — a speaker, a learning slot, or a project update.",
+          "Announcements and next steps — what happens between now and the next meeting.",
+          "Close — the president closes, and the Four-Way Test is frequently said again.",
+        ),
+        p(
+          "The Four-Way Test is Rotary’s own ethical guide. Herbert J. Taylor wrote it in 1932 and Rotary International adopted it in 1943. Many clubs recite it aloud. Of the things we think, say or do:",
+        ),
+        list(
+          "Is it the TRUTH?",
+          "Is it FAIR to all concerned?",
+          "Will it build GOODWILL and BETTER FRIENDSHIPS?",
+          "Will it be BENEFICIAL to all concerned?",
+        ),
+        p(
+          "Its companion is the Object of Rotary: to encourage and foster the ideal of service as a basis of worthy enterprise, through fellowship, and through service in business and the community and across borders.",
+        ),
+        note(
+          "The grace or invocation is a prayer, and clubs use different words — some use none. This course does not print a version and call it the Rotary one. Ask your club which words it uses, and whether they open the meeting or close it.",
+        ),
+        p(
+          "Not every custom travels. Prayer, songs, fines, dress and the closing ritual differ from club to club and country to country. Treat those as your club’s practice rather than a Rotary requirement, and ask before assuming.",
+        ),
+        p(
+          "Two things do travel. The Four-Way Test belongs to Rotary everywhere, and so does the reason for the order: a meeting with a shape gets its business done and leaves people wanting to return.",
+        ),
+        note(
+          "Minutes are the record of what was decided, not a transcript. A decision needs an owner and a deadline, and the secretary writes both down.",
+        ),
+      ],
+      activity:
+        "At your next meeting, follow the order above and note where your club diverges — then ask the president or secretary why. Afterwards, write the four questions of the Four-Way Test from memory and check yourself against the list.",
+    },
+    {
+      objectives: [
+        "Use the Four-Way Test in a real decision.",
+        "Make inclusion and respectful conduct practical.",
+      ],
+      blocks: [
+        p(
+          "Service Above Self is a commitment to consider other people, not a request to ignore your own safety or boundaries. Integrity, fellowship, diversity, leadership and service should be visible in the way people are treated and decisions are made.",
+        ),
+        p(
+          "The Four-Way Test asks us to consider truth, fairness, goodwill and benefit to everyone concerned. Use it as a decision aid: is a claim supported, does a decision disadvantage someone without good reason, and does the approach build trust? It does not replace the law, safeguarding procedures or professional standards.",
+        ),
+        p(
+          "Suppose a project announcement promises that every seedling will survive, but no follow-up has happened. Truth requires a narrower claim: describe planting, then plan a survival check. Fairness means the host and volunteers understand responsibilities. Goodwill means acknowledging their work; benefit means asking whether the activity meets the community’s need.",
+        ),
+        p(
+          "Inclusion involves concrete choices: an accessible venue, understandable language, a chance to speak without being interrupted, and tasks suitable for different abilities. Ask what people need instead of guessing. Do not use a person’s disability, financial situation or background as material for jokes or publicity.",
+        ),
+        p(
+          "Handle disagreements with respectful questions and specific examples. Address harmful conduct through the designated club or district process rather than a public pile-on. A person raising a concern should not have to sacrifice privacy to be heard.",
+        ),
+      ],
+      activity:
+        "A sponsor offers supplies but wants an exaggerated success claim in return. Write a response that thanks them, corrects the claim and protects the club’s integrity. Apply each part of the Four-Way Test.",
     },
     {
       objectives: [
