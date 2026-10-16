@@ -20,10 +20,36 @@ export interface ClubLearningProfile {
   evidence: string;
   partnership: string;
 }
+/**
+ * How a protocol statement is grounded.
+ *
+ * Rotary material mixes global policy, district guidance and club custom.
+ * Reading it as one thing is how a club custom ends up quoted as a rule, or a
+ * recommendation treated as a requirement.
+ */
+export type ProtocolLevel =
+  | "requirement"
+  | "recommendation"
+  | "district"
+  | "custom"
+  | "example";
+
+export const PROTOCOL_LEVEL_LABEL: Record<ProtocolLevel, string> = {
+  requirement: "Official requirement",
+  recommendation: "Official recommendation",
+  district: "District guidance",
+  custom: "Club custom",
+  example: "Illustrative example",
+};
+
 export interface OrientationBlock {
-  kind: "p" | "list" | "note";
+  kind: "p" | "list" | "note" | "tag";
   text?: string;
   items?: string[];
+  /** Set on a `tag` block: what kind of statement this is. */
+  level?: ProtocolLevel;
+  /** Short source label, e.g. "Rotary Code of Policies". */
+  source?: string;
 }
 export interface OrientationModule {
   id: string;

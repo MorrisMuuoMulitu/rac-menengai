@@ -98,6 +98,30 @@ export const SCENARIO_CHECKS: ScenarioCheck[] = [
       "The Four-Way Test starts with truth. Credit that misleads donors and partners damages the club’s word, and word is most of what a service club has. Say what you can genuinely offer, and let the person decide with the real position in front of them.",
   },
   {
+    id: "protocols-policy-or-custom",
+    chapterId: "protocols",
+    situation:
+      "You are helping write a welcome pack for new members. Someone suggests a line that reads: “Members must attend wearing a jacket, stand for the club song, and pay a fine for arriving late.”",
+    prompt: "What do you do with that line?",
+    options: [
+      {
+        id: "publish",
+        text: "Publish it — it is the club’s own pack, so anything the club does is worth writing down as a rule.",
+      },
+      {
+        id: "label",
+        text: "Check each item with the officers, then write it as club custom with a note that practices differ between clubs and no one is required to take part in a prayer or a toast.",
+      },
+      {
+        id: "drop",
+        text: "Drop the whole line — none of it is a Rotary requirement, so new members do not need to know about it.",
+      },
+    ],
+    bestOptionId: "label",
+    feedback:
+      "Dress, songs and fines are club customs, not Rotary rules, and they differ between clubs — so publishing them as requirements is wrong. Dropping them is also wrong: a new member still needs to know what usually happens so they are not caught out. Describe what the club does, say plainly that it is custom rather than a rule, and make clear that nobody is obliged to join a prayer, a toast or a song.",
+  },
+  {
     id: "service-before-announcing",
     chapterId: "service",
     situation:

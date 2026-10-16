@@ -41,6 +41,25 @@ import {
 import { CHAPTERS, COURSE_INFO } from "../course-info";
 import "../academy.css";
 
+/**
+ * What a learner can do after each chapter, in their own words.
+ *
+ * The dashboard used to repeat the lesson titles as the chapter outcome, which
+ * tells you what the chapter is about but not what you will be able to do.
+ */
+const CHAPTER_OUTCOMES: Record<string, string> = {
+  discover:
+    "Explain what Rotaract is, who can join, and where it sits in Rotary.",
+  club: "Describe how Menengai runs, who does what, and what membership asks of you.",
+  protocols:
+    "Walk into any Rotary room, follow what is happening, and take part accurately.",
+  integrity: "Test a real decision against the Four-Way Test and say why it holds.",
+  service:
+    "Plan a project from a community’s stated need through to how you will follow it up.",
+  lead: "Delegate clearly, handle a disagreement, and tell the story without overclaiming.",
+  begin: "Hand the membership team a one-page proposal they can actually decide on.",
+};
+
 interface ChapterLesson {
   id: string;
   title: string;
@@ -286,7 +305,10 @@ export default function AcademyPage() {
               <div>
                 <dt>Steps done</dt>
                 <dd>
-                  {summary?.completed ?? 0} of {summary?.total ?? steps.length}
+                  {/* Never "0 of 0" while the course is still loading. */}
+                  {summary
+                    ? `${summary.completed} of ${summary.total}`
+                    : `— of ${COURSE_INFO.lessons.length + CHAPTERS.length + 3}`}
                 </dd>
               </div>
               <div>
@@ -386,9 +408,9 @@ export default function AcademyPage() {
                   {open ? (
                     <div className="chapter-card-body" id={`chapter-${chapter.id}`}>
                       <p className="chapter-card-objectives">
-                        <strong>By the end of this chapter</strong>{" "}
-                        {lessons.map((lesson) => lesson.title.toLowerCase()).join(", ")}
-                        .
+                        <strong>By the end of this chapter you can</strong>{" "}
+                        {CHAPTER_OUTCOMES[chapter.id] ??
+                          "work through the lessons below"}
                       </p>
                       <ol className="chapter-lessons">
                         {lessons.map((lesson) => {
@@ -400,7 +422,13 @@ export default function AcademyPage() {
                               kind: "lesson",
                               lessonId: lesson.id,
                             }) === resume;
-                          const reachable = done || current;
+                          /*
+                           * Guests are promised they can read the course, so
+                           * nothing is locked to them. Signed in, the course
+                           * unlocks in order and everything finished stays
+                           * open to revisit.
+                           */
+                          const reachable = !signedIn || done || current;
                           return (
                             <li key={lesson.id}>
                               {reachable ? (
@@ -576,13 +604,24 @@ export default function AcademyPage() {
         </section>
       ) : null}
 
+      {/*
+        * The curriculum used to be printed in full on the dashboard as well as
+        * inside the chapter cards — the same information twice. It stays, but
+        * closed, behind a summary a learner can open when they want the whole
+        * picture.
+        */}
       <section className="section dashboard-syllabus">
         <div className="container">
-          <div className="section-head-block">
-            <span className="eyebrow">Everything on the course</span>
-            <h2 className="sec-title">The full syllabus</h2>
-          </div>
-          <ol className="academy-syllabus-list">
+          <details className="curriculum-panel">
+            <summary>
+              <span className="eyebrow">Everything on the course</span>
+              <strong>View the full curriculum</strong>
+              <span className="curriculum-panel-meta">
+                {CHAPTERS.length} chapters · {COURSE_INFO.lessons.length} lessons ·{" "}
+                {COURSE_INFO.minutes} minutes
+              </span>
+            </summary>
+            <ol className="academy-syllabus-list">
             {CHAPTERS.map((chapter, index) => (
               <li key={chapter.id}>
                 <h3>
@@ -608,7 +647,8 @@ export default function AcademyPage() {
                 </ul>
               </li>
             ))}
-          </ol>
+            </ol>
+          </details>
         </div>
       </section>
     </>

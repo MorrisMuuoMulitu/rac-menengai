@@ -10,6 +10,7 @@ import {
   type Step,
 } from "./steps";
 import type { AcademyBootstrap } from "../lib/academy";
+import { CHAPTERS } from "../course-info";
 import { createCourse } from "../../shared/rotaract-academy/course";
 import { publicCourse } from "../../shared/rotaract-academy/assessment";
 import { MENENGAI_LEARNING_PROFILE } from "../club-learning-profile";
@@ -113,7 +114,7 @@ describe("chapter cards", () => {
   it("counts lessons and marks the chapter holding the current step", () => {
     const data = bootstrap({ completedLessons: ["roots"] });
     const chapters = chapterSummaries(course, data);
-    expect(chapters).toHaveLength(6);
+    expect(chapters).toHaveLength(CHAPTERS.length);
     expect(chapters[0].lessonsDone).toBe(1);
     expect(chapters[0].lessonsTotal).toBe(2);
     expect(chapters[0].current).toBe(true);

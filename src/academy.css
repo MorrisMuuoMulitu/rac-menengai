@@ -133,6 +133,71 @@
    LEARNING DASHBOARD
    ============================================================ */
 
+/* ----------------------------------------------------- protocol tags ----- */
+
+.protocol-tag {
+  margin: 1.3rem 0;
+  padding: 1rem 1.1rem 0.9rem;
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--line-strong);
+  background: var(--surface);
+  display: grid;
+  gap: 0.4rem;
+}
+.protocol-tag-level {
+  justify-self: start;
+  font-family: var(--font-mono);
+  font-size: 0.66rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.22rem 0.55rem;
+  border-radius: 999px;
+  background: var(--paper-2);
+  color: var(--ink-700);
+}
+.protocol-tag p {
+  font-size: 0.96rem;
+  color: var(--ink-700);
+  margin: 0;
+  max-width: 68ch;
+}
+.protocol-tag cite {
+  font-size: 0.8rem;
+  font-style: normal;
+  color: var(--ink-500);
+}
+/* The weight of the statement, carried by more than colour. */
+.protocol-tag.is-requirement {
+  border-color: var(--pink-600);
+  background: var(--blush);
+}
+.protocol-tag.is-requirement .protocol-tag-level {
+  background: var(--pink-600);
+  color: #fff;
+}
+.protocol-tag.is-recommendation {
+  border-color: #c9a227;
+  background: #fffaf0;
+}
+.protocol-tag.is-recommendation .protocol-tag-level {
+  background: var(--gold);
+  color: #3a2a00;
+}
+.protocol-tag.is-district {
+  border-color: var(--navy-850);
+  background: #f2f5fa;
+}
+.protocol-tag.is-district .protocol-tag-level {
+  background: var(--navy-850);
+  color: #fff;
+}
+.protocol-tag.is-custom {
+  border-style: dashed;
+}
+.protocol-tag.is-example {
+  border-style: dotted;
+}
+
 /* ------------------------------------------------- put these in order ---- */
 
 .ordering {
@@ -320,6 +385,44 @@
   height: 100%;
   background: linear-gradient(90deg, var(--gold), var(--pink-500));
   transition: width 400ms var(--ease);
+}
+
+/* --------------------------------------------------- curriculum panel ---- */
+
+.curriculum-panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  padding: clamp(1rem, 2.5vw, 1.4rem) clamp(1.1rem, 3vw, 1.6rem);
+}
+.curriculum-panel summary {
+  display: grid;
+  gap: 0.25rem;
+  cursor: pointer;
+  list-style: none;
+}
+.curriculum-panel summary::-webkit-details-marker {
+  display: none;
+}
+.curriculum-panel summary strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.3rem, 3vw, 1.7rem);
+  color: var(--ink-800);
+}
+.curriculum-panel summary strong::after {
+  content: " ▾";
+  font-size: 0.8em;
+  color: var(--pink-700);
+}
+.curriculum-panel[open] summary strong::after {
+  content: " ▴";
+}
+.curriculum-panel-meta {
+  font-size: 0.85rem;
+  color: var(--ink-500);
+}
+.curriculum-panel .academy-syllabus-list {
+  margin-top: 1.4rem;
 }
 
 .dashboard-status {

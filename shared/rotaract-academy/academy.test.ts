@@ -80,8 +80,8 @@ describe("curriculum", () => {
   });
 
   it("exposes chapters, scenarios and videos on the course payload", () => {
-    expect(course.chapters).toHaveLength(6);
-    expect(course.scenarios).toHaveLength(6);
+    expect(course.chapters).toHaveLength(CHAPTERS.length);
+    expect(course.scenarios).toHaveLength(CHAPTERS.length);
     expect(course.videos.length).toBeGreaterThan(0);
   });
 });

@@ -2,6 +2,7 @@ import type {
   ClubLearningProfile,
   FullCourse,
   OrientationBlock,
+  ProtocolLevel,
 } from "./types.js";
 import { COURSE_INFO } from "./syllabus.js";
 import { CURRICULUM } from "./curriculum.js";
@@ -14,6 +15,16 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
     items,
   });
   const note = (text: string): OrientationBlock => ({ kind: "note", text });
+  /**
+   * A statement whose weight depends on where it comes from. Rotary material
+   * mixes global policy, district guidance and club custom, and flattening
+   * them is how a local habit gets quoted as a rule.
+   */
+  const tag = (
+    level: ProtocolLevel,
+    text: string,
+    source?: string,
+  ): OrientationBlock => ({ kind: "tag", level, text, source });
   const lessons: {
     objectives: string[];
     blocks: OrientationBlock[];
@@ -197,6 +208,211 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
       ],
       activity:
         "At your next meeting, follow the order above and note where your club diverges — then ask the president or secretary why. Afterwards, write the four questions of the Four-Way Test from memory and check yourself against the list.",
+    },
+    {
+      objectives: [
+        "Name the four questions of the Four-Way Test from memory.",
+        "Say who wrote it and when Rotary adopted it.",
+        "Explain what the Object of Rotary sets out, in your own words.",
+      ],
+      blocks: [
+        p(
+          "A supplier offers the club a discount on one condition: the announcement names them the club’s principal partner. That wording would drop a smaller donor who has already given.",
+        ),
+        p(
+          "You have a decision in front of you, and Rotary has a way of testing decisions. The Four-Way Test was written in 1932 by Herbert J. Taylor, a Chicago Rotarian, and Rotary International adopted it in 1943. Of the things we think, say or do:",
+        ),
+        list(
+          "Is it the TRUTH?",
+          "Is it FAIR to all concerned?",
+          "Will it build GOODWILL and BETTER FRIENDSHIPS?",
+          "Will it be BENEFICIAL to all concerned?",
+        ),
+        tag(
+          "recommendation",
+          "Rotary publishes the Four-Way Test as its ethical guide. How a club uses it is not fixed — some recite it at the opening of every meeting, some at the close, some not at all.",
+          "Rotary — the Four-Way Test",
+        ),
+        p(
+          "The Object of Rotary is its companion. In plain language, it sets out that service is the basis of a worthwhile enterprise, and that this shows up four ways: friendship that becomes an opportunity to serve, high ethical standards in work and life, service applied in your own business and community, and understanding across borders.",
+        ),
+        note(
+          "Rotary publishes the official sentence of the Object of Rotary. It is not quoted here because it could not be checked against the source while this lesson was written. The exact wording is with the club to confirm; the plain-language version above carries the same four commitments.",
+        ),
+      ],
+      activity:
+        "Take the supplier’s offer and write one sentence for each question of the Four-Way Test. Then write the reply you would send — one that keeps the money without misleading the donor you already have.",
+    },
+    {
+      objectives: [
+        "Know what an agenda is for and how to add to one.",
+        "Raise a question or a concern without derailing the room.",
+        "Say which officer handles what.",
+      ],
+      blocks: [
+        p(
+          "It is your third meeting. Under any other business the chair asks whether anyone has something to raise. You have a question about how a project budget was spent.",
+        ),
+        p(
+          "An agenda is a running order, and its job is to get a room of volunteers through the business in about an hour without anyone being ambushed. That is why the same items return in the same order.",
+        ),
+        tag(
+          "example",
+          "A common order is: call to order, welcome and apologies, the Four-Way Test, reports, a programme or Rotary moment, announcements, and the close. This is an illustrative shape, not a description of any particular club.",
+          "Common practice across clubs",
+        ),
+        tag(
+          "custom",
+          `${profile.shortName}’s own standing agenda has not been confirmed for publication. Until it is, treat the shape above as an example and ask the secretary what our meeting actually runs.`,
+        ),
+        p(
+          "To raise something, ask for the item rather than the floor — “may I add something under any other business?” — then say what you want: a decision, information, or help. Three sentences is usually enough, and if it needs longer, ask to be put on the agenda for the next meeting.",
+        ),
+        list(
+          "The chair runs the meeting and decides what is in order.",
+          "The secretary keeps the records and knows the governing documents.",
+          "The treasurer holds the figures and the payment records.",
+          "The sergeant-at-arms keeps time and order, and often the club’s customs.",
+        ),
+        tag(
+          "recommendation",
+          "Rotary guidance is that members listen without interrupting, speak to the item rather than the person, and keep to the time the chair sets.",
+          "Rotary meeting practice guidance",
+        ),
+      ],
+      activity:
+        "Write the three sentences you would actually say to raise your budget question, and name the officer you would follow up with afterwards.",
+    },
+    {
+      objectives: [
+        "Introduce a visiting officer accurately.",
+        "Explain what formal precedence is for.",
+        "Find the right form of address instead of guessing.",
+      ],
+      blocks: [
+        p(
+          "A District Rotaract Representative is coming to your fellowship. You are asked to welcome them from the front.",
+        ),
+        p(
+          "Introductions go wrong in one way: someone guesses a title. The fix is dull and always works — ask the visitor or their club beforehand how they would like to be introduced, and write it down.",
+        ),
+        tag(
+          "recommendation",
+          "Use a person’s current title and full name, and check the preferred form of address with the visitor or their club before a formal occasion.",
+          "Rotary Brand Center; district guidance",
+        ),
+        p(
+          "Precedence is the order in which people are recognised, seated or introduced. It exists so that a formal occasion does not become a negotiation about status, and it is a courtesy, not a ranking of worth.",
+        ),
+        tag(
+          "district",
+          "Order of speaking and seating at district events follows current district guidance, which changes with each district leadership year.",
+          `${profile.district} — current guidance to be confirmed`,
+        ),
+        tag(
+          "custom",
+          `Whether ${profile.shortName} uses a formal order at its own fellowships is a club decision and has not been confirmed here.`,
+        ),
+        note(
+          "No current official Rotaract precedence table could be verified for this course, so none is published. A district handout from an earlier year is not a standing rule. The president holds the draft until the district confirms the current position.",
+        ),
+      ],
+      activity:
+        "Write two sentences introducing a visiting officer whose title you have confirmed, and one sentence you would use if you had not been able to confirm it.",
+    },
+    {
+      objectives: [
+        "Tell a discussion apart from a decision.",
+        "Record a decision so it can be acted on.",
+        "Handle a conflict of interest out loud.",
+      ],
+      blocks: [
+        p(
+          "The club is talking about buying equipment. Half the room is for it, and it is not clear whether anything has actually been agreed.",
+        ),
+        p(
+          "Fellowship discussion is how a club thinks. A decision is how it acts, and the two need separating, because people leave meetings believing different things were agreed.",
+        ),
+        tag(
+          "requirement",
+          "Whether a decision is binding, who may vote, and how many members must be present all come from the club’s own adopted constitution and bylaws. These differ between clubs, so a show of hands is only binding if those documents say it is.",
+          "Club governing documents — see the confirmation list",
+        ),
+        p(
+          "A minute is not a transcript. It records the decision, who owns the next step, the deadline, and any approved cost — which is what lets someone who missed the meeting act on it.",
+        ),
+        p(
+          "If a decision touches you personally — a supplier you are related to, a contract for your employer — say so before the discussion, take no part in the decision, and ask for it to be recorded. Declaring it is the whole point.",
+        ),
+        tag(
+          "example",
+          "A useful minute reads: “Agreed to obtain three quotes for the water tank by 30 November; Erick to circulate them; no spend approved above KES 40,000 without a further decision.” The figure is a sample, not the club’s budget.",
+        ),
+      ],
+      activity:
+        "Turn “we should get a water tank” into a minute with a decision, an owner and a deadline. Then write the sentence you would say to declare a conflict of interest.",
+    },
+    {
+      objectives: [
+        "Describe what happens at an induction without inventing rules.",
+        "Tell a custom apart from a Rotary requirement.",
+        "Raise a concern about a practice that excludes you.",
+      ],
+      blocks: [
+        p(
+          "It is induction night, and a new member asks you what is going to happen.",
+        ),
+        p(
+          "Very little of what happens at a club’s ceremonies is Rotary-wide. Induction, handover between leadership years, songs, toasts, dress conventions and fines are club decisions, and most clubs do some of them and not others.",
+        ),
+        tag(
+          "custom",
+          `Induction and handover ceremonies, any wording used, and who leads them are set by each club. ${profile.shortName}’s current practice is on the confirmation list and is not stated here.`,
+        ),
+        tag(
+          "example",
+          "Songs, toasts, fines and dress conventions appear in many Rotary and Rotaract clubs. They are customs, not Rotary requirements, and plenty of clubs have none at all.",
+        ),
+        p(
+          "A grace or invocation is a prayer. Some clubs open with one, some close with one, some use neither — and the words differ by club, language and faith. This course does not print a version and call it the Rotary one; ask your club which words it uses, if any.",
+        ),
+        note(
+          "Rotaract is open to people of every faith and none. If a practice would exclude you or make you uncomfortable, you are entitled to say so to an officer, and the club should be able to tell you what it does and why.",
+        ),
+      ],
+      activity:
+        "List three practices you have seen or heard described. For each, write whether it is a Rotary requirement, district guidance, or your club’s custom — and who you would ask to check.",
+    },
+    {
+      objectives: [
+        "Use the club’s name and marks correctly.",
+        "Avoid claiming Rotary endorsement you do not have.",
+        "Get consent before publishing a photograph.",
+      ],
+      blocks: [
+        p(
+          "Someone offers to run a fundraiser for the club and drafts a poster: the Rotary wheel, the words “supported by Rotary International”, and a photo of a child from a school visit.",
+        ),
+        p(
+          "Three things in that poster are wrong, and each one can cost the club something it cannot buy back.",
+        ),
+        tag(
+          "requirement",
+          "The Rotary and Rotaract marks are trademarks. Their use is governed by Rotary’s brand guidance, and a club may not claim Rotary endorsement for a project Rotary has not endorsed.",
+          "Rotary Brand Center",
+        ),
+        p(
+          `Name the club in full — ${profile.name} — and give people’s current titles. An abbreviation your members use among themselves is not a public name, and a title from a previous Rotary year is out of date.`,
+        ),
+        p(
+          "Consent before a photograph is published, not after. Ask the person, or the parent or guardian where the person is a child, tell them where it will appear, and accept a no without making it awkward — a refusal should never cost someone their place in the activity.",
+        ),
+        p(
+          "When you acknowledge a partner, say what they actually did. Misdescribing a partner’s contribution is the fastest way to lose one.",
+        ),
+      ],
+      activity:
+        "Rewrite the poster. Correct the name and title, replace the endorsement claim with something true, and write the two sentences you would use to ask for consent before publishing the photograph.",
     },
     {
       objectives: [

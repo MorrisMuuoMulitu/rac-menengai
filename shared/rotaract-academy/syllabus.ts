@@ -2,7 +2,7 @@ export const COURSE_INFO = {
   title: "Rotaract, from the ground up",
   lead: "Understand the movement. Find your place in your club. Learn to plan, lead and follow through on service.",
   version: "2026.academy.v2",
-  minutes: 92,
+  minutes: 136,
   questionCount: 28,
   passMark: 23,
   lessons: [
@@ -41,6 +41,48 @@ export const COURSE_INFO = {
       title: "How a meeting runs",
       summary:
         "The Four-Way Test, the grace, the officers’ reports and the order every club meeting follows.",
+      minutes: 7,
+    },
+    {
+      id: "protocol-ethics",
+      title: "The Four-Way Test and the Object of Rotary",
+      summary:
+        "Rotary’s ethical guide and its statement of purpose, and what each asks of you.",
+      minutes: 7,
+    },
+    {
+      id: "protocol-meeting",
+      title: "Taking part in a meeting properly",
+      summary:
+        "Agendas, reports, action points, speaking, and how to raise something without derailing the room.",
+      minutes: 8,
+    },
+    {
+      id: "protocol-introductions",
+      title: "Introductions, titles and precedence",
+      summary:
+        "Getting names and positions right, welcoming a visiting officer, and why order of speaking exists.",
+      minutes: 7,
+    },
+    {
+      id: "protocol-business",
+      title: "Formal business and records",
+      summary:
+        "Fellowship talk versus a decision, what a minute must contain, and handling a conflict of interest.",
+      minutes: 8,
+    },
+    {
+      id: "protocol-ceremonies",
+      title: "Ceremonies and local traditions",
+      summary:
+        "Induction, handover, grace, songs, toasts and dress — and why almost none of it is a Rotary rule.",
+      minutes: 7,
+    },
+    {
+      id: "protocol-brand",
+      title: "Brand and communication protocol",
+      summary:
+        "Names, logos, invitations, consent and claims of endorsement that could mislead people.",
       minutes: 7,
     },
     {
@@ -112,6 +154,20 @@ export const CHAPTERS = [
     title: "Inside your club",
     description: "People, meetings and what membership asks of you.",
     lessons: ["structure", "membership", "fellowship", "meeting"],
+  },
+  {
+    id: "protocols",
+    title: "Rotary protocols and meeting confidence",
+    description:
+      "How to walk into any Rotary room, understand what is happening, and take part accurately.",
+    lessons: [
+      "protocol-ethics",
+      "protocol-meeting",
+      "protocol-introductions",
+      "protocol-business",
+      "protocol-ceremonies",
+      "protocol-brand",
+    ],
   },
   {
     id: "integrity",

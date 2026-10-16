@@ -40,6 +40,7 @@ import { FollowTheClub } from "../academy/FollowTheClub";
 import { OrderingActivity } from "../academy/OrderingActivity";
 import { flashcardsForChapter } from "../../shared/rotaract-academy/flashcards";
 import { orderingForLesson } from "../../shared/rotaract-academy/activities";
+import { PROTOCOL_LEVEL_LABEL } from "../../shared/rotaract-academy/types";
 import { AccountChip } from "../academy/AccountChip";
 import {
   AcademyError,
@@ -774,6 +775,22 @@ export default function AcademyPage() {
                   ) : block.kind === "note" ? (
                     <aside className="academy-note" key={blockIndex}>
                       {block.text}
+                    </aside>
+                  ) : block.kind === "tag" ? (
+                    /*
+                     * Rotary material mixes global policy, district guidance
+                     * and club custom. Saying which one a statement is stops a
+                     * local habit being read as a rule.
+                     */
+                    <aside
+                      className={`protocol-tag is-${block.level ?? "example"}`}
+                      key={blockIndex}
+                    >
+                      <span className="protocol-tag-level">
+                        {PROTOCOL_LEVEL_LABEL[block.level ?? "example"]}
+                      </span>
+                      <p>{block.text}</p>
+                      {block.source ? <cite>{block.source}</cite> : null}
                     </aside>
                   ) : (
                     <ul key={blockIndex}>

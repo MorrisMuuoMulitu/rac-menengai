@@ -68,6 +68,42 @@ export const FLASHCARDS: Flashcard[] = [
       "A short slot in the meeting for learning about Rotary or the club. It varies between clubs; some use it for a speaker, others for a project update.",
   },
   {
+    chapterId: "protocols",
+    term: "Precedence",
+    definition:
+      "The order in which people are recognised, seated or introduced at a formal occasion. It is a courtesy so nobody has to negotiate status in the room, not a ranking of anyone’s worth.",
+  },
+  {
+    chapterId: "protocols",
+    term: "Agenda",
+    definition:
+      "The running order of a meeting. Its job is to get a room of volunteers through the business in about an hour without anyone being ambushed, which is why the same items return in the same order.",
+  },
+  {
+    chapterId: "protocols",
+    term: "The minute",
+    definition:
+      "The record of a decision, not a transcript: what was agreed, who owns the next step, the deadline, and any approved cost. It is what lets someone who missed the meeting act on it.",
+  },
+  {
+    chapterId: "protocols",
+    term: "Quorum",
+    definition:
+      "The number of members who must be present for a decision to count. It comes from the club’s own constitution and bylaws, not from Rotary International, which is why a show of hands is not automatically binding.",
+  },
+  {
+    chapterId: "protocols",
+    term: "Policy or custom",
+    definition:
+      "The question to ask about any practice: is this a Rotary requirement, district guidance, or simply what this club does? Getting it wrong either burdens new members with rules that do not exist or hides what actually happens.",
+  },
+  {
+    chapterId: "protocols",
+    term: "Club custom",
+    definition:
+      "Something a club does because it does it: songs, toasts, fines, dress, the wording of an induction. Real, worth knowing, and not a Rotary requirement. Practices differ from club to club.",
+  },
+  {
     chapterId: "integrity",
     term: "Goodwill",
     definition:

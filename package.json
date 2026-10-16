@@ -18,6 +18,7 @@
     "sanity:build": "vite build --ssr scripts/sanity-seed.ts --outDir .sanity-seed",
     "sanity:check": "npm run sanity:build && node scripts/import-sanity.mjs",
     "sanity:push": "npm run sanity:build && node scripts/import-sanity.mjs --apply",
+    "academy:sources": "vite build --ssr shared/rotaract-academy/sources.ts --outDir .sources && node scripts/write-source-register.mjs",
     "format": "prettier --write src api scripts content index.html vercel.json vite.config.ts",
     "pretest": "node scripts/prepare-content.mjs",
     "pretypecheck": "node scripts/prepare-content.mjs",
