@@ -19,7 +19,7 @@ export interface OrderingActivity {
 
 export const ORDERING_ACTIVITIES: OrderingActivity[] = [
   {
-    lessonId: "meeting",
+    lessonId: "protocol-meeting",
     prompt: "Put the parts of a club meeting back in order.",
     feedback:
       "The reports sit before the programme, and the meeting closes the way it opened — with the Four-Way Test. Getting the shape right is what gets a room of volunteers through its business in an hour.",

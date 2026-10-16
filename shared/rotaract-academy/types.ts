@@ -19,6 +19,12 @@ export interface ClubLearningProfile {
   examples: string;
   evidence: string;
   partnership: string;
+  /**
+   * One sentence naming who currently leads the club. Kept as prose because
+   * the club decides how it wants to be described, and a role list that goes
+   * stale in a course is worse than a name the reader can check.
+   */
+  leadershipLine: string;
 }
 /**
  * How a protocol statement is grounded.

@@ -2,7 +2,7 @@ export const COURSE_INFO = {
   title: "Rotaract, from the ground up",
   lead: "Understand the movement. Find your place in your club. Learn to plan, lead and follow through on service.",
   version: "2026.academy.v2",
-  minutes: 136,
+  minutes: 132,
   questionCount: 28,
   passMark: 23,
   lessons: [
@@ -37,11 +37,11 @@ export const COURSE_INFO = {
       minutes: 5,
     },
     {
-      id: "meeting",
-      title: "How a meeting runs",
+      id: "club-leadership",
+      title: "Who leads, and how you come to lead",
       summary:
-        "The Four-Way Test, the grace, the officers’ reports and the order every club meeting follows.",
-      minutes: 7,
+        "The board, what each officer is accountable for, the Rotary year, and how members take on responsibility.",
+      minutes: 8,
     },
     {
       id: "protocol-ethics",
@@ -54,8 +54,8 @@ export const COURSE_INFO = {
       id: "protocol-meeting",
       title: "Taking part in a meeting properly",
       summary:
-        "Agendas, reports, action points, speaking, and how to raise something without derailing the room.",
-      minutes: 8,
+        "The shape of a meeting, who runs it, and how to raise something without derailing the room.",
+      minutes: 10,
     },
     {
       id: "protocol-introductions",
@@ -76,13 +76,6 @@ export const COURSE_INFO = {
       title: "Ceremonies and local traditions",
       summary:
         "Induction, handover, grace, songs, toasts and dress — and why almost none of it is a Rotary rule.",
-      minutes: 7,
-    },
-    {
-      id: "protocol-brand",
-      title: "Brand and communication protocol",
-      summary:
-        "Names, logos, invitations, consent and claims of endorsement that could mislead people.",
       minutes: 7,
     },
     {
@@ -153,7 +146,7 @@ export const CHAPTERS = [
     id: "club",
     title: "Inside your club",
     description: "People, meetings and what membership asks of you.",
-    lessons: ["structure", "membership", "fellowship", "meeting"],
+    lessons: ["structure", "membership", "fellowship", "club-leadership"],
   },
   {
     id: "protocols",
@@ -166,7 +159,6 @@ export const CHAPTERS = [
       "protocol-introductions",
       "protocol-business",
       "protocol-ceremonies",
-      "protocol-brand",
     ],
   },
   {

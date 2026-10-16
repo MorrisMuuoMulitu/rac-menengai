@@ -163,51 +163,43 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
     },
     {
       objectives: [
-        "Describe the parts of a club meeting and why each one exists.",
-        "Recite the Four-Way Test and say where it fits in the order.",
-        "Tell your club’s customs apart from Rotary’s own.",
+        "Say what each club officer is accountable for.",
+        "Explain how the Rotary year shapes who leads and when.",
+        "Name the first step you would take to hold a role.",
       ],
       blocks: [
         p(
-          "Every club runs its meeting a little differently, but the shape is broadly the same, and the shape is the point: it gets a room of volunteers through its business in about an hour and sends everyone home knowing what happens next.",
+          "The club is run by members who put their hands up, not by a head office. A president serves for one Rotary year and hands over, and the rest of the board is made up of members with jobs, families and studies alongside this.",
+        ),
+        p(
+          "The board is the group that decides. It sets the year’s plan, agrees spending, hears reports and carries responsibility when something goes wrong. Everything a board does is visible to members: minutes, the budget and the plan are the club’s, not the board’s.",
         ),
         list(
-          "Call to order — the president opens the meeting and confirms it can proceed.",
-          "Welcome and apologies — who is present, who sent apologies, and any guests.",
-          "The Four-Way Test — often recited together, at the opening or the close.",
-          "Invocation or grace — a short reflection. The words vary by club and by faith.",
-          "Reports — the secretary, the treasurer, and any project lead with something to report.",
-          "Programme or Rotary moment — a speaker, a learning slot, or a project update.",
-          "Announcements and next steps — what happens between now and the next meeting.",
-          "Close — the president closes, and the Four-Way Test is frequently said again.",
+          `President — leads the club and its board, chairs the meetings and answers for the year. ${profile.leadershipLine}`,
+          "President Elect — learns the job during the year before taking it, so handover is not a surprise.",
+          "Immediate Past President — keeps the year’s memory and advises the incoming team.",
+          "Secretary — keeps the records: minutes, correspondence, the membership list and the governing documents.",
+          "Treasurer — holds the figures, keeps the accounts and reports on money in and money out.",
+          "Directors — take one area each: service projects, membership, public image, fundraising, young generations.",
+          "Sergeant-at-Arms — keeps order and timing at meetings, and often the club’s customs.",
+        ),
+        tag(
+          "requirement",
+          "Rotary’s year runs from 1 July to 30 June, and clubs hold their elections and handover inside that cycle. Election procedure itself comes from the club’s own constitution and bylaws.",
+          "Rotary International — the Rotary year; club governing documents for elections",
         ),
         p(
-          "The Four-Way Test is Rotary’s own ethical guide. Herbert J. Taylor wrote it in 1932 and Rotary International adopted it in 1943. Many clubs recite it aloud. Of the things we think, say or do:",
-        ),
-        list(
-          "Is it the TRUTH?",
-          "Is it FAIR to all concerned?",
-          "Will it build GOODWILL and BETTER FRIENDSHIPS?",
-          "Will it be BENEFICIAL to all concerned?",
+          "Nobody arrives as president. Members start by taking one task on a project, then chairing a committee, then standing for a board role. That path matters more than ambition: the club has seen how you work before it hands you a budget.",
         ),
         p(
-          "Its companion is the Object of Rotary: to encourage and foster the ideal of service as a basis of worthy enterprise, through fellowship, and through service in business and the community and across borders.",
+          "If you want a role, say so to the president or the membership director and ask what the year actually needs. Leadership here is not a promotion — it is agreeing to be answerable for a piece of the club’s work.",
         ),
         note(
-          "The grace or invocation is a prayer, and clubs use different words — some use none. This course does not print a version and call it the Rotary one. Ask your club which words it uses, and whether they open the meeting or close it.",
-        ),
-        p(
-          "Not every custom travels. Prayer, songs, fines, dress and the closing ritual differ from club to club and country to country. Treat those as your club’s practice rather than a Rotary requirement, and ask before assuming.",
-        ),
-        p(
-          "Two things do travel. The Four-Way Test belongs to Rotary everywhere, and so does the reason for the order: a meeting with a shape gets its business done and leaves people wanting to return.",
-        ),
-        note(
-          "Minutes are the record of what was decided, not a transcript. A decision needs an owner and a deadline, and the secretary writes both down.",
+          `${profile.shortName}’s current board, roles and term are on the Leadership page. Any role that is vacant or a portfolio we have not confirmed is not listed there — ask the secretary rather than assuming a title from an old poster.`,
         ),
       ],
       activity:
-        "At your next meeting, follow the order above and note where your club diverges — then ask the president or secretary why. Afterwards, write the four questions of the Four-Way Test from memory and check yourself against the list.",
+        "Look at the club’s Leadership page. Pick the one role whose work you would actually turn up for, write one sentence saying why, and message the president or membership director to ask what it involves this year.",
     },
     {
       objectives: [
@@ -256,6 +248,16 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         p(
           "An agenda is a running order, and its job is to get a room of volunteers through the business in about an hour without anyone being ambushed. That is why the same items return in the same order.",
         ),
+        list(
+          "Call to order — the president opens the meeting and confirms it can proceed.",
+          "Welcome and apologies — who is present, who sent apologies, and any guests.",
+          "The Four-Way Test — often recited together, at the opening or the close.",
+          "Invocation or grace — a short reflection. The words vary by club and by faith.",
+          "Reports — the secretary, the treasurer, and any project lead with something to report.",
+          "Programme or Rotary moment — a speaker, a learning slot, or a project update.",
+          "Announcements and next steps — what happens between now and the next meeting.",
+          "Close — the president closes, and the Four-Way Test is frequently said again.",
+        ),
         tag(
           "example",
           "A common order is: call to order, welcome and apologies, the Four-Way Test, reports, a programme or Rotary moment, announcements, and the close. This is an illustrative shape, not a description of any particular club.",
@@ -264,6 +266,9 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         tag(
           "custom",
           `${profile.shortName}’s own standing agenda has not been confirmed for publication. Until it is, treat the shape above as an example and ask the secretary what our meeting actually runs.`,
+        ),
+        p(
+          "Two things do travel. The Four-Way Test belongs to Rotary everywhere, and so does the reason for the order: a meeting with a shape gets its business done and leaves people wanting to return.",
         ),
         p(
           "To raise something, ask for the item rather than the floor — “may I add something under any other business?” — then say what you want: a decision, information, or help. Three sentences is usually enough, and if it needs longer, ask to be put on the agenda for the next meeting.",
@@ -382,37 +387,6 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
       ],
       activity:
         "List three practices you have seen or heard described. For each, write whether it is a Rotary requirement, district guidance, or your club’s custom — and who you would ask to check.",
-    },
-    {
-      objectives: [
-        "Use the club’s name and marks correctly.",
-        "Avoid claiming Rotary endorsement you do not have.",
-        "Get consent before publishing a photograph.",
-      ],
-      blocks: [
-        p(
-          "Someone offers to run a fundraiser for the club and drafts a poster: the Rotary wheel, the words “supported by Rotary International”, and a photo of a child from a school visit.",
-        ),
-        p(
-          "Three things in that poster are wrong, and each one can cost the club something it cannot buy back.",
-        ),
-        tag(
-          "requirement",
-          "The Rotary and Rotaract marks are trademarks. Their use is governed by Rotary’s brand guidance, and a club may not claim Rotary endorsement for a project Rotary has not endorsed.",
-          "Rotary Brand Center",
-        ),
-        p(
-          `Name the club in full — ${profile.name} — and give people’s current titles. An abbreviation your members use among themselves is not a public name, and a title from a previous Rotary year is out of date.`,
-        ),
-        p(
-          "Consent before a photograph is published, not after. Ask the person, or the parent or guardian where the person is a child, tell them where it will appear, and accept a no without making it awkward — a refusal should never cost someone their place in the activity.",
-        ),
-        p(
-          "When you acknowledge a partner, say what they actually did. Misdescribing a partner’s contribution is the fastest way to lose one.",
-        ),
-      ],
-      activity:
-        "Rewrite the poster. Correct the name and title, replace the endorsement claim with something true, and write the two sentences you would use to ask for consent before publishing the photograph.",
     },
     {
       objectives: [
@@ -587,6 +561,11 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         ),
         p(
           "Get approval from the person responsible for club communications before speaking for the club. Use current, approved branding and accurately identify collaborating organisations. Do not imply that Rotary, a school, a government agency or a donor endorses something it has not agreed to.",
+        ),
+        tag(
+          "requirement",
+          "The Rotary and Rotaract marks are trademarks. Their use is governed by Rotary’s brand guidance, and a club may not claim Rotary endorsement for a project Rotary has not endorsed.",
+          "Rotary Brand Center",
         ),
         p(
           "Agree on photo permissions with the host and participants, especially where children or health settings are involved. Ask before publishing names, close-up photographs, private contact details or personal stories. Declining a photo should not affect someone’s access to an activity.",

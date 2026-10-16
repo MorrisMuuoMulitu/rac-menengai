@@ -23,7 +23,7 @@ describe("ordering activities", () => {
   });
 
   it("returns the activity for a lesson, and nothing for the rest", () => {
-    expect(orderingForLesson("meeting")?.lessonId).toBe("meeting");
+    expect(orderingForLesson("protocol-meeting")?.lessonId).toBe("protocol-meeting");
     expect(orderingForLesson("roots")).toBeUndefined();
   });
 });

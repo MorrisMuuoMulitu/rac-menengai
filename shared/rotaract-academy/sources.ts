@@ -167,4 +167,12 @@ export const CLUB_CONFIRMATIONS: ClubConfirmation[] = [
     owner: "Membership director",
     landsIn: "Find your place chapter",
   },
+  {
+    id: "committees",
+    question:
+      "Which standing committees does Menengai run this year, and who leads each one?",
+    why: "The leadership lesson teaches what the standard committees do; our own list and who leads them is the club’s to state, and inventing it would put a wrong name in front of a new member.",
+    owner: "Membership director with the secretary",
+    landsIn: "Find your place chapter, leadership lesson",
+  },
 ];

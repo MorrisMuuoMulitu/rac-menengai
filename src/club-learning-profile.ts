@@ -4,7 +4,26 @@
  * find `data.ts`.
  */
 import type { ClubLearningProfile } from "../shared/rotaract-academy/types.js";
-import { CLUB, MEMBERSHIP, formatKes } from "./data.js";
+import { CLUB, LEADERS, MEMBERSHIP, formatKes } from "./data.js";
+
+/**
+ * The current executive, named from the club's own Leadership data.
+ *
+ * Deliberately one sentence rather than a table: a course that reproduces a
+ * full board list goes out of date every July and nobody notices. The
+ * Leadership page is the source of truth; this points at it.
+ */
+function leadershipLine(): string {
+  const board = LEADERS.filter((leader) => leader.kind === "board");
+  const executive = board.filter((leader) => leader.group === "executive");
+  const president = executive.find(
+    (leader) => (leader.standing ?? leader.portfolio) === "President",
+  );
+  const term = president?.term ?? "the current Rotary year";
+  if (!president)
+    return `The club’s current board and ministries are listed on the Leadership page, with the Rotary year they serve.`;
+  return `For ${term} that is ${president.name}, and the rest of the board is on the Leadership page.`;
+}
 
 export const MENENGAI_LEARNING_PROFILE: ClubLearningProfile = {
   id: "menengai",
@@ -28,4 +47,5 @@ export const MENENGAI_LEARNING_PROFILE: ClubLearningProfile = {
     "Menengai’s dated records show activities at Bondeni, Kabatini and Pangani. They do not establish health improvements, educational progress or tree survival without follow-up.",
   partnership:
     "Menengai’s Kabatini mother-pack activity was recorded with the Rotaract Club of Bahati.",
+  leadershipLine: leadershipLine(),
 };
