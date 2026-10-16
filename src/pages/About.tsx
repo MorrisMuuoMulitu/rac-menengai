@@ -42,14 +42,15 @@ export default function AboutPage() {
 
       <section className="section">
         <div className="container about-grid">
-          <Reveal className="about-visual">
+          <Reveal className="about-visual about-service-visual" as="figure">
             <img
               src={ABOUT_IMAGES.tall}
-              alt="A member carries mother packs through the maternity ward at Bondeni"
-              width={960}
-              height={1280}
+              alt="Rotaract Club of Menengai members and partners with mother packs outside Bondeni Sub-County Hospital"
+              width={1280}
+              height={898}
               loading="lazy"
             />
+            <figcaption>Mother Pack Project · Bondeni Maternity</figcaption>
           </Reveal>
           <div className="about-copy">
             <Reveal>

@@ -187,7 +187,7 @@ export const HERO_IMAGES = {
 export const ABOUT_IMAGES = {
   // recent club photographs only; the older derivatives were posters or archive
   // frames that could not be captioned honestly (see docs/CONTENT_AUDIT.md)
-  tall: "/images/events/mother-pack-bondeni-2026/bondeni-2026-carrying-packs.webp",
+  tall: "/images/events/mother-pack-bondeni-2026/bondeni-2026-group-outside.webp",
   wide: "/images/events/mazingira-day-pangani-2026/mazingira-2026-group-photo.webp",
 };
 

@@ -66,7 +66,7 @@ export function Reveal({
   children: ReactNode;
   delay?: number;
   className?: string;
-  as?: "div" | "li" | "span" | "article";
+  as?: "div" | "li" | "span" | "article" | "figure";
   id?: string;
 }) {
   return (
