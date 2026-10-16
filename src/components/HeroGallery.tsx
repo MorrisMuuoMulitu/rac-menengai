@@ -10,6 +10,7 @@ import {
 
 export interface HeroPhoto {
   src: string;
+  srcSet?: string;
   alt: string;
   href: string;
   title: string;
@@ -97,7 +98,10 @@ export default function HeroGallery({ photos }: { photos: HeroPhoto[] }) {
         key={photo.src}
         className="photo-story-image"
         src={photo.src}
-        srcSet={`${photo.src.replace(".webp", "-720.webp")} 720w, ${photo.src} 1280w`}
+        srcSet={
+          photo.srcSet ??
+          `${photo.src.replace(".webp", "-720.webp")} 720w, ${photo.src} 1280w`
+        }
         sizes="(max-width: 760px) 100vw, 57vw"
         alt={photo.alt}
         width="1280"

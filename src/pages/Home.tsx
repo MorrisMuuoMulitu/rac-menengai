@@ -7,6 +7,14 @@ import HeroGallery from "../components/HeroGallery";
 /** Current club photographs link to their event records. */
 const HERO_LEAD = [
   {
+    title: "Welcoming our new members",
+    src: "/images/events/nakuru-region-district-governor-meeting-inductions/menengai-induction-members-lineup.webp",
+    srcSet:
+      "/images/events/nakuru-region-district-governor-meeting-inductions/menengai-induction-members-lineup-560.webp 560w, /images/events/nakuru-region-district-governor-meeting-inductions/menengai-induction-members-lineup.webp 1600w",
+    alt: "New members with the District Governor during Menengai’s September induction",
+    href: "/events/new-member-induction-2026",
+  },
+  {
     title: "Mazingira Day at Pangani",
     src: "/images/events/mazingira-day-pangani-2026/mazingira-2026-group-photo.webp",
     alt: "The club with learners at Pangani Special School on Mazingira Day",
@@ -386,10 +394,48 @@ export default function HomePage() {
       </section>
       <section className="club-magazine-section">
         <div className="container club-magazine-layout">
-          <a className="club-magazine-cover" href="/publications/menengai-magazine-2025-2026.pdf" target="_blank" rel="noopener noreferrer" aria-label="Read the Menengai magazine, opens PDF in a new tab">
-            <img src="/publications/menengai-magazine-2025-2026-cover.webp" alt="Cover of Menengai’s June 2026 club magazine" width={638} height={900} loading="lazy" />
+          <a
+            className="club-magazine-cover"
+            href="/publications/menengai-magazine-2025-2026.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
+            aria-label="Read the Menengai magazine, opens PDF in a new tab"
+          >
+            <img
+              src="/publications/menengai-magazine-2025-2026-cover.webp"
+              alt="Cover of Menengai’s June 2026 club magazine"
+              width={638}
+              height={900}
+              loading="lazy"
+            />
           </a>
-          <div><p className="kicker">Club magazine · Issue 1 · June 2026</p><h2>A year in our own words.</h2><p>Explore the 2025–2026 club magazine: leadership, membership, club service and a year of community work.</p><p className="magazine-file-note">25 pages · PDF · 19 MB</p><div className="magazine-actions"><a className="btn btn-primary" href="/publications/menengai-magazine-2025-2026.pdf" target="_blank" rel="noopener noreferrer">Read the magazine <ArrowUpRight size={18}/><span className="sr-only"> (PDF, opens in a new tab)</span></a><a className="text-link" href="/publications/menengai-magazine-2025-2026.pdf" download>Download PDF <ArrowRight size={18}/></a></div></div>
+          <div>
+            <p className="kicker">Club magazine · Issue 1 · June 2026</p>
+            <h2>A year in our own words.</h2>
+            <p>
+              Explore the 2025–2026 club magazine: leadership, membership, club
+              service and a year of community work.
+            </p>
+            <p className="magazine-file-note">25 pages · PDF · 19 MB</p>
+            <div className="magazine-actions">
+              <a
+                className="btn btn-primary"
+                href="/publications/menengai-magazine-2025-2026.pdf"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Read the magazine <ArrowUpRight size={18} />
+                <span className="sr-only"> (PDF, opens in a new tab)</span>
+              </a>
+              <a
+                className="text-link"
+                href="/publications/menengai-magazine-2025-2026.pdf"
+                download
+              >
+                Download PDF <ArrowRight size={18} />
+              </a>
+            </div>
+          </div>
         </div>
       </section>
       <section className="home-invitation">
