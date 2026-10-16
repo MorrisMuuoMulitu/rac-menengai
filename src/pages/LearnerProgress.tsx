@@ -32,7 +32,7 @@ import {
 import { APPLICATION_STATUS_LABEL } from "../../shared/rotaract-academy/application";
 import "../academy.css";
 
-type LoadState = "loading" | "ready" | "denied" | "error";
+type LoadState = "loading" | "ready" | "denied" | "signed-out" | "error";
 type Filter = "all" | "needs-nudge" | "in-progress" | "not-started" | "done";
 
 const FILTERS: { id: Filter; label: string }[] = [
@@ -114,8 +114,17 @@ export default function LearnerProgressPage() {
 
   useEffect(() => {
     if (!account.ready) return;
+    /*
+     * Asking the API while signed out can only ever produce the officer-only
+     * refusal, which reads as an accusation rather than an invitation. Say
+     * what is actually missing instead.
+     */
+    if (!account.signedIn) {
+      setStatus("signed-out");
+      return;
+    }
     void load();
-  }, [account.ready, load]);
+  }, [account.ready, account.signedIn, load]);
 
   const rows = useMemo(() => {
     const all = data?.learners ?? [];
@@ -179,6 +188,16 @@ export default function LearnerProgressPage() {
                 This page is for the club’s membership officers. If you should
                 have access, ask the club to add the email address you sign in
                 with to the reviewer list.
+              </span>
+            </div>
+          ) : null}
+
+          {status === "signed-out" ? (
+            <div className="academy-notice info">
+              <ShieldAlert size={18} aria-hidden="true" />
+              <span>
+                Sign in with the club’s membership officer account to see
+                learner progress. <Link to="/membership/sign-in">Sign in</Link>
               </span>
             </div>
           ) : null}

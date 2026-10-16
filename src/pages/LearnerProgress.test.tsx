@@ -195,3 +195,21 @@ it("says so when nobody has opened the course yet", async () => {
     await screen.findByText("Nobody has opened the course yet."),
   ).toBeTruthy();
 });
+
+it("asks a signed-out visitor to sign in rather than to ask for access", async () => {
+  api.load.mockClear();
+  api.account.signedIn = false;
+  try {
+    renderPage();
+    expect(
+      await screen.findByText(/Sign in with the club’s membership officer/),
+    ).toBeTruthy();
+    /* It must not accuse a visitor of not being an officer. */
+    expect(
+      screen.queryByText(/ask the club to add the email address/),
+    ).toBeNull();
+    expect(api.load).not.toHaveBeenCalled();
+  } finally {
+    api.account.signedIn = true;
+  }
+});
