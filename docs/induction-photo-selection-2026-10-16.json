@@ -1,6 +1,6 @@
 {
-  "event": "nakuru-region-district-governor-meeting-inductions",
-  "dateConfirmedByOwner": "2026-09-08",
+  "event": "new-member-induction-2026",
+  "dateConfirmedByOwner": "2026-09-15",
   "selection": [
     {
       "source": "P1360769.jpg",
@@ -44,5 +44,6 @@
     }
   ],
   "originalCount": 28,
-  "selectedCount": 10
+  "selectedCount": 10,
+  "correction": "Owner corrected the date to 15 September and requested the new photographs under the separate Induction of New Members category."
 }
