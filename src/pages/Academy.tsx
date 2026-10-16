@@ -31,7 +31,7 @@ import {
 } from "lucide-react";
 import { PageMeta } from "../components/ui";
 import { CHAPTERS, COURSE_INFO } from "../course-info";
-import { SignInSlot, useAccount } from "../academy/account";
+import { useAccount } from "../academy/account";
 import {
   AcademyError,
   answerScenario,
@@ -524,16 +524,17 @@ export default function AcademyPage() {
                   Checking how to sign you in…
                 </p>
               ) : account.available ? (
-                <>
-                  <SignInSlot />
-                  {/* A way in that does not depend on the modal mounting. */}
-                  <a
-                    className="academy-signin-fallback"
-                    href="https://accounts.rotaractmenengai.org/sign-in"
-                  >
-                    Or use the sign-in page
-                  </a>
-                </>
+                /*
+                 * A link, not Clerk's modal. The modal is an overlay that
+                 * decides for itself whether to render, and when it declined
+                 * the button silently did nothing. A page cannot fail quietly.
+                 */
+                <Link
+                  className="btn btn-primary btn-lg"
+                  to="/membership/sign-in"
+                >
+                  Sign in to save progress <ArrowRight aria-hidden="true" />
+                </Link>
               ) : (
                 <p className="academy-hint">
                   Sign-in is not switched on for this deployment yet. Ask the

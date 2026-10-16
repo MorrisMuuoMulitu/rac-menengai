@@ -97,6 +97,10 @@
       "dest": "/membership/academy/index.html"
     },
     {
+      "src": "^/membership/sign-in/?$",
+      "dest": "/membership/sign-in/index.html"
+    },
+    {
       "src": "^/membership/queue/?$",
       "dest": "/membership/queue/index.html"
     },

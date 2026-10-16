@@ -8,18 +8,8 @@
  */
 
 import { useEffect, useMemo } from "react";
-import { createPortal } from "react-dom";
-import {
-  ClerkProvider,
-  SignInButton,
-  useAuth,
-  useUser,
-} from "@clerk/react";
-import {
-  useAccountPublisher,
-  useSignInSlot,
-  type Account,
-} from "./account";
+import { ClerkProvider, useAuth, useUser } from "@clerk/react";
+import { useAccountPublisher, type Account } from "./account";
 
 const PUBLISHABLE_KEY = String(
   import.meta.env.VITE_CLERK_PUBLISHABLE_KEY ?? "",
@@ -47,7 +37,6 @@ function Publisher() {
   const publish = useAccountPublisher();
   const { isLoaded, isSignedIn, getToken } = useAuth();
   const { user } = useUser();
-  const slot = useSignInSlot();
 
   const value = useMemo<Account>(
     () => ({
@@ -74,21 +63,7 @@ function Publisher() {
     publish(value);
   }, [publish, value]);
 
-  /*
-   * `clerk.openSignIn()` resolves and mounts nothing under this SDK
-   * generation, and the `<SignInButton>` element only works where it is
-   * rendered. Portalling it into the page's mount point keeps it inside this
-   * provider, which is what Clerk requires.
-   */
-  if (!slot) return null;
-  return createPortal(
-    <SignInButton mode="modal">
-      <button className="btn btn-primary btn-lg" type="button">
-        Sign in to save progress <span aria-hidden="true">→</span>
-      </button>
-    </SignInButton>,
-    slot,
-  );
+  return null;
 }
 
 export default function ClerkBridge() {

@@ -44,10 +44,6 @@ export const ANONYMOUS: Account = {
 
 const AccountContext = createContext<Account>(ANONYMOUS);
 const PublisherContext = createContext<(account: Account) => void>(() => {});
-const SignInSlotContext = createContext<HTMLElement | null>(null);
-const SetSignInSlotContext = createContext<
-  (node: HTMLElement | null) => void
->(() => {});
 
 export function useAccount(): Account {
   return useContext(AccountContext);
@@ -58,36 +54,12 @@ export function useAccountPublisher() {
   return useContext(PublisherContext);
 }
 
-/** The element the sign-in button is rendered into. Read by the bridge. */
-export function useSignInSlot() {
-  return useContext(SignInSlotContext);
-}
-
-/**
- * Marks where the sign-in button goes.
- *
- * Clerk's `<SignInButton>` has to *render* inside `<ClerkProvider>` — handing
- * the element around through context puts it in the tree outside the provider
- * and throws. So the page renders this mount point and the bridge portals the
- * button into it, which keeps the button inside the provider and Clerk out of
- * the main bundle.
- */
-export function SignInSlot() {
-  const setSlot = useContext(SetSignInSlotContext);
-  return <span className="academy-signin-slot" ref={setSlot} />;
-}
-
 export function AccountProvider({ children }: { children: ReactNode }) {
   const [account, setAccount] = useState<Account>(ANONYMOUS);
-  const [slot, setSlot] = useState<HTMLElement | null>(null);
   return (
     <AccountContext.Provider value={account}>
       <PublisherContext.Provider value={setAccount}>
-        <SignInSlotContext.Provider value={slot}>
-          <SetSignInSlotContext.Provider value={setSlot}>
-            {children}
-          </SetSignInSlotContext.Provider>
-        </SignInSlotContext.Provider>
+        {children}
       </PublisherContext.Provider>
     </AccountContext.Provider>
   );

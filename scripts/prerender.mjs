@@ -10,7 +10,11 @@ const escape = (value) =>
     .replace(/"/g, "&quot;");
 const sitemapEntries = [];
 /* Pages we publish for people, not for search engines. */
-const NOINDEX = new Set(["/404", "/membership/queue"]);
+const NOINDEX = new Set([
+  "/404",
+  "/membership/queue",
+  "/membership/sign-in",
+]);
 for (const route of [...routes, "/404"]) {
   const result = render(route);
   let html = template

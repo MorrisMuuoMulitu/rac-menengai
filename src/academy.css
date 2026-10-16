@@ -5,12 +5,37 @@
    spine in the contents rail that fills as lessons are finished.
    ============================================================ */
 
-.academy-signin-slot {
-  display: contents;
+.academy-signin-page {
+  background: var(--paper);
+  padding: clamp(2rem, 5vw, 4rem) 0 clamp(3rem, 7vw, 5rem);
+  min-height: 70vh;
 }
-
-.academy-signin-fallback {
+.academy-signin-page-inner {
+  display: grid;
+  gap: 0.9rem;
+  justify-items: center;
+  text-align: center;
+}
+.academy-signin-page-back {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
   font-size: 0.88rem;
+}
+.academy-signin-page h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  max-width: 24ch;
+}
+.academy-signin-page > .container > p {
+  max-width: 56ch;
+  color: var(--ink-600);
+}
+/* Clerk renders its own card here; give it room and keep it centred. */
+.academy-signin-page .cl-rootBox,
+.academy-signin-page .cl-cardBox {
+  margin-top: 1rem;
 }
 
 .academy-loading {

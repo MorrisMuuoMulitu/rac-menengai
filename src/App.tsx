@@ -3,6 +3,7 @@
  * "Attend a fellowship".
  */
 import { Routes, Route } from "react-router-dom";
+import { Suspense, lazy } from "react";
 import {
   AnnouncementBar,
   Footer,
@@ -28,6 +29,8 @@ import NotFoundPage from "./pages/NotFound";
 import AcademyLayout from "./academy/AcademyLayout";
 import AcademyPage from "./pages/Academy";
 import ReviewQueuePage from "./pages/ReviewQueue";
+
+const SignInPage = lazy(() => import("./academy/SignInPage"));
 
 export default function App() {
   return (
@@ -59,6 +62,21 @@ export default function App() {
             <Route path="/membership/academy" element={<AcademyPage />} />
             <Route path="/membership/queue" element={<ReviewQueuePage />} />
           </Route>
+          {/* Its own chunk, so Clerk is fetched only when someone signs in. */}
+          <Route
+            path="/membership/sign-in"
+            element={
+              <Suspense
+                fallback={
+                  <div className="academy-loading" role="status">
+                    <p>Loading sign-in…</p>
+                  </div>
+                }
+              >
+                <SignInPage />
+              </Suspense>
+            }
+          />
           <Route path="/contact" element={<ContactPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>
