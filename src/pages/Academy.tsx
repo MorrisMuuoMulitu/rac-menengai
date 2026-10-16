@@ -524,7 +524,16 @@ export default function AcademyPage() {
                   Checking how to sign you in…
                 </p>
               ) : account.available ? (
-                <SignInSlot />
+                <>
+                  <SignInSlot />
+                  {/* A way in that does not depend on the modal mounting. */}
+                  <a
+                    className="academy-signin-fallback"
+                    href="https://accounts.rotaractmenengai.org/sign-in"
+                  >
+                    Or use the sign-in page
+                  </a>
+                </>
               ) : (
                 <p className="academy-hint">
                   Sign-in is not switched on for this deployment yet. Ask the

@@ -9,6 +9,10 @@
   display: contents;
 }
 
+.academy-signin-fallback {
+  font-size: 0.88rem;
+}
+
 .academy-loading {
   display: grid;
   place-items: center;
