@@ -31,6 +31,25 @@ export interface LearningRecord {
   updatedAt: string | null;
 }
 
+/**
+ * Curriculum migration: lesson ids that no longer exist, and where their
+ * content went.
+ *
+ * When `meeting` and `protocol-brand` were merged into other lessons, learners
+ * who had finished them would otherwise have been told they had not. An old id
+ * listed here is carried forward to the lesson that now holds the same
+ * material, so no completed work is reset.
+ */
+export const LEGACY_LESSON_IDS: Record<string, string> = {
+  meeting: "protocol-meeting",
+  "protocol-brand": "public-image",
+};
+
+/** Resolve an id from an earlier curriculum to the lesson that holds it now. */
+export function migrateLessonId(id: string): string {
+  return LEGACY_LESSON_IDS[id] ?? id;
+}
+
 export function emptyRecord(courseVersion: string): LearningRecord {
   return {
     courseVersion,
@@ -207,11 +226,19 @@ export function normaliseRecord(
   if (source.courseVersion !== courseVersion)
     return emptyRecord(courseVersion);
 
+  /*
+   * Ids from an earlier curriculum are carried forward before anything is
+   * dropped, so a merge never reads as "you did not do this".
+   */
   const completedLessons = Array.isArray(source.completedLessons)
-    ? source.completedLessons.filter(
-        (id): id is string =>
-          typeof id === "string" && validLessonIds.includes(id),
-      )
+    ? [
+        ...new Set(
+          source.completedLessons
+            .filter((id): id is string => typeof id === "string")
+            .map(migrateLessonId)
+            .filter((id) => validLessonIds.includes(id)),
+        ),
+      ]
     : [];
 
   const scenarioAnswers: Record<string, string> = {};

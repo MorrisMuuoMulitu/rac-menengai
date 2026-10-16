@@ -332,6 +332,37 @@ describe("progress", () => {
     expect(record.bestScore).toBe(0);
     expect(record.attempts).toBe(0);
   });
+
+  it("carries a merged lesson forward instead of forgetting it", () => {
+    /*
+     * `meeting` and `protocol-brand` were merged into other lessons. A learner
+     * who had finished them must not be told they had not.
+     */
+    const record = normaliseRecord(
+      {
+        courseVersion: course.version,
+        completedLessons: ["meeting", "protocol-brand", "roots"],
+        passed: false,
+      },
+      course.version,
+      lessonIds,
+    );
+    expect(record.completedLessons.sort()).toEqual(
+      ["protocol-meeting", "public-image", "roots"].sort(),
+    );
+  });
+
+  it("does not double-count when both the old and new id are present", () => {
+    const record = normaliseRecord(
+      {
+        courseVersion: course.version,
+        completedLessons: ["meeting", "protocol-meeting"],
+      },
+      course.version,
+      lessonIds,
+    );
+    expect(record.completedLessons).toEqual(["protocol-meeting"]);
+  });
 });
 
 describe("application", () => {
