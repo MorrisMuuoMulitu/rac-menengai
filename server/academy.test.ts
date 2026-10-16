@@ -14,20 +14,29 @@ import {
   emptyRecord,
   type LearningRecord,
 } from "../shared/rotaract-academy/progress";
-import type {
-  MembershipApplication,
-} from "../shared/rotaract-academy/application";
+import type { MembershipApplication } from "../shared/rotaract-academy/application";
 
 /* ---------------- a repository that behaves like the real one --------------- */
 
-function fakeRepository(): AcademyRepository & { data: Map<string, LearnerRow> } {
+function fakeRepository(): AcademyRepository & {
+  data: Map<string, LearnerRow>;
+} {
   const data = new Map<string, LearnerRow>();
   const applications = new Map<string, ReviewQueueItem>();
   const events: string[] = [];
+  const notes = new Map<string, { text: string; updatedAt: string }>();
   const key = (userId: string, clubId: string) => `${clubId}:${userId}`;
 
   return {
     data,
+    async loadNote(userId, clubId, lessonId) {
+      return notes.get(`${key(userId, clubId)}:${lessonId}`) ?? null;
+    },
+    async saveNote(userId, clubId, lessonId, text) {
+      const note = { text, updatedAt: new Date().toISOString() };
+      notes.set(`${key(userId, clubId)}:${lessonId}`, note);
+      return note;
+    },
     async ensureLearner({ userId, clubId, email, displayName }) {
       const existing = data.get(key(userId, clubId));
       if (existing) return existing;
@@ -151,7 +160,9 @@ const env = {
  * resolver reads a signed session and cannot be influenced by the caller.
  */
 function resolver(people: Record<string, Actor>) {
-  return async (req: { headers: Record<string, string | string[] | undefined> }) => {
+  return async (req: {
+    headers: Record<string, string | string[] | undefined>;
+  }) => {
     const id = req.headers["x-test-user"];
     const userId = Array.isArray(id) ? id[0] : id;
     return userId ? (people[userId] ?? null) : null;
@@ -197,6 +208,101 @@ beforeEach(() => {
 });
 
 const LESSON_IDS = FULL_COURSE.modules.map((module) => module.id);
+
+describe("private lesson notes", () => {
+  it("saves only to the authenticated account without changing course progress", async () => {
+    const saved = await post(learner.userId, {
+      action: "note",
+      lessonId: "roots",
+      text: "My reflection",
+      userId: secondLearner.userId,
+    });
+    expect(saved.statusCode).toBe(200);
+    const own = await get(
+      learner.userId,
+      "/api/academy?view=note&lessonId=roots",
+    );
+    expect((own.body as { note: { text: string } }).note.text).toBe(
+      "My reflection",
+    );
+    const other = await get(
+      secondLearner.userId,
+      "/api/academy?view=note&lessonId=roots",
+    );
+    expect((other.body as { note: unknown }).note).toBeNull();
+    const reviewerRead = await get(
+      officer.userId,
+      "/api/academy?view=note&lessonId=roots",
+    );
+    expect((reviewerRead.body as { note: unknown }).note).toBeNull();
+    expect(
+      repository.data.get(`menengai:${learner.userId}`)?.record
+        .completedLessons,
+    ).toEqual([]);
+    const publicRead = await get(
+      undefined,
+      "/api/academy?view=note&lessonId=roots",
+    );
+    expect(publicRead.statusCode).toBe(401);
+  });
+  it("rejects unknown lessons and oversized notes", async () => {
+    expect(
+      (
+        await post(learner.userId, {
+          action: "note",
+          lessonId: "unknown",
+          text: "x",
+        })
+      ).statusCode,
+    ).toBe(400);
+    expect(
+      (
+        await post(learner.userId, {
+          action: "note",
+          lessonId: "roots",
+          text: "x".repeat(2001),
+        })
+      ).statusCode,
+    ).toBe(422);
+  });
+  it("still saves for an account with no email on file, and rejects a stale account", async () => {
+    const noEmail: Actor = {
+      userId: "user_no_email",
+      email: null,
+      displayName: "No Email",
+      reviewer: false,
+    };
+    const scoped = createAcademyHandler(env, {
+      resolveActor: resolver({ ...people, [noEmail.userId]: noEmail }),
+      repository,
+    });
+    const reply = async (user: string, body: Record<string, unknown>) => {
+      const res = response();
+      await scoped(request("POST", { user, body }), res as never);
+      return res;
+    };
+    expect(
+      (
+        await reply(noEmail.userId, {
+          action: "note",
+          lessonId: "roots",
+          text: "Kept without an email",
+          ownerEmail: "",
+        })
+      ).statusCode,
+    ).toBe(200);
+    expect(
+      (
+        await reply(learner.userId, {
+          action: "note",
+          lessonId: "roots",
+          text: "Wrong account",
+          ownerEmail: secondLearner.email,
+        })
+      ).statusCode,
+    ).toBe(409);
+  });
+});
 /** The order the page actually offers lessons in. */
 const PRESENTED_LESSON_IDS = CURRICULUM.flatMap((chapter) =>
   chapter.lessons.map((lesson) => lesson.id),
@@ -340,8 +446,10 @@ describe("lesson progress", () => {
       lessonId: LESSON_IDS[0],
     });
     expect(res.statusCode).toBe(200);
-    expect(repository.data.get(`menengai:${learner.userId}`)?.record
-      .completedLessons).toEqual([LESSON_IDS[0]]);
+    expect(
+      repository.data.get(`menengai:${learner.userId}`)?.record
+        .completedLessons,
+    ).toEqual([LESSON_IDS[0]]);
     expect(repository.data.has(`menengai:${secondLearner.userId}`)).toBe(false);
   });
 
@@ -351,8 +459,10 @@ describe("lesson progress", () => {
       lessonId: LESSON_IDS[LESSON_IDS.length - 1],
     });
     expect(res.statusCode).toBe(409);
-    expect(repository.data.get(`menengai:${learner.userId}`)?.record
-      .completedLessons).toEqual([]);
+    expect(
+      repository.data.get(`menengai:${learner.userId}`)?.record
+        .completedLessons,
+    ).toEqual([]);
   });
 
   it("rejects a lesson id that is not in the course", async () => {
@@ -367,9 +477,9 @@ describe("lesson progress", () => {
     await completeCourse(learner.userId);
     const mine = await get(learner.userId);
     const theirs = await get(secondLearner.userId);
-    expect((mine.body as { summary: { percent: number } }).summary.percent).toBe(
-      100,
-    );
+    expect(
+      (mine.body as { summary: { percent: number } }).summary.percent,
+    ).toBe(100);
     expect(
       (theirs.body as { summary: { percent: number } }).summary.percent,
     ).toBe(0);
@@ -459,8 +569,8 @@ describe("the assessment", () => {
       await post(learner.userId, { action: "lesson", lessonId });
     const res = await post(learner.userId, {
       action: "assessment",
-      answers: FULL_COURSE.questions.map((question) =>
-        (question.correctIndex + 1) % question.options.length,
+      answers: FULL_COURSE.questions.map(
+        (question) => (question.correctIndex + 1) % question.options.length,
       ),
     });
     expect((res.body as { passed: boolean }).passed).toBe(false);
@@ -503,9 +613,7 @@ describe("the proposal and the application", () => {
     const body = res.body as { application: MembershipApplication };
     expect(body.application.status).toBe("submitted");
     expect(body.application.submittedAt).toBeTruthy();
-    expect(body.application.courseScore).toBe(
-      FULL_COURSE.questions.length,
-    );
+    expect(body.application.courseScore).toBe(FULL_COURSE.questions.length);
   });
 
   it("will not let a learner approve their own application", async () => {

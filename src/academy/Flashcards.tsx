@@ -35,7 +35,10 @@ export function Flashcards({
   };
 
   return (
-    <section className="flashcards" aria-label={`Flash cards for ${chapterTitle}`}>
+    <section
+      className="flashcards"
+      aria-label={`Flash cards for ${chapterTitle}`}
+    >
       <header className="flashcards-head">
         <h3>Flash cards</h3>
         <p>

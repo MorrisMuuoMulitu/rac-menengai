@@ -264,6 +264,7 @@ export default function AcademyPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const [contentsOpen, setContentsOpen] = useState(false);
   const [assessmentResult, setAssessmentResult] =
     useState<GradedResponse | null>(null);
   useEffect(() => {
@@ -470,6 +471,18 @@ export default function AcademyPage() {
   const summary = data?.summary;
   const signedIn = Boolean(data?.signedIn);
   const record = data?.record;
+  const nextStep = steps[index + 1];
+  const nextTitle = !nextStep
+    ? "Course complete"
+    : nextStep.kind === "lesson"
+      ? course.modules.find((module) => module.id === nextStep.lessonId)?.title
+      : nextStep.kind === "scenario"
+        ? "Chapter practice check"
+        : nextStep.kind === "assessment"
+          ? "Final assessment"
+          : nextStep.kind === "proposal"
+            ? "Your service proposal"
+            : "Membership journey";
 
   return (
     <>
@@ -484,6 +497,15 @@ export default function AcademyPage() {
             <Link className="lesson-bar-back" to="/membership/academy">
               <ArrowLeft size={15} aria-hidden="true" /> Course
             </Link>
+            <button
+              type="button"
+              className="lesson-contents-toggle"
+              aria-expanded={contentsOpen}
+              aria-controls="lesson-contents"
+              onClick={() => setContentsOpen((open) => !open)}
+            >
+              {contentsOpen ? "Hide contents" : "Contents"}
+            </button>
             <p className="lesson-bar-where">
               {chapter ? `${chapter.title} · ` : ""}
               <strong>
@@ -505,12 +527,17 @@ export default function AcademyPage() {
                 className="lesson-nav"
                 disabled={index >= steps.length - 1 || !unlocked(index + 1)}
                 onClick={() => go(steps[index + 1])}
-                aria-label="Next step"
+                aria-label={`Next: ${nextTitle}`}
               >
-                Next <ChevronRight size={18} aria-hidden="true" />
+                <span className="lesson-next-title">Next: {nextTitle}</span>
+                <ChevronRight size={18} aria-hidden="true" />
               </button>
             </div>
           </div>
+          <p className="lesson-overall-progress">
+            Course progress: {summary?.percent ?? 0}% ·{" "}
+            {summary?.completed ?? 0} of {steps.length} steps complete
+          </p>
           <div
             className="lesson-bar-track"
             role="progressbar"
@@ -603,9 +630,16 @@ export default function AcademyPage() {
         </div>
       ) : null}
 
-      <div className="container academy-layout">
+      <div
+        className={`container academy-layout${contentsOpen ? "" : " is-focused"}`}
+      >
         {/* ------------------------------------------------ contents rail -- */}
-        <nav className="academy-rail" aria-label="Course contents">
+        <nav
+          id="lesson-contents"
+          className="academy-rail"
+          aria-label="Course contents"
+          hidden={!contentsOpen}
+        >
           <h2 className="academy-rail-title">Contents</h2>
           <ol>
             {course.chapters.map((item, chapterIndex) => {
@@ -795,6 +829,7 @@ export default function AcademyPage() {
 
               <LessonExplorer
                 key={`reading-${lesson.id}`}
+                lessonId={lesson.id}
                 blocks={lessonBody.blocks}
                 objectives={lessonBody.objectives}
                 activity={lessonBody.activity}
@@ -1511,7 +1546,8 @@ export function AssessmentStep({
           course.questions.length ? (
             <p className="academy-hint">
               {answers.filter((answer) => answer !== null).length} of{" "}
-              {course.questions.length} answered. Answer every question before submitting.
+              {course.questions.length} answered. Answer every question before
+              submitting.
             </p>
           ) : null}
         </div>

@@ -78,10 +78,18 @@ export function OrderingActivity({ activity }: { activity: Activity }) {
       </ol>
 
       <div className="ordering-actions">
-        <button type="button" className="btn btn-primary btn-md" onClick={check}>
+        <button
+          type="button"
+          className="btn btn-primary btn-md"
+          onClick={check}
+        >
           Check my order <Check aria-hidden="true" />
         </button>
-        <button type="button" className="btn btn-secondary btn-md" onClick={reset}>
+        <button
+          type="button"
+          className="btn btn-secondary btn-md"
+          onClick={reset}
+        >
           <RotateCcw aria-hidden="true" /> Shuffle again
         </button>
       </div>

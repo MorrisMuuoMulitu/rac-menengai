@@ -56,8 +56,7 @@ function Publisher() {
           return null;
         }
       },
-      signOut: () =>
-        clerk.signOut({ redirectUrl: "/membership/academy" }),
+      signOut: () => clerk.signOut({ redirectUrl: "/membership/academy" }),
     }),
     [isLoaded, isSignedIn, getToken, user, clerk],
   );

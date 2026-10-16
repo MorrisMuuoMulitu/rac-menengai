@@ -100,9 +100,8 @@ export function SignInPage() {
         ]}
         alternate={
           <>
-            No account yet?{" "}
-            <Link to="/membership/register">Create one</Link> — it is free and
-            takes a minute.
+            No account yet? <Link to="/membership/register">Create one</Link> —
+            it is free and takes a minute.
           </>
         }
       >

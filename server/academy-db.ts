@@ -44,6 +44,17 @@ export interface ReviewQueueItem extends MembershipApplication {
 }
 
 export interface AcademyRepository {
+  loadNote(
+    userId: string,
+    clubId: string,
+    lessonId: string,
+  ): Promise<{ text: string; updatedAt: string } | null>;
+  saveNote(
+    userId: string,
+    clubId: string,
+    lessonId: string,
+    text: string,
+  ): Promise<{ text: string; updatedAt: string }>;
   /** Create or return the learner. Never returns another learner's row. */
   ensureLearner(input: {
     userId: string;
@@ -98,6 +109,14 @@ const CLUB_ID = "menengai";
  * `if not exists`; running this repeatedly is a no-op.
  */
 const SCHEMA = `
+create table if not exists academy_note (
+  user_id text not null,
+  club_id text not null,
+  lesson_id text not null,
+  text text not null check (char_length(text) <= 2000),
+  updated_at timestamptz not null default now(),
+  primary key (user_id, club_id, lesson_id)
+);
 create table if not exists academy_learner (
   user_id text not null,
   club_id text not null,
@@ -221,7 +240,8 @@ export function createPostgresRepository(
   const validLessonIds = FULL_COURSE.modules.map((module) => module.id);
 
   async function ready() {
-    if (!schemaReady) schemaReady = database.query(SCHEMA).then(() => undefined);
+    if (!schemaReady)
+      schemaReady = database.query(SCHEMA).then(() => undefined);
     try {
       await schemaReady;
     } catch (error) {
@@ -231,6 +251,26 @@ export function createPostgresRepository(
   }
 
   return {
+    async loadNote(userId, clubId, lessonId) {
+      await ready();
+      const { rows } = await database.query(
+        `select text, updated_at from academy_note where user_id = $1 and club_id = $2 and lesson_id = $3`,
+        [userId, clubId, lessonId],
+      );
+      return rows[0]
+        ? { text: rows[0].text, updatedAt: asIso(rows[0].updated_at)! }
+        : null;
+    },
+    async saveNote(userId, clubId, lessonId, text) {
+      await ready();
+      const { rows } = await database.query(
+        `insert into academy_note (user_id, club_id, lesson_id, text) values ($1,$2,$3,$4)
+         on conflict (user_id, club_id, lesson_id) do update set text = excluded.text, updated_at = now()
+         returning text, updated_at`,
+        [userId, clubId, lessonId, text],
+      );
+      return { text: rows[0].text, updatedAt: asIso(rows[0].updated_at)! };
+    },
     async ensureLearner({ userId, clubId, email, displayName }) {
       await ready();
       const { rows } = await database.query(

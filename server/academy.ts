@@ -37,10 +37,7 @@ import {
 } from "../shared/rotaract-academy/application.js";
 import { SCENARIO_CHECKS } from "../shared/rotaract-academy/scenarios.js";
 import { CURRICULUM } from "../shared/rotaract-academy/curriculum.js";
-import {
-  CLUB_ID,
-  type AcademyRepository,
-} from "./academy-db.js";
+import { CLUB_ID, type AcademyRepository } from "./academy-db.js";
 import type { Actor, ActorResolver, AuthRequest } from "./academy-auth.js";
 
 export interface AcademyResponse {
@@ -73,10 +70,7 @@ const REVIEWER_STATUSES = new Set<ApplicationStatus>([
 
 type Body = Record<string, unknown>;
 
-function header(
-  request: AuthRequest,
-  name: string,
-): string | undefined {
+function header(request: AuthRequest, name: string): string | undefined {
   const value = request.headers[name];
   return Array.isArray(value) ? value[0] : value;
 }
@@ -97,7 +91,9 @@ function readDraft(input: unknown): ApplicationDraft | null {
   if (!input || typeof input !== "object") return null;
   const source = input as Record<string, unknown>;
   const draft = {} as ApplicationDraft;
-  for (const key of Object.keys(APPLICATION_LIMITS) as (keyof ApplicationDraft)[]) {
+  for (const key of Object.keys(
+    APPLICATION_LIMITS,
+  ) as (keyof ApplicationDraft)[]) {
     const value = source[key];
     if (value !== undefined && typeof value !== "string") return null;
     draft[key] = typeof value === "string" ? value.slice(0, 4000) : "";
@@ -131,10 +127,7 @@ function learnerPayload(
   };
 }
 
-async function withLearner(
-  dependencies: AcademyDependencies,
-  actor: Actor,
-) {
+async function withLearner(dependencies: AcademyDependencies, actor: Actor) {
   const learner = await dependencies.repository.ensureLearner({
     userId: actor.userId,
     clubId: CLUB_ID,
@@ -148,10 +141,7 @@ async function withLearner(
  * A lesson can be marked done only if everything before it is done, so a
  * tampered request cannot mark the whole course complete in one call.
  */
-function lessonIsUnlocked(
-  record: LearningRecord,
-  lessonId: string,
-): boolean {
+function lessonIsUnlocked(record: LearningRecord, lessonId: string): boolean {
   const index = LESSON_IDS.indexOf(lessonId);
   if (index < 0) return false;
   if (record.completedLessons.includes(lessonId)) return true;
@@ -209,6 +199,23 @@ export function createAcademyHandler(
 
     /* ---------- read ---------- */
     if (request.method === "GET") {
+      const readUrl = new URL(request.url ?? "/api/academy", origin);
+      if (readUrl.searchParams.get("view") === "note") {
+        if (!actor)
+          return response
+            .status(401)
+            .json({ error: "Sign in to read your notes." });
+        const lessonId = readUrl.searchParams.get("lessonId") ?? "";
+        if (!LESSON_IDS.includes(lessonId))
+          return response.status(400).json({ error: "Unknown lesson." });
+        return response.status(200).json({
+          note: await dependencies.repository.loadNote(
+            actor.userId,
+            CLUB_ID,
+            lessonId,
+          ),
+        });
+      }
       if (wantsReview) {
         if (!actor?.reviewer)
           return response
@@ -232,9 +239,10 @@ export function createAcademyHandler(
         actor.userId,
         CLUB_ID,
       );
-      return response
-        .status(200)
-        .json({ course, ...learnerPayload(actor, learner.record, application) });
+      return response.status(200).json({
+        course,
+        ...learnerPayload(actor, learner.record, application),
+      });
     }
 
     /* ---------- write ---------- */
@@ -254,6 +262,42 @@ export function createAcademyHandler(
       return response.status(401).json({ error: "Sign in to continue." });
     }
     const signedIn: Actor = actor;
+
+    if (action === "note") {
+      /*
+       * The note is stored against the authenticated user id, so this is not
+       * the access boundary. It only catches a stale form that was opened
+       * under a different account. An account with no email on file can still
+       * save, so require both sides to carry an address before comparing.
+       */
+      if (
+        typeof body.ownerEmail === "string" &&
+        body.ownerEmail.length > 0 &&
+        signedIn.email &&
+        body.ownerEmail.toLowerCase() !== signedIn.email?.toLowerCase()
+      )
+        return response
+          .status(409)
+          .json({
+            error:
+              "Your signed-in account changed. Open the lesson again before saving.",
+          });
+      const lessonId = typeof body.lessonId === "string" ? body.lessonId : "";
+      if (!LESSON_IDS.includes(lessonId))
+        return response.status(400).json({ error: "Unknown lesson." });
+      if (typeof body.text !== "string" || body.text.length > 2000)
+        return response
+          .status(422)
+          .json({ error: "Keep your note to 2,000 characters." });
+      await withLearner(dependencies, signedIn);
+      const note = await dependencies.repository.saveNote(
+        signedIn.userId,
+        CLUB_ID,
+        lessonId,
+        body.text,
+      );
+      return response.status(200).json({ note });
+    }
 
     /* Review actions are officer-only and never touch a learner record. */
     if (action === "review") {
@@ -291,7 +335,9 @@ export function createAcademyHandler(
           ...existing,
           status: next,
           decidedAt: decided ? new Date().toISOString() : existing.decidedAt,
-          decidedBy: decided ? actor.email ?? actor.userId : existing.decidedBy,
+          decidedBy: decided
+            ? (actor.email ?? actor.userId)
+            : existing.decidedBy,
           decisionNote: note || existing.decisionNote,
         },
       );
@@ -311,8 +357,7 @@ export function createAcademyHandler(
     let record = learner.record;
 
     if (action === "lesson") {
-      const lessonId =
-        typeof body.lessonId === "string" ? body.lessonId : "";
+      const lessonId = typeof body.lessonId === "string" ? body.lessonId : "";
       if (!LESSON_IDS.includes(lessonId))
         return response.status(400).json({ error: "Unknown lesson." });
       if (!lessonIsUnlocked(record, lessonId))
@@ -345,7 +390,9 @@ export function createAcademyHandler(
       const check = SCENARIO_CHECKS.find((item) => item.id === scenarioId);
       if (!check) return response.status(400).json({ error: "Unknown check." });
       if (!check.options.some((option) => option.id === optionId))
-        return response.status(400).json({ error: "Choose one of the options." });
+        return response
+          .status(400)
+          .json({ error: "Choose one of the options." });
       if (!chapterLessonsComplete(record, check.chapterId))
         return response
           .status(409)
@@ -441,7 +488,8 @@ export function createAcademyHandler(
       const proposal = normaliseProposal(body.proposal);
       if (!proposal)
         return response.status(422).json({
-          error: "Every field needs at least forty characters, and under two thousand.",
+          error:
+            "Every field needs at least forty characters, and under two thousand.",
         });
       record = await dependencies.repository.saveRecord(
         signedIn.userId,
@@ -462,7 +510,11 @@ export function createAcademyHandler(
         signedIn.userId,
         CLUB_ID,
       );
-      if (existing && existing.status !== "draft" && existing.status !== "needs_more")
+      if (
+        existing &&
+        existing.status !== "draft" &&
+        existing.status !== "needs_more"
+      )
         return response
           .status(409)
           .json({ error: "Your application is already with the club." });
@@ -548,7 +600,9 @@ export function createAcademyHandler(
         CLUB_ID,
       );
       if (!existing)
-        return response.status(404).json({ error: "No application to withdraw." });
+        return response
+          .status(404)
+          .json({ error: "No application to withdraw." });
       if (!canTransition(existing.status, "withdrawn"))
         return response
           .status(409)

@@ -6,6 +6,10 @@ import {
   type OrientationBlock,
 } from "../../shared/rotaract-academy/types";
 import { markTerms, parseInline, toParagraphs } from "../lib/prose";
+import { LESSON_DESIGN } from "./lesson-design";
+import { QuickCheck } from "./QuickCheck";
+import { PrivateNote } from "./PrivateNote";
+import { LessonVisual } from "./LessonVisual";
 
 function Reading({ blocks }: { blocks: OrientationBlock[] }) {
   return (
@@ -55,10 +59,12 @@ function Reading({ blocks }: { blocks: OrientationBlock[] }) {
 }
 
 export function LessonExplorer({
+  lessonId,
   blocks,
   objectives,
   activity,
 }: {
+  lessonId: string;
   blocks: OrientationBlock[];
   objectives: string[];
   activity: string;
@@ -66,7 +72,7 @@ export function LessonExplorer({
   const sections = lessonSections(blocks);
   const [index, setIndex] = useState(0);
   const [seen, setSeen] = useState<number[]>([0]);
-  const [reflection, setReflection] = useState("");
+  const design = LESSON_DESIGN[lessonId];
   const focus = useRef<HTMLDivElement>(null);
   const move = (next: number) => {
     setIndex(next);
@@ -77,17 +83,6 @@ export function LessonExplorer({
   };
   return (
     <section className="lesson-explorer" aria-label="Lesson workspace">
-      <div className="lesson-outcomes">
-        <BookOpen size={21} aria-hidden="true" />
-        <div>
-          <h3>Your learning goals</h3>
-          <ul>
-            {objectives.map((goal) => (
-              <li key={goal}>{goal}</li>
-            ))}
-          </ul>
-        </div>
-      </div>
       <div className="lesson-section-picker" aria-label="Reading sections">
         {sections.map((_, at) => (
           <button
@@ -95,21 +90,23 @@ export function LessonExplorer({
             type="button"
             onClick={() => move(at)}
             aria-current={index === at ? "step" : undefined}
-            aria-label={`Read section ${at + 1} of ${sections.length}`}
+            aria-label={`Read ${design?.sections[at] ?? `section ${at + 1}`}`}
           >
             {seen.includes(at) && at !== index ? (
               <Check size={16} aria-hidden="true" />
-            ) : (
-              at + 1
-            )}
+            ) : null}
+            {design?.sections[at] ?? `Part ${at + 1}`}
           </button>
         ))}
       </div>
       <div className="lesson-reading-panel" ref={focus} tabIndex={-1}>
         <p className="lesson-section-label" aria-live="polite">
-          Read · Section {index + 1} of {sections.length}
+          {design?.sections[index] ?? "Read"} · {index + 1} of {sections.length}
         </p>
-        <Reading blocks={sections[index] ?? []} />
+        {index === 0 && <LessonVisual key={lessonId} lessonId={lessonId} />}
+        {!((lessonId === "roots" || lessonId === "family") && index === 0) && (
+          <Reading blocks={sections[index] ?? []} />
+        )}
       </div>
       <div className="lesson-section-controls">
         <button
@@ -134,25 +131,18 @@ export function LessonExplorer({
         <summary>Prefer to read everything together?</summary>
         <Reading blocks={blocks} />
       </details>
-      <section className="lesson-reflection">
-        <h3>Make it yours</h3>
-        <p>{activity}</p>
-        <label htmlFor="lesson-reflection">
-          Try an answer or jot down a question
-        </label>
-        <textarea
-          id="lesson-reflection"
-          value={reflection}
-          onChange={(event) => setReflection(event.target.value)}
-          rows={3}
-          maxLength={2000}
-          placeholder="What would you do?"
-        />
-        <small>
-          Optional scratchpad. Stays on this screen; it is not submitted or
-          saved.
-        </small>
-      </section>
+      <details className="lesson-goals-compact">
+        <summary>
+          <BookOpen size={16} aria-hidden="true" /> Learning goals
+        </summary>
+        <ul>
+          {objectives.map((goal) => (
+            <li key={goal}>{goal}</li>
+          ))}
+        </ul>
+      </details>
+      <QuickCheck key={`check-${lessonId}`} lessonId={lessonId} />
+      <PrivateNote lessonId={lessonId} activity={activity} />
     </section>
   );
 }

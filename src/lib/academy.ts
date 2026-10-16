@@ -95,7 +95,10 @@ async function read<T>(response: Response): Promise<T> {
     body = null;
   }
   if (!response.ok) {
-    const record = (body ?? {}) as { error?: string; fields?: Record<string, string> };
+    const record = (body ?? {}) as {
+      error?: string;
+      fields?: Record<string, string>;
+    };
     throw new AcademyError(
       record.error ?? "That did not go through. Please try again.",
       response.status,
@@ -133,6 +136,31 @@ async function call<T>(
 
 export function loadAcademy(token: string | null) {
   return call<AcademyBootstrap>("/api/academy", { method: "GET" }, token);
+}
+
+export type LessonNote = { text: string; updatedAt: string };
+export function loadLessonNote(token: string | null, lessonId: string) {
+  return call<{ note: LessonNote | null }>(
+    `/api/academy?view=note&lessonId=${encodeURIComponent(lessonId)}`,
+    { method: "GET" },
+    token,
+  );
+}
+export function saveLessonNote(
+  token: string | null,
+  lessonId: string,
+  text: string,
+  ownerEmail?: string,
+) {
+  return call<{ note: LessonNote }>(
+    "/api/academy",
+    {
+      method: "POST",
+      keepalive: true,
+      body: JSON.stringify({ action: "note", lessonId, text, ownerEmail }),
+    },
+    token,
+  );
 }
 
 export function loadReviewQueue(token: string | null) {
@@ -175,8 +203,7 @@ export const answerScenario = (
 export const submitAssessment = (
   token: string | null,
   answers: (number | null)[],
-) =>
-  academyAction<GradedResponse>(token, { action: "assessment", answers });
+) => academyAction<GradedResponse>(token, { action: "assessment", answers });
 
 export const saveProposal = (
   token: string | null,

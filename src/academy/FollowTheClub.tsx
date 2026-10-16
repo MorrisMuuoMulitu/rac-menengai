@@ -16,11 +16,31 @@ import {
 import { SOCIALS } from "../data";
 
 const CHANNELS = [
-  { label: "Instagram", handle: "@racmenengai", href: SOCIALS.instagram, Icon: Instagram },
-  { label: "Facebook", handle: "RCmenengai", href: SOCIALS.facebook, Icon: Facebook },
+  {
+    label: "Instagram",
+    handle: "@racmenengai",
+    href: SOCIALS.instagram,
+    Icon: Instagram,
+  },
+  {
+    label: "Facebook",
+    handle: "RCmenengai",
+    href: SOCIALS.facebook,
+    Icon: Facebook,
+  },
   { label: "X", handle: "@RcMenengai", href: SOCIALS.x, Icon: Twitter },
-  { label: "Threads", handle: "@racmenengai", href: SOCIALS.threads, Icon: MessageCircle },
-  { label: "LinkedIn", handle: "Rotaract Club of Menengai", href: SOCIALS.linkedin, Icon: Linkedin },
+  {
+    label: "Threads",
+    handle: "@racmenengai",
+    href: SOCIALS.threads,
+    Icon: MessageCircle,
+  },
+  {
+    label: "LinkedIn",
+    handle: "Rotaract Club of Menengai",
+    href: SOCIALS.linkedin,
+    Icon: Linkedin,
+  },
 ].filter((channel) => Boolean(channel.href));
 
 export function FollowTheClub() {
