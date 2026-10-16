@@ -1,5 +1,10 @@
-import type { ClubLearningProfile } from "../shared/rotaract-academy/types";
-import { CLUB, MEMBERSHIP, formatKes } from "./data";
+/*
+ * Extensions are written out because this module is also pulled into the
+ * serverless functions, where Node resolves ESM strictly and `./data` does not
+ * find `data.ts`.
+ */
+import type { ClubLearningProfile } from "../shared/rotaract-academy/types.js";
+import { CLUB, MEMBERSHIP, formatKes } from "./data.js";
 
 export const MENENGAI_LEARNING_PROFILE: ClubLearningProfile = {
   id: "menengai",
