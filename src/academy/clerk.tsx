@@ -41,20 +41,22 @@ function Publisher() {
 
   const value = useMemo<Account>(
     () => ({
-      available: true,
+      ready: isLoaded,
+      available: isLoaded,
       signedIn: Boolean(isLoaded && isSignedIn),
       name: user?.fullName ?? user?.username ?? null,
       email: user?.primaryEmailAddress?.emailAddress ?? null,
       token: async () => {
+        /* Never make the page wait for Clerk: signed out is the honest answer
+           until it has loaded, and the caller re-asks when `ready` flips. */
+        if (!isLoaded || !isSignedIn) return null;
         try {
           return (await getToken()) ?? null;
         } catch {
           return null;
         }
       },
-      signIn: () => {
-        void clerk.openSignIn({});
-      },
+      signIn: isLoaded ? () => void clerk.openSignIn({}) : null,
     }),
     [isLoaded, isSignedIn, getToken, user, clerk],
   );

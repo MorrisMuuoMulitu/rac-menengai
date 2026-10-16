@@ -71,9 +71,11 @@ export default function ReviewQueuePage() {
     }
   }, [account]);
 
+  /* The queue is useless before sign-in has resolved, so wait for it. */
   useEffect(() => {
+    if (!account.ready) return;
     void load();
-  }, [load]);
+  }, [account.ready, load]);
 
   const decide = async (
     item: QueueItem,

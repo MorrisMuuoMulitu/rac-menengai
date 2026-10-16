@@ -9,7 +9,7 @@
  * is marked complete here; every button posts and waits.
  */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   AlertCircle,
@@ -305,26 +305,36 @@ export default function AcademyPage() {
   const headingRef = useRef<HTMLHeadingElement>(null);
   const steps = useSteps(data?.course);
 
-  const refresh = useCallback(async () => {
-    try {
-      const token = await account.token();
-      const next = await loadAcademy(token);
-      setData(next);
-      setError("");
-    } catch (cause) {
-      setError(
-        cause instanceof AcademyError
-          ? cause.message
-          : "We could not load the course. Try again.",
-      );
-    } finally {
-      setLoading(false);
-    }
-  }, [account]);
-
+  /*
+   * Read the course as soon as the page opens, and read it again with a
+   * session once sign-in has finished starting up. The identity of `account`
+   * only changes when something about the account actually changed, so this
+   * is two reads at most: one public, one signed in.
+   */
   useEffect(() => {
-    void refresh();
-  }, [refresh]);
+    let cancelled = false;
+    void (async () => {
+      try {
+        const token = account.ready ? await account.token() : null;
+        const next = await loadAcademy(token);
+        if (cancelled) return;
+        setData(next);
+        setError("");
+      } catch (cause) {
+        if (cancelled) return;
+        setError(
+          cause instanceof AcademyError
+            ? cause.message
+            : "We could not load the course. Try again.",
+        );
+      } finally {
+        if (!cancelled) setLoading(false);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [account]);
 
   const resolved = useMemo(() => {
     if (!data) return 0;
@@ -509,7 +519,11 @@ export default function AcademyPage() {
               </ul>
             </div>
             <div className="academy-signin-action">
-              {account.signIn ? (
+              {!account.ready ? (
+                <p className="academy-hint" role="status">
+                  Checking how to sign you in…
+                </p>
+              ) : account.signIn ? (
                 <button
                   className="btn btn-primary btn-lg"
                   type="button"

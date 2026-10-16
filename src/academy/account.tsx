@@ -15,6 +15,11 @@ import {
 } from "react";
 
 export interface Account {
+  /**
+   * False only while a configured sign-in provider is still starting up. When
+   * no provider is configured there is nothing to wait for, so it is true.
+   */
+  ready: boolean;
   /** True when this deployment has a sign-in provider configured. */
   available: boolean;
   signedIn: boolean;
@@ -26,7 +31,12 @@ export interface Account {
   signIn: (() => void) | null;
 }
 
+const HAS_SIGN_IN_PROVIDER = Boolean(
+  String(import.meta.env.VITE_CLERK_PUBLISHABLE_KEY ?? "").trim(),
+);
+
 export const ANONYMOUS: Account = {
+  ready: !HAS_SIGN_IN_PROVIDER,
   available: false,
   signedIn: false,
   name: null,
