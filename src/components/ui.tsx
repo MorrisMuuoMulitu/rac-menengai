@@ -6,6 +6,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Reveal } from "../hooks";
 import type { Stat } from "../data";
+import { PUBLIC_EVENTS } from "../content";
 
 /* ---------- Eyebrow / section heading ---------- */
 export function SectionHeading({
@@ -221,6 +222,7 @@ export function PageMeta({
   title: string;
   description?: string;
 }) {
+  const { pathname } = useLocation();
   useEffect(() => {
     const club = "Rotaract Club of Menengai";
     const full = title.includes(club) ? title : `${title} · ${club}`;
@@ -238,6 +240,37 @@ export function PageMeta({
       else el.remove();
     };
     setMeta('meta[name="description"]', "description", description ?? "");
+    const event = PUBLIC_EVENTS.find(
+      (item) => pathname === `/events/${item.slug}`,
+    );
+    const photo = event?.images[0];
+    const image =
+      photo?.src ?? event?.image ?? "/images/branding/social-card.png";
+    setMeta(
+      'meta[property="og:image"]',
+      "og:image",
+      `https://rotaractmenengai.org${image}`,
+    );
+    setMeta(
+      'meta[property="og:image:alt"]',
+      "og:image:alt",
+      photo?.alt ?? club,
+    );
+    setMeta(
+      'meta[property="og:image:width"]',
+      "og:image:width",
+      String(photo?.width ?? (event?.image ? "" : 1200)),
+    );
+    setMeta(
+      'meta[property="og:image:height"]',
+      "og:image:height",
+      String(photo?.height ?? (event?.image ? "" : 630)),
+    );
+    setMeta(
+      'meta[name="twitter:image"]',
+      "twitter:image",
+      `https://rotaractmenengai.org${image}`,
+    );
     setMeta(
       'meta[name="robots"]',
       "robots",
@@ -273,6 +306,6 @@ export function PageMeta({
       "href",
       `https://rotaractmenengai.org${window.location.pathname}`,
     );
-  }, [title, description]);
+  }, [title, description, pathname]);
   return null;
 }

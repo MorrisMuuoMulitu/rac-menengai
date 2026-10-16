@@ -45,6 +45,15 @@ export function render(path: string) {
       : undefined) ??
     "Community service, professional development and fellowship with the Rotaract Club of Menengai in Nakuru, Kenya.";
   const canonical = `https://rotaractmenengai.org${path === "/" ? "/" : path}`;
+  const photos = event?.images ?? [];
+  const image =
+    photos[0]?.src ?? event?.image ?? "/images/branding/social-card.png";
+  const shareImage = {
+    url: `https://rotaractmenengai.org${image}`,
+    alt: photos[0]?.alt ?? "Rotaract Club of Menengai — Create Lasting Impact",
+    width: photos[0]?.width ?? (event?.image ? undefined : 1200),
+    height: photos[0]?.height ?? (event?.image ? undefined : 630),
+  };
   const breadcrumbs =
     path !== "/" && path !== "/404"
       ? {
@@ -60,14 +69,31 @@ export function render(path: string) {
             {
               "@type": "ListItem",
               position: 2,
-              name:
-                project?.title ??
-                event?.title ??
-                titles[path] ??
-                intro?.eyebrow ??
-                "Rotaract",
-              item: canonical,
+              ...(event || project
+                ? {
+                    name: event ? "Events & fellowship" : "Projects",
+                    item: `https://rotaractmenengai.org/${event ? "events" : "projects"}`,
+                  }
+                : {
+                    name: titles[path] ?? intro?.eyebrow ?? "Rotaract",
+                    item: canonical,
+                  }),
             },
+            ...(event || project
+              ? [
+                  {
+                    "@type": "ListItem",
+                    position: 3,
+                    name:
+                      project?.title ??
+                      event?.title ??
+                      titles[path] ??
+                      intro?.eyebrow ??
+                      "Rotaract",
+                    item: canonical,
+                  },
+                ]
+              : []),
           ],
         }
       : null;
@@ -80,6 +106,32 @@ export function render(path: string) {
     title,
     description,
     canonical,
-    schema: [breadcrumbs].filter(Boolean),
+    shareImage,
+    photos,
+    schema: [
+      breadcrumbs,
+      event
+        ? {
+            "@context": "https://schema.org",
+            "@type": "Article",
+            "@id": `${canonical}#story`,
+            headline: event.title,
+            description: event.description,
+            mainEntityOfPage: canonical,
+            inLanguage: "en-KE",
+            author: { "@id": "https://rotaractmenengai.org/#club" },
+            publisher: { "@id": "https://rotaractmenengai.org/#club" },
+            ...(photos.length
+              ? {
+                  image: photos.map((photo) => ({
+                    "@type": "ImageObject",
+                    contentUrl: `https://rotaractmenengai.org${photo.src}`,
+                    caption: photo.alt,
+                  })),
+                }
+              : {}),
+          }
+        : null,
+    ].filter(Boolean),
   };
 }

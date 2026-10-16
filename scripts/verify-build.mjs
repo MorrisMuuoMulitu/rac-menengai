@@ -3,9 +3,7 @@ import { readFileSync, existsSync, readdirSync } from "node:fs";
 import { resolve } from "node:path";
 const sitemap = readFileSync("dist/sitemap.xml", "utf8");
 const paths = [
-  ...sitemap.matchAll(
-    /<loc>https:\/\/rotaractmenengai\.org([^<]*)<\/loc>/g,
-  ),
+  ...sitemap.matchAll(/<loc>https:\/\/rotaractmenengai\.org([^<]*)<\/loc>/g),
 ].map((m) => m[1] || "/");
 assert.ok(paths.length > 0, "Sitemap must contain public club-domain routes");
 // Draft stories must not reach the bundle. A draft slug that is also a
@@ -31,6 +29,32 @@ for (const path of paths) {
     `${path}: canonical`,
   );
   assert.ok(html.includes("<main"), `${path}: initial HTML contains content`);
+  const event = eventRecords.find(
+    (record) => path === `/events/${record.slug}`,
+  );
+  if (event?.images?.length) {
+    assert.ok(
+      html.includes(
+        `content="https://rotaractmenengai.org${event.images[0].src}"`,
+      ),
+      `${path}: story-specific share image`,
+    );
+    assert.ok(
+      html.includes('"@type":"Article"'),
+      `${path}: story structured data`,
+    );
+    assert.ok(
+      html.includes('"position":3'),
+      `${path}: event breadcrumb hierarchy`,
+    );
+    for (const photo of event.images)
+      assert.ok(
+        sitemap.includes(
+          `<image:loc>https://rotaractmenengai.org${photo.src}</image:loc>`,
+        ),
+        `${path}: gallery photo in image sitemap`,
+      );
+  }
   assert.ok(!html.includes("CONFIRM_"), `${path}: no internal placeholders`);
   for (const draft of drafts)
     assert.ok(!html.includes(`/news/${draft.slug}`), `${path}: draft excluded`);
@@ -61,6 +85,10 @@ for (const path of paths) {
   );
 }
 const config = JSON.parse(readFileSync("vercel.json"));
+assert.ok(
+  readFileSync("dist/index.html", "utf8").includes('name="msvalidate.01"'),
+  "Bing ownership meta tag",
+);
 assert.ok(
   config.routes.some((r) => r.status === 404),
   "404 HTTP routing",

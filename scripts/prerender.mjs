@@ -8,6 +8,7 @@ const escape = (value) =>
     .replace(/</g, "&lt;")
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
+const sitemapEntries = [];
 for (const route of [...routes, "/404"]) {
   const result = render(route);
   let html = template
@@ -25,11 +26,26 @@ for (const route of [...routes, "/404"]) {
     ["og:title", result.title],
     ["og:description", result.description],
     ["og:url", result.canonical],
+    ["og:image", result.shareImage.url],
+    ["og:image:alt", result.shareImage.alt],
   ])
     html = html.replace(
       new RegExp(`(<meta\\s+property="${property}"\\s+content=")[^"]*(")`),
       `$1${escape(value)}$2`,
     );
+  html = html.replace(
+    /(<meta\s+name="twitter:image"\s+content=")[^"]*(")/,
+    `$1${escape(result.shareImage.url)}$2`,
+  );
+  for (const dimension of ["width", "height"]) {
+    const value = result.shareImage[dimension];
+    html = html.replace(
+      new RegExp(
+        `<meta\\s+property="og:image:${dimension}"\\s+content="[^"]*"\\s*\\/?>`,
+      ),
+      value ? `<meta property="og:image:${dimension}" content="${value}">` : "",
+    );
+  }
   html = html.replace(
     "</head>",
     `${result.schema.map((schema) => `<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>`).join("")}<meta name="twitter:title" content="${escape(result.title)}"><meta name="twitter:description" content="${escape(result.description)}">${route === "/404" ? '<meta name="robots" content="noindex">' : ""}</head>`,
@@ -42,10 +58,14 @@ for (const route of [...routes, "/404"]) {
         : `dist${route}/index.html`;
   await mkdir(dirname(path), { recursive: true });
   await writeFile(path, html);
+  if (route !== "/404")
+    sitemapEntries.push(
+      `<url><loc>${escape(result.canonical)}</loc>${result.photos.map((photo) => `<image:image><image:loc>https://rotaractmenengai.org${escape(photo.src)}</image:loc></image:image>`).join("")}</url>`,
+    );
 }
 await writeFile(
   "dist/sitemap.xml",
-  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">${routes.map((route) => `<url><loc>https://rotaractmenengai.org${route}</loc></url>`).join("")}</urlset>\n`,
+  `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:image="http://www.google.com/schemas/sitemap-image/1.1">${sitemapEntries.join("")}</urlset>\n`,
 );
 await rm(".prerender", { recursive: true, force: true });
 console.log(
