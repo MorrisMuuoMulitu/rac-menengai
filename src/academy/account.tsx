@@ -27,8 +27,12 @@ export interface Account {
   email: string | null;
   /** Short-lived session token for the API. Resolves to null when signed out. */
   token: () => Promise<string | null>;
-  /** Opens the sign-in surface, or null when no provider is configured. */
-  signIn: (() => void) | null;
+  /**
+   * A ready-made sign-in button, or null while sign-in is starting up or not
+   * configured. It is a node rather than a callback because Clerk mounts its
+   * modal from the component, not from an imperative call.
+   */
+  signInButton: ReactNode | null;
 }
 
 const HAS_SIGN_IN_PROVIDER = Boolean(
@@ -42,7 +46,7 @@ export const ANONYMOUS: Account = {
   name: null,
   email: null,
   token: async () => null,
-  signIn: null,
+  signInButton: null,
 };
 
 const AccountContext = createContext<Account>(ANONYMOUS);

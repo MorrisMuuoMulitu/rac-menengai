@@ -523,14 +523,8 @@ export default function AcademyPage() {
                 <p className="academy-hint" role="status">
                   Checking how to sign you in…
                 </p>
-              ) : account.signIn ? (
-                <button
-                  className="btn btn-primary btn-lg"
-                  type="button"
-                  onClick={account.signIn}
-                >
-                  Sign in to save progress <ArrowRight aria-hidden="true" />
-                </button>
+              ) : account.signInButton ? (
+                account.signInButton
               ) : (
                 <p className="academy-hint">
                   Sign-in is not switched on for this deployment yet. Ask the

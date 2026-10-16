@@ -8,7 +8,12 @@
  */
 
 import { useEffect, useMemo } from "react";
-import { ClerkProvider, useAuth, useClerk, useUser } from "@clerk/react";
+import {
+  ClerkProvider,
+  SignInButton,
+  useAuth,
+  useUser,
+} from "@clerk/react";
 import { useAccountPublisher, type Account } from "./account";
 
 const PUBLISHABLE_KEY = String(
@@ -37,7 +42,6 @@ function Publisher() {
   const publish = useAccountPublisher();
   const { isLoaded, isSignedIn, getToken } = useAuth();
   const { user } = useUser();
-  const clerk = useClerk();
 
   const value = useMemo<Account>(
     () => ({
@@ -56,9 +60,20 @@ function Publisher() {
           return null;
         }
       },
-      signIn: isLoaded ? () => void clerk.openSignIn({}) : null,
+      /*
+       * `clerk.openSignIn()` resolves and mounts nothing under this SDK
+       * generation, so the modal comes from the component instead. Everything
+       * still runs from this lazily-loaded chunk.
+       */
+      signInButton: isLoaded ? (
+        <SignInButton mode="modal">
+          <button className="btn btn-primary btn-lg" type="button">
+            Sign in to save progress <span aria-hidden="true">→</span>
+          </button>
+        </SignInButton>
+      ) : null,
     }),
-    [isLoaded, isSignedIn, getToken, user, clerk],
+    [isLoaded, isSignedIn, getToken, user],
   );
 
   useEffect(() => {
