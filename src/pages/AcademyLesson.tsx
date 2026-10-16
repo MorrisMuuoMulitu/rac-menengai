@@ -423,8 +423,15 @@ export default function AcademyPage() {
    * A slug that names nothing, or a step the learner has not reached yet,
    * sends them to where they actually are rather than to a dead end.
    */
-  if (!step || index > resumeIndex)
+  /*
+   * A slug that names nothing goes to where the learner actually is. The
+   * unlock order only applies to someone with a record to protect: a guest is
+   * promised they can read the course, so nothing is locked to them.
+   */
+  if (!step)
     return <Navigate to={`/membership/academy/${steps[resumeIndex] ? stepSlug(steps[resumeIndex]) : ""}`} replace />;
+  if (data?.signedIn && index > resumeIndex)
+    return <Navigate to={`/membership/academy/${stepSlug(steps[resumeIndex])}`} replace />;
 
   const summary = data?.summary;
   const signedIn = Boolean(data?.signedIn);
