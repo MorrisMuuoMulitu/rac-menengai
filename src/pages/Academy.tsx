@@ -31,7 +31,7 @@ import {
 } from "lucide-react";
 import { PageMeta } from "../components/ui";
 import { CHAPTERS, COURSE_INFO } from "../course-info";
-import { useAccount } from "../academy/account";
+import { SignInSlot, useAccount } from "../academy/account";
 import {
   AcademyError,
   answerScenario,
@@ -523,8 +523,8 @@ export default function AcademyPage() {
                 <p className="academy-hint" role="status">
                   Checking how to sign you in…
                 </p>
-              ) : account.signInButton ? (
-                account.signInButton
+              ) : account.available ? (
+                <SignInSlot />
               ) : (
                 <p className="academy-hint">
                   Sign-in is not switched on for this deployment yet. Ask the

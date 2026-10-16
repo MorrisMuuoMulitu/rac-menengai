@@ -5,6 +5,10 @@
    spine in the contents rail that fills as lessons are finished.
    ============================================================ */
 
+.academy-signin-slot {
+  display: contents;
+}
+
 .academy-loading {
   display: grid;
   place-items: center;
