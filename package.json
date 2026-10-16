@@ -2,7 +2,7 @@
   "name": "rac-menengai",
   "private": true,
   "version": "3.0.0",
-  "description": "Rotaract Club of Menengai \u2014 Service Above Self. Multi-page React + Vite + TypeScript site: About, Projects, Awards, Leadership, News, Membership, Contact.",
+  "description": "Rotaract Club of Menengai — Service Above Self. Multi-page React + Vite + TypeScript site: About, Projects, Awards, Leadership, News, Membership, Contact.",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -15,18 +15,27 @@
     "prebuild": "node scripts/prepare-content.mjs",
     "verify": "npm test && npm run build && node scripts/verify-build.mjs",
     "seo:submit": "node scripts/submit-indexnow.mjs --submit",
+    "sanity:build": "vite build --ssr scripts/sanity-seed.ts --outDir .sanity-seed",
+    "sanity:check": "npm run sanity:build && node scripts/import-sanity.mjs",
+    "sanity:push": "npm run sanity:build && node scripts/import-sanity.mjs --apply",
     "format": "prettier --write src api scripts content index.html vercel.json vite.config.ts",
     "pretest": "node scripts/prepare-content.mjs",
     "pretypecheck": "node scripts/prepare-content.mjs",
     "verify:scroll": "node scripts/verify-scroll.mjs && node scripts/verify-scroll.py --dir docs/audit/scroll-check"
   },
   "dependencies": {
+    "@clerk/backend": "^3.24.0",
+    "@clerk/react": "^6.17.8",
+    "@sanity/client": "^8.9.0",
+    "@vercel/functions": "^3.10.1",
     "lucide-react": "^0.469.0",
+    "pg": "^8.23.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.18.4"
   },
   "devDependencies": {
+    "@types/pg": "^8.23.1",
     "@types/react": "^18.3.18",
     "@types/react-dom": "^18.3.5",
     "@vitejs/plugin-react": "^4.3.4",

@@ -1,8 +1,13 @@
 /**
- * Membership — who can join, the three steps, what it costs (flagged), the
- * membership-focused FAQ, and the join-interest form.
+ * Membership — the honest version of what joining asks, the course the club
+ * sets, and a way to start either one today.
+ *
+ * The page is shorter than it was on purpose. Everything a prospective member
+ * needs is in the first two screens: what it costs, what it takes, and the two
+ * buttons that begin.
  */
-import { ArrowRight, Users, LockKeyhole } from "lucide-react";
+
+import { ArrowRight, BookOpen, Clock, MapPin, Users } from "lucide-react";
 import {
   CLUB,
   FAQS,
@@ -12,201 +17,191 @@ import {
   formatKes,
 } from "../data";
 import { ButtonLink, PageHero, PageMeta } from "../components/ui";
-import { FaqAccordion, OpportunityCard } from "../components/cards";
+import { FaqAccordion } from "../components/cards";
 import { ContactForm } from "../components/forms";
-import { COURSE_INFO } from "../course-info";
+import { CHAPTERS, COURSE_INFO } from "../course-info";
 import { FirstVisit } from "../components/FirstVisit";
 import { Reveal } from "../hooks";
 
+const COURSE_IMAGE =
+  "/images/events/nakuru-region-district-governor-meeting-inductions/menengai-induction-members-lineup-560.webp";
+const SERVICE_IMAGE =
+  "/images/events/mother-pack-bondeni-2026/bondeni-2026-group-outside-720.webp";
+
 export default function MembershipPage() {
   const intro = PAGE_INTROS.membership;
+  const lessons = COURSE_INFO.lessons.length;
+
   return (
     <>
       <PageMeta title="Membership" description={intro.description} />
       <PageHero eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead}>
-        <ButtonLink to="/contact" variant="secondary" size="sm">
-          Ask a question
+        <ButtonLink to="/membership/academy" variant="primary" size="md">
+          Start the membership course <ArrowRight aria-hidden="true" />
         </ButtonLink>
-        <ButtonLink to="/learn" variant="secondary" size="sm">
-          Learn about Rotaract
+        <ButtonLink to="/contact?interest=join-club" variant="secondary" size="md">
+          Ask before you commit
         </ButtonLink>
       </PageHero>
 
-      <FirstVisit />
-
-      <section className="section section-tint">
+      {/* ------------------------------------------------- the two numbers -- */}
+      <section className="section membership-facts">
         <div className="container">
-          <div className="section-head-block">
-            <span className="eyebrow">What we ask of you</span>
+          <div className="membership-fact-grid">
+            <div className="membership-fact">
+              <Clock size={20} aria-hidden="true" />
+              <h2>One hour a week</h2>
+              <p>
+                Fellowship runs every {CLUB.meeting.dayLabel},{" "}
+                {CLUB.meeting.timeLabel} at Nakuru Athletic Club. Short service
+                update, project news, time to talk.
+              </p>
+            </div>
+            <div className="membership-fact">
+              <Users size={20} aria-hidden="true" />
+              <h2>{formatKes(MEMBERSHIP.fees.subscription)} a year</h2>
+              <p>
+                Rotary International dues and club running costs, plus a{" "}
+                {formatKes(MEMBERSHIP.fees.pin)} Rotaract pin. Projects are
+                funded separately by fundraising — you are never billed for
+                one.
+              </p>
+            </div>
+            <div className="membership-fact">
+              <BookOpen size={20} aria-hidden="true" />
+              <h2>A course, then a conversation</h2>
+              <p>
+                {CHAPTERS.length} chapters and {lessons} lessons about Rotaract,
+                service and leadership, ending in a one-page proposal. Officers
+                read it; a person still decides.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* -------------------------------------------------------- the course -- */}
+      <section className="section section-tint" id="course">
+        <div className="container membership-course">
+          <div className="membership-course-media">
+            <img
+              src={COURSE_IMAGE}
+              alt="Members of the Rotaract Club of Menengai standing together after a fellowship."
+              width={720}
+              height={480}
+              loading="lazy"
+              decoding="async"
+            />
+            <img
+              src={SERVICE_IMAGE}
+              alt="Members handing out mother packs during a service project."
+              width={720}
+              height={480}
+              loading="lazy"
+              decoding="async"
+            />
+          </div>
+          <div>
+            <span className="eyebrow">The membership course</span>
             <h2 className="sec-title">
-              An hour a week, and a hand on a project
+              Learn the movement before you commit to it
             </h2>
             <p className="section-lead">
-              Service Above Self is the whole idea, so membership asks for your
-              time as well as your dues. Here is the honest version, before you
-              decide anything.
+              {COURSE_INFO.lead} It is online, it is free, and you can stop
+              halfway and come back. Each chapter ends with a real situation —
+              the sort that turns up at a project, not in a textbook.
+            </p>
+            <ol className="membership-chapters">
+              {CHAPTERS.map((chapter, index) => (
+                <li key={chapter.id}>
+                  <span aria-hidden="true">
+                    {String(index + 1).padStart(2, "0")}
+                  </span>
+                  <div>
+                    <strong>{chapter.title}</strong>
+                    <p>{chapter.description}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <div className="section-more">
+              <ButtonLink to="/membership/academy" variant="primary" size="lg">
+                Open the academy <ArrowRight aria-hidden="true" />
+              </ButtonLink>
+              <ButtonLink to="/learn" variant="secondary" size="sm">
+                Or just look up a term
+              </ButtonLink>
+            </div>
+            <p className="form-hint">
+              Reading the course needs no account. Signing in is what saves your
+              place and lets the club mark your answers.
             </p>
           </div>
-          <div className="audience-grid">
-            <div className="audience-card">
-              <h3>Time</h3>
-              <p>
-                Fellowship runs every {CLUB.meeting.dayLabel}, 5:30–6:30 PM at
-                Nakuru Athletic Club. Guests may attend three fellowships before
-                deciding — no pressure, no cost.
-              </p>
-            </div>
-            <div className="audience-card">
-              <h3>Service</h3>
-              <p>
-                Members take part in the club’s hands-on work — cleanups,
-                donation drives, school visits and mother pack distributions.
-                That is where the club actually happens.
-              </p>
-            </div>
-            <div className="audience-card">
-              <h3>Dues</h3>
-              <p>
-                {formatKes(MEMBERSHIP.fees.subscription)} a year, which covers
-                Rotary International dues and club running costs, plus a{" "}
-                {formatKes(MEMBERSHIP.fees.pin)} Rotaract pin. Service projects
-                are funded separately by fundraising — members are not billed
-                for them.
-              </p>
-            </div>
-            <div className="audience-card">
-              <h3>What we don’t ask</h3>
-              <p>
-                No joining fee is published and no minimum donation is expected.
-                Ask an officer about payment timing. Whatever your profession or
-                campus, there is a place for it here.
-              </p>
-            </div>
-          </div>
-          <div className="section-more">
-            <ButtonLink to="/rotary" variant="secondary" size="sm">
-              What Rotary stands for <ArrowRight aria-hidden="true" />
-            </ButtonLink>
-          </div>
         </div>
       </section>
 
-      <section className="section section-tint">
-        <div className="container membership-grid">
-          <div className="membership-copy">
-            <Reveal>
-              <div className="section-head-block">
-                <span className="eyebrow">Who can join</span>
-                <h2 className="sec-title">
-                  If you’re 18 and over, you’re welcome
-                </h2>
-              </div>
-            </Reveal>
-            <Reveal delay={80}>
-              <p className="lede">{MEMBERSHIP.whoCanJoin}</p>
-            </Reveal>
-            <Reveal delay={100}>
-              <p className="lede">{MEMBERSHIP.whatHappens}</p>
-            </Reveal>
-            <Reveal delay={120}>
-              <p className="guest-note">
-                <Users aria-hidden="true" /> {MEMBERSHIP.guestNote}
-              </p>
-            </Reveal>
-          </div>
-          <div className="membership-side">
-            <OpportunityCard compact />
-          </div>
+      {/* -------------------------------------------------------- who joins -- */}
+      <section className="section">
+        <div className="container membership-who">
+          <Reveal>
+            <div className="section-head-block">
+              <span className="eyebrow">Who can join</span>
+              <h2 className="sec-title">
+                If you’re 18 or over, there is a place for you here
+              </h2>
+            </div>
+          </Reveal>
+          <Reveal delay={80}>
+            <p className="lede">{MEMBERSHIP.whoCanJoin}</p>
+          </Reveal>
+          <Reveal delay={100}>
+            <p className="lede">{MEMBERSHIP.whatHappens}</p>
+          </Reveal>
+          <Reveal delay={120}>
+            <p className="guest-note">
+              <Users aria-hidden="true" /> {MEMBERSHIP.guestNote}
+            </p>
+          </Reveal>
         </div>
       </section>
 
+      <FirstVisit />
+
+      {/* ------------------------------------------------------------ steps -- */}
       <section className="section">
         <div className="container">
           <Reveal>
             <div className="section-head-block">
               <span className="eyebrow">How joining works</span>
-              <h2 className="sec-title">Getting started</h2>
+              <h2 className="sec-title">Four steps, in this order</h2>
+              <p className="section-lead">
+                The course can run alongside the first two. Nothing is decided
+                behind your back, and nobody is inducted on the strength of a
+                quiz score.
+              </p>
             </div>
           </Reveal>
           <ol className="join-steps">
-            {JOIN_STEPS.map((s, i) => (
+            {JOIN_STEPS.map((step, index) => (
               <Reveal
                 as="li"
-                key={s.title}
-                delay={i * 80}
+                key={step.title}
+                delay={index * 80}
                 className="join-step"
               >
                 <span className="join-step-no" aria-hidden="true">
-                  {String(i + 1).padStart(2, "0")}
+                  {String(index + 1).padStart(2, "0")}
                 </span>
-                <h3>{s.title}</h3>
-                <p>{s.text}</p>
+                <h3>{step.title}</h3>
+                <p>{step.text}</p>
               </Reveal>
             ))}
           </ol>
 
-          <Reveal>
-            <div className="orientation-callout">
-              <div className="orientation-callout-copy">
-                <span className="callout-badge">Learn about the club</span>
-                <h3>Rotaract, from the ground up</h3>
-                <p>
-                  A full course about Rotaract and RAC Menengai —{" "}
-                  {COURSE_INFO.lessons.length} modules, about{" "}
-                  {COURSE_INFO.lessons.reduce(
-                    (total, m) => total + m.minutes,
-                    0,
-                  )}{" "}
-                  minutes, plus a {COURSE_INFO.questionCount}-question check.
-                  Lessons include practical reflection activities. Work at your
-                  own pace; your progress is saved in this browser.
-                </p>
-                <p>
-                  <ButtonLink to="/learn" variant="secondary" size="sm">
-                    Browse the glossary and service guide
-                  </ButtonLink>
-                </p>
-                <ul className="callout-points">
-                  {COURSE_INFO.lessons.slice(0, 4).map((m) => (
-                    <li key={m.id}>{m.title}</li>
-                  ))}
-                </ul>
-              </div>
-              <div className="orientation-callout-actions">
-                <ButtonLink
-                  to="/membership/orientation"
-                  variant="primary"
-                  size="lg"
-                >
-                  Unlock the course <LockKeyhole aria-hidden="true" />
-                </ButtonLink>
-                <p className="form-hint">
-                  Passcode required. Ask the membership team for access.
-                </p>
-              </div>
-            </div>
-          </Reveal>
-
-          <div className="course-syllabus" aria-labelledby="syllabus-title">
-            <h3 id="syllabus-title">Inside the course</h3>
-            <p>
-              {COURSE_INFO.lessons.length} lessons, around {COURSE_INFO.minutes}{" "}
-              minutes with reflection activities, followed by{" "}
-              {COURSE_INFO.questionCount} questions.
-            </p>
-            <ol>
-              {COURSE_INFO.lessons.map((lesson) => (
-                <li key={lesson.id}>
-                  <h4>{lesson.title}</h4>
-                  <p>{lesson.summary}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
-          <Reveal>
-            <div className="fees-card">
+          <div className="membership-costs">
+            <div>
               <h3>What it costs</h3>
-              <dl className="fee-list">
+              <dl>
                 <div>
                   <dt>Annual membership</dt>
                   <dd>
@@ -218,16 +213,32 @@ export default function MembershipPage() {
                   <dt>Rotaract pin</dt>
                   <dd>{formatKes(MEMBERSHIP.fees.pin)}</dd>
                 </div>
+                <div>
+                  <dt>Visiting as a guest</dt>
+                  <dd>Free</dd>
+                </div>
               </dl>
-              <p className="fee-note">{MEMBERSHIP.fees.note}</p>
-              <p className="form-hint">
-                Guests attend free — fees apply once you join.
+              <p className="form-hint">{MEMBERSHIP.fees.note}</p>
+            </div>
+            <div className="membership-costs-note">
+              <h3>What nobody will ask you for</h3>
+              <p>
+                No joining fee is published and no minimum donation is expected.
+                You will not be asked to fund a project out of your own pocket,
+                and you do not need a profession, a degree or a car to be
+                useful here.
+              </p>
+              <p className="membership-meeting">
+                <MapPin size={18} aria-hidden="true" /> Fellowship ·{" "}
+                {CLUB.meeting.dayLabel}, {CLUB.meeting.timeLabel} · Nakuru
+                Athletic Club
               </p>
             </div>
-          </Reveal>
+          </div>
         </div>
       </section>
 
+      {/* --------------------------------------------------------- the ask -- */}
       <section className="section section-tint">
         <div className="container form-layout">
           <div className="form-layout-copy">
@@ -241,7 +252,8 @@ export default function MembershipPage() {
               <p className="lede">
                 Leave your details and one of our officers will invite you to
                 the next fellowship at Nakuru Athletic Club on a{" "}
-                {CLUB.meeting.dayLabel}; guests are welcome.
+                {CLUB.meeting.dayLabel}. Guests are welcome, and you can bring
+                questions instead of answers.
               </p>
             </Reveal>
           </div>
@@ -258,7 +270,7 @@ export default function MembershipPage() {
         <div className="container">
           <div className="section-head-block center-block">
             <span className="eyebrow">Good to know</span>
-            <h2 className="sec-title">Questions, answered</h2>
+            <h2 className="sec-title">Questions people actually ask</h2>
           </div>
           <FaqAccordion faqs={FAQS} />
         </div>

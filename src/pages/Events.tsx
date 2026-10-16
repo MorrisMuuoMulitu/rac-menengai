@@ -7,6 +7,7 @@ import { FELLOWSHIP_OVERRIDE, PROJECTS } from "../data";
 import { downloadCalendar, initialEventView } from "../lib/events";
 import { ArrowUpRight } from "lucide-react";
 import NotFoundPage from "./NotFound";
+import { Gallery } from "../components/Gallery";
 export default function EventsPage() {
   const [view, setView] = useState<"upcoming" | "past">(() =>
     initialEventView(PUBLIC_EVENTS),
@@ -274,29 +275,10 @@ export function EventDetail() {
                   : "Photographs from the day"}
                 <span>{event.images.length} images · supplied by the club</span>
               </h2>
-              <ul className="event-gallery">
-                {event.images.map((photo) => (
-                  <li key={photo.thumb}>
-                    <a
-                      href={photo.src}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      aria-label={`Open full size: ${photo.alt}`}
-                    >
-                      <img
-                        src={photo.thumb}
-                        srcSet={photo.srcSet}
-                        sizes="(max-width: 700px) 100vw, 560px"
-                        alt={photo.alt}
-                        width={photo.width ?? 560}
-                        height={photo.height ?? 421}
-                        loading="lazy"
-                        decoding="async"
-                      />
-                    </a>
-                  </li>
-                ))}
-              </ul>
+              <Gallery
+                photos={event.images}
+                label={`Photographs from ${event.title}`}
+              />
             </div>
           </div>
         ) : null}

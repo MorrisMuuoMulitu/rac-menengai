@@ -15,6 +15,8 @@ export const routes = [
   "/events",
   "/membership",
   "/membership/orientation",
+  "/membership/academy",
+  "/membership/queue",
   "/contact",
   "/partnerships",
   "/privacy",
@@ -25,6 +27,8 @@ const titles: Record<string, string> = {
   "/": "Community service in Nakuru",
   "/events": "Events & fellowship",
   "/membership/orientation": "New member orientation",
+  "/membership/academy": "Membership academy",
+  "/membership/queue": "Membership applications",
   "/about/district-9215": "Rotary District 9215",
   "/partnerships": "Partnerships",
   "/privacy": "Privacy",
@@ -41,6 +45,8 @@ const descriptions: Record<string, string> = {
     "Plan a visit to Menengai’s Thursday fellowship in Nakuru and explore the club’s community projects, event reports and photo galleries.",
   "/membership/orientation":
     "The Rotaract Club of Menengai’s passcode-protected member orientation course: Rotaract foundations, service, leadership and club participation.",
+  "/membership/academy":
+    "The Rotaract Club of Menengai’s membership course: six chapters and fourteen lessons on Rotaract, service, leadership and money, a situation to work through at the end of each chapter, a twenty-eight question assessment and a one-page project proposal you write yourself.",
   "/partnerships":
     "Collaborate with the Rotaract Club of Menengai on community service in Nakuru: share expertise, volunteer or support a project.",
   "/privacy":

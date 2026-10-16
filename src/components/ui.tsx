@@ -218,9 +218,12 @@ export function SmartImage({
 export function PageMeta({
   title,
   description,
+  robots,
 }: {
   title: string;
   description?: string;
+  /** Set to "noindex" for pages that should stay out of search results. */
+  robots?: "noindex";
 }) {
   const { pathname } = useLocation();
   useEffect(() => {
@@ -274,7 +277,7 @@ export function PageMeta({
     setMeta(
       'meta[name="robots"]',
       "robots",
-      title.toLowerCase() === "page not found" ? "noindex" : "",
+      robots ?? (title.toLowerCase() === "page not found" ? "noindex" : ""),
     );
     setMeta('meta[property="og:title"]', "og:title", full);
     setMeta(
@@ -306,6 +309,6 @@ export function PageMeta({
       "href",
       `https://rotaractmenengai.org${window.location.pathname}`,
     );
-  }, [title, description, pathname]);
+  }, [title, description, pathname, robots]);
   return null;
 }

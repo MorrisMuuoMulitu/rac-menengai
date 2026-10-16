@@ -1,0 +1,218 @@
+/**
+ * Client access to the academy endpoint.
+ *
+ * Every type here is imported with `import type`, so none of the shared
+ * modules that carry answers can be pulled into the browser bundle by
+ * accident. The browser sends a session token and its answers; the server
+ * decides everything else.
+ */
+
+import type {
+  PublicChapter,
+  PublicCourse,
+} from "../../shared/rotaract-academy/assessment";
+import type {
+  ChapterProgress,
+  CourseProgressSummary,
+  LearningRecord,
+  PracticalProposal,
+} from "../../shared/rotaract-academy/progress";
+import type {
+  ApplicationDraft,
+  ApplicationStatus,
+  MembershipApplication,
+} from "../../shared/rotaract-academy/application";
+
+export type { PublicChapter, PublicCourse };
+export type {
+  ChapterProgress,
+  CourseProgressSummary,
+  LearningRecord,
+  PracticalProposal,
+};
+export type { ApplicationDraft, ApplicationStatus, MembershipApplication };
+
+export interface AcademyBootstrap {
+  signedIn: boolean;
+  signInAvailable?: boolean;
+  course?: PublicCourse;
+  actor?: { displayName: string | null; reviewer: boolean };
+  courseVersion?: string;
+  record?: LearningRecord;
+  application?: MembershipApplication | null;
+  statusLabel?: string | null;
+  summary?: CourseProgressSummary;
+  chapters?: ChapterProgress[];
+}
+
+export interface ReviewQueueResponse {
+  signedIn: boolean;
+  reviewer: boolean;
+  queue: (MembershipApplication & { userId: string })[];
+}
+
+export interface GradedResponse {
+  correct: number;
+  total: number;
+  passed: boolean;
+  perQuestion: boolean[];
+  unanswered: number[];
+  feedback: { id: string; correct: boolean; explanation: string }[];
+  passMark: number;
+  attemptId: number;
+  record: LearningRecord;
+  summary: CourseProgressSummary;
+}
+
+export interface ScenarioResponse {
+  correct: boolean;
+  bestOptionId: string;
+  feedback: string;
+  record: LearningRecord;
+  summary: CourseProgressSummary;
+}
+
+export class AcademyError extends Error {
+  readonly status: number;
+  readonly fields?: Record<string, string>;
+  constructor(
+    message: string,
+    status: number,
+    fields?: Record<string, string>,
+  ) {
+    super(message);
+    this.status = status;
+    this.fields = fields;
+  }
+}
+
+async function read<T>(response: Response): Promise<T> {
+  const text = await response.text();
+  let body: unknown = null;
+  try {
+    body = text ? JSON.parse(text) : null;
+  } catch {
+    body = null;
+  }
+  if (!response.ok) {
+    const record = (body ?? {}) as { error?: string; fields?: Record<string, string> };
+    throw new AcademyError(
+      record.error ?? "That did not go through. Please try again.",
+      response.status,
+      record.fields,
+    );
+  }
+  return body as T;
+}
+
+async function call<T>(
+  path: string,
+  init: RequestInit,
+  token: string | null,
+): Promise<T> {
+  let response: Response;
+  try {
+    response = await fetch(path, {
+      ...init,
+      credentials: "same-origin",
+      cache: "no-store",
+      headers: {
+        ...(init.body ? { "Content-Type": "application/json" } : {}),
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
+        ...(init.headers ?? {}),
+      },
+    });
+  } catch {
+    throw new AcademyError(
+      "We could not reach the club's server. Check your connection.",
+      0,
+    );
+  }
+  return read<T>(response);
+}
+
+export function loadAcademy(token: string | null) {
+  return call<AcademyBootstrap>("/api/academy", { method: "GET" }, token);
+}
+
+export function loadReviewQueue(token: string | null) {
+  return call<ReviewQueueResponse>(
+    "/api/academy?view=review",
+    { method: "GET" },
+    token,
+  );
+}
+
+export function academyAction<T>(
+  token: string | null,
+  body: Record<string, unknown>,
+) {
+  return call<T>(
+    "/api/academy",
+    { method: "POST", body: JSON.stringify(body) },
+    token,
+  );
+}
+
+export const markLesson = (token: string | null, lessonId: string) =>
+  academyAction<{
+    record: LearningRecord;
+    summary: CourseProgressSummary;
+    chapters: ChapterProgress[];
+  }>(token, { action: "lesson", lessonId });
+
+export const answerScenario = (
+  token: string | null,
+  scenarioId: string,
+  optionId: string,
+) =>
+  academyAction<ScenarioResponse>(token, {
+    action: "scenario",
+    scenarioId,
+    optionId,
+  });
+
+export const submitAssessment = (
+  token: string | null,
+  answers: (number | null)[],
+) =>
+  academyAction<GradedResponse>(token, { action: "assessment", answers });
+
+export const saveProposal = (
+  token: string | null,
+  proposal: PracticalProposal,
+) =>
+  academyAction<{
+    record: LearningRecord;
+    summary: CourseProgressSummary;
+  }>(token, { action: "proposal", proposal });
+
+export const saveDraft = (token: string | null, draft: ApplicationDraft) =>
+  academyAction<{ application: MembershipApplication }>(token, {
+    action: "draft",
+    draft,
+  });
+
+export const sendApplication = (token: string | null) =>
+  academyAction<{
+    application: MembershipApplication;
+    statusLabel: string;
+  }>(token, { action: "apply" });
+
+export const withdrawApplication = (token: string | null) =>
+  academyAction<{ application: MembershipApplication }>(token, {
+    action: "withdraw",
+  });
+
+export const recordDecision = (
+  token: string | null,
+  applicationId: string,
+  status: ApplicationStatus,
+  note: string,
+) =>
+  academyAction<{ application: MembershipApplication }>(token, {
+    action: "review",
+    applicationId,
+    status,
+    note,
+  });

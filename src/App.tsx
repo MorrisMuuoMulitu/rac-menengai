@@ -25,6 +25,9 @@ import OrientationPage from "./pages/Orientation";
 import ContactPage from "./pages/Contact";
 import LearnPage from "./pages/Learn";
 import NotFoundPage from "./pages/NotFound";
+import AcademyLayout from "./academy/AcademyLayout";
+import AcademyPage from "./pages/Academy";
+import ReviewQueuePage from "./pages/ReviewQueue";
 
 export default function App() {
   return (
@@ -52,6 +55,10 @@ export default function App() {
           <Route path="/privacy" element={<Privacy />} />
           <Route path="/membership" element={<MembershipPage />} />
           <Route path="/membership/orientation" element={<OrientationPage />} />
+          <Route element={<AcademyLayout />}>
+            <Route path="/membership/academy" element={<AcademyPage />} />
+            <Route path="/membership/queue" element={<ReviewQueuePage />} />
+          </Route>
           <Route path="/contact" element={<ContactPage />} />
           <Route path="*" element={<NotFoundPage />} />
         </Routes>

@@ -9,6 +9,8 @@ const escape = (value) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 const sitemapEntries = [];
+/* Pages we publish for people, not for search engines. */
+const NOINDEX = new Set(["/404", "/membership/queue"]);
 for (const route of [...routes, "/404"]) {
   const result = render(route);
   let html = template
@@ -48,7 +50,7 @@ for (const route of [...routes, "/404"]) {
   }
   html = html.replace(
     "</head>",
-    `${result.schema.map((schema) => `<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>`).join("")}<meta name="twitter:title" content="${escape(result.title)}"><meta name="twitter:description" content="${escape(result.description)}">${route === "/404" ? '<meta name="robots" content="noindex">' : ""}</head>`,
+    `${result.schema.map((schema) => `<script type="application/ld+json">${JSON.stringify(schema).replace(/</g, "\\u003c")}</script>`).join("")}<meta name="twitter:title" content="${escape(result.title)}"><meta name="twitter:description" content="${escape(result.description)}">${NOINDEX.has(route) ? '<meta name="robots" content="noindex">' : ""}</head>`,
   );
   const path =
     route === "/"
@@ -58,7 +60,7 @@ for (const route of [...routes, "/404"]) {
         : `dist${route}/index.html`;
   await mkdir(dirname(path), { recursive: true });
   await writeFile(path, html);
-  if (route !== "/404")
+  if (!NOINDEX.has(route))
     sitemapEntries.push(
       `<url><loc>${escape(result.canonical)}</loc>${result.photos.map((photo) => `<image:image><image:loc>https://rotaractmenengai.org${escape(photo.src)}</image:loc></image:image>`).join("")}</url>`,
     );
