@@ -4,6 +4,7 @@ import {
   displayNameFor,
   primaryEmail,
   reviewerAllowlist,
+  toFetchRequest,
   verifiedPrimaryEmail,
 } from "./academy-auth";
 
@@ -155,5 +156,52 @@ describe("building the resolver", () => {
       // with no session is simply not signed in.
       expect(await resolve({ headers: {} })).toEqual(await denied());
     }
+  });
+});
+
+describe("shaping the request for Clerk", () => {
+  it("rebuilds an absolute URL from the path a function receives", () => {
+    const request = toFetchRequest(
+      {
+        method: "GET",
+        url: "/api/academy?view=review",
+        headers: { host: "rotaractmenengai.org" },
+      },
+      "fallback.example",
+    );
+    expect(request.url).toBe(
+      "https://rotaractmenengai.org/api/academy?view=review",
+    );
+  });
+
+  it("prefers the forwarded host and scheme, and keeps the cookie", () => {
+    const request = toFetchRequest(
+      {
+        method: "POST",
+        url: "/api/academy",
+        headers: {
+          host: "internal:3000",
+          "x-forwarded-host": "rotaractmenengai.org",
+          "x-forwarded-proto": "https",
+          cookie: "__session=abc; __client=def",
+        },
+      },
+      "fallback.example",
+    );
+    expect(request.url).toBe("https://rotaractmenengai.org/api/academy");
+    expect(request.method).toBe("POST");
+    expect(request.headers.get("cookie")).toBe("__session=abc; __client=def");
+    expect(request.headers.get("authorization")).toBeNull();
+  });
+
+  it("leaves an already-absolute URL alone", () => {
+    const request = toFetchRequest(
+      {
+        url: "https://rotaractmenengai.org/api/academy",
+        headers: { host: "ignored.example" },
+      },
+      "fallback.example",
+    );
+    expect(request.url).toBe("https://rotaractmenengai.org/api/academy");
   });
 });

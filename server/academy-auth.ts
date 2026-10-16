@@ -101,12 +101,40 @@ export function displayNameFor(user: ClerkUser): string | null {
 export type ActorResolver = (request: AuthRequest) => Promise<Actor | null>;
 
 /**
+ * Build a Fetch request with the absolute URL Clerk needs.
+ *
+ * A Vercel function receives `req.url` as a path (`/api/academy`), and
+ * `authenticateRequest` tries to parse that as a URL — it throws
+ * "Failed to parse URL from /api/academy" and every request looks signed out.
+ * The host has to be put back before handing it over.
+ */
+export function toFetchRequest(
+  request: AuthRequest,
+  fallbackHost: string,
+): Request {
+  const headers = new Headers();
+  for (const [name, value] of Object.entries(request.headers)) {
+    if (value === undefined) continue;
+    headers.set(name, Array.isArray(value) ? value.join(", ") : value);
+  }
+  const raw = request.url ?? "/";
+  const host =
+    headers.get("x-forwarded-host") ?? headers.get("host") ?? fallbackHost;
+  const scheme = headers.get("x-forwarded-proto") ?? "https";
+  const url = /^https?:\/\//i.test(raw)
+    ? raw
+    : `${scheme}://${host}${raw.startsWith("/") ? raw : `/${raw}`}`;
+  return new Request(url, { method: request.method ?? "GET", headers });
+}
+
+/**
  * Build the resolver from the environment. Returns a resolver that always
  * declines when Clerk is not configured, so the site degrades to
  * "sign-in unavailable" instead of trusting an unauthenticated caller.
  */
 export function createActorResolver(
   env: Record<string, string | undefined>,
+  fallbackHost = "rotaractmenengai.org",
 ): ActorResolver {
   const secretKey = env.CLERK_SECRET_KEY;
   /*
@@ -124,7 +152,10 @@ export function createActorResolver(
   return async function resolveActor(request: AuthRequest) {
     try {
       const state = await clerk.authenticateRequest(
-        request as unknown as Parameters<typeof clerk.authenticateRequest>[0],
+        toFetchRequest(
+          request,
+          fallbackHost,
+        ) as unknown as Parameters<typeof clerk.authenticateRequest>[0],
         {},
       );
       if (!state.isSignedIn) return null;
@@ -139,13 +170,16 @@ export function createActorResolver(
         displayName: displayNameFor(user),
         reviewer: verified !== null && allowed.has(verified),
       };
-    } catch {
+    } catch (error) {
       /*
        * Swallowing this is what hid a broken sign-in for hours: requests came
        * back signed out and looked like a client problem. Log it, so the next
        * misconfiguration shows up in the deployment logs.
        */
-      console.error("[academy] clerk authentication failed");
+      console.error(
+        "[academy] clerk authentication failed:",
+        error instanceof Error ? error.message : String(error),
+      );
       return null;
     }
   };
