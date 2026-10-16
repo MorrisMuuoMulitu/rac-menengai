@@ -47,7 +47,7 @@ import {
   answerScenario,
   loadAcademy,
   markLesson,
-  saveDraft,
+  saveDraft as saveApplicationDraft,
   saveProposal,
   sendApplication,
   submitAssessment,
@@ -58,6 +58,12 @@ import {
   type PracticalProposal,
   type ScenarioResponse,
 } from "../lib/academy";
+import {
+  answeredCount,
+  clearDraft,
+  loadDraft,
+  saveDraft as saveAssessmentDraft,
+} from "../lib/assessment-draft";
 import {
   AVAILABILITY_OPTIONS,
   EMPTY_DRAFT,
@@ -936,6 +942,7 @@ export default function AcademyPage() {
             <AssessmentStep
               key="assessment"
               course={course}
+              record={data?.record}
               busy={busy}
               signedIn={signedIn}
               headingRef={headingRef}
@@ -995,7 +1002,7 @@ export default function AcademyPage() {
               headingRef={headingRef}
               onSaveDraft={(draft) =>
                 run(
-                  (token) => saveDraft(token, draft),
+                  (token) => saveApplicationDraft(token, draft),
                   (next) =>
                     setData((previous) =>
                       previous
@@ -1170,21 +1177,101 @@ function ScenarioStep({
 
 function AssessmentStep({
   course,
+  record,
   busy,
   signedIn,
   headingRef,
   onSubmit,
 }: {
   course: NonNullable<AcademyBootstrap["course"]>;
+  record: AcademyBootstrap["record"];
   busy: boolean;
   signedIn: boolean;
   headingRef: React.RefObject<HTMLHeadingElement>;
   onSubmit: (answers: (number | null)[]) => void;
 }) {
-  const [answers, setAnswers] = useState<(number | null)[]>(() =>
-    course.questions.map(() => null),
+  /*
+   * The draft is restored from the browser, so closing a tab halfway through
+   * forty-two questions does not throw the answers away. It is only ever a
+   * draft: the server grades the attempt and keeps the record.
+   */
+  const [answers, setAnswers] = useState<(number | null)[]>(
+    () =>
+      loadDraft(course.version, course.questions.length) ??
+      course.questions.map(() => null),
   );
   const [result, setResult] = useState<GradedResponse | null>(null);
+  const [draftSaved, setDraftSaved] = useState(true);
+  const [retaking, setRetaking] = useState(false);
+
+  const update = (index: number, value: number) => {
+    setAnswers((previous) => {
+      const next = previous.map((entry, at) => (at === index ? value : entry));
+      setDraftSaved(saveAssessmentDraft(course.version, next));
+      return next;
+    });
+  };
+
+  const answered = answeredCount(answers);
+  /* Group the paper by chapter, so forty-two questions read as seven sets. */
+  const groups = course.chapters
+    .map((chapter) => ({
+      id: chapter.id,
+      title: chapter.title,
+      questions: course.questions
+        .map((question, index) => ({ question, index }))
+        .filter(({ question }) =>
+          chapter.lessons.some((lesson) => lesson.id === question.lessonId),
+        ),
+    }))
+    .filter((group) => group.questions.length > 0);
+
+  const alreadyPassed = Boolean(record?.passed) && !retaking;
+
+  if (alreadyPassed)
+    return (
+      <>
+        <span className="academy-eyebrow">
+          <BadgeCheck size={15} aria-hidden="true" /> Final check
+        </span>
+        <h2 className="academy-step-title" tabIndex={-1} ref={headingRef}>
+          You have passed this assessment
+        </h2>
+        <div className="assessment-passed" role="status">
+          <p className="assessment-passed-score">
+            {record?.bestScore ?? 0} of {course.questions.length} correct
+          </p>
+          <p>
+            Passed{" "}
+            {record?.passedAt
+              ? new Date(record.passedAt).toLocaleDateString("en-GB", {
+                  day: "numeric",
+                  month: "long",
+                  year: "numeric",
+                })
+              : ""}
+            {record?.attempts
+              ? ` · ${record.attempts} attempt${record.attempts === 1 ? "" : "s"}`
+              : ""}
+          </p>
+          <p className="academy-hint">
+            You need {course.passMark} correct to pass. The club keeps your best
+            score, so sitting it again can only help.
+          </p>
+          <button
+            type="button"
+            className="btn btn-secondary btn-md"
+            onClick={() => {
+              setRetaking(true);
+              setAnswers(course.questions.map(() => null));
+              clearDraft();
+            }}
+          >
+            <RotateCcw aria-hidden="true" /> Sit it again
+          </button>
+        </div>
+      </>
+    );
 
   return (
     <>
@@ -1206,51 +1293,60 @@ function AssessmentStep({
         }}
       >
         <ol className="academy-exam">
-          {course.questions.map((question, questionIndex) => {
-            const verdict = result?.perQuestion[questionIndex];
-            return (
-              <li
-                key={question.id}
-                className={`academy-exam-q${result ? (verdict ? " is-right" : " is-wrong") : ""}`}
-              >
-                <fieldset>
-                  <legend>
-                    <span aria-hidden="true">
-                      {String(questionIndex + 1).padStart(2, "0")}
-                    </span>
-                    {question.question}
-                  </legend>
-                  {question.options.map((option, optionIndex) => (
-                    <label key={option} className="academy-exam-option">
-                      <input
-                        type="radio"
-                        name={question.id}
-                        checked={answers[questionIndex] === optionIndex}
-                        onChange={() =>
-                          setAnswers((previous) =>
-                            previous.map((value, position) =>
-                              position === questionIndex ? optionIndex : value,
-                            ),
-                          )
-                        }
-                      />
-                      <span>{option}</span>
-                    </label>
-                  ))}
-                  {result ? (
-                    <p className="academy-exam-feedback">
-                      {verdict ? <Check size={15} aria-hidden="true" /> : null}
-                      {
-                        result.feedback.find(
-                          (entry) => entry.id === question.id,
-                        )?.explanation
-                      }
-                    </p>
-                  ) : null}
-                </fieldset>
-              </li>
-            );
-          })}
+          {groups.map((group) => (
+            <li key={group.id} className="assessment-group">
+              <h3 className="assessment-group-title">
+                {group.title}
+                <span>
+                  {group.questions.length}{" "}
+                  {group.questions.length === 1 ? "question" : "questions"}
+                </span>
+              </h3>
+              <ol className="assessment-group-questions">
+                {group.questions.map(({ question, index: questionIndex }) => {
+                  const verdict = result?.perQuestion[questionIndex];
+                  return (
+                    <li
+                      key={question.id}
+                      className={`academy-exam-q${result ? (verdict ? " is-right" : " is-wrong") : ""}`}
+                    >
+                      <fieldset>
+                        <legend>
+                          <span aria-hidden="true">
+                            {String(questionIndex + 1).padStart(2, "0")}
+                          </span>
+                          {question.question}
+                        </legend>
+                        {question.options.map((option, optionIndex) => (
+                          <label key={option} className="academy-exam-option">
+                            <input
+                              type="radio"
+                              name={question.id}
+                              checked={answers[questionIndex] === optionIndex}
+                              onChange={() => update(questionIndex, optionIndex)}
+                            />
+                            <span>{option}</span>
+                          </label>
+                        ))}
+                        {result ? (
+                          <p className="academy-exam-feedback">
+                            {verdict ? (
+                              <Check size={15} aria-hidden="true" />
+                            ) : null}
+                            {
+                              result.feedback.find(
+                                (entry) => entry.id === question.id,
+                              )?.explanation
+                            }
+                          </p>
+                        ) : null}
+                      </fieldset>
+                    </li>
+                  );
+                })}
+              </ol>
+            </li>
+          ))}
         </ol>
         <div className="academy-actions">
           <button

@@ -138,11 +138,24 @@ describe("assessment", () => {
     expect(perfect.correct).toBe(course.questions.length);
     expect(perfect.passed).toBe(true);
 
-    const sixWrong = key.map((answer, index) =>
-      index < 6 ? (answer + 1) % course.questions[index].options.length : answer,
+    /* Derived, so adding questions does not silently invalidate the boundary. */
+    const allowedWrong = course.questions.length - course.passMark;
+    const onTheLine = key.map((answer, index) =>
+      index < allowedWrong
+        ? (answer + 1) % course.questions[index].options.length
+        : answer,
     );
-    const nearMiss = gradeAttempt(sixWrong, course);
-    expect(nearMiss.correct).toBe(course.questions.length - 6);
+    expect(gradeAttempt(onTheLine, course).passed).toBe(true);
+
+    const nearMiss = gradeAttempt(
+      key.map((answer, index) =>
+        index <= allowedWrong
+          ? (answer + 1) % course.questions[index].options.length
+          : answer,
+      ),
+      course,
+    );
+    expect(nearMiss.correct).toBe(course.questions.length - allowedWrong - 1);
     expect(nearMiss.passed).toBe(false);
   });
 

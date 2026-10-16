@@ -641,12 +641,13 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
     },
   ];
   const q = (
+    lessonId: string,
     id: string,
     question: string,
     options: string[],
     correctIndex: number,
     explanation: string,
-  ) => ({ id, question, options, correctIndex, explanation });
+  ) => ({ lessonId, id, question, options, correctIndex, explanation });
   return {
     title: COURSE_INFO.title,
     lead: COURSE_INFO.lead,
@@ -701,6 +702,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
     ],
     questions: [
       q(
+        "roots",
         "roots-first",
         "When was the first Rotaract club certified?",
         ["23 February 1905", "13 March 1968", "1 July 2020", "1 July 2026"],
@@ -708,6 +710,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "The first Rotaract club was certified at UNC Charlotte on 13 March 1968.",
       ),
       q(
+        "roots",
         "roots-policy",
         "Which sponsorship statement is accurate?",
         [
@@ -720,6 +723,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         `The mandatory sponsorship requirement ended in July 2020; ${profile.shortName} retains its sponsor relationship.`,
       ),
       q(
+        "family",
         "family-interact",
         "Which programme is for young people aged 12–18?",
         [
@@ -732,6 +736,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Interact is Rotary’s service and leadership programme for this age group.",
       ),
       q(
+        "family",
         "family-ryla",
         "What does RYLA primarily provide?",
         [
@@ -744,6 +749,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "RYLA provides leadership learning; participation and selection are organised locally.",
       ),
       q(
+        "structure",
         "structure-records",
         "Who normally supports club records and meeting administration?",
         ["Every guest", "The secretary", "The venue manager", "A donor"],
@@ -751,6 +757,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "The secretary supports records and correspondence; actual arrangements should be confirmed locally.",
       ),
       q(
+        "structure",
         "structure-approval",
         "Before committing the club to a purchase, what should you do?",
         [
@@ -763,6 +770,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Spending and commitments belong within the club’s approved decision process.",
       ),
       q(
+        "membership",
         "membership-time",
         `When and where is ${profile.shortName}’s published fellowship?`,
         [
@@ -775,6 +783,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         `The published schedule is ${profile.meeting}; confirm weekly arrangements before travelling.`,
       ),
       q(
+        "membership",
         "membership-record",
         "What does passing this course establish?",
         [
@@ -787,6 +796,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "An officer confirms membership and induction; the course is club learning material.",
       ),
       q(
+        "ethics",
         "ethics-claim",
         "You have photos of seedlings being planted, but no follow-up. What can you report?",
         [
@@ -799,6 +809,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Describe the activity; tree survival needs a later check.",
       ),
       q(
+        "ethics",
         "ethics-inclusion",
         "Which action makes inclusion practical?",
         [
@@ -811,6 +822,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Ask and adapt rather than guessing what people need.",
       ),
       q(
+        "protocol-meeting",
         "meeting-actions",
         "Which action note is most useful?",
         [
@@ -823,6 +835,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Clear action notes support accountability and follow-through.",
       ),
       q(
+        "protocol-meeting",
         "meeting-customs",
         "Are prayer, songs and meeting traditions universal requirements?",
         [
@@ -835,6 +848,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Local traditions should not be presented as universal requirements.",
       ),
       q(
+        "frameworks",
         "frameworks-how",
         "What do the avenues of service describe?",
         [
@@ -847,6 +861,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Avenues describe the way people contribute; areas of focus describe causes.",
       ),
       q(
+        "frameworks",
         "frameworks-packs",
         "Which cause best fits mother packs for mothers and newborns?",
         [
@@ -859,6 +874,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "The activity directly relates to maternal and child health.",
       ),
       q(
+        "planning",
         "planning-first",
         "What should come before choosing a project activity?",
         [
@@ -871,6 +887,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "A community-led understanding of the need comes first.",
       ),
       q(
+        "planning",
         "planning-outcomes",
         "Which measure needs follow-up rather than just an event-day count?",
         [
@@ -883,6 +900,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Survival over time is different from the immediate planting output.",
       ),
       q(
+        "delivery",
         "delivery-concern",
         "A safeguarding concern arises during a visit. What is the responsible response?",
         [
@@ -895,6 +913,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Use the designated reporting process; do not promise secrecy or investigate alone.",
       ),
       q(
+        "delivery",
         "delivery-health",
         "Who should lead clinical work at a health activity?",
         [
@@ -907,6 +926,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Volunteers must stay within the roles and competence agreed with professionals and the host.",
       ),
       q(
+        "finance",
         "finance-pledge",
         "A fundraiser has collected KES 10,000 and a donor has pledged KES 5,000. How much cash is collected?",
         ["KES 10,000", "KES 15,000", "KES 5,000", "No record is needed"],
@@ -914,6 +934,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "A pledge is not yet cash received; record it separately.",
       ),
       q(
+        "finance",
         "finance-grants",
         "What should happen before promising a Rotary Foundation grant?",
         [
@@ -926,6 +947,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Grant participation has requirements; the course does not establish eligibility or approval.",
       ),
       q(
+        "leadership",
         "leadership-delegate",
         "What makes a delegated task clear?",
         [
@@ -938,6 +960,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "People need to know what to deliver and what authority they have.",
       ),
       q(
+        "leadership",
         "leadership-learning",
         "Which approach makes service a learning opportunity?",
         [
@@ -950,6 +973,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Deliberate practice and feedback support professional development.",
       ),
       q(
+        "public-image",
         "image-consent",
         "A participant declines a photograph. What should you do?",
         [
@@ -962,6 +986,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Consent and dignity matter more than a publicity opportunity.",
       ),
       q(
+        "public-image",
         "image-evidence",
         "What belongs in a responsible project story?",
         [
@@ -974,6 +999,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Communicate what the record supports and correct errors.",
       ),
       q(
+        "district",
         "district-coverage",
         `Which region does ${profile.district} cover?`,
         [
@@ -986,6 +1012,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Use the current district’s official geographic description.",
       ),
       q(
+        "district",
         "district-year",
         "When does the Rotary year run?",
         [
@@ -998,6 +1025,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "Club and district annual leadership and plans follow the July–June cycle.",
       ),
       q(
+        "next-steps",
         "capstone-plan",
         "Which proposal is ready for a useful first discussion?",
         [
@@ -1010,6 +1038,7 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         "A practical proposal makes responsibilities and unknowns visible.",
       ),
       q(
+        "next-steps",
         "capstone-next",
         "What is the next step after this course?",
         [
@@ -1020,6 +1049,188 @@ export function createCourse(profile: ClubLearningProfile): FullCourse {
         ],
         3,
         "The club confirms induction; the course supports that conversation.",
+      ),
+      q(
+        "fellowship",
+        "fellowship-purpose",
+        "What is fellowship for?",
+        [
+          "Filling the hour before the real business starts",
+          "Keeping the club a group of people rather than a task list — service updates, project news and time to know each other",
+          "Recording formal decisions",
+          "Collecting fines and subscriptions",
+        ],
+        1,
+        "Fellowship is the part that makes the rest possible. A guest can listen, introduce themselves and ask questions without already knowing Rotary terminology.",
+      ),
+      q(
+        "fellowship",
+        "fellowship-progress",
+        "A project lead keeps saying “everything is fine”. What would be more useful?",
+        [
+          "Nothing — that is a complete update",
+          "Saying what is ready, what remains, and where help is needed",
+          "Waiting until the project is finished to say anything",
+          "Sending photographs instead of an update",
+        ],
+        1,
+        "A useful update separates completed work from pending work. “Everything is fine” tells the room nothing and leaves the help unasked for.",
+      ),
+      q(
+        "club-leadership",
+        "leadership-term",
+        "How long does a club president serve?",
+        [
+          "One Rotary year, running 1 July to 30 June",
+          "Two calendar years",
+          "Until they choose to step down",
+          "As long as the district governor appoints them",
+        ],
+        0,
+        "The Rotary year runs 1 July to 30 June, and the club hands over inside that cycle. It is why the president elect spends a year learning the job.",
+      ),
+      q(
+        "club-leadership",
+        "leadership-elections",
+        "Where do the rules for club elections and voting come from?",
+        [
+          "Rotary International’s policy manual",
+          "The district governor’s office",
+          "The club’s own constitution and bylaws",
+          "Whatever the chair decides on the night",
+        ],
+        2,
+        "Election procedure, quorum and voting thresholds come from the club’s own governing documents. Rotary International sets global membership policy, not your club’s ballot.",
+      ),
+      q(
+        "protocol-ethics",
+        "protocol-ethics-author",
+        "Who wrote the Four-Way Test, and when did Rotary adopt it?",
+        [
+          "Paul Harris, 1905; adopted in 1910",
+          "Herbert J. Taylor, 1932; adopted in 1943",
+          "The Rotary Foundation, 1968; adopted in 1970",
+          "The Rotaract Advisory Committee, 2019",
+        ],
+        1,
+        "Herbert J. Taylor, a Chicago Rotarian, wrote the test in 1932. Rotary International adopted it in 1943.",
+      ),
+      q(
+        "protocol-ethics",
+        "protocol-ethics-object",
+        "What does the Object of Rotary set out?",
+        [
+          "The annual budget of the Rotary Foundation",
+          "The club’s meeting times and venue",
+          "That service is the basis of a worthwhile enterprise, shown in fellowship, ethical standards, service in work and community, and international understanding",
+          "The order in which officers speak at a district event",
+        ],
+        2,
+        "The Object of Rotary states Rotary’s purpose: service as the basis of worthy enterprise, expressed through acquaintance as an opportunity for service, high ethical standards, service in personal and community life, and international understanding.",
+      ),
+      q(
+        "protocol-meeting",
+        "protocol-meeting-question",
+        "You want to raise something about how a project budget was spent. What is the most useful move?",
+        [
+          "Say it during the treasurer’s report without being called",
+          "Ask the chair to add it under any other business, then say whether you want a decision, information or help",
+          "Send it to the whole membership on social media first",
+          "Wait until the meeting closes and raise it with whoever is still there",
+        ],
+        1,
+        "Ask for the item rather than the floor, then be clear what you are asking for. Three sentences is usually enough, and if it needs longer, ask to be on next meeting’s agenda.",
+      ),
+      q(
+        "protocol-meeting",
+        "protocol-meeting-secretary",
+        "Who keeps the club’s records, minutes and governing documents?",
+        [
+          "The treasurer",
+          "The sergeant-at-arms",
+          "The secretary",
+          "The public image director",
+        ],
+        2,
+        "The secretary holds the minutes, correspondence, membership list and governing documents. The treasurer holds the figures; the sergeant-at-arms keeps order and often the club’s customs.",
+      ),
+      q(
+        "protocol-introductions",
+        "protocol-introductions-check",
+        "You are asked to introduce a visiting district officer. What do you do first?",
+        [
+          "Use the title you remember from last year",
+          "Confirm their current title and preferred form of address with them or their club",
+          "Introduce them without any title to avoid getting it wrong",
+          "Copy the introduction from another club’s post",
+        ],
+        1,
+        "Guessing a title is how introductions go wrong. Ask beforehand and write it down — a title from a previous Rotary year is out of date.",
+      ),
+      q(
+        "protocol-introductions",
+        "protocol-introductions-precedence",
+        "What is formal precedence for?",
+        [
+          "Ranking members by how long they have served",
+          "Ordering recognition, seating or introduction at a formal occasion so the event runs smoothly",
+          "Deciding who may vote at a club meeting",
+          "Setting the order in which committee reports are written",
+        ],
+        1,
+        "Precedence is a courtesy, not a ranking of worth. It exists so a formal occasion does not become a negotiation about status.",
+      ),
+      q(
+        "protocol-business",
+        "protocol-business-minute",
+        "Which line belongs in a minute?",
+        [
+          "A summary of everything each member said",
+          "Agreed to obtain three quotes by 30 November; Erick to circulate them; no spend above the approved figure without a further decision",
+          "The club agreed it would be good to sort out the water tank soon",
+          "Members felt positive about the discussion",
+        ],
+        1,
+        "A minute records the decision, the owner, the deadline and any approved cost — enough that somebody who missed the meeting can act on it. It is not a transcript, and it is not a mood.",
+      ),
+      q(
+        "protocol-business",
+        "protocol-business-quorum",
+        "Are quorum and voting thresholds the same in every Rotaract club?",
+        [
+          "Yes — Rotary International sets them",
+          "No — they come from each club’s own constitution and bylaws",
+          "Yes, but the district can lower them",
+          "No — the chair decides on the night",
+        ],
+        1,
+        "Quorum, voting and amendment rules come from the club’s governing documents, so a show of hands is only binding if those documents say it is.",
+      ),
+      q(
+        "protocol-ceremonies",
+        "protocol-ceremonies-customs",
+        "Which statement about songs, toasts, fines and dress at Rotaract meetings is accurate?",
+        [
+          "They are Rotary requirements and every club follows them",
+          "They are district rules that the governor enforces",
+          "They are club customs, not Rotary requirements, and many clubs have none",
+          "They are set out in the Standard Rotaract Club Constitution",
+        ],
+        2,
+        "They are local customs. Real, and worth knowing about, but no more than that — clubs differ, and plenty do none of them.",
+      ),
+      q(
+        "protocol-ceremonies",
+        "protocol-ceremonies-grace",
+        "A new member asks you what the grace says.",
+        [
+          "Quote the version used across Rotary International",
+          "Explain that the words vary by club and faith, that some clubs use none, and that the club can tell them what it does",
+          "Say it is compulsory at every meeting",
+          "Tell them it is in the club bylaws",
+        ],
+        1,
+        "A grace or invocation is a prayer, and the wording differs by club, language and faith — some clubs use none at all. Rotaract is open to people of every faith and none, so nobody should be told a prayer is compulsory.",
       ),
     ],
     chapters: CURRICULUM.map((chapter) => ({

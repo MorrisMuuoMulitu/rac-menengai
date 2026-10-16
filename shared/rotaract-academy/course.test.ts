@@ -32,7 +32,7 @@ it("uses a separate club profile without carrying Menengai facts into another cl
   expect(course.modules.map((lesson) => lesson.id)).toEqual(
     COURSE_INFO.lessons.map((lesson) => lesson.id),
   );
-  expect(course.questions).toHaveLength(28);
+  expect(course.questions).toHaveLength(COURSE_INFO.questionCount);
 });
 
 it("organises every lesson once into six chapters and preserves the pass boundary", () => {
@@ -43,6 +43,6 @@ it("organises every lesson once into six chapters and preserves the pass boundar
     COURSE_INFO.lessons.map((lesson) => lesson.id).sort(),
   );
   const course = createCourse(MENENGAI_LEARNING_PROFILE);
-  expect(course.passMark).toBe(23);
+  expect(course.passMark).toBe(COURSE_INFO.passMark);
   expect(course.questions.every((q) => q.options[q.correctIndex])).toBe(true);
 });

@@ -27,7 +27,7 @@ export interface GradedAttempt {
 /** Questions as they may safely be sent to a browser: no key, no explanation. */
 export type PublicQuestion = Pick<
   OrientationQuestion,
-  "id" | "question" | "options"
+  "id" | "lessonId" | "question" | "options"
 >;
 
 /** A scenario as sent to a browser: the situation and the choices only. */
@@ -66,11 +66,14 @@ export function publicCourse(course: FullCourse): PublicCourse {
   const byId = new Map(scenarios.map((scenario) => [scenario.id, scenario]));
   return {
     ...course,
-    questions: course.questions.map(({ id, question, options }) => ({
-      id,
-      question,
-      options,
-    })),
+    questions: course.questions.map(
+      ({ id, lessonId, question, options }) => ({
+        id,
+        lessonId,
+        question,
+        options,
+      }),
+    ),
     scenarios,
     chapters: course.chapters.map((chapter) => ({
       ...chapter,

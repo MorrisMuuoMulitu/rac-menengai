@@ -168,6 +168,14 @@ export const CLUB_CONFIRMATIONS: ClubConfirmation[] = [
     landsIn: "Find your place chapter",
   },
   {
+    id: "pass-mark",
+    question:
+      "Should the assessment pass mark stay at roughly 82%, and who signs off a change to it?",
+    why: "The mark was 23 of 28 before the assessment was extended. It is now 34 of 42, which holds the same standard — but the standard itself has never been a deliberate club decision, and it should be.",
+    owner: "Membership director with the president",
+    landsIn: "Assessment, not published in lesson text",
+  },
+  {
     id: "committees",
     question:
       "Which standing committees does Menengai run this year, and who leads each one?",

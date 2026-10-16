@@ -66,6 +66,8 @@ export interface OrientationModule {
 }
 export interface OrientationQuestion {
   id: string;
+  /** The lesson this question checks. Used to group the assessment. */
+  lessonId: string;
   question: string;
   options: string[];
   correctIndex: number;
