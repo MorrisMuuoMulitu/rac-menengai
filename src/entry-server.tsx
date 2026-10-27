@@ -52,7 +52,7 @@ const descriptions: Record<string, string> = {
   "/membership/orientation":
     "The Rotaract Club of Menengai’s passcode-protected member orientation course: Rotaract foundations, service, leadership and club participation.",
   "/membership/academy":
-    "The Rotaract Club of Menengai’s membership course: six chapters and fourteen lessons on Rotaract, service, leadership and money, a situation to work through at the end of each chapter, a twenty-eight question assessment and a one-page project proposal you write yourself.",
+    "Learn about Rotaract and Menengai through twenty interactive lessons across seven chapters, practical checks, a twenty-question assessment and your own service project proposal.",
   "/partnerships":
     "Collaborate with the Rotaract Club of Menengai on community service in Nakuru: share expertise, volunteer or support a project.",
   "/privacy":

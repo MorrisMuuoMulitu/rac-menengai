@@ -23,6 +23,24 @@ const paths = [
   ...sitemap.matchAll(/<loc>https:\/\/rotaractmenengai\.org([^<]*)<\/loc>/g),
 ].map((m) => m[1] || "/");
 assert.ok(paths.length > 0, "Sitemap must contain public club-domain routes");
+for (const privatePath of [
+  "/membership/learners",
+  "/membership/queue",
+  "/membership/sign-in",
+  "/membership/register",
+  "/membership/orientation",
+]) {
+  assert.ok(
+    !paths.includes(privatePath),
+    `${privatePath}: private pages excluded from sitemap`,
+  );
+  const html = readFileSync(`dist${privatePath}/index.html`, "utf8");
+  assert.match(
+    html,
+    /<meta name="robots" content="noindex">/,
+    `${privatePath}: noindex in initial HTML`,
+  );
+}
 // Draft stories must not reach the bundle. A draft slug that is also a
 // *published* record in another collection (e.g. an event) legitimately appears
 // in the bundle, so it is excluded rather than reported as a leak.

@@ -128,6 +128,7 @@ export default function OrientationPage() {
     <>
       <PageMeta
         title="New member orientation"
+        robots="noindex"
         description="A passcode-protected Rotaract course for Menengai members and prospective members. Ask the membership team for access."
       />
       <PageHero

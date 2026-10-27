@@ -13,6 +13,8 @@ const sitemapEntries = [];
 const NOINDEX = new Set([
   "/404",
   "/membership/queue",
+  "/membership/learners",
+  "/membership/orientation",
   "/membership/sign-in",
   "/membership/register",
 ]);
