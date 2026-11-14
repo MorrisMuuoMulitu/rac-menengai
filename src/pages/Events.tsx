@@ -5,7 +5,7 @@ import { PageHero, PageMeta, ButtonLink } from "../components/ui";
 import { fellowship, fellowshipStatus } from "../lib/fellowship";
 import { FELLOWSHIP_OVERRIDE, PROJECTS } from "../data";
 import { downloadCalendar, initialEventView } from "../lib/events";
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Maximize2 } from "lucide-react";
 import NotFoundPage from "./NotFound";
 import { Gallery } from "../components/Gallery";
 export default function EventsPage() {
@@ -81,7 +81,9 @@ export default function EventsPage() {
                     <p>
                       {e.location}
                       {e.partners.length
-                        ? ` · with the ${e.partners.join(" and the ")}`
+                        ? e.partners.length <= 2
+                          ? ` · with the ${e.partners.join(" and the ")}`
+                          : ` · with the ${e.partners[0]} and ${e.partners.length - 1} other partners`
                         : ""}
                     </p>
                   </div>
@@ -181,7 +183,7 @@ export function EventDetail() {
     <>
       <PageMeta title={event.title} description={event.description} />
       <PageHero
-        eyebrow={past ? "Past event" : "Event"}
+        eyebrow={past ? "Past event" : "Upcoming event"}
         title={event.title}
         lead={event.description}
       />
@@ -192,15 +194,26 @@ export function EventDetail() {
               container's measure rather than the prose column's. */}
           {event.image ? (
             <figure className="event-hero-photo">
-              <img
-                src={event.image}
-                srcSet={event.images[0]?.srcSet}
-                sizes="(max-width: 700px) 100vw, 1080px"
-                alt={event.images[0]?.alt ?? event.title}
-                width={event.images[0]?.width ?? 1280}
-                height={event.images[0]?.height ?? 962}
-                {...{ fetchpriority: "high" }}
-              />
+              <a
+                className="event-photo-link"
+                href={event.image}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open the full-size image of ${event.title}`}
+              >
+                <img
+                  src={event.image}
+                  srcSet={event.images[0]?.srcSet}
+                  sizes="(max-width: 700px) 100vw, 1080px"
+                  alt={event.images[0]?.alt ?? event.title}
+                  width={event.images[0]?.width ?? 1280}
+                  height={event.images[0]?.height ?? 962}
+                  {...{ fetchpriority: "high" }}
+                />
+                <span className="event-photo-open">
+                  View full size <Maximize2 size={15} aria-hidden="true" />
+                </span>
+              </a>
             </figure>
           ) : null}
         </div>
@@ -210,6 +223,15 @@ export function EventDetail() {
               <dt>Date</dt>
               <dd>{dateLabel(event.date)}</dd>
             </div>
+            {event.start ? (
+              <div>
+                <dt>Time</dt>
+                <dd>
+                  {event.start}
+                  {event.end ? `–${event.end}` : ""}
+                </dd>
+              </div>
+            ) : null}
             <div>
               <dt>Venue</dt>
               <dd>{event.location}</dd>
@@ -221,12 +243,12 @@ export function EventDetail() {
             {event.partners.length ? (
               <div>
                 <dt>With</dt>
-                <dd>{event.partners.join(" and ")}</dd>
+                <dd>{event.partners.join(", ")}</dd>
               </div>
             ) : null}
             <div>
               <dt>Status</dt>
-              <dd>{past ? "Completed" : event.status}</dd>
+              <dd>{past ? "Completed" : "Scheduled"}</dd>
             </div>
           </dl>
           {event.story?.map((paragraph) => (
@@ -240,7 +262,7 @@ export function EventDetail() {
           ) : null}
           <p>
             {event.start
-              ? `Confirmed times: ${event.start}.`
+              ? `Confirmed times: ${event.start}${event.end ? `–${event.end}` : ""}.`
               : "Exact start and end times were not recorded in the source. Calendar export is available only for events with confirmed times."}
           </p>
           {/* Records differ: some cite an external report, others come from the

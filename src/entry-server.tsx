@@ -54,7 +54,7 @@ const descriptions: Record<string, string> = {
   "/membership/academy":
     "Learn about Rotaract and Menengai through twenty interactive lessons across seven chapters, practical checks, a twenty-question assessment and your own service project proposal.",
   "/partnerships":
-    "Collaborate with the Rotaract Club of Menengai on community service in Nakuru: share expertise, volunteer or support a project.",
+    "Collaborate with the Rotaract Club of Menengai on community service in Nakuru, and meet the health providers, clubs and organisations that partner with the club.",
   "/privacy":
     "How enquiry details and local orientation progress are handled on the Menengai club website.",
 };

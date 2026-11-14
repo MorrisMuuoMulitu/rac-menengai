@@ -9,7 +9,7 @@ npm run verify
 npm run serve
 ```
 
-Node 24+ recommended. `npm run verify` runs the tests, strict type checking, client/SSR builds, static generation and output checks. `dist/` contains 23 public page documents and the 404 document. `vercel.json` maps known routes and returns HTTP 404 for unknown paths.
+Node 24+ recommended. `npm run verify` runs the tests, strict type checking, client/SSR builds, static generation and output checks. `dist/` contains 31 public page documents and the 404 document. `vercel.json` maps known routes and returns HTTP 404 for unknown paths.
 
 Content: `src/data.ts`, `content/stories/index.json`, `content/events/index.json` and `content/projects.json`. Research/social evidence: `content/social/`. Drafts are excluded from client imports by `scripts/prepare-content.mjs`.
 

@@ -199,6 +199,7 @@ export function Footer() {
           <Link to="/membership/orientation">New member course</Link>
           <Link to="/learn">Rotaract glossary &amp; guide</Link>
           <Link to="/partnerships">Partner with us</Link>
+          <Link to="/partnerships#partners">Our partners</Link>
           <Link to="/leadership">Leadership</Link>
           <Link to="/contact">Contact</Link>
           <Link to="/privacy">Privacy</Link>

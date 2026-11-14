@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { ArrowUpRight, ArrowRight, Clock, MapPin } from "lucide-react";
 import { PageMeta, ButtonLink } from "../components/ui";
 import { PUBLIC_EVENTS, dateLabel } from "../content";
+import { LOGO_PARTNERS } from "../data";
 import HeroGallery from "../components/HeroGallery";
 
 /** Current club photographs link to their event records. */
@@ -74,9 +75,18 @@ const HERO_STRIP = [
 ];
 
 const latestEvents = [...PUBLIC_EVENTS]
-  .filter((e) => e.images.length > 0)
+  .filter((e) => e.status === "completed" && e.images.length > 0)
   .sort((a, b) => b.date.localeCompare(a.date))
   .slice(0, 3);
+
+/** The next scheduled occasion, used for the homepage callout. */
+const nextEvent = [...PUBLIC_EVENTS]
+  .filter(
+    (e) =>
+      e.status === "scheduled" &&
+      new Date(`${e.date}T23:59:59+03:00`).getTime() >= Date.now(),
+  )
+  .sort((a, b) => a.date.localeCompare(b.date))[0];
 export default function HomePage() {
   return (
     <>
@@ -129,6 +139,44 @@ export default function HomePage() {
           </Link>
         </div>
       </div>
+      {nextEvent ? (
+        <section className="home-upcoming" aria-labelledby="next-event-title">
+          <div className="container upcoming-inner">
+            <div className="upcoming-copy">
+              <p className="section-label">
+                Next event · {dateLabel(nextEvent.date)}
+              </p>
+              <h2 id="next-event-title">{nextEvent.title}</h2>
+              <p className="upcoming-meta">
+                <Clock size={16} aria-hidden="true" />
+                <span>
+                  {nextEvent.start
+                    ? `${nextEvent.start}${nextEvent.end ? `–${nextEvent.end}` : ""}`
+                    : "Time to be confirmed"}
+                </span>
+                <MapPin size={16} aria-hidden="true" />
+                <span>{nextEvent.location}</span>
+              </p>
+              <p className="upcoming-lead">{nextEvent.description}</p>
+              <ButtonLink to={`/events/${nextEvent.slug}`} variant="light">
+                Event details <ArrowUpRight size={18} aria-hidden="true" />
+              </ButtonLink>
+            </div>
+            {nextEvent.images[0] ? (
+              <figure className="upcoming-poster">
+                <img
+                  src={nextEvent.images[0].thumb || nextEvent.images[0].src}
+                  alt={nextEvent.images[0].alt}
+                  width={560}
+                  height={778}
+                  loading="lazy"
+                  decoding="async"
+                />
+              </figure>
+            ) : null}
+          </div>
+        </section>
+      ) : null}
       <section className="club-camera" aria-labelledby="club-camera-title">
         <div className="container">
           <div className="camera-heading">
@@ -390,6 +438,27 @@ export default function HomePage() {
               </Link>
             </div>
           </div>
+        </div>
+        <div className="container home-partners">
+          <div className="home-partners-head">
+            <p className="section-label">Partners in service</p>
+            <Link className="text-link" to="/partnerships#partners">
+              Meet our partners <ArrowUpRight size={17} aria-hidden="true" />
+            </Link>
+          </div>
+          <ul className="home-partner-logos">
+            {LOGO_PARTNERS.map((partner) => (
+              <li key={partner.name}>
+                <img
+                  src={partner.logo}
+                  alt={`${partner.name} logo`}
+                  loading="lazy"
+                  decoding="async"
+                />
+                <span>{partner.name}</span>
+              </li>
+            ))}
+          </ul>
         </div>
       </section>
       <section className="club-magazine-section">

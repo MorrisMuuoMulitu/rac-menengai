@@ -800,22 +800,56 @@
   },
   {
     "slug": "medical-camp-2026",
-    "title": "Medical Camp",
+    "title": "Nakuru Free Medical Outreach",
     "date": "2026-11-18",
-    "start": null,
-    "end": null,
-    "location": "Nakuru, Kenya — venue to be announced",
-    "description": "A community medical camp promoting health and access to essential health services.",
-    "organizer": "Rotaract Club of Menengai",
-    "partners": [],
+    "start": "8:00 AM",
+    "end": "5:00 PM",
+    "location": "Railways (Patel Brotherhood Grounds), Nakuru",
+    "description": "A free medical camp with general outpatient care, screening and tests, an eye clinic, counselling, cancer screening and free essential medicines, on Wednesday 18 November 2026.",
+    "organizer": "Rotaract Club of Menengai, with the Ministry of Health and the County Government of Nakuru",
+    "partners": [
+      "Ministry of Health",
+      "County Government of Nakuru",
+      "Kenya Blood Transfusion and Transplant Service",
+      "DamuKE",
+      "Rotary Club of Nakuru",
+      "Rotaract Club of Sunrise-Kampala",
+      "Kenya Red Cross",
+      "Optimum Current Health Care",
+      "AAR Healthcare",
+      "Valley Hospital",
+      "Lions SightFirst Eye Hospital",
+      "The Nakuru Specialist Hospital",
+      "King's Foundation",
+      "SCANN",
+      "JALARAM St. Christopher Hospital",
+      "Mamlaka Health",
+      "ACK Imani Talent NWDT SACCO",
+      "Madini Purified Drinking Water"
+    ],
     "projectSlug": null,
     "sourceUrl": null,
     "status": "scheduled",
     "publicationStatus": "published",
-    "approval": "Club Q1 2026–2027 activities bulletin, October 2026",
-    "image": null,
-    "images": [],
-    "registrationUrl": null
+    "approval": "Club-supplied event poster (Medical-Camp.jpeg, received 14 November 2026). Date, venue, times, services, partners and contact numbers are transcribed from the artwork; the poster is published as the event image.",
+    "image": "/images/events/medical-camp-2026/medical-camp-2026-poster.webp",
+    "images": [
+      {
+        "src": "/images/events/medical-camp-2026/medical-camp-2026-poster.webp",
+        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-poster-560.webp",
+        "alt": "Nakuru Free Medical Outreach poster: Wednesday 18 November 2026, 8:00 AM to 5:00 PM at Railways (Patel Brotherhood Grounds)",
+        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-poster-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-poster.webp 1151w",
+        "width": 1151,
+        "height": 1600
+      }
+    ],
+    "registrationUrl": null,
+    "story": [
+      "Rotaract Club of Menengai, the Ministry of Health and the County Government of Nakuru are hosting a free medical outreach at Railways (Patel Brotherhood Grounds) on Wednesday 18 November 2026, from 8:00 AM to 5:00 PM.",
+      "Services on offer include general outpatient care, screening and tests, health education, blood donation, an eye clinic, counselling and free essential medicines. The team will also provide HIV/AIDS testing and counselling, cervical and prostate cancer screening, non-communicable disease checks and gynaecological consultations.",
+      "The outreach is supported by health providers and community organisations including Kenya Blood Transfusion and Transplant Service, DamuKE, Rotary Club of Nakuru, Rotaract Club of Sunrise-Kampala, Kenya Red Cross, Optimum Current Health Care, AAR Healthcare, Valley Hospital, Lions SightFirst Eye Hospital, The Nakuru Specialist Hospital, King's Foundation, SCANN, JALARAM St. Christopher Hospital, Mamlaka Health, ACK Imani Talent NWDT SACCO and Madini Purified Drinking Water.",
+      "For more information, call 0718 220 049 (Pres Wanjiku) or 0710 733 421 (Rtr Issa)."
+    ]
   },
   {
     "slug": "nakuru-region-drr-hyrax-hill",

@@ -20,11 +20,18 @@ No latest-five-posts claim is made. The 11 discovered social records are drafts 
 |---|---|---|
 | 12 October 2026, WhatsApp | Twelve 2026/27 leadership cards — names, portfolios, biographies, portraits | Published on `/leadership`; portraits cropped to `public/images/leadership/` |
 | 12 October 2026, club bulletin | Q1 2026–2027 activities: installation, two mother pack projects, art day, induction, Mazingira Day, Book Club anniversary, weekly venue, Book Club Review rhythm, upcoming Medical Camp | Published as event records; each detail page cites the bulletin as its approval source |
+| 14 November 2026, WhatsApp (`Medical-Camp.jpeg`) | Medical Camp poster: Nakuru Free Medical Outreach, Wednesday 18 November 2026, 8:00 AM–5:00 PM, Railways (Patel Brotherhood Grounds); services, partners and contact numbers | Published on `/events/medical-camp-2026`; poster stored as the event image. Date, venue, times, services, partners and phone numbers are transcribed from the artwork |
+| 14 November 2026, WhatsApp/PDF | Twelve partner logos (eight images, four PDFs: AITS, Lions SightFirst, The Nakuru Specialist Hospital, Madini) | Published on `/partnerships#partners`; PDFs rasterised at 300 dpi, white margins trimmed, normalised to WebP in `public/images/partners/` |
 | Earlier | Club logo lockup, "Thee Magicals" mantra artwork, membership fees (KES 3,000 + 500 pin), District 9215 | Published; see BRANDING_VERIFICATION.md |
 
-Nothing supplied so far has been altered beyond cropping, resizing and light copy-trimming. Where
-the club has not supplied a detail (Medical Camp venue, attendance figures, photographer credit),
-the site states the gap rather than filling it.
+Nothing supplied so far has been altered beyond cropping, resizing and light copy-trimming. The
+Medical Camp venue is now supplied; attendance figures, photographer credit and partner-specific
+service credits remain unstated.
+
+The partner folder in Downloads also contained a ZIP with low-resolution Ministry of Health,
+Nakuru County, Kenya Red Cross, Kenya Blood Transfusion and Transplant Service and DamuKE marks.
+It was excluded on instruction. Those organisations are still named in the Medical Outreach
+partner list where the poster names them; no logo file was published for them.
 
 ## Outstanding club confirmations
 

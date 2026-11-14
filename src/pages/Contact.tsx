@@ -193,6 +193,51 @@ export default function ContactPage() {
         </div>
       </section>
 
+      <section className="section qr-section" aria-labelledby="qr-title">
+        <div className="container qr-panel">
+          <div className="qr-panel-copy">
+            <span className="eyebrow">Share the club</span>
+            <h2 className="sec-title" id="qr-title">
+              One scan, the whole site.
+            </h2>
+            <p>
+              Show this code at a fellowship, add it to a poster or share the
+              file with someone who needs the club’s details. It opens{" "}
+              <strong>rotaractmenengai.org</strong>.
+            </p>
+            <div className="qr-actions">
+              <a
+                className="btn btn-primary btn-sm"
+                href="/images/branding/website-qr.png"
+                download="rotaract-menengai-website-qr.png"
+              >
+                Download PNG
+              </a>
+              <a
+                className="btn btn-secondary btn-sm"
+                href="/images/branding/website-qr.svg"
+                download="rotaract-menengai-website-qr.svg"
+              >
+                Download SVG
+              </a>
+            </div>
+            <p className="fine-print">
+              The code is generated from the club’s public address. Test-scan
+              the file at its final print size before ordering a large run.
+            </p>
+          </div>
+          <figure className="qr-figure">
+            <img
+              src="/images/branding/website-qr.png"
+              alt="QR code that opens rotaractmenengai.org"
+              width={1024}
+              height={1024}
+            />
+            <figcaption>rotaractmenengai.org</figcaption>
+          </figure>
+        </div>
+      </section>
+
       <section className="section section-tint">
         <div className="container">
           <div className="section-head-block center-block">
@@ -207,6 +252,9 @@ export default function ContactPage() {
             ))}
           </ul>
           <div className="section-more">
+            <ButtonLink to="/partnerships#partners" variant="secondary" size="sm">
+              Meet our partners <ArrowRight aria-hidden="true" />
+            </ButtonLink>
             <ButtonLink to="/projects" variant="secondary" size="sm">
               See the work we do together <ArrowRight aria-hidden="true" />
             </ButtonLink>

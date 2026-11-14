@@ -62,3 +62,37 @@ Outstanding:
   the slogan members say when they meet.** It is used as the homepage headline (animated) and as
   the footer badge, and its alt text reads "Thee Magicals — the club mantra". Permission to
   display the artwork publicly is still the club's to confirm, since it is not a Rotary asset.
+
+## Partner logos and website QR (14 November 2026)
+
+The club supplied twelve partner logos on 14 November 2026 alongside the Medical Camp poster.
+Eight arrived as WhatsApp JPEGs and four as PDFs (`AITS LOGO.pdf`, `Lion Logo SVG.pdf`,
+`NSH LOGO + SLOGAN 4_010832.pdf`, `madini logo-2(3).pdf`). The PDFs were rasterised at 300 dpi
+(both Madini pages were inspected; the white-background second page is used, not the dark
+variant). Every logo had its flat white margin trimmed, was padded by roughly 3.5%, capped at
+900 px on the long edge and saved as WebP under `public/images/partners/`.
+
+| Asset | Source | Note |
+|---|---|---|
+| `aar-healthcare.webp` | WhatsApp JPEG | — |
+| `aits-sacco.webp` | PDF page 1 | ACK Imani Talent NWDT SACCO |
+| `jalaram-st-christopher-hospital.webp` | WhatsApp JPEG | — |
+| `kings-foundation.webp` | WhatsApp JPEG | Portrait artwork |
+| `lions-sightfirst-eye-hospital.webp` | PDF page 1 | Colour variant; black variant on page 2 is not used |
+| `madini-purified-water.webp` | PDF page 2 | White-background variant |
+| `nakuru-specialist-hospital.webp` | PDF | The Nakuru Specialist Hospital |
+| `optimum-healthcare.webp` | WhatsApp JPEG | — |
+| `rotary-club-of-nakuru.webp` | WhatsApp JPEG | Low-resolution source (322x159); cream banner background neutralised to white |
+| `rotaract-sunrise-kampala.webp` | WhatsApp JPEG | Supplied artwork is pink on black; retained as supplied |
+| `scann.webp` | WhatsApp JPEG | Low-resolution source (218x147); shown at strip size |
+| `valley-hospital.webp` | WhatsApp JPEG | Near-white background normalised to white |
+
+Logos are reproduced as partner-owned artwork. They are not recoloured or redrawn. Both the home
+strip and the partnership wall show full colour. The Rotary Club of Nakuru's cream banner
+background was neutralised to white so it sits cleanly on the white card.
+
+The website QR code was generated from the canonical address, `https://rotaractmenengai.org/`, at
+error-correction level H with a four-module quiet zone. `public/images/branding/website-qr.png`
+(1024x1024, navy on white) and `website-qr.svg` (vector) were decoded back to the URL with OpenCV
+before publication. It is shown with download links on `/contact`; re-test the file at final print
+size before a large print run.

@@ -122,6 +122,11 @@ export interface NewsItem {
 
 export interface Partner {
   name: string;
+  /**
+   * Partner-supplied logo, white margins trimmed and normalised to WebP under
+   * `/images/partners/`. Logos without a supplied file remain text-only.
+   */
+  logo?: string;
 }
 
 export interface Faq {
@@ -1036,8 +1041,61 @@ export const LEADERS: Leader[] = [
 ];
 
 /* ============================= Partners ============================= */
+/**
+ * Partners are listed with their supplied logo where one exists. The twelve
+ * logo files arrived from the club on 14 November 2026 alongside the Medical
+ * Outreach poster; four of the source files were PDFs and were rasterised
+ * before cropping. See docs/BRANDING_VERIFICATION.md.
+ */
 export const PARTNERS: Partner[] = [
-  { name: "Rotary Club of Nakuru" },
+  {
+    name: "Rotary Club of Nakuru",
+    logo: "/images/partners/rotary-club-of-nakuru.webp",
+  },
+  {
+    name: "AAR Healthcare",
+    logo: "/images/partners/aar-healthcare.webp",
+  },
+  {
+    name: "ACK Imani Talent NWDT SACCO",
+    logo: "/images/partners/aits-sacco.webp",
+  },
+  {
+    name: "JALARAM St. Christopher Hospital",
+    logo: "/images/partners/jalaram-st-christopher-hospital.webp",
+  },
+  {
+    name: "King's Foundation",
+    logo: "/images/partners/kings-foundation.webp",
+  },
+  {
+    name: "Lions SightFirst Eye Hospital",
+    logo: "/images/partners/lions-sightfirst-eye-hospital.webp",
+  },
+  {
+    name: "Madini Purified Drinking Water",
+    logo: "/images/partners/madini-purified-water.webp",
+  },
+  {
+    name: "The Nakuru Specialist Hospital",
+    logo: "/images/partners/nakuru-specialist-hospital.webp",
+  },
+  {
+    name: "Optimum Current Health Care",
+    logo: "/images/partners/optimum-healthcare.webp",
+  },
+  {
+    name: "Rotaract Club of Sunrise-Kampala",
+    logo: "/images/partners/rotaract-sunrise-kampala.webp",
+  },
+  {
+    name: "SCANN",
+    logo: "/images/partners/scann.webp",
+  },
+  {
+    name: "Valley Hospital",
+    logo: "/images/partners/valley-hospital.webp",
+  },
   { name: "Rotary District 9215" },
   { name: "Nakuru County Government" },
   { name: "Kenya Wildlife Service" },
@@ -1046,6 +1104,9 @@ export const PARTNERS: Partner[] = [
   { name: "Bondeni Maternity" },
   { name: "Limuko Schools" },
 ];
+
+/** Partners whose supplied artwork can be shown as a logo wall. */
+export const LOGO_PARTNERS = PARTNERS.filter((partner) => partner.logo);
 
 /** Format a Kenyan shilling amount, e.g. 3000 → "KES 3,000". */
 export const formatKes = (amount: number): string =>
