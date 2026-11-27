@@ -8,7 +8,6 @@ import {
 import { markTerms, parseInline, toParagraphs } from "../lib/prose";
 import { LESSON_DESIGN } from "./lesson-design";
 import { QuickCheck } from "./QuickCheck";
-import { PrivateNote } from "./PrivateNote";
 import { LessonVisual } from "./LessonVisual";
 
 function Reading({ blocks }: { blocks: OrientationBlock[] }) {
@@ -62,12 +61,10 @@ export function LessonExplorer({
   lessonId,
   blocks,
   objectives,
-  activity,
 }: {
   lessonId: string;
   blocks: OrientationBlock[];
   objectives: string[];
-  activity: string;
 }) {
   const sections = lessonSections(blocks);
   const [index, setIndex] = useState(0);
@@ -128,7 +125,10 @@ export function LessonExplorer({
         </button>
       </div>
       <details className="lesson-full-reading">
-        <summary>Prefer to read everything together?</summary>
+        <summary>
+          <span>Prefer to read everything together?</span>
+          <small>Optional</small>
+        </summary>
         <Reading blocks={blocks} />
       </details>
       <details className="lesson-goals-compact">
@@ -142,7 +142,6 @@ export function LessonExplorer({
         </ul>
       </details>
       <QuickCheck key={`check-${lessonId}`} lessonId={lessonId} />
-      <PrivateNote lessonId={lessonId} activity={activity} />
     </section>
   );
 }

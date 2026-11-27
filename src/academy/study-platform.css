@@ -1122,6 +1122,24 @@ a.chapter-lesson:hover {
   border-color: var(--study-rule);
 }
 
+.lesson-full-reading > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.lesson-full-reading > summary small {
+  padding: 0.18rem 0.48rem;
+  border: 1px solid var(--study-rule);
+  border-radius: 999px;
+  color: var(--study-muted);
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
 .lesson-finish-bar {
   margin-top: 2.2rem;
   padding: 1.4rem 0;

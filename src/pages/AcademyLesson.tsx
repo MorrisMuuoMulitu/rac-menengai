@@ -937,7 +937,6 @@ export default function AcademyPage() {
                 lessonId={lesson.id}
                 blocks={lessonBody.blocks}
                 objectives={lessonBody.objectives}
-                activity={lessonBody.activity}
               />
               {(lesson.id === "structure" ||
                 lesson.id === "club-leadership") && (
