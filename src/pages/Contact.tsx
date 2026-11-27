@@ -47,9 +47,7 @@ export default function ContactPage() {
   const confirmedEmail = isContactConfirmed(contactConfig.email)
     ? contactConfig.email
     : null;
-  const confirmedPhone = isContactConfirmed(contactConfig.phone)
-    ? contactConfig.phone
-    : null;
+  const confirmedPhones = contactConfig.phones.filter(isContactConfirmed);
   const confirmedWhatsapp = isContactConfirmed(contactConfig.whatsapp)
     ? contactConfig.whatsapp
     : null;
@@ -62,7 +60,7 @@ export default function ContactPage() {
       />
       <PageHero eyebrow={intro.eyebrow} title={intro.title} lead={intro.lead} />
 
-      {confirmedEmail || confirmedPhone || confirmedWhatsapp ? (
+      {confirmedEmail || confirmedPhones.length || confirmedWhatsapp ? (
         <section className="section section-tint">
           <div className="container direct-contact">
             <h2>Direct contact</h2>
@@ -79,18 +77,19 @@ export default function ContactPage() {
                   </div>
                 </a>
               ) : null}
-              {confirmedPhone ? (
+              {confirmedPhones.map((phone) => (
                 <a
                   className="contact-card direct"
-                  href={`tel:${confirmedPhone.replace(/\s/g, "")}`}
+                  href={`tel:${phone.replace(/[^\d+]/g, "")}`}
+                  key={phone}
                 >
                   <Phone aria-hidden="true" />
                   <div>
                     <h3>Phone</h3>
-                    <p>{confirmedPhone}</p>
+                    <p>{phone}</p>
                   </div>
                 </a>
-              ) : null}
+              ))}
               {confirmedWhatsapp ? (
                 <a
                   className="contact-card direct"
@@ -177,7 +176,7 @@ export default function ContactPage() {
           </Reveal>
           <p className="fine-print">
             The email address is listed on the club’s public Facebook profile.
-            The club is working on publishing a phone number. Fellowship is
+            Call either listed number to reach a club officer. Fellowship is
             every Thursday at Nakuru Athletic Club.
           </p>
         </div>
@@ -252,7 +251,11 @@ export default function ContactPage() {
             ))}
           </ul>
           <div className="section-more">
-            <ButtonLink to="/partnerships#partners" variant="secondary" size="sm">
+            <ButtonLink
+              to="/partnerships#partners"
+              variant="secondary"
+              size="sm"
+            >
               Meet our partners <ArrowRight aria-hidden="true" />
             </ButtonLink>
             <ButtonLink to="/projects" variant="secondary" size="sm">

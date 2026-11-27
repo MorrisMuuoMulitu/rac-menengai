@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { beforeEach, describe, expect, it, vi, type Mock } from "vitest";
 import { createAcademyHandler } from "./academy";
 import type {
   AcademyRepository,
@@ -11,12 +11,14 @@ import { FULL_COURSE } from "./course";
 import { CURRICULUM } from "../shared/rotaract-academy/curriculum";
 import { SCENARIO_CHECKS } from "../shared/rotaract-academy/scenarios";
 import {
+  CERTIFICATE_NUMBER_PATTERN,
   emptyRecord,
   NUDGE_AFTER_DAYS,
   withProgressStamp,
   type LearningRecord,
 } from "../shared/rotaract-academy/progress";
 import type { MembershipApplication } from "../shared/rotaract-academy/application";
+import type { EmailSender } from "./email";
 
 /* ---------------- a repository that behaves like the real one --------------- */
 
@@ -29,6 +31,7 @@ function fakeRepository(): AcademyRepository & {
   const applications = new Map<string, ReviewQueueItem>();
   const events: string[] = [];
   const notes = new Map<string, { text: string; updatedAt: string }>();
+  const certificateSequences = new Map<string, number>();
   const key = (userId: string, clubId: string) => `${clubId}:${userId}`;
 
   return {
@@ -67,6 +70,22 @@ function fakeRepository(): AcademyRepository & {
       const stamp = times.get(key(userId, clubId));
       if (stamp) stamp.updatedAt = new Date().toISOString();
       return learner.record;
+    },
+    async updateLearnerProfile(userId, clubId, profile) {
+      const learner = data.get(key(userId, clubId));
+      if (!learner) return null;
+      learner.displayName = profile.displayName;
+      learner.record = withProgressStamp({
+        ...learner.record,
+        certificateName: profile.certificateName,
+      });
+      return learner;
+    },
+    async nextCertificateSequence(clubId, rotaryYear) {
+      const sequenceKey = `${clubId}:${rotaryYear}`;
+      const next = (certificateSequences.get(sequenceKey) ?? 0) + 1;
+      certificateSequences.set(sequenceKey, next);
+      return next;
     },
     async recordAttempt(userId, clubId, attempt): Promise<AttemptRow> {
       const learner = data.get(key(userId, clubId));
@@ -179,7 +198,9 @@ function request(
 const env = {
   SITE_ORIGIN: SITE,
   CLERK_SECRET_KEY: "sk_test_stub",
-  ACADEMY_REVIEWER_EMAILS: "morrismulitu@gmail.com",
+  ACADEMY_REVIEWER_EMAILS:
+    "morrismulitu@gmail.com,wanjikunguru9@gmail.com,menengairc@gmail.com",
+  ACADEMY_NOTIFICATION_EMAILS: "morrismulitu@gmail.com,menengairc@gmail.com",
 } as Record<string, string>;
 
 /**
@@ -225,12 +246,15 @@ const people = {
 
 let repository: ReturnType<typeof fakeRepository>;
 let handler: ReturnType<typeof createAcademyHandler>;
+let sendEmail: Mock<EmailSender>;
 
 beforeEach(() => {
   repository = fakeRepository();
+  sendEmail = vi.fn<EmailSender>().mockResolvedValue({ id: "email_123" });
   handler = createAcademyHandler(env, {
     resolveActor: resolver(people),
     repository,
+    sendEmail,
   });
 });
 
@@ -608,6 +632,115 @@ describe("the assessment", () => {
 });
 
 describe("the proposal and the application", () => {
+  it("creates an editable certificate after the lessons and assessment", async () => {
+    const early = await post(learner.userId, {
+      action: "certificate",
+      name: "Amina Wanjiru",
+    });
+    expect(early.statusCode).toBe(409);
+
+    for (const lessonId of PRESENTED_LESSON_IDS)
+      await post(learner.userId, { action: "lesson", lessonId });
+    const assessment = await post(learner.userId, {
+      action: "assessment",
+      answers: FULL_COURSE.questions.map((question) => question.correctIndex),
+    });
+    expect(assessment.statusCode).toBe(200);
+    expect((assessment.body as { passed: boolean }).passed).toBe(true);
+
+    const saved = await post(learner.userId, {
+      action: "certificate",
+      name: "Amina Wanjiru",
+      photo: "data:image/png;base64,iVBORw0KGgo=",
+    });
+    expect(saved.statusCode).toBe(200);
+    const savedRecord = (
+      saved.body as {
+        record: {
+          certificateName: string;
+          completedAt: string;
+          certificatePhoto: string;
+          certificateNumber: string;
+        };
+      }
+    ).record;
+    expect(savedRecord.certificateName).toBe("Amina Wanjiru");
+    expect(savedRecord.completedAt).toBeTruthy();
+    expect(savedRecord.certificatePhoto).toBe(
+      "data:image/png;base64,iVBORw0KGgo=",
+    );
+    expect(savedRecord.certificateNumber).toMatch(CERTIFICATE_NUMBER_PATTERN);
+    expect(savedRecord.certificateNumber).toBe("RACMNG-2026-2027-01");
+
+    const edited = await post(learner.userId, {
+      action: "certificate",
+      name: "Amina W. Mwangi",
+    });
+    expect(edited.statusCode).toBe(200);
+    const editedRecord = (
+      edited.body as {
+        record: {
+          certificateName: string;
+          completedAt: string;
+          certificatePhoto: string;
+          certificateNumber: string;
+        };
+      }
+    ).record;
+    expect(editedRecord.certificateName).toBe("Amina W. Mwangi");
+    expect(editedRecord.completedAt).toBe(savedRecord.completedAt);
+    expect(editedRecord.certificatePhoto).toBe(savedRecord.certificatePhoto);
+    expect(editedRecord.certificateNumber).toBe(savedRecord.certificateNumber);
+
+    const removed = await post(learner.userId, {
+      action: "certificate",
+      name: "Amina W. Mwangi",
+      photo: null,
+    });
+    expect(removed.statusCode).toBe(200);
+    expect(
+      (
+        removed.body as {
+          record: { certificatePhoto: string | null };
+        }
+      ).record.certificatePhoto,
+    ).toBeNull();
+
+    const verified = await get(
+      undefined,
+      `/api/academy?view=certificate-verification&number=${encodeURIComponent(savedRecord.certificateNumber)}`,
+    );
+    expect(verified.statusCode).toBe(200);
+    expect(verified.body).toMatchObject({
+      valid: true,
+      certificate: {
+        number: savedRecord.certificateNumber,
+        name: "Amina W. Mwangi",
+        issuedBy: "Rotaract Club of Menengai",
+        rotaryYear: "2026-2027",
+      },
+    });
+    expect(JSON.stringify(verified.body)).not.toContain("amina@example.com");
+    expect(
+      (
+        await get(
+          undefined,
+          "/api/academy?view=certificate-verification&number=RACMNG-2026-2027-99",
+        )
+      ).statusCode,
+    ).toBe(404);
+  });
+
+  it("rejects a certificate photo that is not a safe image", async () => {
+    await completeCourse(learner.userId);
+    const res = await post(learner.userId, {
+      action: "certificate",
+      name: "Amina Wanjiru",
+      photo: "data:image/png;base64,aGVsbG8=",
+    });
+    expect(res.statusCode).toBe(422);
+  });
+
   it("refuses a proposal before the assessment is passed", async () => {
     const res = await post(learner.userId, {
       action: "proposal",
@@ -643,6 +776,31 @@ describe("the proposal and the application", () => {
     expect(body.application.courseScore).toBe(FULL_COURSE.questions.length);
   });
 
+  it("notifies both academy officers after submission", async () => {
+    await completeCourse(learner.userId);
+    await fillDraft(learner.userId);
+    await post(learner.userId, { action: "apply" });
+    expect(sendEmail).toHaveBeenCalledTimes(1);
+    expect(sendEmail.mock.calls[0][0]).toMatchObject({
+      to: ["morrismulitu@gmail.com", "menengairc@gmail.com"],
+      subject:
+        "Rotaract Club of Menengai: new membership application from Amina Wanjiru",
+      replyTo: "amina@example.com",
+      idempotencyKey: `application-submitted-app-${learner.userId}`,
+    });
+  });
+
+  it("does not lose a submitted application when email delivery fails", async () => {
+    sendEmail.mockRejectedValueOnce(new Error("provider unavailable"));
+    await completeCourse(learner.userId);
+    await fillDraft(learner.userId);
+    const res = await post(learner.userId, { action: "apply" });
+    expect(res.statusCode).toBe(200);
+    expect(
+      (res.body as { application: MembershipApplication }).application.status,
+    ).toBe("submitted");
+  });
+
   it("will not let a learner approve their own application", async () => {
     await completeCourse(learner.userId);
     await fillDraft(learner.userId);
@@ -660,6 +818,27 @@ describe("the proposal and the application", () => {
 });
 
 describe("the reviewer queue", () => {
+  it("does not let a reviewer approve their own application", async () => {
+    await completeCourse(officer.userId);
+    await fillDraft(officer.userId);
+    await post(officer.userId, { action: "apply" });
+    const id = `app-${officer.userId}`;
+    await post(officer.userId, {
+      action: "review",
+      applicationId: id,
+      status: "in_review",
+    });
+    const res = await post(officer.userId, {
+      action: "review",
+      applicationId: id,
+      status: "approved",
+    });
+    expect(res.statusCode).toBe(403);
+    expect(res.body).toMatchObject({
+      error: "You cannot review your own application.",
+    });
+  });
+
   it("is closed to learners", async () => {
     const res = await get(learner.userId, "/api/academy?view=review");
     expect(res.statusCode).toBe(403);
@@ -738,6 +917,7 @@ type ProgressBody = {
     stage: string;
     lessonsDone: number;
     lessonsTotal: number;
+    assessmentTotal: number;
     assessmentPassed: boolean;
     proposalSubmitted: boolean;
     canApply: boolean;
@@ -751,6 +931,30 @@ type ProgressBody = {
 const learnersUrl = "/api/academy?view=learners";
 
 describe("officer learner progress", () => {
+  it("lets an officer correct a learner's display and certificate names", async () => {
+    await get(learner.userId);
+    const res = await post(officer.userId, {
+      action: "learner-profile",
+      userId: learner.userId,
+      displayName: "Amina W. Mwangi",
+      certificateName: "Amina Wangari Mwangi",
+    });
+    expect(res.statusCode).toBe(200);
+    const saved = repository.data.get(`menengai:${learner.userId}`)!;
+    expect(saved.displayName).toBe("Amina W. Mwangi");
+    expect(saved.record.certificateName).toBe("Amina Wangari Mwangi");
+    expect(
+      (
+        await post(learner.userId, {
+          action: "learner-profile",
+          userId: learner.userId,
+          displayName: "Self edit",
+          certificateName: "Self edit",
+        })
+      ).statusCode,
+    ).toBe(403);
+  });
+
   it("is refused to a signed-in learner and to a visitor", async () => {
     expect((await get(learner.userId, learnersUrl)).statusCode).toBe(403);
     expect((await get(undefined, learnersUrl)).statusCode).toBe(403);
@@ -765,6 +969,7 @@ describe("officer learner progress", () => {
     const row = body.learners.find((item) => item.userId === learner.userId)!;
     expect(row.lessonsDone).toBe(1);
     expect(row.lessonsTotal).toBe(FULL_COURSE.modules.length);
+    expect(row.assessmentTotal).toBe(FULL_COURSE.questions.length);
     expect(row.cohort).toBe("in-progress");
     expect(row.lastProgressAt).toBeTruthy();
     expect(row.email).toBe(learner.email);
@@ -846,5 +1051,38 @@ describe("officer learner progress", () => {
     });
     const body = (await get(officer.userId, learnersUrl)).body as ProgressBody;
     expect(body.learners.map((item) => item.userId)).toEqual([learner.userId]);
+  });
+
+  it("lets an officer download a completed learner's certificate details", async () => {
+    await completeCourse(learner.userId);
+    await post(learner.userId, {
+      action: "certificate",
+      name: "Amina Wanjiru",
+      photo: "data:image/png;base64,iVBORw0KGgo=",
+    });
+
+    const res = await get(
+      officer.userId,
+      `/api/academy?view=certificate&userId=${encodeURIComponent(learner.userId)}`,
+    );
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toMatchObject({
+      certificate: {
+        name: "Amina Wanjiru",
+        photo: "data:image/png;base64,iVBORw0KGgo=",
+        certificateNumber: expect.stringMatching(CERTIFICATE_NUMBER_PATTERN),
+        score: FULL_COURSE.questions.length,
+        total: FULL_COURSE.questions.length,
+      },
+    });
+    expect(JSON.stringify(res.body)).not.toContain("correctIndex");
+    expect(
+      (
+        await get(
+          learner.userId,
+          `/api/academy?view=certificate&userId=${encodeURIComponent(learner.userId)}`,
+        )
+      ).statusCode,
+    ).toBe(403);
   });
 });

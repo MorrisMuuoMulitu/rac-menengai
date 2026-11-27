@@ -34,9 +34,11 @@ export const SOURCES: SourceRecord[] = [
     title: "The Four-Way Test",
     url: "https://blog.rotary.org/2026/04/09/the-four-way-test-a-road-map-we-need-now-more-than-ever/",
     version: "Page consulted 16 October 2026",
-    section: "The test itself, its wording and its attribution to Herbert J. Taylor, 1932",
+    section:
+      "The test itself, its wording and its attribution to Herbert J. Taylor, 1932",
     reviewed: "2026-10-16",
-    scope: "Rotary ethical framework; not evidence of a mandatory meeting recital",
+    scope:
+      "Rotary ethical framework; not evidence of a mandatory meeting recital",
     reviewer: "Club secretary",
   },
   {
@@ -44,7 +46,8 @@ export const SOURCES: SourceRecord[] = [
     title: "The Object of Rotary",
     url: "https://www.rotary.org/en/about-rotary",
     version: "Exact statement pending source confirmation",
-    section: "General background only; course uses a labelled plain-language overview",
+    section:
+      "General background only; course uses a labelled plain-language overview",
     reviewed: "Pending",
     scope: "Rotary guiding principle; no verbatim text published here",
     reviewer: "Club secretary",
@@ -121,13 +124,6 @@ export const CLUB_CONFIRMATIONS: ClubConfirmation[] = [
     landsIn: "Protocols chapter, ethical foundations lesson",
   },
   {
-    id: "agenda",
-    question: "What is Menengai’s standing meeting agenda, in order?",
-    why: "An agenda is a club decision. The lesson teaches the common shape and labels it as an example, not as ours.",
-    owner: "Club secretary",
-    landsIn: "Protocols chapter, meeting participation lesson",
-  },
-  {
     id: "grace",
     question:
       "Does Menengai open or close with a grace or invocation, and what are the words?",
@@ -181,7 +177,8 @@ export const CLUB_CONFIRMATIONS: ClubConfirmation[] = [
       "Are the five club questions in the assessment factually right for this year?",
     why: "The sponsor, meeting day and venue, president, district coverage and example project are read from the club profile. They are correct as recorded, but a president changes every July and the profile is not updated automatically.",
     owner: "Club secretary",
-    landsIn: "Assessment — roots, membership, club leadership, frameworks and district questions",
+    landsIn:
+      "Assessment — roots, membership, club leadership, frameworks and district questions",
   },
   {
     id: "committees",

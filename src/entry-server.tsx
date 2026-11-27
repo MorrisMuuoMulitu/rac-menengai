@@ -1,7 +1,7 @@
 import { renderToString } from "react-dom/server";
 import { StaticRouter } from "react-router-dom";
 import App from "./App";
-import { PAGE_INTROS, PROJECTS } from "./data";
+import { PAGE_INTROS, PROJECTS, contactConfig } from "./data";
 import { PUBLIC_EVENTS } from "./content";
 export const routes = [
   "/",
@@ -18,11 +18,14 @@ export const routes = [
   "/membership/academy",
   "/membership/sign-in",
   "/membership/register",
+  "/membership/sso-callback",
   "/membership/queue",
   "/membership/learners",
+  "/membership/enquiries",
   "/contact",
   "/partnerships",
   "/privacy",
+  "/verify",
   ...PROJECTS.map((p) => `/projects/${p.slug}`),
   ...PUBLIC_EVENTS.map((e) => `/events/${e.slug}`),
 ];
@@ -33,11 +36,14 @@ const titles: Record<string, string> = {
   "/membership/academy": "Membership academy",
   "/membership/sign-in": "Sign in",
   "/membership/register": "Create your academy account",
+  "/membership/sso-callback": "Completing sign-in",
   "/membership/queue": "Membership applications",
   "/membership/learners": "Learner progress",
+  "/membership/enquiries": "Website enquiries",
   "/about/district-9215": "Rotary District 9215",
   "/partnerships": "Partnerships",
   "/privacy": "Privacy",
+  "/verify": "Verify a certificate",
   "/learn": "Learn about Rotaract",
   "/404": "Page not found",
 };
@@ -57,12 +63,17 @@ const descriptions: Record<string, string> = {
     "Collaborate with the Rotaract Club of Menengai on community service in Nakuru, and meet the health providers, clubs and organisations that partner with the club.",
   "/privacy":
     "How enquiry details and local orientation progress are handled on the Menengai club website.",
+  "/verify":
+    "Verify a completion certificate issued by the Rotaract Club of Menengai.",
 };
 export function render(path: string) {
   const project = PROJECTS.find((p) => path === `/projects/${p.slug}`);
   const event = PUBLIC_EVENTS.find((e) => path === `/events/${e.slug}`);
   const intro = PAGE_INTROS[path.slice(1)];
-  const title = `${project?.title ?? event?.title ?? titles[path] ?? intro?.eyebrow ?? "Rotaract"} | Rotaract Club of Menengai`;
+  const title =
+    event?.slug === "medical-camp-2026"
+      ? "Nakuru Free Medical Outreach: 320 people served | Rotaract Club of Menengai"
+      : `${project?.title ?? event?.title ?? titles[path] ?? intro?.eyebrow ?? "Rotaract"} | Rotaract Club of Menengai`;
   const description =
     project?.summary ??
     event?.description ??
@@ -82,6 +93,42 @@ export function render(path: string) {
     width: photos[0]?.width ?? (event?.image ? undefined : 1200),
     height: photos[0]?.height ?? (event?.image ? undefined : 630),
   };
+  /*
+   * Schema.org has no EventCompleted value. A completed event is represented
+   * by a scheduled event whose endDate is in the past, rather than inventing
+   * an unsupported status.
+   */
+  const medicalEvent =
+    event?.slug === "medical-camp-2026"
+      ? {
+          "@context": "https://schema.org",
+          "@type": "Event",
+          "@id": `${canonical}#event`,
+          name: event.title,
+          description: event.description,
+          url: canonical,
+          startDate: `${event.date}T08:00:00+03:00`,
+          endDate: `${event.date}T17:00:00+03:00`,
+          eventStatus: "https://schema.org/EventScheduled",
+          eventAttendanceMode: "https://schema.org/OfflineEventAttendanceMode",
+          isAccessibleForFree: true,
+          location: {
+            "@type": "Place",
+            name: event.location,
+            address: {
+              "@type": "PostalAddress",
+              addressLocality: "Nakuru",
+              addressCountry: "KE",
+            },
+          },
+          organizer: { "@id": "https://rotaractmenengai.org/#club" },
+          image: {
+            "@type": "ImageObject",
+            url: shareImage.url,
+            caption: shareImage.alt,
+          },
+        }
+      : null;
   const breadcrumbs =
     path !== "/" && path !== "/404"
       ? {
@@ -137,6 +184,15 @@ export function render(path: string) {
     shareImage,
     photos,
     schema: [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://rotaractmenengai.org/#club",
+        name: "Rotaract Club of Menengai",
+        url: "https://rotaractmenengai.org",
+        email: contactConfig.email,
+        telephone: contactConfig.phones,
+      },
       breadcrumbs,
       event
         ? {
@@ -160,6 +216,7 @@ export function render(path: string) {
               : {}),
           }
         : null,
+      medicalEvent,
     ].filter(Boolean),
   };
 }

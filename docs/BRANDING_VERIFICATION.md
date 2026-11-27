@@ -87,6 +87,14 @@ variant). Every logo had its flat white margin trimmed, was padded by roughly 3.
 | `scann.webp` | WhatsApp JPEG | Low-resolution source (218x147); shown at strip size |
 | `valley-hospital.webp` | WhatsApp JPEG | Near-white background normalised to white |
 
+Three additional logos arrived on 26 November 2026 with the partners' report:
+
+| Asset | Source | Note |
+|---|---|---|
+| `equity-afya.webp` | `equity_logo.pdf` | Rasterised at 300 dpi and margin-trimmed |
+| `supreme-pharmacy.webp` | `supreme logo.pdf` | Rasterised at 300 dpi and margin-trimmed |
+| `nairobi-womens-hospital.webp` | WhatsApp JPEG | Margin-trimmed; blue and pink artwork retained |
+
 Logos are reproduced as partner-owned artwork. They are not recoloured or redrawn. Both the home
 strip and the partnership wall show full colour. The Rotary Club of Nakuru's cream banner
 background was neutralised to white so it sits cleanly on the white card.

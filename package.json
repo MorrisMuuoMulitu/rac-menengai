@@ -22,15 +22,19 @@
     "format": "prettier --write src api scripts content index.html vercel.json vite.config.ts",
     "pretest": "node scripts/prepare-content.mjs",
     "pretypecheck": "node scripts/prepare-content.mjs",
-    "verify:scroll": "node scripts/verify-scroll.mjs && node scripts/verify-scroll.py --dir docs/audit/scroll-check"
+    "verify:scroll": "node scripts/verify-scroll.mjs && node scripts/verify-scroll.py --dir docs/audit/scroll-check",
+    "verify:dns": "node scripts/verify-dns.mjs"
   },
   "dependencies": {
     "@clerk/backend": "^3.24.0",
     "@clerk/react": "^6.17.8",
     "@sanity/client": "^8.9.0",
     "@vercel/functions": "^3.10.1",
+    "html-to-image": "^1.11.13",
+    "jspdf": "^4.2.1",
     "lucide-react": "^0.469.0",
     "pg": "^8.23.1",
+    "qrcode.react": "^4.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "react-router-dom": "^7.18.4"

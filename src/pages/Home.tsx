@@ -8,6 +8,22 @@ import HeroGallery from "../components/HeroGallery";
 /** Current club photographs link to their event records. */
 const HERO_LEAD = [
   {
+    title: "Nakuru Free Medical Outreach",
+    src: "/images/events/medical-camp-2026/medical-camp-2026-group-photo.webp",
+    srcSet:
+      "/images/events/medical-camp-2026/medical-camp-2026-group-photo-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-group-photo.webp 1280w",
+    alt: "Volunteers, health workers and partner teams gathered for a group photograph after the medical outreach",
+    href: "/events/medical-camp-2026",
+  },
+  {
+    title: "Inside the medical camp",
+    src: "/images/events/medical-camp-2026/medical-camp-2026-briefing.webp",
+    srcSet:
+      "/images/events/medical-camp-2026/medical-camp-2026-briefing-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-briefing.webp 1280w",
+    alt: "Volunteers and community members gather inside the hall for a briefing",
+    href: "/events/medical-camp-2026",
+  },
+  {
     title: "Welcoming our new members",
     src: "/images/events/nakuru-region-district-governor-meeting-inductions/menengai-induction-members-lineup.webp",
     srcSet:

@@ -9,7 +9,12 @@
  * Both live in one lazily-loaded chunk so Clerk stays off every other route.
  */
 
-import { ClerkProvider, SignIn, SignUp } from "@clerk/react";
+import {
+  AuthenticateWithRedirectCallback,
+  ClerkProvider,
+  SignIn,
+  SignUp,
+} from "@clerk/react";
 import { ArrowLeft, IdCard, ShieldCheck } from "lucide-react";
 import { Link } from "react-router-dom";
 import { PageMeta } from "../components/ui";
@@ -29,6 +34,10 @@ const APPEARANCE = {
     colorInputText: "#222b31",
     fontFamily: "Manrope, ui-sans-serif, system-ui, sans-serif",
     borderRadius: "10px",
+  },
+  options: {
+    socialButtonsPlacement: "top",
+    socialButtonsVariant: "blockButton",
   },
 } as const;
 
@@ -112,7 +121,7 @@ export function SignInPage() {
             signInFallbackRedirectUrl="/membership/academy"
             signUpFallbackRedirectUrl="/membership/academy"
           >
-            <SignIn routing="hash" />
+            <SignIn routing="hash" oauthFlow="redirect" />
           </ClerkProvider>
         ) : (
           <Unavailable />
@@ -157,12 +166,31 @@ export function SignUpPage() {
             signInFallbackRedirectUrl="/membership/academy"
             signUpFallbackRedirectUrl="/membership/academy"
           >
-            <SignUp routing="hash" />
+            <SignUp routing="hash" oauthFlow="redirect" />
           </ClerkProvider>
         ) : (
           <Unavailable />
         )}
       </AuthShell>
     </>
+  );
+}
+
+export function SsoCallbackPage() {
+  if (!PUBLISHABLE_KEY) return <Unavailable />;
+  return (
+    <section className="academy-signin-page">
+      <div className="container academy-signin-page-inner">
+        <p className="academy-oauth-note" role="status">
+          Completing sign-in…
+        </p>
+        <ClerkProvider publishableKey={PUBLISHABLE_KEY} appearance={APPEARANCE}>
+          <AuthenticateWithRedirectCallback
+            signInForceRedirectUrl="/membership/academy"
+            signUpForceRedirectUrl="/membership/academy"
+          />
+        </ClerkProvider>
+      </div>
+    </section>
   );
 }

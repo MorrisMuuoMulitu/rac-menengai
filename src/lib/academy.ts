@@ -73,8 +73,10 @@ export interface LearnerProgressRow {
   checksDone: number;
   checksTotal: number;
   bestScore: number;
+  assessmentTotal: number;
   attempts: number;
   assessmentPassed: boolean;
+  certificateName: string | null;
   proposalSubmitted: boolean;
   canApply: boolean;
   applicationStatus: ApplicationStatus | null;
@@ -94,6 +96,25 @@ export interface LearnerProgressResponse {
     done: number;
   };
   learners: LearnerProgressRow[];
+}
+
+export interface LearnerCertificateDetails {
+  name: string;
+  photo: string | null;
+  completedAt: string | null;
+  certificateNumber: string;
+  score: number;
+  total: number;
+}
+
+export interface PublicCertificate {
+  number: string;
+  name: string;
+  completedAt: string | null;
+  courseTitle: string;
+  issuedBy: string;
+  president: string;
+  rotaryYear: string;
 }
 
 export interface GradedResponse {
@@ -224,6 +245,43 @@ export function loadLearnerProgress(token: string | null) {
   );
 }
 
+export function loadLearnerCertificate(token: string | null, userId: string) {
+  return call<{ signedIn: true; certificate: LearnerCertificateDetails }>(
+    `/api/academy?view=certificate&userId=${encodeURIComponent(userId)}`,
+    { method: "GET" },
+    token,
+  );
+}
+
+export function saveLearnerProfile(
+  token: string | null,
+  userId: string,
+  displayName: string,
+  certificateName: string,
+) {
+  return academyAction<{
+    learner: {
+      userId: string;
+      email: string | null;
+      displayName: string;
+      certificateName: string;
+    };
+  }>(token, {
+    action: "learner-profile",
+    userId,
+    displayName,
+    certificateName,
+  });
+}
+
+export function verifyCertificate(certificateNumber: string) {
+  return call<{ valid: true; certificate: PublicCertificate }>(
+    `/api/academy?view=certificate-verification&number=${encodeURIComponent(certificateNumber)}`,
+    { method: "GET" },
+    null,
+  );
+}
+
 export function academyAction<T>(
   token: string | null,
   body: Record<string, unknown>,
@@ -257,6 +315,16 @@ export const submitAssessment = (
   token: string | null,
   answers: (number | null)[],
 ) => academyAction<GradedResponse>(token, { action: "assessment", answers });
+
+export const saveCertificateDetails = (
+  token: string | null,
+  name: string,
+  photo: string | null,
+) =>
+  academyAction<{
+    record: LearningRecord;
+    summary: CourseProgressSummary;
+  }>(token, { action: "certificate", name, photo });
 
 export const saveProposal = (
   token: string | null,

@@ -35,7 +35,7 @@ it("uses a separate club profile without carrying Menengai facts into another cl
   expect(course.questions).toHaveLength(COURSE_INFO.questionCount);
 });
 
-it("organises every lesson once into six chapters and preserves the pass boundary", () => {
+it("organises every lesson once into seven chapters and preserves the pass boundary", () => {
   const ids = CHAPTERS.flatMap((chapter) => chapter.lessons);
   expect(CHAPTERS).toHaveLength(CHAPTERS.length);
   expect(new Set(ids).size).toBe(COURSE_INFO.lessons.length);

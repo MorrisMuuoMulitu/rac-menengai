@@ -29,7 +29,19 @@ export interface LearningRecord {
   passed: boolean;
   passedAt: string | null;
   updatedAt: string | null;
+  /** First time the course certificate was issued, kept stable after edits. */
+  completedAt: string | null;
+  /** Name the learner wants printed on their completion certificate. */
+  certificateName: string | null;
+  /** Optional portrait, already resized by the browser, used only on the certificate. */
+  certificatePhoto: string | null;
+  /** Permanent public identifier printed on the certificate and encoded in its QR. */
+  certificateNumber: string | null;
 }
+
+export const CERTIFICATE_PHOTO_MAX_BYTES = 220_000;
+export const CERTIFICATE_PHOTO_MAX_LENGTH = 300_000;
+export const CERTIFICATE_NUMBER_PATTERN = /^RACMNG-\d{4}-\d{4}-\d{2,}$/;
 
 /**
  * Curriculum migration: lesson ids that no longer exist, and where their
@@ -61,6 +73,10 @@ export function emptyRecord(courseVersion: string): LearningRecord {
     passed: false,
     passedAt: null,
     updatedAt: null,
+    completedAt: null,
+    certificateName: null,
+    certificatePhoto: null,
+    certificateNumber: null,
   };
 }
 
@@ -331,6 +347,28 @@ export function normaliseRecord(
     source.attempts >= 0
       ? Math.floor(source.attempts)
       : 0;
+  const completedAt =
+    typeof source.completedAt === "string" &&
+    !Number.isNaN(new Date(source.completedAt).getTime())
+      ? new Date(source.completedAt).toISOString()
+      : null;
+  const certificateName =
+    typeof source.certificateName === "string"
+      ? source.certificateName.trim().slice(0, 120) || null
+      : null;
+  const certificatePhoto =
+    typeof source.certificatePhoto === "string" &&
+    source.certificatePhoto.length <= CERTIFICATE_PHOTO_MAX_LENGTH &&
+    /^data:image\/(?:jpeg|png|webp);base64,[a-z0-9+/=]+$/i.test(
+      source.certificatePhoto,
+    )
+      ? source.certificatePhoto
+      : null;
+  const certificateNumber =
+    typeof source.certificateNumber === "string" &&
+    CERTIFICATE_NUMBER_PATTERN.test(source.certificateNumber)
+      ? source.certificateNumber
+      : null;
 
   return {
     courseVersion,
@@ -342,5 +380,9 @@ export function normaliseRecord(
     passed: source.passed === true,
     passedAt: typeof source.passedAt === "string" ? source.passedAt : null,
     updatedAt: typeof source.updatedAt === "string" ? source.updatedAt : null,
+    completedAt,
+    certificateName,
+    certificatePhoto,
+    certificateNumber,
   };
 }

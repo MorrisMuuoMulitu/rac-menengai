@@ -43,12 +43,14 @@ import { OrderingActivity } from "../academy/OrderingActivity";
 import { flashcardsForChapter } from "../../shared/rotaract-academy/flashcards";
 import { orderingForLesson } from "../../shared/rotaract-academy/activities";
 import { AccountChip } from "../academy/AccountChip";
+import { CompletionCertificate } from "../academy/CompletionCertificate";
 import {
   AcademyError,
   answerScenario,
   loadAcademy,
   markLesson,
   saveDraft as saveApplicationDraft,
+  saveCertificateDetails,
   saveProposal,
   sendApplication,
   submitAssessment,
@@ -348,6 +350,15 @@ export default function AcademyPage() {
     setScenarioResult(null);
     headingRef.current?.focus();
   }, [slug]);
+
+  useEffect(() => {
+    if (window.location.hash !== "#certificate" || !data?.record?.passed)
+      return;
+    const frame = window.requestAnimationFrame(() =>
+      document.getElementById("certificate")?.scrollIntoView(),
+    );
+    return () => window.cancelAnimationFrame(frame);
+  }, [data?.record?.passed]);
 
   /*
    * The rail is twenty-four rows tall. Showing only the chapter you are in
@@ -992,45 +1003,79 @@ export default function AcademyPage() {
           ) : null}
 
           {step?.kind === "assessment" ? (
-            <AssessmentStep
-              key={assessmentDraftIdentity(
-                course.version,
-                account.email ?? "guest",
-                course.questions,
-              )}
-              course={course}
-              record={data?.record}
-              busy={busy}
-              signedIn={signedIn}
-              headingRef={headingRef}
-              result={assessmentResult}
-              draftIdentity={assessmentDraftIdentity(
-                course.version,
-                account.email ?? "guest",
-                course.questions,
-              )}
-              onContinue={() =>
-                go(steps[Math.min(index + 1, steps.length - 1)])
-              }
-              onRetry={() => setAssessmentResult(null)}
-              onSubmit={(answers) =>
-                run(
-                  (token) => submitAssessment(token, answers),
-                  (next: GradedResponse) => {
-                    setData((previous) =>
-                      previous
-                        ? {
-                            ...previous,
-                            record: next.record,
-                            summary: next.summary,
-                          }
-                        : previous,
-                    );
-                    setAssessmentResult(next);
-                  },
-                )
-              }
-            />
+            <>
+              <AssessmentStep
+                key={assessmentDraftIdentity(
+                  course.version,
+                  account.email ?? "guest",
+                  course.questions,
+                )}
+                course={course}
+                record={data?.record}
+                busy={busy}
+                signedIn={signedIn}
+                headingRef={headingRef}
+                result={assessmentResult}
+                draftIdentity={assessmentDraftIdentity(
+                  course.version,
+                  account.email ?? "guest",
+                  course.questions,
+                )}
+                onContinue={() =>
+                  go(steps[Math.min(index + 1, steps.length - 1)])
+                }
+                onRetry={() => setAssessmentResult(null)}
+                onSubmit={(answers) =>
+                  run(
+                    (token) => submitAssessment(token, answers),
+                    (next: GradedResponse) => {
+                      setData((previous) =>
+                        previous
+                          ? {
+                              ...previous,
+                              record: next.record,
+                              summary: next.summary,
+                            }
+                          : previous,
+                      );
+                      setAssessmentResult(next);
+                    },
+                  )
+                }
+              />
+              {record?.passed ? (
+                <CompletionCertificate
+                  name={
+                    record.certificateName ?? data?.actor?.displayName ?? ""
+                  }
+                  email={account.email}
+                  photo={record.certificatePhoto}
+                  completedAt={
+                    record.completedAt ?? record.passedAt ?? record.updatedAt
+                  }
+                  score={record.bestScore}
+                  total={course.questions.length}
+                  certificateNumber={record.certificateNumber}
+                  busy={busy}
+                  onSave={(name, photo) =>
+                    run(
+                      (token) => saveCertificateDetails(token, name, photo),
+                      (next) => {
+                        setData((previous) =>
+                          previous
+                            ? {
+                                ...previous,
+                                record: next.record,
+                                summary: next.summary,
+                              }
+                            : previous,
+                        );
+                      },
+                    )
+                  }
+                />
+              ) : null}
+            </>
           ) : null}
 
           {step?.kind === "proposal" ? (

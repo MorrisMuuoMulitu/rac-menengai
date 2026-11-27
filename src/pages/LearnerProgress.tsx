@@ -9,23 +9,33 @@
  * Officer-only, enforced on the server. This page adds no decision of its own.
  */
 
-import { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type FormEvent,
+} from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
   ClipboardCheck,
   Loader2,
   Mail,
+  Pencil,
   Search,
   ShieldAlert,
   Users,
+  X,
 } from "lucide-react";
 import { PageMeta } from "../components/ui";
 import { useAccount } from "../academy/account";
 import { AccountChip } from "../academy/AccountChip";
+import { LearnerCertificateDownload } from "../academy/LearnerCertificateDownload";
 import {
   AcademyError,
   loadLearnerProgress,
+  saveLearnerProfile,
   type LearnerProgressResponse,
   type LearnerProgressRow,
 } from "../lib/academy";
@@ -92,6 +102,10 @@ export default function LearnerProgressPage() {
   const [error, setError] = useState("");
   const [filter, setFilter] = useState<Filter>("all");
   const [query, setQuery] = useState("");
+  const [editingId, setEditingId] = useState<string | null>(null);
+  const [displayNameDraft, setDisplayNameDraft] = useState("");
+  const [certificateNameDraft, setCertificateNameDraft] = useState("");
+  const [profileBusy, setProfileBusy] = useState(false);
 
   const load = useCallback(async () => {
     try {
@@ -139,6 +153,45 @@ export default function LearnerProgressPage() {
   }, [data, filter, query]);
 
   const nudgeDays = data?.nudgeAfterDays ?? 21;
+
+  async function saveProfile(event: FormEvent, learner: LearnerProgressRow) {
+    event.preventDefault();
+    setProfileBusy(true);
+    setError("");
+    try {
+      const result = await saveLearnerProfile(
+        await account.token(),
+        learner.userId,
+        displayNameDraft,
+        certificateNameDraft,
+      );
+      setData((current) =>
+        current
+          ? {
+              ...current,
+              learners: current.learners.map((row) =>
+                row.userId === learner.userId
+                  ? {
+                      ...row,
+                      displayName: result.learner.displayName,
+                      certificateName: result.learner.certificateName,
+                    }
+                  : row,
+              ),
+            }
+          : current,
+      );
+      setEditingId(null);
+    } catch (cause) {
+      setError(
+        cause instanceof AcademyError
+          ? cause.message
+          : "That learner’s details did not save.",
+      );
+    } finally {
+      setProfileBusy(false);
+    }
+  }
 
   return (
     <>
@@ -294,10 +347,99 @@ export default function LearnerProgressPage() {
                           </a>
                         ) : null}
                       </div>
-                      <span className={`academy-cohort is-${row.cohort}`}>
-                        {COHORT_LABEL[row.cohort]}
-                      </span>
+                      <div className="academy-learner-head-actions">
+                        <span className={`academy-cohort is-${row.cohort}`}>
+                          {COHORT_LABEL[row.cohort]}
+                        </span>
+                        <button
+                          type="button"
+                          className="academy-learner-edit-button"
+                          onClick={() => {
+                            setEditingId(
+                              editingId === row.userId ? null : row.userId,
+                            );
+                            setDisplayNameDraft(
+                              row.displayName ?? row.email ?? "",
+                            );
+                            setCertificateNameDraft(
+                              row.certificateName ??
+                                row.displayName ??
+                                row.email ??
+                                "",
+                            );
+                            setError("");
+                          }}
+                          aria-expanded={editingId === row.userId}
+                        >
+                          <Pencil size={13} aria-hidden="true" /> Edit details
+                        </button>
+                      </div>
                     </div>
+
+                    {editingId === row.userId ? (
+                      <form
+                        className="academy-learner-edit"
+                        onSubmit={(event) => void saveProfile(event, row)}
+                      >
+                        <div className="academy-learner-edit-fields">
+                          <label className="academy-field">
+                            <span className="academy-field-label">
+                              Display name
+                            </span>
+                            <input
+                              required
+                              minLength={1}
+                              maxLength={120}
+                              value={displayNameDraft}
+                              onChange={(event) =>
+                                setDisplayNameDraft(event.target.value)
+                              }
+                            />
+                          </label>
+                          <label className="academy-field">
+                            <span className="academy-field-label">
+                              Name on certificate
+                            </span>
+                            <input
+                              required
+                              minLength={2}
+                              maxLength={120}
+                              value={certificateNameDraft}
+                              onChange={(event) =>
+                                setCertificateNameDraft(event.target.value)
+                              }
+                            />
+                          </label>
+                        </div>
+                        <p className="academy-learner-edit-note">
+                          Sign-in email: {row.email ?? "none on file"}. This is
+                          managed by the learner’s signed-in account.
+                        </p>
+                        <div className="academy-learner-edit-actions">
+                          <button
+                            className="btn btn-primary btn-sm"
+                            disabled={profileBusy}
+                          >
+                            {profileBusy ? (
+                              <Loader2
+                                className="academy-spin"
+                                size={14}
+                                aria-hidden="true"
+                              />
+                            ) : null}
+                            Save details
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-secondary btn-sm"
+                            disabled={profileBusy}
+                            onClick={() => setEditingId(null)}
+                          >
+                            <X size={14} aria-hidden="true" /> Cancel
+                          </button>
+                        </div>
+                      </form>
+                    ) : null}
 
                     <div
                       className="academy-learner-bar"
@@ -336,8 +478,8 @@ export default function LearnerProgressPage() {
                           {row.attempts === 0
                             ? "not sat"
                             : row.assessmentPassed
-                              ? `passed · ${row.bestScore}/${row.total}`
-                              : `best ${row.bestScore}/${row.total} · ${row.attempts} ${
+                              ? `passed · ${row.bestScore}/${row.assessmentTotal}`
+                              : `best ${row.bestScore}/${row.assessmentTotal} · ${row.attempts} ${
                                   row.attempts === 1 ? "attempt" : "attempts"
                                 }`}
                         </dd>
@@ -345,6 +487,22 @@ export default function LearnerProgressPage() {
                       <div>
                         <dt>Proposal</dt>
                         <dd>{row.proposalSubmitted ? "written" : "not yet"}</dd>
+                      </div>
+                      <div>
+                        <dt>Certificate</dt>
+                        <dd>
+                          {row.assessmentPassed ? (
+                            <LearnerCertificateDownload
+                              userId={row.userId}
+                              learnerName={
+                                row.displayName ?? row.email ?? "learner"
+                              }
+                              token={account.token}
+                            />
+                          ) : (
+                            "Available after assessment"
+                          )}
+                        </dd>
                       </div>
                       <div>
                         <dt>Started</dt>

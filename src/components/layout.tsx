@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, NavLink, useLocation } from "react-router-dom";
 import { ArrowUpRight, Instagram, Facebook, Menu, X } from "lucide-react";
-import { CLUB, NAV_LINKS } from "../data";
+import { CLUB, NAV_LINKS, contactConfig, isContactConfirmed } from "../data";
 import { PUBLIC_ACCOUNTS } from "../content";
 import { useLockBody, useScrolled } from "../hooks";
 import { ButtonLink } from "./ui";
@@ -212,7 +212,14 @@ export function Footer() {
             5:00–7:00 PM EAT
           </p>
           <p>Thursday fellowship at Nakuru Athletic Club.</p>
-          <a href="mailto:menengairc@gmail.com">menengairc@gmail.com</a>
+          <div className="footer-contact">
+            <a href={`mailto:${contactConfig.email}`}>{contactConfig.email}</a>
+            {contactConfig.phones.filter(isContactConfirmed).map((phone) => (
+              <a href={`tel:${phone.replace(/[^\d+]/g, "")}`} key={phone}>
+                {phone}
+              </a>
+            ))}
+          </div>
           <Link to="/about/district-9215">Rotary District 9215</Link>
           <Link to="/rotary">Rotary worldwide</Link>
         </div>
@@ -223,7 +230,14 @@ export function Footer() {
             © {new Date().getFullYear()} {CLUB.name}
           </span>
           <span>Service Above Self</span>
-          <a className="design-credit" href="https://www.impelweb.studio/" target="_blank" rel="noopener noreferrer">Designed by Impel Web ↗</a>
+          <a
+            className="design-credit"
+            href="https://www.impelweb.studio/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            Designed by Impel Web ↗
+          </a>
         </div>
       </div>
     </footer>

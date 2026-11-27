@@ -31,6 +31,8 @@ import AcademyPage from "./pages/Academy";
 import AcademyLessonPage from "./pages/AcademyLesson";
 import ReviewQueuePage from "./pages/ReviewQueue";
 import LearnerProgressPage from "./pages/LearnerProgress";
+import VerifyCertificatePage from "./pages/VerifyCertificate";
+import EnquiriesPage from "./pages/Enquiries";
 
 const SignInPage = lazy(() =>
   import("./academy/AuthPage").then((module) => ({
@@ -42,6 +44,11 @@ const SignUpPage = lazy(() =>
     default: module.SignUpPage,
   })),
 );
+const SsoCallbackPage = lazy(() =>
+  import("./academy/AuthPage").then((module) => ({
+    default: module.SsoCallbackPage,
+  })),
+);
 
 export default function App() {
   /*
@@ -49,9 +56,10 @@ export default function App() {
    * live inside that shell too, so matching only "/membership/academy" gave
    * them two stacked headers and the full marketing footer.
    */
-  const learning = /^\/membership\/(academy|queue|learners)(\/|$)/.test(
-    useLocation().pathname,
-  );
+  const learning =
+    /^\/membership\/(academy|queue|learners|enquiries)(\/|$)/.test(
+      useLocation().pathname,
+    );
   return (
     <>
       <ScrollToTop />
@@ -75,6 +83,7 @@ export default function App() {
           <Route path="/events/:slug" element={<EventDetail />} />
           <Route path="/partnerships" element={<Partnerships />} />
           <Route path="/privacy" element={<Privacy />} />
+          <Route path="/verify" element={<VerifyCertificatePage />} />
           <Route path="/membership" element={<MembershipPage />} />
           <Route path="/membership/orientation" element={<OrientationPage />} />
           <Route element={<AcademyLayout />}>
@@ -88,6 +97,7 @@ export default function App() {
               path="/membership/learners"
               element={<LearnerProgressPage />}
             />
+            <Route path="/membership/enquiries" element={<EnquiriesPage />} />
           </Route>
           {/* Its own chunk, so Clerk is fetched only when someone signs in. */}
           <Route
@@ -115,6 +125,20 @@ export default function App() {
                 }
               >
                 <SignUpPage />
+              </Suspense>
+            }
+          />
+          <Route
+            path="/membership/sso-callback"
+            element={
+              <Suspense
+                fallback={
+                  <div className="academy-loading" role="status">
+                    <p>Completing sign-in…</p>
+                  </div>
+                }
+              >
+                <SsoCallbackPage />
               </Suspense>
             }
           />

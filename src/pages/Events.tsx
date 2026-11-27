@@ -8,6 +8,7 @@ import { downloadCalendar, initialEventView } from "../lib/events";
 import { ArrowUpRight, Maximize2 } from "lucide-react";
 import NotFoundPage from "./NotFound";
 import { Gallery } from "../components/Gallery";
+import { MedicalCampDetail } from "./MedicalCampDetail";
 export default function EventsPage() {
   const [view, setView] = useState<"upcoming" | "past">(() =>
     initialEventView(PUBLIC_EVENTS),
@@ -16,7 +17,9 @@ export default function EventsPage() {
   const records = PUBLIC_EVENTS.filter((e) =>
     view === "past"
       ? e.status === "completed" || new Date(`${e.date}T23:59:59+03:00`) < now
-      : e.status !== "cancelled" && e.status !== "completed" && new Date(`${e.date}T23:59:59+03:00`) >= now,
+      : e.status !== "cancelled" &&
+        e.status !== "completed" &&
+        new Date(`${e.date}T23:59:59+03:00`) >= now,
   ).sort((a, b) =>
     view === "past"
       ? b.date.localeCompare(a.date)
@@ -75,7 +78,9 @@ export default function EventsPage() {
                       decoding="async"
                     />
                   )}
-                  <time dateTime={e.date || undefined}>{dateLabel(e.date)}</time>
+                  <time dateTime={e.date || undefined}>
+                    {dateLabel(e.date)}
+                  </time>
                   <div>
                     <h2>{e.title}</h2>
                     <p>
@@ -178,7 +183,12 @@ export function EventDetail() {
   const programme = event.projectSlug
     ? PROJECTS.find((p) => p.slug === event.projectSlug)
     : undefined;
-  const past = event.status === "completed" || new Date(`${event.date}T23:59:59+03:00`) < new Date();
+  if (event.slug === "medical-camp-2026") {
+    return <MedicalCampDetail event={event} />;
+  }
+  const past =
+    event.status === "completed" ||
+    new Date(`${event.date}T23:59:59+03:00`) < new Date();
   return (
     <>
       <PageMeta title={event.title} description={event.description} />
@@ -256,7 +266,11 @@ export function EventDetail() {
           ))}
           {event.outcome ? (
             <section aria-label="Event outcome">
-              <h2>{event.slug === "india-friendship-exchange-2026" ? "What the exchange brought to Menengai" : "The outcome"}</h2>
+              <h2>
+                {event.slug === "india-friendship-exchange-2026"
+                  ? "What the exchange brought to Menengai"
+                  : "The outcome"}
+              </h2>
               <p>{event.outcome}</p>
             </section>
           ) : null}

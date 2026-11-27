@@ -1,9 +1,5 @@
 import { describe, expect, it } from "vitest";
-import {
-  ORDERING_ACTIVITIES,
-  orderingForLesson,
-  shuffled,
-} from "./activities";
+import { ORDERING_ACTIVITIES, orderingForLesson, shuffled } from "./activities";
 import { COURSE_INFO } from "./syllabus";
 
 describe("ordering activities", () => {
@@ -23,8 +19,24 @@ describe("ordering activities", () => {
   });
 
   it("returns the activity for a lesson, and nothing for the rest", () => {
-    expect(orderingForLesson("protocol-meeting")?.lessonId).toBe("protocol-meeting");
+    expect(orderingForLesson("protocol-meeting")?.lessonId).toBe(
+      "protocol-meeting",
+    );
     expect(orderingForLesson("roots")).toBeUndefined();
+  });
+
+  it("uses the club-confirmed nine-part meeting order", () => {
+    expect(orderingForLesson("protocol-meeting")?.items).toEqual([
+      "Call to order",
+      "The Four-Way Test",
+      "Invocation or grace",
+      "Welcome and apologies",
+      "Introductions",
+      "Reports or announcements",
+      "Rotary moments",
+      "Sergeant-at-Arms (SAA)",
+      "Close of meeting",
+    ]);
   });
 });
 

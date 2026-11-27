@@ -13,7 +13,13 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 
 const config = JSON.parse(readFileSync("vercel.json", "utf8")) as {
-  routes: { headers?: Record<string, string> }[];
+  routes: {
+    src?: string;
+    dest?: string;
+    status?: number;
+    has?: { type: string; value: string }[];
+    headers?: Record<string, string>;
+  }[];
 };
 
 const policy =
@@ -43,16 +49,27 @@ describe("Content-Security-Policy", () => {
       expect(script, `script-src is missing ${source}`).toContain(source);
   });
 
+  it("lets Vercel Live load its feedback interface", () => {
+    expect(directive("script-src")).toContain("https://vercel.live");
+    expect(directive("style-src")).toContain("https://vercel.live");
+    expect(directive("img-src")).toContain("https://vercel.live");
+    expect(directive("img-src")).toContain("https://vercel.com");
+    expect(directive("font-src")).toContain("https://assets.vercel.com");
+    expect(directive("frame-src")).toContain("https://vercel.live");
+  });
+
   it("lets Clerk reach its abuse and fraud protection hosts on any port", () => {
     /* The port wildcard is required: those hosts are not on 443, and a source
        without a port matches 443 only. */
-    expect(directive("connect-src")).toContain(
-      "https://*.protect.clerk.com:*",
-    );
+    expect(directive("connect-src")).toContain("https://*.protect.clerk.com:*");
+    expect(directive("connect-src")).toContain("https://vercel.live");
+    expect(directive("connect-src")).toContain("wss://ws-us3.pusher.com");
   });
 
   it("allows the challenge frame and Clerk's images", () => {
-    expect(directive("frame-src")).toContain("https://challenges.cloudflare.com");
+    expect(directive("frame-src")).toContain(
+      "https://challenges.cloudflare.com",
+    );
     expect(directive("img-src")).toContain("https://img.clerk.com");
     expect(directive("style-src")).toContain("'unsafe-inline'");
     expect(directive("worker-src")).toEqual(["'self'", "blob:"]);
@@ -80,5 +97,22 @@ describe("Content-Security-Policy", () => {
 
   it("does not name the Clerk backend API, which the browser never calls", () => {
     expect(policy).not.toContain("api.clerk.com");
+  });
+});
+
+describe("canonical host", () => {
+  it("redirects the stable Vercel alias to the custom domain", () => {
+    expect(
+      config.routes.find((route) =>
+        route.has?.some(
+          (condition) =>
+            condition.type === "host" &&
+            condition.value === "rac-menengai.vercel.app",
+        ),
+      ),
+    ).toMatchObject({
+      dest: "https://rotaractmenengai.org/$1",
+      status: 308,
+    });
   });
 });

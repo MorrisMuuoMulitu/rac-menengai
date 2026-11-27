@@ -281,6 +281,14 @@ export default function AcademyPage() {
                   </Link>
                 </>
               )}
+              {signedIn && summary?.assessmentPassed ? (
+                <Link
+                  className="btn btn-secondary btn-md"
+                  to="/membership/academy/assessment#certificate"
+                >
+                  <Award size={16} aria-hidden="true" /> View certificate
+                </Link>
+              ) : null}
               <Link className="btn btn-secondary btn-md" to="/membership">
                 How to join the club
               </Link>
@@ -346,6 +354,12 @@ export default function AcademyPage() {
                 </Link>
                 <Link className="academy-review-link" to="/membership/learners">
                   Learner progress
+                </Link>
+                <Link
+                  className="academy-review-link"
+                  to="/membership/enquiries"
+                >
+                  Website enquiries
                 </Link>
               </div>
             ) : null}

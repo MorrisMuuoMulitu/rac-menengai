@@ -12,13 +12,22 @@ Project narratives remain in `src/data.ts`; verification metadata is in `content
 
 ## Enquiry delivery
 
-Default is email-draft mode: visitors prepare a message and send it themselves to menengairc@gmail.com. It never claims delivery. The server endpoint exists but fails closed without complete configuration.
+The public contact form stores enquiries in Neon and makes them available only
+to verified club officers at `/membership/enquiries`. A database-backed rate
+limit allows five submissions per IP hash per hour. Officers can remove
+enquiries after handling them.
 
-To enable direct delivery, configure server-only RESEND_API_KEY, CONTACT_FROM (verified sender), CONTACT_TO, UPSTASH_REDIS_REST_URL and UPSTASH_REDIS_REST_TOKEN. Set SITE_ORIGIN to the exact permitted site origin. Never put secrets in a VITE_ variable. First agree the inbox retention policy, update privacy copy, run a real authorised delivery test, then set VITE_CONTACT_DELIVERY=true and rebuild.
+To add email forwarding, configure the server-only `RESEND_API_KEY`,
+`CONTACT_FROM`, and `CONTACT_TO` values. `CONTACT_TO` defaults to
+`menengairc@gmail.com` in the deployment environment. The enquiry is still
+stored when email forwarding fails, and the visitor can open an email draft as
+a fallback. Never put secrets in a `VITE_` variable.
 
-The handler accepts JSON POST only, checks origin, validates bounded fields on the server, rejects honeypot submissions, limits an IP hash to five requests per hour using Redis, and supplies a provider idempotency key. Redis failure blocks sending. Email bodies are not logged or saved to an application database. Provider errors return a generic failure; client input remains editable. Provider acceptance is not proof that a human read the message.
-
-Local Vite does not execute Vercel API functions. Unit tests inject provider/Redis responses. Test deployed delivery only with explicit authorisation to send a test enquiry.
+The endpoint accepts JSON POST requests only, checks origin, validates bounded
+fields, rejects honeypot submissions, and supplies a provider idempotency key.
+It does not log message bodies. Automated tests cover storage, validation,
+rate-limit rejection, email-provider success and reviewer access. Tested
+production submissions should be removed after verification.
 
 ## Deploy and search
 

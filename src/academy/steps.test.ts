@@ -30,6 +30,10 @@ function bootstrap(
     passed: false,
     passedAt: null,
     updatedAt: null,
+    completedAt: null,
+    certificateName: null,
+    certificatePhoto: null,
+    certificateNumber: null,
     ...patch,
   };
   const scenarios = course.scenarios.map((scenario) => ({

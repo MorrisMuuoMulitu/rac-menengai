@@ -14,6 +14,7 @@ import {
   createPostgresRepository,
   type AcademyRepository,
 } from "../server/academy-db.js";
+import { createResendEmailSender } from "../server/email.js";
 
 interface Request {
   method?: string;
@@ -48,6 +49,7 @@ function build() {
   academy = createAcademyHandler(process.env, {
     resolveActor: createActorResolver(process.env),
     repository,
+    sendEmail: createResendEmailSender(process.env),
   });
   return academy;
 }

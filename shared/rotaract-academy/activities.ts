@@ -22,20 +22,23 @@ export const ORDERING_ACTIVITIES: OrderingActivity[] = [
     lessonId: "protocol-meeting",
     prompt: "Put the parts of a club meeting back in order.",
     feedback:
-      "The reports sit before the programme, and the meeting closes the way it opened — with the Four-Way Test. Getting the shape right is what gets a room of volunteers through its business in an hour.",
+      "Call to order and the Four-Way Test set the tone. Grace, welcomes and introductions then prepare the room for reports, Rotary moments, the Sergeant-at-Arms and a clear close.",
     items: [
       "Call to order",
-      "Welcome and apologies",
       "The Four-Way Test",
-      "Reports: secretary, treasurer, project leads",
-      "Programme or Rotary moment",
-      "Announcements and next steps",
-      "Close",
+      "Invocation or grace",
+      "Welcome and apologies",
+      "Introductions",
+      "Reports or announcements",
+      "Rotary moments",
+      "Sergeant-at-Arms (SAA)",
+      "Close of meeting",
     ],
   },
   {
     lessonId: "planning",
-    prompt: "Put a project plan in the order you would actually work through it.",
+    prompt:
+      "Put a project plan in the order you would actually work through it.",
     feedback:
       "Listening comes before deciding, and the follow-up is agreed on the day the plan is written — not bolted on afterwards, when nobody is left to check.",
     items: [

@@ -8,9 +8,7 @@
     "location": "Nakuru Region, Kenya",
     "description": "Rotaractors from across the Nakuru Region met the District Governor to connect, share ideas and learn from leadership. Menengai also welcomed six new members during the occasion.",
     "organizer": "Rotaract Club of Menengai and Nakuru Region Rotaractors",
-    "partners": [
-      "Rotaract clubs across the Nakuru Region"
-    ],
+    "partners": ["Rotaract clubs across the Nakuru Region"],
     "projectSlug": null,
     "sourceUrl": null,
     "status": "completed",
@@ -84,10 +82,7 @@
     "location": "Mumbai, Palghar and Pune, India",
     "description": "President Wanjiku represented Menengai on a 10-day Friendship Exchange as part of a six-person Rotary District 9215 delegation, visiting Mumbai, Palghar and Pune.",
     "organizer": "Rotary District 9215 Friendship Exchange delegation",
-    "partners": [
-      "Rotary and Rotaract members in India",
-      "Host families"
-    ],
+    "partners": ["Rotary and Rotaract members in India", "Host families"],
     "projectSlug": null,
     "sourceUrl": null,
     "status": "completed",
@@ -805,7 +800,7 @@
     "start": "8:00 AM",
     "end": "5:00 PM",
     "location": "Railways (Patel Brotherhood Grounds), Nakuru",
-    "description": "A free medical camp with general outpatient care, screening and tests, an eye clinic, counselling, cancer screening and free essential medicines, on Wednesday 18 November 2026.",
+    "description": "On Wednesday 18 November 2026, the Nakuru Free Medical Outreach served 320 people with different ailments and brought together 18 partner organisations and more than 70 volunteers.",
     "organizer": "Rotaract Club of Menengai, with the Ministry of Health and the County Government of Nakuru",
     "partners": [
       "Ministry of Health",
@@ -829,27 +824,199 @@
     ],
     "projectSlug": null,
     "sourceUrl": null,
-    "status": "scheduled",
+    "status": "completed",
     "publicationStatus": "published",
-    "approval": "Club-supplied event poster (Medical-Camp.jpeg, received 14 November 2026). Date, venue, times, services, partners and contact numbers are transcribed from the artwork; the poster is published as the event image.",
-    "image": "/images/events/medical-camp-2026/medical-camp-2026-poster.webp",
+    "approval": "Club-supplied event poster (Medical-Camp.jpeg, received 14 November 2026), completed-event impact figures and video confirmed on 20 November 2026, and twelve event photographs received 25 November 2026. Date, venue, times, services and partners are transcribed from the artwork; photographs are published uncropped.",
+    "image": "/images/events/medical-camp-2026/medical-camp-2026-consultation-table.webp",
     "images": [
       {
-        "src": "/images/events/medical-camp-2026/medical-camp-2026-poster.webp",
-        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-poster-560.webp",
-        "alt": "Nakuru Free Medical Outreach poster: Wednesday 18 November 2026, 8:00 AM to 5:00 PM at Railways (Patel Brotherhood Grounds)",
-        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-poster-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-poster.webp 1151w",
-        "width": 1151,
-        "height": 1600
+        "src": "/images/events/medical-camp-2026/medical-camp-2026-consultation-table.webp",
+        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-consultation-table-560.webp",
+        "alt": "Three outreach team members work at a consultation table under a white tent, with health supplies and an ambulance behind them",
+        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-consultation-table-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-consultation-table.webp 960w",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "/images/events/medical-camp-2026/medical-camp-2026-group-photo.webp",
+        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-group-photo-560.webp",
+        "alt": "Volunteers, health workers and partner teams gathered for a group photograph after the medical outreach",
+        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-group-photo-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-group-photo.webp 1280w",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "/images/events/medical-camp-2026/medical-camp-2026-outreach-sign.webp",
+        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-outreach-sign-560.webp",
+        "alt": "The Nakuru Free Medical Outreach banner listing medical services and partner organisations",
+        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-outreach-sign-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-outreach-sign.webp 960w",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "/images/events/medical-camp-2026/medical-camp-2026-jalaram-tent.webp",
+        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-jalaram-tent-560.webp",
+        "alt": "The JALARAM St. Christopher Hospital tent and banner beside the outreach waiting area",
+        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-jalaram-tent-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-jalaram-tent.webp 960w",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "/images/events/medical-camp-2026/medical-camp-2026-event-grounds.webp",
+        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-event-grounds-560.webp",
+        "alt": "People move across the paved grounds as the outreach gets underway",
+        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-event-grounds-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-event-grounds.webp 960w",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "/images/events/medical-camp-2026/medical-camp-2026-service-tents.webp",
+        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-service-tents-560.webp",
+        "alt": "Community members and volunteers gather beneath the event tents",
+        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-service-tents-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-service-tents.webp 960w",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "/images/events/medical-camp-2026/medical-camp-2026-volunteer-at-work.webp",
+        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-volunteer-at-work-560.webp",
+        "alt": "A Rotaractor wearing a high-visibility vest inside the outreach hall",
+        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-volunteer-at-work-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-volunteer-at-work.webp 960w",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "/images/events/medical-camp-2026/medical-camp-2026-briefing.webp",
+        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-briefing-560.webp",
+        "alt": "Volunteers and community members gather inside the hall for a briefing",
+        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-briefing-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-briefing.webp 1280w",
+        "width": 1280,
+        "height": 960
+      },
+      {
+        "src": "/images/events/medical-camp-2026/medical-camp-2026-queue.webp",
+        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-queue-560.webp",
+        "alt": "People make their way toward the service and screening tents",
+        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-queue-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-queue.webp 960w",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "/images/events/medical-camp-2026/medical-camp-2026-volunteers-at-tents.webp",
+        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-volunteers-at-tents-560.webp",
+        "alt": "Rotaractors and Kenya Red Cross volunteers walk between the outreach tents",
+        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-volunteers-at-tents-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-volunteers-at-tents.webp 960w",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "/images/events/medical-camp-2026/medical-camp-2026-waiting-area.webp",
+        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-waiting-area-560.webp",
+        "alt": "Community members seated in the hall while a volunteer addresses the group",
+        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-waiting-area-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-waiting-area.webp 960w",
+        "width": 960,
+        "height": 1280
+      },
+      {
+        "src": "/images/events/medical-camp-2026/medical-camp-2026-essential-medicines.webp",
+        "thumb": "/images/events/medical-camp-2026/medical-camp-2026-essential-medicines-560.webp",
+        "alt": "Boxes of essential medicines arranged on a table while health workers prepare prescriptions",
+        "srcSet": "/images/events/medical-camp-2026/medical-camp-2026-essential-medicines-560.webp 560w, /images/events/medical-camp-2026/medical-camp-2026-essential-medicines.webp 960w",
+        "width": 960,
+        "height": 1280
       }
     ],
     "registrationUrl": null,
+    "impact": [
+      {
+        "value": "320",
+        "label": "People served",
+        "detail": "with different ailments"
+      },
+      {
+        "value": "15",
+        "label": "Blood donations",
+        "detail": "given during the outreach"
+      },
+      {
+        "value": "18",
+        "label": "Cervical cancer screenings",
+        "detail": "completed at the camp"
+      },
+      {
+        "value": "18",
+        "label": "Partner organisations",
+        "detail": "working alongside Menengai"
+      },
+      {
+        "value": "70+",
+        "label": "Volunteers",
+        "detail": "giving their time and skills"
+      }
+    ],
+    "services": [
+      {
+        "title": "General outpatient care",
+        "detail": "Consultations and care for people who came to the camp."
+      },
+      {
+        "title": "Screening and tests",
+        "detail": "Checks and diagnostic tests offered on site."
+      },
+      {
+        "title": "Eye clinic",
+        "detail": "Eye care made available through the outreach."
+      },
+      {
+        "title": "Counselling and health education",
+        "detail": "Guidance for individuals, families and the wider community."
+      },
+      {
+        "title": "Cancer screening",
+        "detail": "Cervical, prostate and other cancer screening listed on the event poster."
+      },
+      {
+        "title": "HIV/AIDS testing and counselling",
+        "detail": "Confidential testing and counselling offered at the camp."
+      },
+      {
+        "title": "Non-communicable disease checks",
+        "detail": "Screening and consultation for ongoing health concerns."
+      },
+      {
+        "title": "Gynaecological care and family planning",
+        "detail": "Consultations and family planning support documented for the day."
+      },
+      {
+        "title": "Blood donation",
+        "detail": "A blood donation point supported by the outreach partners."
+      },
+      {
+        "title": "Free essential medicines",
+        "detail": "Essential medicines provided at no cost to people who needed them."
+      }
+    ],
+    "video": {
+      "src": "/videos/President-Wajiku-Medical-Camp.mp4",
+      "poster": "/images/events/medical-camp-2026/president-wajiku-medical-camp-poster.webp",
+      "title": "President Wanjiku Nguru reflects on the Nakuru Free Medical Outreach",
+      "caption": "President Wanjiku Nguru speaks about the outreach, the partners who joined and the community the club set out to serve."
+    },
+    "report": {
+      "title": "RAC Menengai Free Medical Outreach: Partners' Report",
+      "href": "/reports/rac-menengai-free-medical-outreach-partners-report-2026.pdf",
+      "preview": "/images/events/medical-camp-2026/medical-camp-2026-partners-report-cover.webp",
+      "description": "Read the club's full 22-page partners' report covering the day's activities, services, partner contributions, financial summary and lessons for future outreach.",
+      "preparedBy": "Issa Telot and Wanjiku Nguru",
+      "publishedDate": "26 November 2026"
+    },
     "story": [
-      "Rotaract Club of Menengai, the Ministry of Health and the County Government of Nakuru are hosting a free medical outreach at Railways (Patel Brotherhood Grounds) on Wednesday 18 November 2026, from 8:00 AM to 5:00 PM.",
-      "Services on offer include general outpatient care, screening and tests, health education, blood donation, an eye clinic, counselling and free essential medicines. The team will also provide HIV/AIDS testing and counselling, cervical and prostate cancer screening, non-communicable disease checks and gynaecological consultations.",
-      "The outreach is supported by health providers and community organisations including Kenya Blood Transfusion and Transplant Service, DamuKE, Rotary Club of Nakuru, Rotaract Club of Sunrise-Kampala, Kenya Red Cross, Optimum Current Health Care, AAR Healthcare, Valley Hospital, Lions SightFirst Eye Hospital, The Nakuru Specialist Hospital, King's Foundation, SCANN, JALARAM St. Christopher Hospital, Mamlaka Health, ACK Imani Talent NWDT SACCO and Madini Purified Drinking Water.",
-      "For more information, call 0718 220 049 (Pres Wanjiku) or 0710 733 421 (Rtr Issa)."
-    ]
+      "On Wednesday 18 November 2026, the Rotaract Club of Menengai brought a free medical outreach to Railways (Patel Brotherhood Grounds) in Nakuru. The camp ran from 8:00 AM to 5:00 PM and served 320 people with different ailments.",
+      "Healthcare professionals and volunteers offered general outpatient care, screening and tests, health education, blood donation, an eye clinic, counselling and free essential medicines. The day also included HIV/AIDS testing and counselling, cervical and prostate cancer screening, non-communicable disease checks, gynaecological consultations and family planning.",
+      "The club worked with the Ministry of Health, the County Government of Nakuru and 16 other organisations. Their collective support helped turn a shared commitment to accessible healthcare into a full day of practical service.",
+      "More than 70 volunteers gave their time and skills. Alongside healthcare providers and partner organisations, they helped welcome people, guide them through the camp and make essential services easier to reach."
+    ],
+    "outcome": "The outreach served 320 people with different ailments, recorded 15 blood donations and completed 18 cervical cancer screenings. It brought together 18 partner organisations and more than 70 volunteers."
   },
   {
     "slug": "nakuru-region-drr-hyrax-hill",
@@ -860,9 +1027,7 @@
     "location": "Hyrax Hill Museum, Nakuru",
     "description": "A meet-and-greet with DRR Brian Magana and Rotaract clubs from across the Nakuru Region at Hyrax Hill Museum.",
     "organizer": "Nakuru Region Rotaract clubs",
-    "partners": [
-      "Rotaract clubs across the Nakuru Region"
-    ],
+    "partners": ["Rotaract clubs across the Nakuru Region"],
     "projectSlug": null,
     "sourceUrl": null,
     "status": "completed",

@@ -85,6 +85,12 @@ export interface AcademyRepository {
     clubId: string,
     record: LearningRecord,
   ): Promise<LearningRecord>;
+  updateLearnerProfile(
+    userId: string,
+    clubId: string,
+    profile: { displayName: string; certificateName: string },
+  ): Promise<LearnerRow | null>;
+  nextCertificateSequence(clubId: string, rotaryYear: string): Promise<number>;
   recordAttempt(
     userId: string,
     clubId: string,
@@ -165,6 +171,14 @@ create table if not exists academy_attempt (
   passed boolean not null,
   answers jsonb not null,
   created_at timestamptz not null default now()
+);
+
+create table if not exists academy_certificate_sequence (
+  club_id text not null,
+  rotary_year text not null,
+  last_value integer not null default 0 check (last_value >= 0),
+  updated_at timestamptz not null default now(),
+  primary key (club_id, rotary_year)
 );
 
 create index if not exists academy_attempt_owner_idx
@@ -304,7 +318,7 @@ export function createPostgresRepository(
          values ($1, $2, $3, $4, $5, $6)
          on conflict (user_id, club_id) do update
            set email = coalesce(excluded.email, academy_learner.email),
-               display_name = coalesce(excluded.display_name, academy_learner.display_name),
+               display_name = coalesce(academy_learner.display_name, excluded.display_name),
                updated_at = now()
          returning user_id, club_id, email, display_name, record`,
         [
@@ -346,6 +360,46 @@ export function createPostgresRepository(
       );
       if (!rows[0]) throw new Error("learner-missing");
       return safe;
+    },
+
+    async updateLearnerProfile(userId, clubId, profile) {
+      await ready();
+      const { rows } = await database.query(
+        `update academy_learner
+            set display_name = $3,
+                record = jsonb_set(record, '{certificateName}', to_jsonb($4::text), true),
+                updated_at = now()
+          where user_id = $1 and club_id = $2
+        returning user_id, club_id, email, display_name, record`,
+        [userId, clubId, profile.displayName, profile.certificateName],
+      );
+      const row = rows[0];
+      if (!row) return null;
+      return {
+        userId: row.user_id,
+        clubId: row.club_id,
+        email: row.email ?? null,
+        displayName: row.display_name ?? null,
+        record: normaliseRecord(
+          row.record,
+          FULL_COURSE.version,
+          validLessonIds,
+        ),
+      };
+    },
+
+    async nextCertificateSequence(clubId, rotaryYear) {
+      await ready();
+      const { rows } = await database.query(
+        `insert into academy_certificate_sequence (club_id, rotary_year, last_value)
+         values ($1, $2, 1)
+         on conflict (club_id, rotary_year) do update
+           set last_value = academy_certificate_sequence.last_value + 1,
+               updated_at = now()
+         returning last_value`,
+        [clubId, rotaryYear],
+      );
+      return Number(rows[0].last_value);
     },
 
     async recordAttempt(userId, clubId, attempt) {

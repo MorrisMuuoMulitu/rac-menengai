@@ -60,6 +60,33 @@ inspect, trim, compress or poster-frame video, and publishing footage nobody has
 acceptable; the 11 MB clip is also too heavy for the repository. Host them on the club's YouTube or
 Facebook page and embed, or supply compressed clips with a chosen poster frame.
 
+Medical outreach video and stills: `public/videos/President-Wajiku-Medical-Camp.mp4` is the
+club-supplied video received on 20 November 2026. It remains in its original 576x1024 portrait
+orientation, with H.264/AAC audio, a 65.4-second runtime and a web-optimised fast-start container
+(7.7 MB). The page uses `preload="metadata"`, native controls and a poster extracted from the
+footage. Three uncropped stills in `public/images/events/medical-camp-2026/` were extracted from
+the same video for the event gallery. The original downloaded file remains untouched in
+`~/Downloads/President-Wajiku-Medical-Camp.mp4`. No photographer credit or transcript was supplied,
+so neither is claimed.
+
+Medical outreach photographs: twelve iPhone 14 Pro HEIC files were supplied on 25 November 2026
+from `drive-download-20261125T141519Z-1-001`. Their EXIF capture dates are 18 November 2026. The
+originals are 3024x4032 or 4032x3024 and remain in Downloads. Each photograph is published
+uncropped as WebP at a 1280 px maximum long edge plus a 560 px thumbnail. The gallery avoids
+identifying people by name, and the club remains responsible for photographer credit and consent.
+
+Partners' report: the 22-page club-supplied PDF received on 26 November 2026 is preserved at
+`public/reports/rac-menengai-free-medical-outreach-partners-report-2026.pdf`. A first-page WebP
+preview is shown on the event page. The report identifies Issa Telot and Wanjiku Nguru as its
+preparers. Its figures conflict with the earlier five-metric record and are not used to replace
+those public figures without confirmation.
+
+Additional partner logos received with the report are Equity Afya (`equity_logo.pdf`), Supreme
+Pharmacy (`supreme logo.pdf`) and The Nairobi Women's Hospital (WhatsApp JPEG). The PDFs were
+rasterised at 300 dpi, the white page margins were trimmed, and all three were normalised to WebP.
+They appear in the site-wide partner wall at `/partnerships#partners`; the event page links there
+instead of repeating the partner gallery.
+
 ### Naming convention
 
 Event photographs are named `<event>-<year>-<subject>.webp` with a `-560` thumbnail suffix, e.g.

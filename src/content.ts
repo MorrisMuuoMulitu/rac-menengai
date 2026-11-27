@@ -15,6 +15,29 @@ export interface StoryPhoto {
   width?: number;
   height?: number;
 }
+export interface EventImpact {
+  value: string;
+  label: string;
+  detail: string;
+}
+export interface EventService {
+  title: string;
+  detail: string;
+}
+export interface EventVideo {
+  src: string;
+  poster: string;
+  title: string;
+  caption: string;
+}
+export interface EventReport {
+  title: string;
+  href: string;
+  preview: string;
+  description: string;
+  preparedBy: string;
+  publishedDate: string;
+}
 export interface PublicEvent {
   slug: string;
   title: string;
@@ -35,6 +58,10 @@ export interface PublicEvent {
   registrationUrl: string | null;
   story?: string[];
   outcome?: string;
+  impact?: EventImpact[];
+  services?: EventService[];
+  video?: EventVideo;
+  report?: EventReport;
 }
 export interface PublicAccount {
   platform: string;
@@ -50,10 +77,11 @@ export const PUBLIC_EVENTS: PublicEvent[] = (events as PublicEvent[]).filter(
 export const PUBLIC_ACCOUNTS: PublicAccount[] = accounts as PublicAccount[];
 
 export const dateLabel = (date: string) =>
-  !date ? "Date not supplied" :
-  new Intl.DateTimeFormat("en-KE", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-    timeZone: "Africa/Nairobi",
-  }).format(new Date(date.length === 10 ? `${date}T12:00:00+03:00` : date));
+  !date
+    ? "Date not supplied"
+    : new Intl.DateTimeFormat("en-KE", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+        timeZone: "Africa/Nairobi",
+      }).format(new Date(date.length === 10 ? `${date}T12:00:00+03:00` : date));

@@ -63,7 +63,9 @@ describe("curriculum", () => {
       lessonIndex: 0,
       lessonNumber: 1,
     });
-    expect(lessonPosition("next-steps").lessonNumber).toBe(COURSE_INFO.lessons.length);
+    expect(lessonPosition("next-steps").lessonNumber).toBe(
+      COURSE_INFO.lessons.length,
+    );
   });
 
   it("orders the syllabus exactly as the chapters present it", () => {
@@ -90,7 +92,9 @@ describe("flash cards", () => {
   it("gives every chapter a deck drawn from terms it teaches", () => {
     for (const chapter of CHAPTERS) {
       const cards = flashcardsForChapter(chapter.id);
-      expect(cards.length, `${chapter.id} has no cards`).toBeGreaterThanOrEqual(3);
+      expect(cards.length, `${chapter.id} has no cards`).toBeGreaterThanOrEqual(
+        3,
+      );
       for (const card of cards) {
         expect(card.term.length).toBeGreaterThan(2);
         expect(card.definition.length).toBeGreaterThan(60);
@@ -100,7 +104,8 @@ describe("flash cards", () => {
 
   it("keeps every card in a chapter that exists, with unique terms", () => {
     const chapterIds = new Set(CHAPTERS.map((chapter) => chapter.id));
-    for (const card of FLASHCARDS) expect(chapterIds.has(card.chapterId)).toBe(true);
+    for (const card of FLASHCARDS)
+      expect(chapterIds.has(card.chapterId)).toBe(true);
     const terms = FLASHCARDS.map((card) => card.term.toLowerCase());
     expect(new Set(terms).size).toBe(terms.length);
   });
@@ -126,7 +131,9 @@ describe("videos", () => {
 
   it("builds a privacy-enhanced embed URL without tracking parameters", () => {
     const url = videoWatchUrl(COURSE_VIDEOS[0]);
-    expect(url.startsWith("https://www.youtube-nocookie.com/embed/")).toBe(true);
+    expect(url.startsWith("https://www.youtube-nocookie.com/embed/")).toBe(
+      true,
+    );
     expect(url).toContain("rel=0");
   });
 });
@@ -382,6 +389,27 @@ describe("progress", () => {
       lessonIds,
     );
     expect(record.completedLessons).toEqual(["protocol-meeting"]);
+  });
+
+  it("keeps certificate details without changing completion state", () => {
+    const completedAt = "2026-11-27T09:30:00.000Z";
+    const record = normaliseRecord(
+      {
+        courseVersion: course.version,
+        completedLessons: lessonIds,
+        passed: true,
+        completedAt,
+        certificateName: "  Amina Wanjiru  ",
+        certificatePhoto: "data:image/png;base64,iVBORw0KGgo=",
+        certificateNumber: "RACMNG-2026-2027-01",
+      },
+      course.version,
+      lessonIds,
+    );
+    expect(record.completedAt).toBe(completedAt);
+    expect(record.certificateName).toBe("Amina Wanjiru");
+    expect(record.certificatePhoto).toBe("data:image/png;base64,iVBORw0KGgo=");
+    expect(record.certificateNumber).toBe("RACMNG-2026-2027-01");
   });
 });
 

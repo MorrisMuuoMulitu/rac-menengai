@@ -4,8 +4,19 @@
   "routes": [
     {
       "src": "/(.*)",
+      "has": [
+        {
+          "type": "host",
+          "value": "rac-menengai.vercel.app"
+        }
+      ],
+      "dest": "https://rotaractmenengai.org/$1",
+      "status": 308
+    },
+    {
+      "src": "/(.*)",
       "headers": {
-        "Content-Security-Policy": "default-src 'self'; script-src 'self' https://clerk.rotaractmenengai.org https://*.clerk.accounts.dev https://challenges.cloudflare.com https://*.protect.clerk.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: blob: https://img.clerk.com https://*.clerk.com; font-src 'self' https://clerk.rotaractmenengai.org https://*.clerk.accounts.dev https://fonts.gstatic.com; connect-src 'self' https://clerk.rotaractmenengai.org https://*.clerk.accounts.dev https://*.protect.clerk.com:* https://challenges.cloudflare.com; frame-src https://www.youtube-nocookie.com https://clerk.rotaractmenengai.org https://*.clerk.accounts.dev https://challenges.cloudflare.com https://*.protect.clerk.com; worker-src 'self' blob:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' https://clerk.rotaractmenengai.org https://*.clerk.accounts.dev https://challenges.cloudflare.com https://*.protect.clerk.com https://vercel.live; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://vercel.live; img-src 'self' data: blob: https://img.clerk.com https://*.clerk.com https://vercel.live https://vercel.com; font-src 'self' https://clerk.rotaractmenengai.org https://*.clerk.accounts.dev https://fonts.gstatic.com https://vercel.live https://assets.vercel.com; connect-src 'self' https://clerk.rotaractmenengai.org https://*.clerk.accounts.dev https://*.protect.clerk.com:* https://challenges.cloudflare.com https://vercel.live wss://ws-us3.pusher.com; frame-src https://www.youtube-nocookie.com https://clerk.rotaractmenengai.org https://*.clerk.accounts.dev https://challenges.cloudflare.com https://*.protect.clerk.com https://vercel.live; worker-src 'self' blob:; object-src 'none'; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests",
         "X-Content-Type-Options": "nosniff",
         "Referrer-Policy": "strict-origin-when-cross-origin",
         "Permissions-Policy": "camera=(), microphone=(), geolocation=()",
@@ -109,8 +120,20 @@
       "dest": "/membership/register/index.html"
     },
     {
+      "src": "^/membership/sso-callback/?$",
+      "dest": "/membership/sso-callback/index.html"
+    },
+    {
       "src": "^/membership/queue/?$",
       "dest": "/membership/queue/index.html"
+    },
+    {
+      "src": "^/membership/learners/?$",
+      "dest": "/membership/learners/index.html"
+    },
+    {
+      "src": "^/membership/enquiries/?$",
+      "dest": "/membership/enquiries/index.html"
     },
     {
       "src": "^/contact/?$",
@@ -123,6 +146,10 @@
     {
       "src": "^/privacy/?$",
       "dest": "/privacy/index.html"
+    },
+    {
+      "src": "^/verify/?$",
+      "dest": "/verify/index.html"
     },
     {
       "src": "^/projects/pangani-special-school/?$",

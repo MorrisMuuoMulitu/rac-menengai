@@ -18,6 +18,9 @@ import {
   publicCourse,
 } from "../shared/rotaract-academy/assessment.js";
 import {
+  CERTIFICATE_NUMBER_PATTERN,
+  CERTIFICATE_PHOTO_MAX_BYTES,
+  CERTIFICATE_PHOTO_MAX_LENGTH,
   chapterProgress,
   emptyRecord,
   learnerCohort,
@@ -44,7 +47,14 @@ import {
   type AcademyRepository,
   type LearnerProgressRow,
 } from "./academy-db.js";
-import type { Actor, ActorResolver, AuthRequest } from "./academy-auth.js";
+import {
+  reviewerAllowlist,
+  type Actor,
+  type ActorResolver,
+  type AuthRequest,
+} from "./academy-auth.js";
+import { applicationEmail, type EmailSender } from "./email.js";
+import { createCertificateNumber, rotaryYear } from "./certificate-id.js";
 
 export interface AcademyResponse {
   status(code: number): AcademyResponse;
@@ -55,6 +65,7 @@ export interface AcademyResponse {
 export interface AcademyDependencies {
   resolveActor: ActorResolver;
   repository: AcademyRepository;
+  sendEmail?: EmailSender | null;
 }
 
 /*
@@ -75,6 +86,31 @@ const REVIEWER_STATUSES = new Set<ApplicationStatus>([
 ]);
 
 type Body = Record<string, unknown>;
+
+function certificatePhotoIsValid(value: string): boolean {
+  if (value.length > CERTIFICATE_PHOTO_MAX_LENGTH) return false;
+  const match = /^data:image\/(jpeg|png|webp);base64,([a-z0-9+/=]+)$/i.exec(
+    value,
+  );
+  if (!match) return false;
+
+  const bytes = Buffer.from(match[2], "base64");
+  if (!bytes.length || bytes.length > CERTIFICATE_PHOTO_MAX_BYTES) return false;
+
+  if (match[1].toLowerCase() === "jpeg")
+    return bytes[0] === 0xff && bytes[1] === 0xd8 && bytes[2] === 0xff;
+  if (match[1].toLowerCase() === "png")
+    return (
+      bytes[0] === 0x89 &&
+      bytes[1] === 0x50 &&
+      bytes[2] === 0x4e &&
+      bytes[3] === 0x47
+    );
+  return (
+    bytes.subarray(0, 4).toString("ascii") === "RIFF" &&
+    bytes.subarray(8, 12).toString("ascii") === "WEBP"
+  );
+}
 
 function header(request: AuthRequest, name: string): string | undefined {
   const value = request.headers[name];
@@ -143,6 +179,28 @@ async function withLearner(dependencies: AcademyDependencies, actor: Actor) {
   return learner;
 }
 
+async function withCertificateIdentity(
+  dependencies: AcademyDependencies,
+  userId: string,
+  record: LearningRecord,
+): Promise<LearningRecord> {
+  if (!record.passed || record.certificateNumber) return record;
+  const completedAt =
+    record.completedAt ??
+    record.passedAt ??
+    record.updatedAt ??
+    new Date().toISOString();
+  const sequence = await dependencies.repository.nextCertificateSequence(
+    CLUB_ID,
+    rotaryYear(new Date(completedAt)),
+  );
+  return {
+    ...record,
+    completedAt,
+    certificateNumber: createCertificateNumber(completedAt, sequence),
+  };
+}
+
 /**
  * A lesson can be marked done only if everything before it is done, so a
  * tampered request cannot mark the whole course complete in one call.
@@ -189,8 +247,10 @@ function learnerProgressPayload(
       checksDone: summary.scenarios.filter((item) => item.done).length,
       checksTotal: summary.scenarios.length,
       bestScore: row.record.bestScore,
+      assessmentTotal: FULL_COURSE.questions.length,
       attempts: row.record.attempts,
       assessmentPassed: summary.assessmentPassed,
+      certificateName: row.record.certificateName,
       proposalSubmitted: summary.proposalSubmitted,
       canApply: summary.canApply,
       applicationStatus: applicationStatus.get(row.userId) ?? null,
@@ -261,6 +321,11 @@ export function createAcademyHandler(
   const origin = env.SITE_ORIGIN ?? CLUB_ORIGIN;
   const permittedOrigins = trustedSiteOrigins(origin);
   const course = publicCourse(FULL_COURSE);
+  const notificationRecipients = [
+    ...reviewerAllowlist(
+      env.ACADEMY_NOTIFICATION_EMAILS ?? env.ACADEMY_REVIEWER_EMAILS,
+    ),
+  ];
 
   return async function handler(
     request: AuthRequest,
@@ -279,6 +344,46 @@ export function createAcademyHandler(
       !permittedOrigins.has(header(request, "origin") ?? "")
     )
       return response.status(403).json({ error: "Origin not allowed." });
+
+    if (request.method === "GET") {
+      const publicUrl = new URL(request.url ?? "/api/academy", origin);
+      if (publicUrl.searchParams.get("view") === "certificate-verification") {
+        const number = publicUrl.searchParams.get("number") ?? "";
+        if (!CERTIFICATE_NUMBER_PATTERN.test(number))
+          return response
+            .status(404)
+            .json({ valid: false, error: "Certificate not found." });
+        const rows = await dependencies.repository.listLearners(CLUB_ID);
+        const row = rows.find(
+          (item) =>
+            item.record.passed &&
+            item.record.certificateNumber?.toUpperCase() ===
+              number.toUpperCase(),
+        );
+        if (!row)
+          return response
+            .status(404)
+            .json({ valid: false, error: "Certificate not found." });
+        return response.status(200).json({
+          valid: true,
+          certificate: {
+            number: row.record.certificateNumber,
+            name:
+              row.record.certificateName ??
+              row.displayName ??
+              "Academy graduate",
+            completedAt:
+              row.record.completedAt ??
+              row.record.passedAt ??
+              row.record.updatedAt,
+            courseTitle: "Rotaract, from the ground up",
+            issuedBy: "Rotaract Club of Menengai",
+            president: "Wanjiku Nguru",
+            rotaryYear: "2026-2027",
+          },
+        });
+      }
+    }
 
     const wantsReview = (request.url ?? "").includes("view=review");
 
@@ -342,6 +447,50 @@ export function createAcademyHandler(
           ...learnerProgressPayload(rows, statuses),
         });
       }
+      if (readUrl.searchParams.get("view") === "certificate") {
+        if (!actor?.reviewer)
+          return response
+            .status(403)
+            .json({ error: "Certificates are for club officers." });
+        const userId = readUrl.searchParams.get("userId");
+        if (!userId)
+          return response.status(400).json({ error: "Choose a learner." });
+        const rows = await dependencies.repository.listLearners(CLUB_ID);
+        const row = rows.find((item) => item.userId === userId);
+        if (!row?.record.passed)
+          return response
+            .status(404)
+            .json({ error: "That learner has no completed certificate." });
+        const certificateRecord = await withCertificateIdentity(
+          dependencies,
+          row.userId,
+          row.record,
+        );
+        if (certificateRecord !== row.record)
+          await dependencies.repository.saveRecord(
+            row.userId,
+            CLUB_ID,
+            certificateRecord,
+          );
+        return response.status(200).json({
+          signedIn: true,
+          certificate: {
+            name:
+              certificateRecord.certificateName ??
+              row.displayName ??
+              row.email ??
+              "Learner",
+            photo: certificateRecord.certificatePhoto,
+            completedAt:
+              certificateRecord.completedAt ??
+              certificateRecord.passedAt ??
+              certificateRecord.updatedAt,
+            certificateNumber: certificateRecord.certificateNumber,
+            score: certificateRecord.bestScore,
+            total: FULL_COURSE.questions.length,
+          },
+        });
+      }
       if (!actor)
         return response.status(200).json({
           signedIn: false,
@@ -349,6 +498,17 @@ export function createAcademyHandler(
           course,
         });
       const learner = await withLearner(dependencies, actor);
+      const learnerRecord = await withCertificateIdentity(
+        dependencies,
+        actor.userId,
+        learner.record,
+      );
+      if (learnerRecord !== learner.record)
+        learner.record = await dependencies.repository.saveRecord(
+          actor.userId,
+          CLUB_ID,
+          learnerRecord,
+        );
       const application = await dependencies.repository.loadApplication(
         actor.userId,
         CLUB_ID,
@@ -376,6 +536,53 @@ export function createAcademyHandler(
       return response.status(401).json({ error: "Sign in to continue." });
     }
     const signedIn: Actor = actor;
+
+    if (action === "learner-profile") {
+      if (!signedIn.reviewer)
+        return response
+          .status(403)
+          .json({ error: "Learner details are for club officers." });
+      const userId = typeof body.userId === "string" ? body.userId : "";
+      const displayName =
+        typeof body.displayName === "string" ? body.displayName.trim() : "";
+      const certificateName =
+        typeof body.certificateName === "string"
+          ? body.certificateName.trim()
+          : "";
+      if (!userId || displayName.length < 1 || displayName.length > 120)
+        return response
+          .status(422)
+          .json({ error: "Use a display name between 1 and 120 characters." });
+      if (certificateName.length < 2 || certificateName.length > 120)
+        return response.status(422).json({
+          error: "Use a certificate name between 2 and 120 characters.",
+        });
+      const updated = await dependencies.repository.updateLearnerProfile(
+        userId,
+        CLUB_ID,
+        { displayName, certificateName },
+      );
+      if (!updated)
+        return response.status(404).json({ error: "Learner not found." });
+      await dependencies.repository
+        .logEvent({
+          clubId: CLUB_ID,
+          userId,
+          actorId: signedIn.userId,
+          actorEmail: signedIn.email,
+          type: "learner.profile_updated",
+          detail: { fields: ["displayName", "certificateName"] },
+        })
+        .catch(() => undefined);
+      return response.status(200).json({
+        learner: {
+          userId: updated.userId,
+          email: updated.email,
+          displayName: updated.displayName,
+          certificateName: updated.record.certificateName,
+        },
+      });
+    }
 
     if (action === "note") {
       /*
@@ -431,6 +638,10 @@ export function createAcademyHandler(
       );
       if (!existing)
         return response.status(404).json({ error: "Application not found." });
+      if (existing.userId === signedIn.userId)
+        return response
+          .status(403)
+          .json({ error: "You cannot review your own application." });
       if (!canTransition(existing.status, next))
         return response.status(409).json({
           error: `That application is ${APPLICATION_STATUS_LABEL[existing.status].toLowerCase()}.`,
@@ -466,7 +677,17 @@ export function createAcademyHandler(
 
     /* Everything below belongs to the signed-in learner. */
     const learner = await withLearner(dependencies, signedIn);
-    let record = learner.record;
+    let record = await withCertificateIdentity(
+      dependencies,
+      signedIn.userId,
+      learner.record,
+    );
+    if (record !== learner.record)
+      record = await dependencies.repository.saveRecord(
+        signedIn.userId,
+        CLUB_ID,
+        record,
+      );
 
     if (action === "lesson") {
       const lessonId = typeof body.lessonId === "string" ? body.lessonId : "";
@@ -541,9 +762,9 @@ export function createAcademyHandler(
         (id) => !record.completedLessons.includes(id),
       );
       if (outstanding.length)
-        return response
-          .status(409)
-          .json({ error: "Finish all fourteen lessons first." });
+        return response.status(409).json({
+          error: `Finish all ${FULL_COURSE.modules.length} lessons first.`,
+        });
       const answers = normaliseAnswers(
         body.answers,
         FULL_COURSE.questions.length,
@@ -567,9 +788,9 @@ export function createAcademyHandler(
         graded.passed && !record.passed
           ? new Date().toISOString()
           : record.passedAt;
-      record = await dependencies.repository.saveRecord(
+      const assessedRecord = await withCertificateIdentity(
+        dependencies,
         signedIn.userId,
-        CLUB_ID,
         {
           ...record,
           bestScore: Math.max(record.bestScore, graded.correct),
@@ -577,6 +798,11 @@ export function createAcademyHandler(
           passed: record.passed || graded.passed,
           passedAt,
         },
+      );
+      record = await dependencies.repository.saveRecord(
+        signedIn.userId,
+        CLUB_ID,
+        assessedRecord,
       );
       return response.status(200).json({
         correct: graded.correct,
@@ -607,6 +833,57 @@ export function createAcademyHandler(
         signedIn.userId,
         CLUB_ID,
         { ...record, proposal },
+      );
+      return response.status(200).json({
+        record,
+        summary: summarise(record, FULL_COURSE),
+      });
+    }
+
+    if (action === "certificate") {
+      if (!record.passed)
+        return response.status(409).json({
+          error: "Pass the final assessment before creating a certificate.",
+        });
+      const certificateName =
+        typeof body.name === "string" ? body.name.trim() : "";
+      if (certificateName.length < 2 || certificateName.length > 120)
+        return response.status(422).json({
+          error: "Use a certificate name between 2 and 120 characters.",
+        });
+      let certificatePhoto = record.certificatePhoto;
+      if (Object.prototype.hasOwnProperty.call(body, "photo")) {
+        if (body.photo === null) certificatePhoto = null;
+        else if (
+          typeof body.photo === "string" &&
+          certificatePhotoIsValid(body.photo)
+        )
+          certificatePhoto = body.photo;
+        else
+          return response.status(422).json({
+            error:
+              "Use a JPEG, PNG or WebP photo under 220 KB, or leave the photo blank.",
+          });
+      }
+      const completedAt =
+        record.completedAt ??
+        record.passedAt ??
+        record.updatedAt ??
+        new Date().toISOString();
+      const certificateRecord = await withCertificateIdentity(
+        dependencies,
+        signedIn.userId,
+        {
+          ...record,
+          certificateName,
+          certificatePhoto,
+          completedAt,
+        },
+      );
+      record = await dependencies.repository.saveRecord(
+        signedIn.userId,
+        CLUB_ID,
+        certificateRecord,
       );
       return response.status(200).json({
         record,
@@ -700,6 +977,45 @@ export function createAcademyHandler(
         type: "application.submitted",
         detail: { applicationId: saved.id, score: record.bestScore },
       });
+      if (dependencies.sendEmail && notificationRecipients.length) {
+        try {
+          await dependencies.sendEmail({
+            to: notificationRecipients,
+            ...applicationEmail({
+              applicantName: saved.fullName,
+              applicantEmail: saved.email,
+              location: saved.location,
+              score: saved.courseScore,
+              total: FULL_COURSE.questions.length,
+              submittedAt: saved.submittedAt ?? new Date().toISOString(),
+              queueUrl: `${origin}/membership/queue`,
+            }),
+            replyTo: saved.email,
+            idempotencyKey: `application-submitted-${saved.id}`,
+          });
+          await dependencies.repository
+            .logEvent({
+              clubId: CLUB_ID,
+              userId: null,
+              actorId: null,
+              actorEmail: null,
+              type: "application.notification_sent",
+              detail: { applicationId: saved.id },
+            })
+            .catch(() => undefined);
+        } catch {
+          await dependencies.repository
+            .logEvent({
+              clubId: CLUB_ID,
+              userId: null,
+              actorId: null,
+              actorEmail: null,
+              type: "application.notification_failed",
+              detail: { applicationId: saved.id },
+            })
+            .catch(() => undefined);
+        }
+      }
       return response.status(200).json({
         application: saved,
         statusLabel: APPLICATION_STATUS_LABEL[saved.status],

@@ -8,7 +8,6 @@ import {
   type Enquiry,
   type ContactErrors,
 } from "../lib/contact";
-const DELIVERY_ENABLED = import.meta.env.VITE_CONTACT_DELIVERY === "true";
 export function ContactForm({
   defaultInterest,
   heading = "Message the club",
@@ -28,7 +27,7 @@ export function ContactForm({
   });
   const [errors, setErrors] = useState<ContactErrors>({});
   const [status, setStatus] = useState<
-    "editing" | "draft" | "sending" | "sent"
+    "editing" | "draft" | "sending" | "sent" | "received"
   >("editing");
   const [failure, setFailure] = useState("");
   const [copied, setCopied] = useState(false);
@@ -53,11 +52,6 @@ export function ContactForm({
       return;
     }
     if (form.company) return;
-    if (!DELIVERY_ENABLED) {
-      setStatus("draft");
-      requestAnimationFrame(() => result.current?.focus());
-      return;
-    }
     setStatus("sending");
     setFailure("");
     try {
@@ -68,52 +62,63 @@ export function ContactForm({
         signal: AbortSignal.timeout(15000),
       });
       const payload = await response.json();
-      if (!response.ok || payload.delivered !== true) throw new Error();
-      setStatus("sent");
+      if (!response.ok || payload.received !== true) throw new Error();
+      setStatus(payload.delivered === true ? "sent" : "received");
       requestAnimationFrame(() => result.current?.focus());
     } catch {
-      setStatus("editing");
+      setStatus("draft");
       setFailure(
-        "Your message was not sent. Your details are still here. Try again or use the email link below.",
+        "Direct submission is temporarily unavailable. Your details are still here, and you can send them using the email draft below.",
       );
+      requestAnimationFrame(() => result.current?.focus());
     }
   }
-  if (status === "draft" || status === "sent")
+  if (status === "draft" || status === "sent" || status === "received")
     return (
       <div className="form-success" ref={result} tabIndex={-1} role="status">
         <h3>
-          {status === "sent" ? "Message sent" : "Your email draft is ready"}
+          {status === "sent"
+            ? "Message sent"
+            : status === "received"
+              ? "Message received"
+              : "Your email draft is ready"}
         </h3>
         <p>
           {status === "sent"
-            ? "The message has been accepted by the club’s email delivery service. An officer will reply when available."
-            : "Nothing has been sent yet. Open this draft in your email app, check it, then send it to the club. You can also copy it into a social message."}
+            ? "The club has received your message. An officer will reply when available."
+            : status === "received"
+              ? "Your message is stored for the club team. Email forwarding is temporarily delayed, so you can also send an email copy below."
+              : "Nothing has been sent yet. Open this draft in your email app, check it, then send it to the club. You can also copy it into a social message."}
         </p>
-        {status === "draft" && (
+        {status !== "sent" && (
           <>
-            <pre className="message-draft">{enquiryText(form)}</pre>
+            {status === "draft" ? (
+              <pre className="message-draft">{enquiryText(form)}</pre>
+            ) : null}
             <a
               className="btn btn-primary btn-md"
               href={emailDraft(form, contactConfig.email)}
             >
-              Open email draft
+              {status === "draft" ? "Open email draft" : "Email a copy"}
             </a>
-            <button
-              type="button"
-              className="btn btn-secondary btn-md"
-              onClick={async () => {
-                try {
-                  await navigator.clipboard.writeText(enquiryText(form));
-                  setCopied(true);
-                } catch {
-                  setFailure(
-                    "Copy is unavailable. Select the message above and copy it manually.",
-                  );
-                }
-              }}
-            >
-              {copied ? "Copied" : "Copy message"}
-            </button>
+            {status === "draft" ? (
+              <button
+                type="button"
+                className="btn btn-secondary btn-md"
+                onClick={async () => {
+                  try {
+                    await navigator.clipboard.writeText(enquiryText(form));
+                    setCopied(true);
+                  } catch {
+                    setFailure(
+                      "Copy is unavailable. Select the message above and copy it manually.",
+                    );
+                  }
+                }}
+              >
+                {copied ? "Copied" : "Copy message"}
+              </button>
+            ) : null}
             <a
               className="text-link"
               href={SOCIALS.instagram}
@@ -146,9 +151,7 @@ export function ContactForm({
         <h3>{heading}</h3>
         <p>
           {lead ??
-            (DELIVERY_ENABLED
-              ? "Send an enquiry to the club."
-              : "Prepare an email to menengairc@gmail.com. You’ll send it from your own email app.")}
+            "Send your message directly to the club team. If delivery is temporarily unavailable, we’ll prepare an email you can send yourself."}
         </p>
       </div>
       <div className="field">
@@ -226,7 +229,7 @@ export function ContactForm({
         {error("consent")}
       </div>
       <p className="form-hint">
-        Details stay on this page until you choose to send them.{" "}
+        Submitted enquiries are available only to verified club officers.{" "}
         <Link to="/privacy">Privacy notice</Link>
       </p>
       {failure && (
@@ -238,11 +241,7 @@ export function ContactForm({
         className="btn btn-primary btn-md"
         disabled={status === "sending"}
       >
-        {status === "sending"
-          ? "Sending…"
-          : DELIVERY_ENABLED
-            ? "Send enquiry"
-            : "Prepare email draft"}
+        {status === "sending" ? "Sending…" : "Send message"}
       </button>
       <p className="form-hint">
         Replies are handled by volunteers. Please allow time for an officer to

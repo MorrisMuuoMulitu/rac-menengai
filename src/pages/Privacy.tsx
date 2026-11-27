@@ -18,12 +18,11 @@ export default function Privacy() {
             your email provider’s privacy terms.
           </p>
           <p>
-            If direct form delivery is enabled, the same details are sent to the
-            club’s server and email delivery provider to forward the enquiry.
-            The server does not keep a contact database or log message bodies.
-            Club officers receive the enquiry by email and use it to respond.
-            The club must set and communicate its inbox retention policy before
-            direct delivery is enabled.
+            When you submit the contact form, your name, reply details, enquiry
+            topic and message are stored in the club’s database so a verified
+            club officer can respond. The club may also email a copy to its
+            official inbox. Submitted messages are not used for advertising or
+            made public.
           </p>
           <h2>Orientation progress</h2>
           <p>

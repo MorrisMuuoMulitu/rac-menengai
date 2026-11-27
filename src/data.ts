@@ -766,12 +766,22 @@ export const FINAL_CTA = {
 /* ============================= Projects ============================= */
 export const PROJECTS: Project[] = [
   {
-    slug: "sports-legacy", title: "Sports Legacy", tag: "Community", year: "2025",
-    image: "/images/events/sports-legacy-district-grant-2025/sports-legacy-27.webp",
+    slug: "sports-legacy",
+    title: "Sports Legacy",
+    tag: "Community",
+    year: "2025",
+    image:
+      "/images/events/sports-legacy-district-grant-2025/sports-legacy-27.webp",
     summary: "Youth engagement, teamwork and talent development through sport.",
-    detail: "On 31 May 2025, the Sports Legacy Project brought young people together through sports, promoting teamwork, discipline, leadership and healthy living. District Grant DG2677765 supported opportunities for youth engagement, talent development and positive community interaction. The initiative strengthened relationships through shared sporting activities.",
-    location: "Venue not supplied", areasOfFocus: ["community"], reached: ["Young participants"],
-    results: ["District Grant Project DG2677765", "Youth sports activities held on 31 May 2025"],
+    detail:
+      "On 31 May 2025, the Sports Legacy Project brought young people together through sports, promoting teamwork, discipline, leadership and healthy living. District Grant DG2677765 supported opportunities for youth engagement, talent development and positive community interaction. The initiative strengthened relationships through shared sporting activities.",
+    location: "Venue not supplied",
+    areasOfFocus: ["community"],
+    reached: ["Young participants"],
+    results: [
+      "District Grant Project DG2677765",
+      "Youth sports activities held on 31 May 2025",
+    ],
   },
   {
     slug: "pangani-special-school",
@@ -823,7 +833,16 @@ export const PROJECTS: Project[] = [
       "48 Mother Packs donated at Bondeni; 22 new mothers received packs on the day",
       "New-year service launch at Bondeni Maternity",
     ],
-    partners: ["Bondeni Maternity", "Rotary Club of Davis", "Rotary Club of Nakuru", "Rotaract Club of Bahati", "Rotaract Club of Naivasha", "Rotaract Club of Thika TTI", "Rotaract Club of University of Embu", "Rotary Club of Kisumu Winam"],
+    partners: [
+      "Bondeni Maternity",
+      "Rotary Club of Davis",
+      "Rotary Club of Nakuru",
+      "Rotaract Club of Bahati",
+      "Rotaract Club of Naivasha",
+      "Rotaract Club of Thika TTI",
+      "Rotaract Club of University of Embu",
+      "Rotary Club of Kisumu Winam",
+    ],
   },
   {
     slug: "limuko-girls",
@@ -1045,7 +1064,8 @@ export const LEADERS: Leader[] = [
  * Partners are listed with their supplied logo where one exists. The twelve
  * logo files arrived from the club on 14 November 2026 alongside the Medical
  * Outreach poster; four of the source files were PDFs and were rasterised
- * before cropping. See docs/BRANDING_VERIFICATION.md.
+ * before cropping. Three additional partner logos arrived on 26 November 2026.
+ * See docs/BRANDING_VERIFICATION.md.
  */
 export const PARTNERS: Partner[] = [
   {
@@ -1096,8 +1116,24 @@ export const PARTNERS: Partner[] = [
     name: "Valley Hospital",
     logo: "/images/partners/valley-hospital.webp",
   },
+  {
+    name: "Equity Afya",
+    logo: "/images/partners/equity-afya.webp",
+  },
+  {
+    name: "Supreme Pharmacy",
+    logo: "/images/partners/supreme-pharmacy.webp",
+  },
+  {
+    name: "The Nairobi Women's Hospital",
+    logo: "/images/partners/nairobi-womens-hospital.webp",
+  },
   { name: "Rotary District 9215" },
-  { name: "Nakuru County Government" },
+  { name: "Ministry of Health" },
+  { name: "County Government of Nakuru" },
+  { name: "Kenya Blood Transfusion and Transplant Service" },
+  { name: "DamuKE" },
+  { name: "Mamlaka Health" },
   { name: "Kenya Wildlife Service" },
   { name: "NEMA Kenya" },
   { name: "Kenya Red Cross" },
@@ -1345,7 +1381,7 @@ export const CONTACT = {
  */
 export const contactConfig = {
   email: "menengairc@gmail.com",
-  phone: "CONFIRM_OFFICIAL_PHONE",
+  phones: ["+254 718 220049", "+254 710 733421"],
   whatsapp: "CONFIRM_OFFICIAL_WHATSAPP",
 } as const;
 

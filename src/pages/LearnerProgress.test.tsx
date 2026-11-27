@@ -17,6 +17,7 @@ import {
 
 const api = vi.hoisted(() => ({
   load: vi.fn(),
+  save: vi.fn(),
   account: {
     ready: true,
     available: true,
@@ -31,6 +32,7 @@ vi.mock("../academy/account", () => ({ useAccount: () => api.account }));
 vi.mock("../lib/academy", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../lib/academy")>()),
   loadLearnerProgress: api.load,
+  saveLearnerProfile: api.save,
 }));
 
 function row(patch: Partial<LearnerProgressRow>): LearnerProgressRow {
@@ -50,8 +52,10 @@ function row(patch: Partial<LearnerProgressRow>): LearnerProgressRow {
     checksDone: 2,
     checksTotal: 7,
     bestScore: 0,
+    assessmentTotal: 20,
     attempts: 0,
     assessmentPassed: false,
+    certificateName: null,
     proposalSubmitted: false,
     canApply: false,
     applicationStatus: null,
@@ -86,7 +90,10 @@ const renderPage = () =>
     </MemoryRouter>,
   );
 
-beforeEach(() => api.load.mockReset());
+beforeEach(() => {
+  api.load.mockReset();
+  api.save.mockReset();
+});
 afterEach(cleanup);
 
 it("shows where a stalled learner stopped, and says how long they have been quiet", async () => {
@@ -131,7 +138,12 @@ it("separates a finished learner from one who needs chasing", async () => {
   expect(within(finished).getByText("Finished")).toBeTruthy();
   /* A finished learner is never called stalled, however long ago they stopped. */
   expect(within(finished).queryByText("Needs a nudge")).toBeNull();
-  expect(within(finished).getByText(/passed · 18\/30/)).toBeTruthy();
+  expect(within(finished).getByText(/passed · 18\/20/)).toBeTruthy();
+  expect(
+    within(finished).getByRole("button", {
+      name: "Download Otieno's certificate PDF",
+    }),
+  ).toBeTruthy();
 });
 
 it("filters to the learners who need a nudge", async () => {
@@ -152,6 +164,36 @@ it("filters to the learners who need a nudge", async () => {
   fireEvent.click(screen.getByRole("button", { name: /Needs a nudge/ }));
   expect(screen.getByText("Amina Wanjiru")).toBeTruthy();
   expect(screen.queryByText("Racheal")).toBeNull();
+});
+
+it("lets an officer edit the learner and certificate names", async () => {
+  api.load.mockResolvedValue(payload([row({})]));
+  api.save.mockResolvedValue({
+    learner: {
+      userId: "u1",
+      email: "amina@example.com",
+      displayName: "Amina W. Mwangi",
+      certificateName: "Amina Wangari Mwangi",
+    },
+  });
+  renderPage();
+  const card = (await screen.findByText("Amina Wanjiru")).closest("li")!;
+  fireEvent.click(within(card).getByRole("button", { name: "Edit details" }));
+  fireEvent.change(within(card).getByLabelText("Display name"), {
+    target: { value: "Amina W. Mwangi" },
+  });
+  fireEvent.change(within(card).getByLabelText("Name on certificate"), {
+    target: { value: "Amina Wangari Mwangi" },
+  });
+  fireEvent.click(within(card).getByRole("button", { name: "Save details" }));
+
+  expect(await screen.findByText("Amina W. Mwangi")).toBeTruthy();
+  expect(api.save).toHaveBeenCalledWith(
+    "isolated-test-token",
+    "u1",
+    "Amina W. Mwangi",
+    "Amina Wangari Mwangi",
+  );
 });
 
 it("searches by the address an officer would actually use", async () => {
