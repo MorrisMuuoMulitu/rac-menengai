@@ -57,8 +57,8 @@ function brandedEmail(input: BrandedEmailInput): string {
     <table role="presentation" width="100%" cellspacing="0" cellpadding="0" style="border-collapse:collapse">
       <tr><td align="center">
         <div style="width:100%;max-width:620px;background:#fffdf8;border-top:7px solid #090e18;text-align:left">
-          <div style="padding:24px 30px 18px;border-bottom:1px solid #d8d2c6">
-            <img src="https://rotaractmenengai.org/images/branding/rotaract-menengai-lockup.webp" alt="Rotaract Club of Menengai" width="190" style="display:block;width:190px;max-width:100%;height:auto;border:0">
+          <div style="padding:24px 30px 18px;border-bottom:1px solid #d8d2c6;background:#fffbf9">
+            <img src="https://rotaractmenengai.org/images/branding/email-rotaract-menengai-lockup.png" alt="Rotaract Club of Menengai" width="220" style="display:block;width:220px;max-width:100%;height:auto;border:0;background:#fffbf9">
           </div>
           <div style="padding:30px">
             <p style="margin:0 0 10px;color:#bd164b;font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase">${escapeHtml(input.eyebrow)}</p>

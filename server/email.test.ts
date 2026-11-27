@@ -70,6 +70,10 @@ describe("academy email", () => {
     });
     expect(message.subject).toContain("website enquiry");
     expect(message.html).toContain("Rotaract Club of Menengai");
+    expect(message.html).toContain(
+      "images/branding/email-rotaract-menengai-lockup.png",
+    );
+    expect(message.html).not.toContain("rotaract-menengai-lockup.webp");
     expect(message.html).toContain("amina@example.com");
     expect(message.text).toContain("I would like to visit");
   });
