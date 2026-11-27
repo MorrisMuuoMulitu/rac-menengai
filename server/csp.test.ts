@@ -75,6 +75,10 @@ describe("Content-Security-Policy", () => {
     expect(directive("worker-src")).toEqual(["'self'", "blob:"]);
   });
 
+  it("allows the local video preview thumbnails", () => {
+    expect(directive("img-src")).toContain("https://i.ytimg.com");
+  });
+
   it("lets Clerk's own UI load its webfont", () => {
     /*
      * Clerk's sign-in UI injects a Google Fonts stylesheet and then loads the
