@@ -164,7 +164,8 @@ function badges(
     {
       id: "finished",
       label: "Course complete",
-      detail: "Everything is done and the joining steps are open.",
+      detail:
+        "Everything is done. Your certificate and optional membership contact are available.",
       earned: summary.canApply,
       Icon: BadgeCheck,
     },
