@@ -279,8 +279,19 @@ export function createResendEmailSender(
       }),
       signal: AbortSignal.timeout(8000),
     });
-    const result = (await response.json()) as { id?: string };
-    if (!response.ok || !result.id) throw new Error("Email delivery rejected");
+    const result = (await response.json()) as {
+      id?: string;
+      message?: string;
+      name?: string;
+    };
+    if (!response.ok || !result.id) {
+      console.error("Resend rejected email delivery", {
+        status: response.status,
+        name: result.name,
+        message: result.message,
+      });
+      throw new Error(`Email delivery rejected (${response.status})`);
+    }
     return { id: result.id };
   };
 }

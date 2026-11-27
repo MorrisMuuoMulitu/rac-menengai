@@ -183,8 +183,12 @@ export default async function handler(req: Request, res: Response) {
           idempotencyKey: `contact-enquiry-${saved.id}`,
         });
         delivered = true;
-      } catch {
+      } catch (error) {
         /* The enquiry stays available to officers if email delivery fails. */
+        console.error(
+          "Contact enquiry email delivery failed",
+          error instanceof Error ? error.message : "Unknown error",
+        );
       }
     }
     return res.status(200).json({ received: true, delivered });
