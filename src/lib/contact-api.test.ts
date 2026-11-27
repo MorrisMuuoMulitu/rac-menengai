@@ -147,6 +147,8 @@ describe("contact collection", () => {
     expect(r.status).toBe(200);
     expect(r.payload).toEqual({ received: true, delivered: true });
     expect(store.saveEnquiry).toHaveBeenCalledTimes(1);
+    const sent = JSON.parse(String(vi.mocked(fetch).mock.calls[0][1]?.body));
+    expect(sent.to).toEqual(["menengairc@gmail.com", "morrismulitu@gmail.com"]);
   });
 
   it("lets a reviewer read stored enquiries", async () => {

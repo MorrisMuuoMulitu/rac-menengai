@@ -26,6 +26,11 @@ interface Response {
   setHeader(key: string, value: string): void;
 }
 
+const DEFAULT_CONTACT_RECIPIENTS = [
+  "menengairc@gmail.com",
+  "morrismulitu@gmail.com",
+] as const;
+
 const getHeader = (request: Request, key: string) => {
   const value = request.headers[key];
   return Array.isArray(value) ? value[0] : value;
@@ -161,9 +166,13 @@ export default async function handler(req: Request, res: Response) {
     const saved = await store.saveEnquiry({ ...enquiry, ipHash });
     let delivered = false;
     const sender = createResendEmailSender(process.env);
-    const recipients = process.env.CONTACT_TO?.split(",")
-      .map((address) => address.trim())
-      .filter(Boolean);
+    const configuredRecipients =
+      process.env.CONTACT_TO?.split(",")
+        .map((address) => address.trim())
+        .filter(Boolean) ?? [];
+    const recipients = [
+      ...new Set([...DEFAULT_CONTACT_RECIPIENTS, ...configuredRecipients]),
+    ];
     if (sender && recipients?.length) {
       try {
         await sender({

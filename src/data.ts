@@ -1172,15 +1172,6 @@ export const PRESIDENTIAL_LINE: PresidentialTerm[] = [
     initials: "JN",
     photo: "/images/leadership/janet-nkirote",
   },
-  {
-    name: "Wanjiku Nguru",
-    term: "2026-2027",
-    role: "President",
-    slug: "wanjiku-nguru-president",
-    initials: "WN",
-    photo: "/images/leadership/wanjiku-nguru",
-    current: true,
-  },
 ];
 
 /* ============================= Partners ============================= */
