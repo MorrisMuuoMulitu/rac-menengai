@@ -746,6 +746,26 @@ export function createAcademyHandler(
         record,
       );
 
+    if (
+      [
+        "section",
+        "lesson",
+        "scenario",
+        "assessment",
+        "proposal",
+        "certificate",
+        "draft",
+        "apply",
+      ].includes(action) &&
+      (!learner.phone ||
+        learner.phone.trim().length < 7 ||
+        !record.certificateName)
+    )
+      return response.status(409).json({
+        error:
+          "Add your phone number and official certificate name before continuing the course.",
+      });
+
     if (action === "section") {
       const lessonId = typeof body.lessonId === "string" ? body.lessonId : "";
       const sectionIndex =

@@ -985,7 +985,7 @@ export default function AcademyPage() {
                 initialSection={initialSection}
                 sectionProgress={record?.sectionProgress?.[lesson.id]}
                 onSectionPosition={(sectionIndex, completed) => {
-                  if (!signedIn) return;
+                  if (!signedIn || !data?.profile?.complete) return;
                   sectionSaveQueue.current = sectionSaveQueue.current
                     .catch(() => undefined)
                     .then(async () => {
@@ -1289,6 +1289,7 @@ export default function AcademyPage() {
             <JoinStep
               key="join"
               data={data}
+              accountEmail={account.email}
               busy={busy}
               signedIn={signedIn}
               headingRef={headingRef}
@@ -1898,6 +1899,7 @@ function ProposalStep({
 
 function JoinStep({
   data,
+  accountEmail,
   busy,
   signedIn,
   headingRef,
@@ -1906,6 +1908,7 @@ function JoinStep({
   onWithdraw,
 }: {
   data: AcademyBootstrap | null;
+  accountEmail: string | null;
   busy: boolean;
   signedIn: boolean;
   headingRef: React.RefObject<HTMLHeadingElement>;
@@ -1928,6 +1931,11 @@ function JoinStep({
         }
       : {}),
     ...(data?.actor?.displayName ? { fullName: data.actor.displayName } : {}),
+    ...(accountEmail ? { email: accountEmail } : {}),
+    ...(data?.profile?.phone ? { phone: data.profile.phone } : {}),
+    ...(data?.profile?.officialName
+      ? { fullName: data.profile.officialName }
+      : {}),
   }));
   const sent =
     application?.status === "submitted" ||

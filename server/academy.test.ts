@@ -56,8 +56,11 @@ function fakeRepository(): AcademyRepository & {
         clubId,
         email,
         displayName,
-        phone: null,
-        record: emptyRecord(FULL_COURSE.version),
+        phone: "+254 700 000 000",
+        record: {
+          ...emptyRecord(FULL_COURSE.version),
+          certificateName: displayName ?? email ?? "Test learner",
+        },
       };
       data.set(key(userId, clubId), learner);
       const now = new Date().toISOString();
@@ -525,6 +528,19 @@ describe("lesson progress", () => {
       lessonId: "made-up-lesson",
     });
     expect(res.statusCode).toBe(400);
+  });
+
+  it("asks for contact and certificate details before progress starts", async () => {
+    await get(learner.userId);
+    const saved = repository.data.get(`menengai:${learner.userId}`)!;
+    saved.phone = null;
+    saved.record = { ...saved.record, certificateName: null };
+    const res = await post(learner.userId, {
+      action: "lesson",
+      lessonId: "roots",
+    });
+    expect(res.statusCode).toBe(409);
+    expect(saved.record.completedLessons).toEqual([]);
   });
 
   it("remembers the last reading section without treating it as a finished lesson", async () => {
@@ -1051,7 +1067,7 @@ describe("officer learner progress", () => {
     expect(body.nudgeAfterDays).toBe(NUDGE_AFTER_DAYS);
     const row = body.learners.find((item) => item.userId === learner.userId)!;
     expect(row.lessonsDone).toBe(1);
-    expect(row.phone).toBeNull();
+    expect(row.phone).toBe("+254 700 000 000");
     expect(row.lessonsTotal).toBe(FULL_COURSE.modules.length);
     expect(row.assessmentTotal).toBe(FULL_COURSE.questions.length);
     expect(row.cohort).toBe("in-progress");

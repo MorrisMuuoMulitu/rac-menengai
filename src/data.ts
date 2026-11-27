@@ -19,7 +19,7 @@ export interface ClubMeta {
   country: string;
   district: string;
   sponsor: string;
-  establishedLabel: string; // year-safe label pending exact charter year
+  establishedLabel: string;
   motto: string;
   audience: string;
   meeting: {
