@@ -14,6 +14,7 @@ import type {
 import type {
   ChapterProgress,
   CourseProgressSummary,
+  LessonSectionProgress,
   LearningRecord,
   PracticalProposal,
 } from "../../shared/rotaract-academy/progress";
@@ -27,6 +28,7 @@ export type { PublicChapter, PublicCourse };
 export type {
   ChapterProgress,
   CourseProgressSummary,
+  LessonSectionProgress,
   LearningRecord,
   PracticalProposal,
 };
@@ -299,6 +301,30 @@ export const markLesson = (token: string | null, lessonId: string) =>
     summary: CourseProgressSummary;
     chapters: ChapterProgress[];
   }>(token, { action: "lesson", lessonId });
+
+export const saveSectionProgress = (
+  token: string | null,
+  lessonId: string,
+  sectionIndex: number,
+  completed: boolean,
+) =>
+  call<{
+    record: LearningRecord;
+    sectionProgress: LessonSectionProgress;
+  }>(
+    "/api/academy",
+    {
+      method: "POST",
+      keepalive: true,
+      body: JSON.stringify({
+        action: "section",
+        lessonId,
+        sectionIndex,
+        completed,
+      }),
+    },
+    token,
+  );
 
 export const answerScenario = (
   token: string | null,

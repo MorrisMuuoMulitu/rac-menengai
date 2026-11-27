@@ -33,6 +33,7 @@ import ReviewQueuePage from "./pages/ReviewQueue";
 import LearnerProgressPage from "./pages/LearnerProgress";
 import VerifyCertificatePage from "./pages/VerifyCertificate";
 import EnquiriesPage from "./pages/Enquiries";
+import AcademySearchPage from "./pages/AcademySearch";
 import AuthRouteBoundary from "./academy/AuthRouteBoundary";
 
 const AUTH_CHUNK_TIMEOUT = 10_000;
@@ -44,7 +45,10 @@ function lazyAuth<T extends { default: ComponentType }>(
       load(),
       new Promise<never>((_, reject) =>
         window.setTimeout(
-          () => reject(new Error("The secure sign-in screen took too long to load.")),
+          () =>
+            reject(
+              new Error("The secure sign-in screen took too long to load."),
+            ),
           AUTH_CHUNK_TIMEOUT,
         ),
       ),
@@ -106,6 +110,10 @@ export default function App() {
           <Route path="/membership/orientation" element={<OrientationPage />} />
           <Route element={<AcademyLayout />}>
             <Route path="/membership/academy" element={<AcademyPage />} />
+            <Route
+              path="/membership/academy/search"
+              element={<AcademySearchPage />}
+            />
             <Route
               path="/membership/academy/:step"
               element={<AcademyLessonPage />}

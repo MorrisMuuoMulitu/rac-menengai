@@ -21,6 +21,8 @@ export {
 export interface LearningRecord {
   courseVersion: string;
   completedLessons: string[];
+  /** Reading position and checked sections, keyed by lesson id. */
+  sectionProgress: Record<string, LessonSectionProgress>;
   /** scenario id → the option id the learner chose. */
   scenarioAnswers: Record<string, string>;
   proposal: PracticalProposal | null;
@@ -37,6 +39,13 @@ export interface LearningRecord {
   certificatePhoto: string | null;
   /** Permanent public identifier printed on the certificate and encoded in its QR. */
   certificateNumber: string | null;
+}
+
+export interface LessonSectionProgress {
+  /** The section currently open when the learner last studied this lesson. */
+  lastSection: number;
+  /** Section indexes the learner has worked through and checked. */
+  completedSections: number[];
 }
 
 export const CERTIFICATE_PHOTO_MAX_BYTES = 220_000;
@@ -66,6 +75,7 @@ export function emptyRecord(courseVersion: string): LearningRecord {
   return {
     courseVersion,
     completedLessons: [],
+    sectionProgress: {},
     scenarioAnswers: {},
     proposal: null,
     bestScore: 0,
@@ -321,6 +331,39 @@ export function normaliseRecord(
       ]
     : [];
 
+  const sectionProgress: Record<string, LessonSectionProgress> = {};
+  if (source.sectionProgress && typeof source.sectionProgress === "object") {
+    for (const lessonId of validLessonIds) {
+      const raw = (source.sectionProgress as Record<string, unknown>)[lessonId];
+      if (!raw || typeof raw !== "object") continue;
+      const entry = raw as {
+        lastSection?: unknown;
+        completedSections?: unknown;
+      };
+      const lastSection =
+        typeof entry.lastSection === "number" &&
+        Number.isInteger(entry.lastSection) &&
+        entry.lastSection >= 0 &&
+        entry.lastSection <= 50
+          ? entry.lastSection
+          : 0;
+      const completedSections = Array.isArray(entry.completedSections)
+        ? [
+            ...new Set(
+              entry.completedSections.filter(
+                (index): index is number =>
+                  typeof index === "number" &&
+                  Number.isInteger(index) &&
+                  index >= 0 &&
+                  index <= 50,
+              ),
+            ),
+          ].sort((a, b) => a - b)
+        : [];
+      sectionProgress[lessonId] = { lastSection, completedSections };
+    }
+  }
+
   const scenarioAnswers: Record<string, string> = {};
   if (source.scenarioAnswers && typeof source.scenarioAnswers === "object") {
     for (const check of SCENARIO_CHECKS) {
@@ -373,6 +416,7 @@ export function normaliseRecord(
   return {
     courseVersion,
     completedLessons,
+    sectionProgress,
     scenarioAnswers,
     proposal: normaliseProposal(source.proposal),
     bestScore,

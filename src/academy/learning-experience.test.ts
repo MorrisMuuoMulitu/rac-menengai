@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
-import { assessmentDraftIdentity, lessonSections } from "./learning-experience";
+import { assessmentDraftIdentity } from "./learning-experience";
+import { lessonSections } from "../../shared/rotaract-academy/sections";
 
 describe("learning experience", () => {
   it("isolates draft answers by learner and exact question order", () => {

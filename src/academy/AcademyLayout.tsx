@@ -32,6 +32,7 @@ export default function AcademyLayout() {
           </Link>
           <nav aria-label="Academy">
             <Link to="/membership/academy">My learning</Link>
+            <Link to="/membership/academy/search">Search</Link>
             <Link to="/leadership">Club leadership</Link>
             <Link to="/membership">Club website</Link>
           </nav>

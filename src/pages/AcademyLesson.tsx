@@ -10,7 +10,13 @@
  */
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Link, Navigate, useNavigate, useParams } from "react-router-dom";
+import {
+  Link,
+  Navigate,
+  useNavigate,
+  useParams,
+  useSearchParams,
+} from "react-router-dom";
 import {
   AlertCircle,
   ArrowLeft,
@@ -30,6 +36,7 @@ import {
   Lock,
   Play,
   RotateCcw,
+  Search,
   Send,
   Sparkles,
   UserRoundCheck,
@@ -56,6 +63,7 @@ import {
   saveDraft as saveApplicationDraft,
   saveCertificateDetails,
   saveProposal,
+  saveSectionProgress,
   sendApplication,
   submitAssessment,
   withdrawApplication,
@@ -279,6 +287,7 @@ export default function AcademyPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
+  const sectionSaveQueue = useRef(Promise.resolve());
   const [contentsOpen, setContentsOpen] = useState(true);
   const [assessmentResult, setAssessmentResult] =
     useState<GradedResponse | null>(null);
@@ -295,6 +304,7 @@ export default function AcademyPage() {
   );
   const headingRef = useRef<HTMLHeadingElement>(null);
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { step: slug } = useParams<{ step: string }>();
   const steps = useMemo(() => courseSteps(data?.course), [data?.course]);
   /* The URL is the step. No index in state, so every lesson is linkable. */
@@ -500,6 +510,17 @@ export default function AcademyPage() {
   const summary = data?.summary;
   const signedIn = Boolean(data?.signedIn);
   const record = data?.record;
+  const requestedSection =
+    searchParams.get("section") === null
+      ? null
+      : Number(searchParams.get("section"));
+  const savedSection = lesson
+    ? (record?.sectionProgress?.[lesson.id]?.lastSection ?? 0)
+    : 0;
+  const initialSection =
+    requestedSection !== null && Number.isInteger(requestedSection)
+      ? Math.max(0, requestedSection)
+      : savedSection;
   const nextStep = steps[index + 1];
   const nextTitle = !nextStep
     ? "Course complete"
@@ -535,6 +556,14 @@ export default function AcademyPage() {
             >
               {contentsOpen ? "Hide contents" : "Contents"}
             </button>
+            <Link
+              className="lesson-bar-search"
+              to="/membership/academy/search"
+              aria-label="Search the academy"
+            >
+              <Search size={15} aria-hidden="true" />
+              <span>Search</span>
+            </Link>
             <p className="lesson-bar-where">
               {chapter ? `${chapter.title} · ` : ""}
               <strong>
@@ -937,6 +966,36 @@ export default function AcademyPage() {
                 lessonId={lesson.id}
                 blocks={lessonBody.blocks}
                 objectives={lessonBody.objectives}
+                initialSection={initialSection}
+                sectionProgress={record?.sectionProgress?.[lesson.id]}
+                onSectionPosition={(sectionIndex, completed) => {
+                  if (!signedIn) return;
+                  sectionSaveQueue.current = sectionSaveQueue.current
+                    .catch(() => undefined)
+                    .then(async () => {
+                      try {
+                        const token = await account.token();
+                        const next = await saveSectionProgress(
+                          token,
+                          lesson.id,
+                          sectionIndex,
+                          completed,
+                        );
+                        setData((previous) =>
+                          previous
+                            ? { ...previous, record: next.record }
+                            : previous,
+                        );
+                        setError("");
+                      } catch (cause) {
+                        setError(
+                          cause instanceof AcademyError
+                            ? cause.message
+                            : "Your reading position could not be saved.",
+                        );
+                      }
+                    });
+                }}
               />
               {(lesson.id === "structure" ||
                 lesson.id === "club-leadership") && (

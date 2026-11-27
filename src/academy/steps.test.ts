@@ -23,6 +23,7 @@ function bootstrap(
   const record = {
     courseVersion: course.version,
     completedLessons: [] as string[],
+    sectionProgress: {},
     scenarioAnswers: {},
     proposal: null,
     bestScore: 0,

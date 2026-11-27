@@ -360,6 +360,33 @@ describe("progress", () => {
     expect(record.attempts).toBe(0);
   });
 
+  it("keeps valid section positions and drops impossible ones", () => {
+    const record = normaliseRecord(
+      {
+        courseVersion: course.version,
+        completedLessons: [],
+        sectionProgress: {
+          roots: {
+            lastSection: 2,
+            completedSections: [0, 2, 2, -1, 99, "one"],
+          },
+          "made-up-lesson": {
+            lastSection: 4,
+            completedSections: [4],
+          },
+        },
+      },
+      course.version,
+      lessonIds,
+    );
+    expect(record.sectionProgress).toEqual({
+      roots: {
+        lastSection: 2,
+        completedSections: [0, 2],
+      },
+    });
+  });
+
   it("carries a merged lesson forward instead of forgetting it", () => {
     /*
      * `meeting` and `protocol-brand` were merged into other lessons. A learner

@@ -42,6 +42,7 @@ import {
 } from "../shared/rotaract-academy/application.js";
 import { SCENARIO_CHECKS } from "../shared/rotaract-academy/scenarios.js";
 import { CURRICULUM } from "../shared/rotaract-academy/curriculum.js";
+import { lessonSections } from "../shared/rotaract-academy/sections.js";
 import {
   CLUB_ID,
   type AcademyRepository,
@@ -688,6 +689,57 @@ export function createAcademyHandler(
         CLUB_ID,
         record,
       );
+
+    if (action === "section") {
+      const lessonId = typeof body.lessonId === "string" ? body.lessonId : "";
+      const sectionIndex =
+        typeof body.sectionIndex === "number" ? body.sectionIndex : -1;
+      const module = FULL_COURSE.modules.find((item) => item.id === lessonId);
+      if (!module)
+        return response.status(400).json({ error: "Unknown lesson." });
+      if (!lessonIsUnlocked(record, lessonId))
+        return response
+          .status(409)
+          .json({ error: "Finish the earlier lessons first." });
+      const sectionCount = lessonSections(module.blocks).length;
+      if (
+        !Number.isInteger(sectionIndex) ||
+        sectionIndex < 0 ||
+        sectionIndex >= sectionCount
+      )
+        return response
+          .status(422)
+          .json({ error: "That lesson section does not exist." });
+
+      const existing = record.sectionProgress[lessonId] ?? {
+        lastSection: 0,
+        completedSections: [],
+      };
+      const completedSections =
+        body.completed === true &&
+        !existing.completedSections.includes(sectionIndex)
+          ? [...existing.completedSections, sectionIndex].sort((a, b) => a - b)
+          : existing.completedSections;
+      const nextSection = {
+        lastSection: sectionIndex,
+        completedSections,
+      };
+      record = await dependencies.repository.saveRecord(
+        signedIn.userId,
+        CLUB_ID,
+        {
+          ...record,
+          sectionProgress: {
+            ...record.sectionProgress,
+            [lessonId]: nextSection,
+          },
+        },
+      );
+      return response.status(200).json({
+        record,
+        sectionProgress: nextSection,
+      });
+    }
 
     if (action === "lesson") {
       const lessonId = typeof body.lessonId === "string" ? body.lessonId : "";

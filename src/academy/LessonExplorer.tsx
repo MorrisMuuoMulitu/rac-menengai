@@ -1,6 +1,13 @@
-import { useRef, useState } from "react";
-import { ArrowLeft, ArrowRight, BookOpen, Check } from "lucide-react";
-import { lessonSections } from "./learning-experience";
+import { useEffect, useRef, useState } from "react";
+import {
+  ArrowLeft,
+  ArrowRight,
+  BadgeCheck,
+  BookOpen,
+  Check,
+  Eye,
+} from "lucide-react";
+import { lessonSections } from "../../shared/rotaract-academy/sections";
 import {
   PROTOCOL_LEVEL_LABEL,
   type OrientationBlock,
@@ -9,6 +16,7 @@ import { markTerms, parseInline, toParagraphs } from "../lib/prose";
 import { LESSON_DESIGN } from "./lesson-design";
 import { QuickCheck } from "./QuickCheck";
 import { LessonVisual } from "./LessonVisual";
+import type { LessonSectionProgress } from "../../shared/rotaract-academy/progress";
 
 function Reading({ blocks }: { blocks: OrientationBlock[] }) {
   return (
@@ -61,23 +69,69 @@ export function LessonExplorer({
   lessonId,
   blocks,
   objectives,
+  initialSection = 0,
+  sectionProgress,
+  onSectionPosition,
 }: {
   lessonId: string;
   blocks: OrientationBlock[];
   objectives: string[];
+  initialSection?: number;
+  sectionProgress?: LessonSectionProgress;
+  onSectionPosition?: (sectionIndex: number, completed: boolean) => void;
 }) {
   const sections = lessonSections(blocks);
-  const [index, setIndex] = useState(0);
-  const [seen, setSeen] = useState<number[]>([0]);
+  const startingSection = Math.max(
+    0,
+    Math.min(initialSection, Math.max(0, sections.length - 1)),
+  );
+  const [index, setIndex] = useState(startingSection);
+  const [seen, setSeen] = useState<number[]>([
+    ...new Set([
+      ...(sectionProgress?.completedSections ?? []),
+      startingSection,
+    ]),
+  ]);
+  const [revealed, setRevealed] = useState(false);
+  const [locallyReviewed, setLocallyReviewed] = useState<number[]>([]);
   const design = LESSON_DESIGN[lessonId];
   const focus = useRef<HTMLDivElement>(null);
+  const savedInitial = useRef(false);
   const move = (next: number) => {
     setIndex(next);
+    setRevealed(false);
     setSeen((previous) =>
       previous.includes(next) ? previous : [...previous, next],
     );
+    onSectionPosition?.(next, false);
     focus.current?.focus({ preventScroll: true });
   };
+  useEffect(() => {
+    if (savedInitial.current) return;
+    savedInitial.current = true;
+    if (sectionProgress?.lastSection !== startingSection)
+      onSectionPosition?.(startingSection, false);
+  }, [onSectionPosition, sectionProgress?.lastSection, startingSection]);
+  useEffect(() => {
+    if (startingSection === 0) return;
+    const frame = window.requestAnimationFrame(() =>
+      focus.current?.scrollIntoView({ block: "start" }),
+    );
+    return () => window.cancelAnimationFrame(frame);
+  }, [startingSection]);
+
+  const sectionReference = toParagraphs(
+    (sections[index] ?? [])
+      .flatMap((block) => [block.text ?? "", ...(block.items ?? [])])
+      .filter(Boolean)
+      .join(" "),
+    2,
+  )[0];
+  const reviewed =
+    locallyReviewed.includes(index) ||
+    (sectionProgress?.completedSections.includes(index) ?? false);
+  const sectionTitle = design?.sections[index] ?? `Section ${index + 1}`;
+
   return (
     <section className="lesson-explorer" aria-label="Lesson workspace">
       <div className="lesson-section-picker" aria-label="Reading sections">
@@ -105,6 +159,66 @@ export function LessonExplorer({
           <Reading blocks={sections[index] ?? []} />
         )}
       </div>
+
+      <section
+        className="lesson-section-check"
+        aria-labelledby={`section-check-${lessonId}-${index}`}
+      >
+        <div className="lesson-section-check-head">
+          <span>Pause and check</span>
+          <small>
+            Section {index + 1} of {sections.length}
+          </small>
+        </div>
+        <h3 id={`section-check-${lessonId}-${index}`}>
+          Can you explain “{sectionTitle}” in one sentence?
+        </h3>
+        <p>
+          Say the main idea before you look back. Then reveal a key passage and
+          compare it with your answer.
+        </p>
+        {revealed ? (
+          <div className="lesson-section-reference" role="status">
+            <strong>Key passage</strong>
+            <p>
+              {sectionReference ||
+                "Use the reading above to explain this idea in your own words."}
+            </p>
+          </div>
+        ) : null}
+        <div className="lesson-section-check-actions">
+          {!revealed ? (
+            <button
+              type="button"
+              className="btn btn-secondary btn-sm"
+              onClick={() => setRevealed(true)}
+            >
+              <Eye size={16} aria-hidden="true" /> Reveal key passage
+            </button>
+          ) : reviewed ? (
+            <span className="lesson-section-reviewed">
+              <BadgeCheck size={16} aria-hidden="true" /> Section reviewed
+            </span>
+          ) : (
+            <button
+              type="button"
+              className="btn btn-primary btn-sm"
+              onClick={() => {
+                setSeen((previous) =>
+                  previous.includes(index) ? previous : [...previous, index],
+                );
+                setLocallyReviewed((previous) =>
+                  previous.includes(index) ? previous : [...previous, index],
+                );
+                onSectionPosition?.(index, true);
+              }}
+            >
+              <Check size={16} aria-hidden="true" /> I checked this section
+            </button>
+          )}
+        </div>
+      </section>
+
       <div className="lesson-section-controls">
         <button
           type="button"

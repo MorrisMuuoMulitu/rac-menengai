@@ -1,7 +1,7 @@
 import { expect, it } from "vitest";
 import { LESSON_DESIGN } from "./lesson-design";
 import { FULL_COURSE } from "../../server/course";
-import { lessonSections } from "./learning-experience";
+import { lessonSections } from "../../shared/rotaract-academy/sections";
 
 it("gives every taught section a meaningful name and each lesson a practice check", () => {
   for (const lesson of FULL_COURSE.modules) {

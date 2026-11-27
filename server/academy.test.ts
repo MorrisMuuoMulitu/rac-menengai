@@ -524,6 +524,41 @@ describe("lesson progress", () => {
     expect(res.statusCode).toBe(400);
   });
 
+  it("remembers the last reading section without treating it as a finished lesson", async () => {
+    let res = await post(learner.userId, {
+      action: "section",
+      lessonId: "roots",
+      sectionIndex: 2,
+      completed: false,
+    });
+    expect(res.statusCode).toBe(200);
+
+    res = await post(learner.userId, {
+      action: "section",
+      lessonId: "roots",
+      sectionIndex: 1,
+      completed: true,
+    });
+    expect(res.statusCode).toBe(200);
+
+    const saved = repository.data.get(`menengai:${learner.userId}`)!.record;
+    expect(saved.sectionProgress.roots).toEqual({
+      lastSection: 1,
+      completedSections: [1],
+    });
+    expect(saved.completedLessons).toEqual([]);
+  });
+
+  it("refuses a section that does not exist in the lesson", async () => {
+    const res = await post(learner.userId, {
+      action: "section",
+      lessonId: "roots",
+      sectionIndex: 99,
+      completed: false,
+    });
+    expect(res.statusCode).toBe(422);
+  });
+
   it("keeps one learner's progress invisible to another", async () => {
     await completeCourse(learner.userId);
     const mine = await get(learner.userId);

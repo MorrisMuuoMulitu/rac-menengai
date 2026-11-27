@@ -738,6 +738,25 @@ a.chapter-lesson:hover {
   max-width: 1120px;
 }
 
+.lesson-bar-search {
+  min-height: 40px;
+  padding: 8px 11px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #fff;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.lesson-bar-search:hover {
+  border-color: rgba(255, 255, 255, 0.62);
+  color: #fff;
+  text-decoration: none;
+}
+
 .academy-workspace .academy-rail {
   top: 92px;
   padding: 1rem 1rem 1.2rem 0;
@@ -1085,6 +1104,7 @@ a.chapter-lesson:hover {
   padding: clamp(1.2rem, 3vw, 2rem) 0 1rem;
   border: 0;
   border-radius: 0;
+  scroll-margin-top: 170px;
 }
 
 .lesson-section-label {
@@ -1106,6 +1126,96 @@ a.chapter-lesson:hover {
 
 .lesson-section-controls {
   margin-top: 0.75rem;
+}
+
+.lesson-section-check {
+  margin-top: 1.15rem;
+  padding: 1.15rem 1.25rem 1.25rem;
+  border-left: 3px solid var(--study-pink);
+  background: #f8f3e9;
+}
+
+.lesson-section-check-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.62rem;
+}
+
+.lesson-section-check-head span {
+  color: var(--study-pink);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.lesson-section-check-head small {
+  color: var(--study-muted);
+  font-size: 0.7rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.lesson-section-check h3 {
+  max-width: 31ch;
+  font-size: clamp(1.35rem, 2.6vw, 1.75rem);
+  line-height: 1.05;
+}
+
+.lesson-section-check > p {
+  max-width: 61ch;
+  margin-top: 0.45rem;
+  color: var(--study-muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.lesson-section-reference {
+  margin-top: 0.95rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid #d7c6bf;
+  background: var(--study-paper);
+}
+
+.lesson-section-reference strong {
+  display: block;
+  margin-bottom: 0.3rem;
+  color: var(--study-pink);
+  font-size: 0.68rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.lesson-section-reference p {
+  max-width: 65ch;
+  color: var(--study-ink);
+  font-size: 0.86rem;
+  line-height: 1.65;
+}
+
+.lesson-section-check-actions {
+  min-height: 42px;
+  margin-top: 0.9rem;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.lesson-section-check-actions .btn {
+  min-height: 40px;
+  border-radius: 2px;
+  font-size: 0.78rem;
+}
+
+.lesson-section-reviewed {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #28613e;
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
 .lesson-section-controls button {
@@ -1190,6 +1300,306 @@ a.chapter-lesson:hover {
   padding: 0.55rem 0.85rem;
   border-radius: 2px;
   font-size: 0.76rem;
+}
+
+/* ------------------------------------------------------------ search ---- */
+
+.academy-search-hero {
+  padding-block: clamp(3rem, 6vw, 5.4rem) clamp(2.4rem, 5vw, 4rem);
+  background: var(--study-ink);
+  color: #fff;
+}
+
+.academy-search-hero-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(360px, 1.2fr);
+  align-items: end;
+  gap: clamp(2rem, 6vw, 6rem);
+}
+
+.academy-search-hero .academy-eyebrow {
+  color: #efcdd8;
+}
+
+.academy-search-hero h1 {
+  max-width: 9ch;
+  margin: 0.8rem 0 0.9rem;
+  color: #fff;
+  font-size: clamp(3rem, 6vw, 5.6rem);
+  line-height: 0.94;
+  letter-spacing: -0.04em;
+}
+
+.academy-search-hero p {
+  max-width: 48ch;
+  color: rgba(255, 255, 255, 0.68);
+  font-size: 0.92rem;
+}
+
+.academy-search-form {
+  min-height: 64px;
+  padding: 0.5rem 0.55rem 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  border-bottom: 4px solid var(--study-pink);
+  background: var(--study-paper);
+  color: var(--study-ink);
+}
+
+.academy-search-form > svg {
+  flex: none;
+  color: var(--study-pink);
+}
+
+.academy-search-form input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: var(--study-ink);
+  font: inherit;
+  font-size: clamp(0.88rem, 1.8vw, 1.02rem);
+}
+
+.academy-search-form input::placeholder {
+  color: #747b7d;
+}
+
+.academy-search-form .btn {
+  min-height: 44px;
+  flex: none;
+  border-radius: 2px;
+}
+
+.academy-search-clear {
+  width: 38px;
+  height: 38px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 0;
+  background: transparent;
+  color: var(--study-muted);
+  cursor: pointer;
+}
+
+.academy-search-suggestions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.45rem 0.7rem;
+  margin-top: 0.75rem;
+  color: rgba(255, 255, 255, 0.48);
+  font-size: 0.72rem;
+}
+
+.academy-search-suggestions button {
+  border: 0;
+  padding: 0.2rem 0;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.academy-search-workspace {
+  max-width: 1120px;
+  padding-block: clamp(2.4rem, 5vw, 4.5rem) 6rem;
+}
+
+.academy-search-status {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--study-muted);
+  font-size: 0.82rem;
+}
+
+.academy-search-results {
+  margin-bottom: clamp(2.8rem, 6vw, 5rem);
+}
+
+.academy-search-section-head {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding-bottom: 1rem;
+  border-bottom: 2px solid var(--study-ink);
+}
+
+.academy-search-section-head span,
+.academy-glossary-browser-head > div > span {
+  color: var(--study-pink);
+  font-size: 0.69rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.academy-search-section-head h2,
+.academy-glossary-browser-head h2 {
+  margin-top: 0.35rem;
+  font-size: clamp(1.9rem, 3.5vw, 2.8rem);
+  line-height: 1;
+}
+
+.academy-search-results ol {
+  list-style: none;
+}
+
+.academy-search-results ol > li {
+  border-bottom: 1px solid var(--study-rule);
+}
+
+.academy-search-results ol a {
+  display: grid;
+  grid-template-columns: minmax(0, 0.76fr) minmax(0, 1.24fr);
+  gap: 0.35rem 2rem;
+  padding: 1.15rem 0.2rem;
+  color: var(--study-ink);
+  text-decoration: none;
+}
+
+.academy-search-results ol a:hover {
+  color: var(--study-ink);
+  background: rgba(255, 253, 248, 0.65);
+  text-decoration: none;
+}
+
+.academy-search-result-path {
+  grid-column: 1;
+  color: var(--study-muted);
+  font-size: 0.7rem;
+}
+
+.academy-search-results ol strong {
+  grid-column: 1;
+  font-family: var(--font-display);
+  font-size: 1.35rem;
+  line-height: 1.05;
+}
+
+.academy-search-results ol p {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  color: var(--study-muted);
+  font-size: 0.82rem;
+  line-height: 1.6;
+}
+
+.academy-search-result-open {
+  grid-column: 1 / -1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 0.35rem;
+  color: var(--study-pink);
+  font-size: 0.7rem;
+  font-weight: 800;
+}
+
+.academy-search-empty {
+  padding-block: 1.4rem;
+  color: var(--study-muted);
+  font-size: 0.86rem;
+}
+
+.academy-glossary-results dl {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  border-left: 1px solid var(--study-rule);
+}
+
+.academy-glossary-results dl > div {
+  padding: 1.1rem;
+  border-right: 1px solid var(--study-rule);
+  border-bottom: 1px solid var(--study-rule);
+}
+
+.academy-glossary-results dt {
+  color: var(--study-ink);
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+}
+
+.academy-glossary-results dd {
+  margin-top: 0.35rem;
+  color: var(--study-muted);
+  font-size: 0.8rem;
+  line-height: 1.6;
+}
+
+.academy-glossary-results dd span {
+  display: block;
+  margin-bottom: 0.22rem;
+  color: var(--study-pink);
+  font-size: 0.65rem;
+  font-weight: 800;
+}
+
+.academy-glossary-browser {
+  padding-top: clamp(2.5rem, 5vw, 4rem);
+  border-top: 1px solid var(--study-rule-dark);
+}
+
+.academy-glossary-browser-head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(260px, 0.6fr);
+  align-items: end;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.academy-glossary-browser-head p {
+  color: var(--study-muted);
+  font-size: 0.82rem;
+  line-height: 1.65;
+}
+
+.academy-glossary-groups {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: 2rem clamp(2rem, 6vw, 5rem);
+}
+
+.academy-glossary-groups > section {
+  min-width: 0;
+}
+
+.academy-glossary-groups h3 {
+  margin-bottom: 0.65rem;
+  color: var(--study-pink);
+  font-size: 1.05rem;
+}
+
+.academy-glossary-groups dl {
+  border-top: 1px solid var(--study-rule);
+}
+
+.academy-glossary-groups dl > div {
+  padding-block: 0.75rem;
+  border-bottom: 1px solid var(--study-rule);
+}
+
+.academy-glossary-groups dt {
+  color: var(--study-ink);
+  font-size: 0.86rem;
+  font-weight: 800;
+}
+
+.academy-glossary-groups dd {
+  margin-top: 0.24rem;
+  color: var(--study-muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
 }
 
 /* -------------------------------------------------------- responsive ---- */
@@ -1319,6 +1729,21 @@ a.chapter-lesson:hover {
   .academy-workspace .academy-layout:not(.is-focused) .academy-rail-chapter {
     min-width: 17rem;
     scroll-snap-align: start;
+  }
+
+  .academy-search-hero-inner {
+    grid-template-columns: 1fr;
+    align-items: start;
+    gap: 2rem;
+  }
+
+  .academy-search-hero h1 {
+    max-width: 11ch;
+  }
+
+  .academy-glossary-browser-head {
+    grid-template-columns: 1fr;
+    gap: 0.8rem;
   }
 }
 
@@ -1523,6 +1948,16 @@ a.chapter-lesson:hover {
     box-shadow: 5px 5px 0 #e4ded2;
   }
 
+  .lesson-bar-search {
+    width: 40px;
+    padding: 0;
+    justify-content: center;
+  }
+
+  .lesson-bar-search span {
+    display: none;
+  }
+
   .lesson-heading {
     margin: -1.2rem -1rem 1.4rem;
     padding: 1.45rem 1rem 1.3rem;
@@ -1610,6 +2045,55 @@ a.chapter-lesson:hover {
 
   .lesson-finish-bar .academy-actions .btn {
     flex: 1;
+  }
+
+  .lesson-section-check {
+    margin-inline: -0.25rem;
+    padding: 1rem;
+  }
+
+  .academy-search-hero {
+    padding-block: 2.4rem 2.8rem;
+  }
+
+  .academy-search-hero h1 {
+    font-size: clamp(3rem, 14vw, 4.3rem);
+  }
+
+  .academy-search-form {
+    min-height: 58px;
+    padding-left: 0.8rem;
+    flex-wrap: wrap;
+  }
+
+  .academy-search-form input {
+    min-width: calc(100% - 3.4rem);
+  }
+
+  .academy-search-form .btn {
+    width: 100%;
+  }
+
+  .academy-search-workspace {
+    padding-bottom: 4rem;
+  }
+
+  .academy-search-results ol a {
+    grid-template-columns: 1fr;
+  }
+
+  .academy-search-results ol p,
+  .academy-search-result-open {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  .academy-glossary-results dl {
+    grid-template-columns: 1fr;
+  }
+
+  .academy-glossary-groups {
+    grid-template-columns: 1fr;
   }
 }
 
