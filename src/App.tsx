@@ -3,7 +3,7 @@
  * "Attend a fellowship".
  */
 import { Routes, Route, useLocation, Link } from "react-router-dom";
-import { Suspense, lazy } from "react";
+import { Suspense, lazy, type ComponentType } from "react";
 import {
   AnnouncementBar,
   Footer,
@@ -33,18 +33,36 @@ import ReviewQueuePage from "./pages/ReviewQueue";
 import LearnerProgressPage from "./pages/LearnerProgress";
 import VerifyCertificatePage from "./pages/VerifyCertificate";
 import EnquiriesPage from "./pages/Enquiries";
+import AuthRouteBoundary from "./academy/AuthRouteBoundary";
 
-const SignInPage = lazy(() =>
+const AUTH_CHUNK_TIMEOUT = 10_000;
+function lazyAuth<T extends { default: ComponentType }>(
+  load: () => Promise<T>,
+) {
+  return lazy(() =>
+    Promise.race([
+      load(),
+      new Promise<never>((_, reject) =>
+        window.setTimeout(
+          () => reject(new Error("The secure sign-in screen took too long to load.")),
+          AUTH_CHUNK_TIMEOUT,
+        ),
+      ),
+    ]),
+  );
+}
+
+const SignInPage = lazyAuth(() =>
   import("./academy/AuthPage").then((module) => ({
     default: module.SignInPage,
   })),
 );
-const SignUpPage = lazy(() =>
+const SignUpPage = lazyAuth(() =>
   import("./academy/AuthPage").then((module) => ({
     default: module.SignUpPage,
   })),
 );
-const SsoCallbackPage = lazy(() =>
+const SsoCallbackPage = lazyAuth(() =>
   import("./academy/AuthPage").then((module) => ({
     default: module.SsoCallbackPage,
   })),
@@ -103,43 +121,49 @@ export default function App() {
           <Route
             path="/membership/sign-in"
             element={
-              <Suspense
-                fallback={
-                  <div className="academy-loading" role="status">
-                    <p>Loading sign-in…</p>
-                  </div>
-                }
-              >
-                <SignInPage />
-              </Suspense>
+              <AuthRouteBoundary>
+                <Suspense
+                  fallback={
+                    <div className="academy-loading" role="status">
+                      <p>Preparing secure sign-in…</p>
+                    </div>
+                  }
+                >
+                  <SignInPage />
+                </Suspense>
+              </AuthRouteBoundary>
             }
           />
           <Route
             path="/membership/register"
             element={
-              <Suspense
-                fallback={
-                  <div className="academy-loading" role="status">
-                    <p>Loading registration…</p>
-                  </div>
-                }
-              >
-                <SignUpPage />
-              </Suspense>
+              <AuthRouteBoundary>
+                <Suspense
+                  fallback={
+                    <div className="academy-loading" role="status">
+                      <p>Preparing account creation…</p>
+                    </div>
+                  }
+                >
+                  <SignUpPage />
+                </Suspense>
+              </AuthRouteBoundary>
             }
           />
           <Route
             path="/membership/sso-callback"
             element={
-              <Suspense
-                fallback={
-                  <div className="academy-loading" role="status">
-                    <p>Completing sign-in…</p>
-                  </div>
-                }
-              >
-                <SsoCallbackPage />
-              </Suspense>
+              <AuthRouteBoundary>
+                <Suspense
+                  fallback={
+                    <div className="academy-loading" role="status">
+                      <p>Completing secure sign-in…</p>
+                    </div>
+                  }
+                >
+                  <SsoCallbackPage />
+                </Suspense>
+              </AuthRouteBoundary>
             }
           />
           <Route path="/contact" element={<ContactPage />} />
