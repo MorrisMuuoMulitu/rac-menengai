@@ -18,6 +18,7 @@ import {
 const api = vi.hoisted(() => ({
   load: vi.fn(),
   save: vi.fn(),
+  remove: vi.fn(),
   account: {
     ready: true,
     available: true,
@@ -33,6 +34,7 @@ vi.mock("../lib/academy", async (importOriginal) => ({
   ...(await importOriginal<typeof import("../lib/academy")>()),
   loadLearnerProgress: api.load,
   saveLearnerProfile: api.save,
+  deleteLearnerRecord: api.remove,
 }));
 
 function row(patch: Partial<LearnerProgressRow>): LearnerProgressRow {
@@ -94,6 +96,7 @@ const renderPage = () =>
 beforeEach(() => {
   api.load.mockReset();
   api.save.mockReset();
+  api.remove.mockReset();
 });
 afterEach(cleanup);
 
@@ -226,6 +229,44 @@ it("searches by the address an officer would actually use", async () => {
   });
   expect(screen.getByText("Racheal")).toBeTruthy();
   expect(screen.queryByText("Amina Wanjiru")).toBeNull();
+});
+
+it("requires typed confirmation before deleting a learner", async () => {
+  api.load
+    .mockResolvedValueOnce(payload([row({})]))
+    .mockResolvedValueOnce(payload([]));
+  api.remove.mockResolvedValue({
+    deleted: true,
+    learner: {
+      userId: "u1",
+      displayName: "Amina Wanjiru",
+      email: "amina@example.com",
+    },
+    notifications: { learner: true, admin: true },
+  });
+  renderPage();
+  const card = (await screen.findByText("Amina Wanjiru")).closest("li")!;
+  fireEvent.click(within(card).getByRole("button", { name: "Delete learner" }));
+  const panel = card.querySelector(".academy-learner-delete") as HTMLElement;
+  const confirm = within(panel).getByRole("button", {
+    name: "Delete learner",
+  });
+  expect((confirm as HTMLButtonElement).disabled).toBe(true);
+  fireEvent.change(within(panel).getByLabelText("Type DELETE to confirm"), {
+    target: { value: "DELETE" },
+  });
+  fireEvent.click(
+    within(panel).getByRole("button", { name: "Delete learner" }),
+  );
+
+  await vi.waitFor(() =>
+    expect(api.remove).toHaveBeenCalledWith(
+      "isolated-test-token",
+      "u1",
+      "DELETE",
+    ),
+  );
+  expect(await screen.findByText(/Learner record deleted/)).toBeTruthy();
 });
 
 it("tells a non-officer plainly instead of showing an empty list", async () => {

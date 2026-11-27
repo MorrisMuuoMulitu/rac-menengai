@@ -286,6 +286,26 @@ export function saveLearnerProfile(
   });
 }
 
+export function deleteLearnerRecord(
+  token: string | null,
+  userId: string,
+  confirmation: string,
+) {
+  return academyAction<{
+    deleted: true;
+    learner: {
+      userId: string;
+      displayName: string | null;
+      email: string | null;
+    };
+    notifications: { learner: boolean; admin: boolean };
+  }>(token, {
+    action: "delete-learner",
+    userId,
+    confirm: confirmation,
+  });
+}
+
 export function saveOwnLearnerProfile(
   token: string | null,
   phone: string,

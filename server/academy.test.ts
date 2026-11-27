@@ -136,6 +136,17 @@ function fakeRepository(): AcademyRepository & {
           };
         });
     },
+    async deleteLearner(userId, clubId) {
+      const learner = data.get(key(userId, clubId)) ?? null;
+      if (!learner) return null;
+      data.delete(key(userId, clubId));
+      applications.delete(key(userId, clubId));
+      times.delete(key(userId, clubId));
+      for (const noteKey of [...notes.keys()])
+        if (noteKey.startsWith(`${key(userId, clubId)}:`))
+          notes.delete(noteKey);
+      return learner;
+    },
     async findApplication(_clubId, applicationId) {
       return (
         [...applications.values()].find((item) => item.id === applicationId) ??
@@ -1007,6 +1018,65 @@ type ProgressBody = {
 const learnersUrl = "/api/academy?view=learners";
 
 describe("officer learner progress", () => {
+  it("lets an officer delete a learner and notifies the learner and officer", async () => {
+    await get(learner.userId);
+    const res = await post(officer.userId, {
+      action: "delete-learner",
+      userId: learner.userId,
+      confirm: "DELETE",
+    });
+    expect(res.statusCode).toBe(200);
+    expect(repository.data.has(`menengai:${learner.userId}`)).toBe(false);
+    expect(sendEmail).toHaveBeenCalledTimes(2);
+    expect(sendEmail.mock.calls[0][0].to).toEqual([learner.email]);
+    expect(sendEmail.mock.calls[1][0].to).toEqual([officer.email]);
+    expect(sendEmail.mock.calls[0][0].html).toContain(
+      "Rotaract Club of Menengai",
+    );
+    expect(sendEmail.mock.calls[1][0].html).toContain(
+      "Rotaract Club of Menengai",
+    );
+    expect((res.body as { notifications: unknown }).notifications).toEqual({
+      learner: true,
+      admin: true,
+    });
+  });
+
+  it("requires the typed deletion confirmation", async () => {
+    await get(learner.userId);
+    const res = await post(officer.userId, {
+      action: "delete-learner",
+      userId: learner.userId,
+      confirm: "delete",
+    });
+    expect(res.statusCode).toBe(422);
+    expect(repository.data.has(`menengai:${learner.userId}`)).toBe(true);
+    expect(sendEmail).not.toHaveBeenCalled();
+  });
+
+  it("refuses learner deletion to non-officers and for the officer's own record", async () => {
+    await get(learner.userId);
+    await get(officer.userId);
+    expect(
+      (
+        await post(learner.userId, {
+          action: "delete-learner",
+          userId: secondLearner.userId,
+          confirm: "DELETE",
+        })
+      ).statusCode,
+    ).toBe(403);
+    expect(
+      (
+        await post(officer.userId, {
+          action: "delete-learner",
+          userId: officer.userId,
+          confirm: "DELETE",
+        })
+      ).statusCode,
+    ).toBe(403);
+  });
+
   it("lets an officer correct a learner's display name, official name and phone", async () => {
     await get(learner.userId);
     const res = await post(officer.userId, {

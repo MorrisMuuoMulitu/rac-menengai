@@ -4,12 +4,11 @@ import {
   createPostgresContactRepository,
   type ContactRepository,
 } from "../server/contact-db.js";
-import { createResendEmailSender } from "../server/email.js";
 import {
-  validateContact,
-  enquiryText,
-  type Enquiry,
-} from "../src/lib/contact.js";
+  contactEnquiryEmail,
+  createResendEmailSender,
+} from "../server/email.js";
+import { validateContact, type Enquiry } from "../src/lib/contact.js";
 
 declare const process: { env: Record<string, string | undefined> };
 
@@ -177,8 +176,7 @@ export default async function handler(req: Request, res: Response) {
       try {
         await sender({
           to: recipients,
-          subject: `Rotaract Club of Menengai website enquiry: ${enquiry.interest.replace(/[\r\n]/g, " ")}`,
-          text: enquiryText(enquiry),
+          ...contactEnquiryEmail(enquiry),
           replyTo: enquiry.contact.includes("@")
             ? enquiry.contact.trim()
             : undefined,

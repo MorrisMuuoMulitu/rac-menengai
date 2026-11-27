@@ -121,6 +121,8 @@ export interface AcademyRepository {
    * and where did they stop.
    */
   listLearners(clubId: string): Promise<LearnerProgressRow[]>;
+  /** Permanently remove a learner and the academy-owned records attached to them. */
+  deleteLearner(userId: string, clubId: string): Promise<LearnerRow | null>;
   findApplication(
     clubId: string,
     applicationId: string,
@@ -540,6 +542,60 @@ export function createPostgresRepository(
         startedAt: asIso(row.created_at),
         lastSeenAt: asIso(row.updated_at),
       }));
+    },
+
+    async deleteLearner(userId, clubId) {
+      await ready();
+      const client = await database.connect();
+      try {
+        await client.query("begin");
+        const { rows } = await client.query(
+          `select user_id, club_id, email, display_name, phone, record
+             from academy_learner
+            where user_id = $1 and club_id = $2
+            for update`,
+          [userId, clubId],
+        );
+        const row = rows[0];
+        if (!row) {
+          await client.query("rollback");
+          return null;
+        }
+        await client.query(
+          `delete from academy_note where user_id = $1 and club_id = $2`,
+          [userId, clubId],
+        );
+        await client.query(
+          `delete from academy_attempt where user_id = $1 and club_id = $2`,
+          [userId, clubId],
+        );
+        await client.query(
+          `delete from academy_application where user_id = $1 and club_id = $2`,
+          [userId, clubId],
+        );
+        await client.query(
+          `delete from academy_learner where user_id = $1 and club_id = $2`,
+          [userId, clubId],
+        );
+        await client.query("commit");
+        return {
+          userId: row.user_id,
+          clubId: row.club_id,
+          email: row.email ?? null,
+          displayName: row.display_name ?? null,
+          phone: row.phone ?? null,
+          record: normaliseRecord(
+            row.record,
+            FULL_COURSE.version,
+            validLessonIds,
+          ),
+        };
+      } catch (error) {
+        await client.query("rollback").catch(() => undefined);
+        throw error;
+      } finally {
+        client.release();
+      }
     },
 
     async findApplication(clubId, applicationId) {

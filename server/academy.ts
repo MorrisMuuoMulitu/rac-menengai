@@ -54,7 +54,12 @@ import {
   type ActorResolver,
   type AuthRequest,
 } from "./academy-auth.js";
-import { applicationEmail, type EmailSender } from "./email.js";
+import {
+  applicationEmail,
+  learnerDeletionAdminEmail,
+  learnerRecordDeletedEmail,
+  type EmailSender,
+} from "./email.js";
 import { createCertificateNumber, rotaryYear } from "./certificate-id.js";
 
 export interface AcademyResponse {
@@ -552,6 +557,100 @@ export function createAcademyHandler(
       return response.status(401).json({ error: "Sign in to continue." });
     }
     const signedIn: Actor = actor;
+
+    if (action === "delete-learner") {
+      if (!signedIn.reviewer)
+        return response.status(403).json({
+          error: "Deleting learners is restricted to club officers.",
+        });
+      const userId = typeof body.userId === "string" ? body.userId : "";
+      if (!userId)
+        return response.status(400).json({ error: "Choose a learner." });
+      if (userId === signedIn.userId)
+        return response.status(403).json({
+          error: "You cannot delete your own learner record.",
+        });
+      if (body.confirm !== "DELETE")
+        return response.status(422).json({
+          error: "Type DELETE to confirm permanent removal.",
+        });
+
+      const deletedAt = new Date().toISOString();
+      const deleted = await dependencies.repository.deleteLearner(
+        userId,
+        CLUB_ID,
+      );
+      if (!deleted)
+        return response.status(404).json({ error: "Learner not found." });
+
+      const learnerName = deleted.displayName ?? deleted.email ?? "Learner";
+      const learnerEmail = deleted.email?.trim() ?? "";
+      const actorEmail = signedIn.email?.trim() ?? "";
+      let learnerNotified = false;
+      let adminNotified = false;
+
+      if (dependencies.sendEmail && learnerEmail) {
+        try {
+          await dependencies.sendEmail({
+            to: [learnerEmail],
+            ...learnerRecordDeletedEmail({
+              learnerName,
+              deletedAt,
+              contactEmail: notificationRecipients[0] ?? "menengairc@gmail.com",
+            }),
+            idempotencyKey: `learner-deleted-${userId}-${deletedAt}`,
+          });
+          learnerNotified = true;
+        } catch {
+          /* The deletion is complete; the admin notice records the outcome. */
+        }
+      }
+
+      if (dependencies.sendEmail && actorEmail) {
+        try {
+          await dependencies.sendEmail({
+            to: [actorEmail],
+            ...learnerDeletionAdminEmail({
+              learnerName,
+              learnerEmail: learnerEmail || "No email on file",
+              deletedAt,
+            }),
+            idempotencyKey: `learner-deletion-admin-${userId}-${deletedAt}`,
+          });
+          adminNotified = true;
+        } catch {
+          /* The deletion remains valid even if the confirmation email fails. */
+        }
+      }
+
+      await dependencies.repository
+        .logEvent({
+          clubId: CLUB_ID,
+          userId,
+          actorId: signedIn.userId,
+          actorEmail: signedIn.email,
+          type: "learner.deleted",
+          detail: {
+            learnerNotified,
+            adminNotified,
+            learnerEmailPresent: Boolean(learnerEmail),
+          },
+        })
+        .catch(() => undefined);
+
+      return response.status(200).json({
+        deleted: true,
+        learner: {
+          userId: deleted.userId,
+          displayName: deleted.displayName,
+          email: deleted.email,
+        },
+        notifications: {
+          learner: learnerNotified,
+          admin: adminNotified,
+        },
+      });
+    }
 
     if (action === "self-profile") {
       const learner = await withLearner(dependencies, signedIn);

@@ -1,5 +1,11 @@
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { applicationEmail, createResendEmailSender } from "./email";
+import {
+  applicationEmail,
+  contactEnquiryEmail,
+  createResendEmailSender,
+  learnerDeletionAdminEmail,
+  learnerRecordDeletedEmail,
+} from "./email";
 
 afterEach(() => vi.unstubAllGlobals());
 
@@ -53,6 +59,37 @@ describe("academy email", () => {
       from: "Rotaract Club of Menengai <academy@example.com>",
       to: ["morrismulitu@gmail.com"],
     });
+  });
+
+  it("uses the branded email shell for website enquiries", () => {
+    const message = contactEnquiryEmail({
+      name: "Amina",
+      contact: "amina@example.com",
+      interest: "Join the club",
+      message: "I would like to visit a Thursday fellowship.",
+    });
+    expect(message.subject).toContain("website enquiry");
+    expect(message.html).toContain("Rotaract Club of Menengai");
+    expect(message.html).toContain("amina@example.com");
+    expect(message.text).toContain("I would like to visit");
+  });
+
+  it("confirms a learner deletion to the learner and the acting officer", () => {
+    const deletedAt = "2026-11-27T15:00:00.000Z";
+    const learner = learnerRecordDeletedEmail({
+      learnerName: "Amina Wanjiru",
+      deletedAt,
+      contactEmail: "menengairc@gmail.com",
+    });
+    const admin = learnerDeletionAdminEmail({
+      learnerName: "Amina Wanjiru",
+      learnerEmail: "amina@example.com",
+      deletedAt,
+    });
+    expect(learner.html).toContain("Your learner record was deleted");
+    expect(learner.html).toContain("Sign-in account");
+    expect(admin.html).toContain("Learner record deleted");
+    expect(admin.html).toContain("Progress, attempts, notes and application");
   });
 
   it("is unavailable when the provider key is missing", () => {

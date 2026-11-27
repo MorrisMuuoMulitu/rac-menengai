@@ -19,6 +19,7 @@ import {
   Pencil,
   Search,
   ShieldAlert,
+  Trash2,
   Users,
   X,
 } from "lucide-react";
@@ -28,6 +29,7 @@ import { AccountChip } from "../academy/AccountChip";
 import { LearnerCertificateDownload } from "../academy/LearnerCertificateDownload";
 import {
   AcademyError,
+  deleteLearnerRecord,
   loadLearnerProgress,
   saveLearnerProfile,
   type LearnerProgressResponse,
@@ -102,6 +104,10 @@ export default function LearnerProgressPage() {
   const [phoneDraft, setPhoneDraft] = useState("");
   const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [profileBusy, setProfileBusy] = useState(false);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteConfirmation, setDeleteConfirmation] = useState("");
+  const [deleteBusy, setDeleteBusy] = useState(false);
+  const [notice, setNotice] = useState("");
 
   const load = useCallback(async () => {
     try {
@@ -191,6 +197,38 @@ export default function LearnerProgressPage() {
     }
   }
 
+  async function deleteLearner(learner: LearnerProgressRow) {
+    if (deleteConfirmation !== "DELETE") return;
+    setDeleteBusy(true);
+    setError("");
+    setNotice("");
+    try {
+      const result = await deleteLearnerRecord(
+        await account.token(),
+        learner.userId,
+        deleteConfirmation,
+      );
+      setDeletingId(null);
+      setDeleteConfirmation("");
+      await load();
+      setNotice(
+        `Learner record deleted. Learner email: ${
+          result.notifications.learner ? "sent" : "not sent"
+        }. Admin confirmation: ${
+          result.notifications.admin ? "sent" : "not sent"
+        }.`,
+      );
+    } catch (cause) {
+      setError(
+        cause instanceof AcademyError
+          ? cause.message
+          : "That learner could not be deleted.",
+      );
+    } finally {
+      setDeleteBusy(false);
+    }
+  }
+
   return (
     <>
       <PageMeta
@@ -222,6 +260,12 @@ export default function LearnerProgressPage() {
           {error ? (
             <p className="academy-notice error" role="alert">
               <ShieldAlert size={18} aria-hidden="true" /> {error}
+            </p>
+          ) : null}
+
+          {notice ? (
+            <p className="academy-notice good" role="status">
+              {notice}
             </p>
           ) : null}
 
@@ -377,11 +421,29 @@ export default function LearnerProgressPage() {
                             );
                             setPhoneDraft(row.phone ?? "");
                             setConfirmingId(null);
+                            setDeletingId(null);
                             setError("");
                           }}
                           aria-expanded={editingId === row.userId}
                         >
                           <Pencil size={13} aria-hidden="true" /> Edit details
+                        </button>
+                        <button
+                          type="button"
+                          className="academy-learner-delete-button"
+                          onClick={() => {
+                            setEditingId(null);
+                            setConfirmingId(null);
+                            setDeletingId(
+                              deletingId === row.userId ? null : row.userId,
+                            );
+                            setDeleteConfirmation("");
+                            setError("");
+                            setNotice("");
+                          }}
+                          aria-expanded={deletingId === row.userId}
+                        >
+                          <Trash2 size={13} aria-hidden="true" /> Delete learner
                         </button>
                       </div>
                     </div>
@@ -499,6 +561,61 @@ export default function LearnerProgressPage() {
                           </div>
                         ) : null}
                       </form>
+                    ) : null}
+
+                    {deletingId === row.userId ? (
+                      <div className="academy-learner-delete" role="alert">
+                        <strong>Permanently delete this learner?</strong>
+                        <p>
+                          This removes their academy progress, assessment
+                          attempts, notes and any membership application. Their
+                          sign-in account will not be deleted.
+                        </p>
+                        <label className="academy-field">
+                          <span className="academy-field-label">
+                            Type DELETE to confirm
+                          </span>
+                          <input
+                            value={deleteConfirmation}
+                            onChange={(event) =>
+                              setDeleteConfirmation(event.target.value)
+                            }
+                            autoComplete="off"
+                          />
+                        </label>
+                        <div className="academy-learner-edit-actions">
+                          <button
+                            type="button"
+                            className="btn btn-danger btn-sm"
+                            disabled={
+                              deleteBusy || deleteConfirmation !== "DELETE"
+                            }
+                            onClick={() => void deleteLearner(row)}
+                          >
+                            {deleteBusy ? (
+                              <Loader2
+                                className="academy-spin"
+                                size={14}
+                                aria-hidden="true"
+                              />
+                            ) : (
+                              <Trash2 size={14} aria-hidden="true" />
+                            )}
+                            Delete learner
+                          </button>
+                          <button
+                            type="button"
+                            className="btn btn-secondary btn-sm"
+                            disabled={deleteBusy}
+                            onClick={() => {
+                              setDeletingId(null);
+                              setDeleteConfirmation("");
+                            }}
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      </div>
                     ) : null}
 
                     <div

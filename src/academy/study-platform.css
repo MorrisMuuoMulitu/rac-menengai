@@ -1467,6 +1467,56 @@ a.chapter-lesson:hover {
   line-height: 1.6;
 }
 
+.academy-learner-delete-button {
+  min-height: 36px;
+  padding: 0.3rem 0;
+  border: 0;
+  background: transparent;
+  color: #9f1f35;
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.72rem;
+  font-weight: 800;
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+}
+
+.academy-learner-delete {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #d79b9f;
+  background: #fff4f3;
+}
+
+.academy-learner-delete > strong {
+  color: #781426;
+  font-size: 0.9rem;
+}
+
+.academy-learner-delete > p {
+  margin-block: 0.4rem 0.8rem;
+  color: #67484b;
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
+.academy-learner-delete .academy-field {
+  max-width: 280px;
+}
+
+.btn.btn-danger {
+  border: 1px solid #8f1d31;
+  background: #8f1d31;
+  color: #fff;
+  box-shadow: none;
+}
+
+.btn.btn-danger:hover {
+  border-color: #661323;
+  background: #661323;
+}
+
 /* ------------------------------------------------------------ search ---- */
 
 .academy-search-hero {
