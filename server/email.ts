@@ -256,7 +256,7 @@ export function createResendEmailSender(
   const from =
     env.ACADEMY_EMAIL_FROM ??
     env.CONTACT_FROM ??
-    "Rotaract Club of Menengai <academy@impelweb.studio>";
+    "Rotaract Club of Menengai <academy@rotaractmenengai.org>";
   if (!apiKey) return null;
 
   return async function sendEmail(message) {
