@@ -185,8 +185,16 @@
   min-height: 36px;
   margin: 0;
   padding: 0.25rem 0;
+  flex-wrap: nowrap;
+  gap: 0.45rem;
+  border: 0;
   background: transparent;
   color: var(--study-ink);
+}
+
+.study-desk-head .account-chip-who small,
+.study-desk-head .account-chip-signout {
+  display: none;
 }
 
 .study-desk-head .account-chip small {
@@ -1577,6 +1585,10 @@ a.chapter-lesson:hover {
 
   .study-desk-head {
     padding-inline: 0.8rem;
+  }
+
+  .study-desk-head .account-chip-who {
+    display: none;
   }
 
   .study-desk-poster {

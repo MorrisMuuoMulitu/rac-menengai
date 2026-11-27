@@ -376,7 +376,7 @@ export default function AcademyPage() {
           <aside className="study-desk" aria-label="Your next study session">
             <div className="study-desk-head">
               <span>{signedIn ? "Your study desk" : "Start here"}</span>
-              {signedIn ? <AccountChip /> : null}
+              {signedIn ? <AccountChip tone="light" /> : null}
             </div>
 
             <Link
