@@ -13,10 +13,14 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   Award,
+  ArrowRight,
   BadgeCheck,
   BookOpen,
+  CheckCircle2,
   ChevronDown,
   Clock,
+  Lightbulb,
+  ListChecks,
   Loader2,
   Lock,
   Play,
@@ -367,6 +371,35 @@ export default function AcademyPage() {
         </div>
       </header>
 
+      <section className="academy-study-guide" aria-labelledby="study-guide-title">
+        <div className="container">
+          <div className="academy-study-guide-head">
+            <div>
+              <span className="eyebrow">A simple way to learn</span>
+              <h2 id="study-guide-title">Read a little. Try it. Keep moving.</h2>
+            </div>
+            <p>
+              You do not need to finish everything in one sitting. Each lesson is
+              short, practical, and ends with one clear thing to remember or do.
+            </p>
+          </div>
+          <ol className="academy-study-guide-steps">
+            <li>
+              <span className="academy-study-guide-icon" aria-hidden="true"><BookOpen size={19} /></span>
+              <div><strong>1. Learn the idea</strong><span>Read the short lesson and the highlighted examples.</span></div>
+            </li>
+            <li>
+              <span className="academy-study-guide-icon" aria-hidden="true"><ListChecks size={19} /></span>
+              <div><strong>2. Practise it</strong><span>Use the scenario, ordering task, or flashcards to test yourself.</span></div>
+            </li>
+            <li>
+              <span className="academy-study-guide-icon" aria-hidden="true"><CheckCircle2 size={19} /></span>
+              <div><strong>3. Mark the step complete</strong><span>Come back whenever you need a refresher — your place is saved.</span></div>
+            </li>
+          </ol>
+        </div>
+      </section>
+
       <section className="section dashboard-path">
         <div className="container">
           <div className="section-head-block">
@@ -413,7 +446,7 @@ export default function AcademyPage() {
                         <strong>{chapter.title}</strong>
                         <small>{chapter.description}</small>
                       </span>
-                      <span className="chapter-card-meta">
+                        <span className="chapter-card-meta">
                         <span className="chapter-card-state">
                           {chapter.complete ? (
                             <>
@@ -436,9 +469,13 @@ export default function AcademyPage() {
                           aria-hidden="true"
                           className="chapter-card-chevron"
                         />
-                      </span>
-                    </button>
-                  </h3>
+                        </span>
+                      </button>
+                    </h3>
+
+                    <div className="chapter-card-progress" aria-label={`${chapter.lessonsDone} of ${chapter.lessonsTotal} lessons complete`}>
+                      <span style={{ width: `${chapter.lessonsTotal ? (chapter.lessonsDone / chapter.lessonsTotal) * 100 : 0}%` }} />
+                    </div>
 
                   {open ? (
                     <div
@@ -545,6 +582,7 @@ export default function AcademyPage() {
                           className="btn btn-secondary btn-sm"
                           to={`/membership/academy/${chapter.entrySlug}`}
                         >
+                          <ArrowRight size={15} aria-hidden="true" />
                           {chapter.complete
                             ? "Revisit this chapter"
                             : chapter.lessonsDone > 0

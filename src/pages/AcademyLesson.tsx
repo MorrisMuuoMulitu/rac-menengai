@@ -23,6 +23,7 @@ import {
   CircleCheck,
   Clock,
   ExternalLink,
+  Lightbulb,
   Loader2,
   Lock,
   Play,
@@ -233,15 +234,22 @@ function VideoPlate({
             type="button"
             className="academy-video-poster"
             onClick={() => setArmed(true)}
+            aria-label={`Play ${video.title}`}
           >
+            <img
+              src={`https://i.ytimg.com/vi/${video.youtubeId}/hqdefault.jpg`}
+              alt=""
+              loading="eager"
+              decoding="async"
+            />
+            <span className="academy-video-shade" aria-hidden="true" />
             <span className="academy-video-play" aria-hidden="true">
               <Play size={26} />
             </span>
             <span className="academy-video-load">
               Watch “{video.title}”
               <small>
-                Loads from YouTube. Nothing is requested from them until you
-                press play.
+                Preview loaded. The video player opens only when you press play.
               </small>
             </span>
           </button>
@@ -822,6 +830,18 @@ export default function AcademyPage() {
                 {lesson.title}
               </h1>
               <p className="academy-lede">{lesson.summary}</p>
+
+              <aside className="lesson-study-rhythm" aria-label="How to study this lesson">
+                <div className="lesson-study-rhythm-title">
+                  <Lightbulb size={18} aria-hidden="true" />
+                  <strong>Study this lesson in 3 minutes</strong>
+                </div>
+                <ol>
+                  <li><span>1</span> Read the idea and the example.</li>
+                  <li><span>2</span> Pause and ask: “How would this look at Menengai?”</li>
+                  <li><span>3</span> Complete the activity before moving on.</li>
+                </ol>
+              </aside>
 
               {/* A chapter's films belong to the chapter, so they open it
                   rather than reappearing on every lesson inside it. */}
