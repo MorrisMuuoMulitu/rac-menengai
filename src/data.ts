@@ -1088,26 +1088,27 @@ export const LEADERS: Leader[] = [
 /**
  * The official presidential line supplied by the club on 27 November 2026.
  *
- * Two names have no matching portrait in the supplied Downloads folder, so
- * those rows use initials instead of borrowing an unidentified photograph.
+ * One name has no matching portrait in the supplied Downloads folder, so that
+ * row uses initials instead of borrowing an unidentified photograph.
  */
 export const PRESIDENTIAL_LINE: PresidentialTerm[] = [
   {
     name: "John Ochieng Brodrick",
-    term: "2016-2017",
+    term: "2015-2017",
     abbreviation: "CP",
     role: "Charter President",
     slug: "john-ochieng-brodrick",
     initials: "JOB",
+    photo: "/images/leadership/john-ochieng-brodrick",
   },
   {
-    name: "T. Wambui Muigai",
-    term: "2018-2019",
+    name: "Terry Mungai",
+    term: "2017-2019",
     abbreviation: "PP",
     role: "Past President",
-    slug: "t-wambui-muigai",
-    initials: "TWM",
-    photo: "/images/leadership/t-wambui-muigai",
+    slug: "terry-mungai",
+    initials: "TM",
+    photo: "/images/leadership/terry-mungai",
   },
   {
     name: "Frank Omondi",

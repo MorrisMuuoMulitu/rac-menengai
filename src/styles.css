@@ -1148,119 +1148,39 @@ body.nav-open .mobile-nav {
   max-width: 72ch;
 }
 
-.presidential-table-wrap {
-  overflow-x: auto;
-  border-top: 3px solid var(--pink-600);
+.presidential-grid {
+  align-items: stretch;
 }
 
-.presidential-table {
-  width: 100%;
-  border-collapse: collapse;
-  background: var(--surface);
+.presidential-card {
+  position: relative;
 }
 
-.presidential-table thead {
-  border-bottom: 1px solid var(--line-strong);
+.presidential-card.is-current {
+  border-color: var(--pink-200);
+  box-shadow: inset 0 4px 0 var(--pink-600);
 }
 
-.presidential-table th,
-.presidential-table td {
-  padding: 1rem;
-  text-align: left;
-  vertical-align: middle;
+.presidential-card:not(.leader-card--photo) {
+  padding: 2.2rem 1.8rem;
 }
 
-.presidential-table thead th {
-  font-family: var(--font-mono);
-  color: var(--ink-500);
-  font-size: 0.66rem;
+.presidential-card .leader-role {
+  margin-top: 0;
+}
+
+.presidential-card h3 {
+  font-size: 1.35rem;
+}
+
+.presidential-current {
+  margin-top: 0.65rem !important;
+  margin-bottom: 1.6rem !important;
+  color: var(--pink-700) !important;
+  font-size: 0.72rem !important;
   font-weight: 700;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-}
-
-.presidential-table tbody tr {
-  border-bottom: 1px solid var(--line);
-}
-
-.presidential-table tbody tr.is-current {
-  background: var(--blush);
-  box-shadow: inset 4px 0 0 var(--pink-600);
-}
-
-.presidential-table tbody th {
-  width: 56%;
-  font-weight: inherit;
-}
-
-.presidential-table tbody td {
-  color: var(--ink-600);
-  font-size: 0.9rem;
-}
-
-.presidential-table tbody td strong {
-  color: var(--pink-700);
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  letter-spacing: 0.08em;
-}
-
-.presidential-person {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-.presidential-person img,
-.presidential-initials {
-  width: 58px;
-  height: 70px;
-  flex: none;
-  object-fit: cover;
-  object-position: center 22%;
-  background: var(--paper-2);
-}
-
-.presidential-initials {
-  display: grid;
-  place-items: center;
-  color: var(--pink-700);
-  font-family: var(--font-display);
-  font-size: 1.2rem;
-  font-weight: 700;
-}
-
-.presidential-person > span {
-  display: grid;
-  gap: 0.22rem;
-}
-
-.presidential-person strong {
-  font-family: var(--font-sans);
-  font-size: 1rem;
-  color: var(--ink-800);
-}
-
-.presidential-person small {
-  color: var(--pink-700);
-  font-size: 0.68rem;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-}
-
-.leadership-key {
-  margin-top: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 1.25rem;
-  color: var(--ink-500);
-  font-size: 0.76rem;
-}
-
-.leadership-key strong {
-  color: var(--pink-700);
-  font-family: var(--font-mono);
 }
 
 .leaders-grid--two {
@@ -1292,26 +1212,6 @@ body.nav-open .mobile-nav {
   }
   .board-chip {
     flex: 1 1 46%;
-  }
-
-  .presidential-table th,
-  .presidential-table td {
-    padding: 0.8rem 0.55rem;
-  }
-
-  .presidential-table tbody th {
-    width: auto;
-  }
-
-  .presidential-person {
-    min-width: 155px;
-    gap: 0.65rem;
-  }
-
-  .presidential-person img,
-  .presidential-initials {
-    width: 46px;
-    height: 58px;
   }
 }
 .section-more {

@@ -105,9 +105,8 @@ export default function LeadershipPage() {
           <p className="board-source">
             Current roles and the presidential line were confirmed by the club
             on 27 November 2026. Portraits use the club-supplied leadership
-            photographs. The two historical presidents without a matching
-            supplied image are shown with initials rather than an unidentified
-            photograph.
+            photographs. Eric Shamwama currently uses initials because no
+            matching photograph was included in the supplied files.
           </p>
         </div>
       </section>
@@ -122,79 +121,39 @@ export default function LeadershipPage() {
               presidential record from the first charter year onward.
             </p>
           </div>
-          <div className="presidential-table-wrap">
-            <table className="presidential-table">
-              <caption className="sr-only">
-                Charter and past presidents of the Rotaract Club of Menengai
-              </caption>
-              <thead>
-                <tr>
-                  <th scope="col">President</th>
-                  <th scope="col">Office</th>
-                  <th scope="col">Term</th>
-                </tr>
-              </thead>
-              <tbody>
-                {PRESIDENTIAL_LINE.map((president) => (
-                  <tr
-                    key={president.slug}
-                    className={president.current ? "is-current" : ""}
-                  >
-                    <th scope="row">
-                      <span className="presidential-person">
-                        {president.photo ? (
-                          <img
-                            src={`${president.photo}-320.webp`}
-                            alt=""
-                            width={320}
-                            height={420}
-                            loading="lazy"
-                            decoding="async"
-                          />
-                        ) : (
-                          <span
-                            className="presidential-initials"
-                            aria-hidden="true"
-                          >
-                            {president.initials}
-                          </span>
-                        )}
-                        <span>
-                          <strong>{president.name}</strong>
-                          {president.current ? (
-                            <small>Current term</small>
-                          ) : null}
-                        </span>
-                      </span>
-                    </th>
-                    <td>
-                      {president.abbreviation ? (
-                        <strong>{president.abbreviation}</strong>
-                      ) : null}{" "}
-                      {president.role}
-                    </td>
-                    <td>{president.term}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-          <div className="leadership-key" aria-label="Leadership abbreviations">
-            <span>
-              <strong>CP</strong> Charter President
-            </span>
-            <span>
-              <strong>PP</strong> Past President
-            </span>
-            <span>
-              <strong>IPP</strong> Immediate Past President
-            </span>
-            <span>
-              <strong>PN</strong> President Nominee
-            </span>
-            <span>
-              <strong>PE</strong> President Elect
-            </span>
+          <div className="leaders-grid leaders-grid--two presidential-grid">
+            {PRESIDENTIAL_LINE.map((president) => (
+              <article
+                key={president.slug}
+                className={`leader-card presidential-card${president.photo ? " leader-card--photo" : ""}${president.current ? " is-current" : ""}`}
+              >
+                {president.photo ? (
+                  <div className="leader-portrait">
+                    <img
+                      src={`${president.photo}-320.webp`}
+                      srcSet={`${president.photo}-320.webp 320w, ${president.photo}-640.webp 640w`}
+                      sizes="(max-width: 640px) 88vw, (max-width: 900px) 44vw, 460px"
+                      alt={`${president.name}, ${president.role} ${president.term}`}
+                      width={320}
+                      height={420}
+                      loading="lazy"
+                      decoding="async"
+                    />
+                  </div>
+                ) : (
+                  <span className="leader-avatar" aria-hidden="true">
+                    {president.initials}
+                  </span>
+                )}
+                <span className="leader-role">
+                  {president.role} · {president.term}
+                </span>
+                <h3>{president.name}</h3>
+                {president.current ? (
+                  <p className="presidential-current">Current term</p>
+                ) : null}
+              </article>
+            ))}
           </div>
           <div className="section-more">
             <ButtonLink to="/membership" variant="primary" size="sm">
