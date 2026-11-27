@@ -106,8 +106,13 @@ for (const path of paths) {
   }
   for (const m of html.matchAll(/<img[^>]*src="([^"]*)"/g)) {
     images++;
+    const localImage = m[1]?.startsWith("/")
+      ? existsSync(resolve("dist", m[1].slice(1)))
+      : false;
+    /* Video previews use YouTube's image CDN, which the deployment CSP allows. */
+    const approvedRemoteImage = m[1]?.startsWith("https://i.ytimg.com/");
     assert.ok(
-      m[1] && existsSync(resolve("dist", m[1].slice(1))),
+      localImage || approvedRemoteImage,
       `${path}: missing media ${m[1]}`,
     );
   }

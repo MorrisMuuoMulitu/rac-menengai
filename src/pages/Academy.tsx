@@ -16,6 +16,7 @@ import {
   ArrowRight,
   BadgeCheck,
   BookOpen,
+  Check,
   CheckCircle2,
   ChevronDown,
   Clock,
@@ -24,11 +25,13 @@ import {
   Loader2,
   Lock,
   Play,
+  Route,
   Sparkles,
 } from "lucide-react";
 import { PageMeta } from "../components/ui";
 import { useAccount } from "../academy/account";
 import { AccountChip } from "../academy/AccountChip";
+import { VideoThumbnail } from "../academy/VideoThumbnail";
 import {
   chapterSummaries,
   courseSteps,
@@ -43,6 +46,7 @@ import {
   type AcademyBootstrap,
 } from "../lib/academy";
 import { CHAPTERS, COURSE_INFO } from "../course-info";
+import { COURSE_VIDEOS } from "../../shared/rotaract-academy/videos";
 import "../academy.css";
 
 /**
@@ -215,11 +219,11 @@ export default function AcademyPage() {
   );
 
   /* Open the chapter the learner is in, so the page explains itself. */
-  const currentChapter =
+  const currentChapterId =
     chapters.find((chapter) => chapter.current)?.id ?? null;
   useEffect(() => {
-    if (currentChapter) setOpenChapter((open) => open ?? currentChapter);
-  }, [currentChapter]);
+    if (currentChapterId) setOpenChapter((open) => open ?? currentChapterId);
+  }, [currentChapterId]);
 
   const toggle = useCallback((id: string) => {
     setOpenChapter((open) => (open === id ? null : id));
@@ -227,6 +231,57 @@ export default function AcademyPage() {
 
   const signedIn = Boolean(data?.signedIn);
   const percent = summary?.percent ?? 0;
+  const completedChapters = chapters.filter(
+    (chapter) => chapter.complete,
+  ).length;
+  const currentChapter =
+    chapters.find((chapter) => chapter.current) ??
+    (percent < 100 ? (chapters[0] ?? null) : null);
+  const currentChapterIndex = currentChapter
+    ? Math.max(
+        0,
+        chapters.findIndex((chapter) => chapter.id === currentChapter.id),
+      )
+    : 0;
+  const resumeStep = steps.find((step) => stepSlug(step) === resume);
+  const resumeLesson = COURSE_INFO.lessons.find(
+    (courseLesson) =>
+      courseLesson.id ===
+      (resumeStep?.kind === "lesson" ? resumeStep.lessonId : resume),
+  );
+  const resumeChapter =
+    resumeStep?.kind === "scenario"
+      ? course?.chapters.find((chapter) => chapter.id === resumeStep.chapterId)
+      : undefined;
+  const nextTitle =
+    resumeLesson?.title ??
+    (resumeStep?.kind === "scenario"
+      ? `In your shoes: ${resumeChapter?.title ?? "chapter practice"}`
+      : resumeStep?.kind === "assessment"
+        ? "Your final assessment"
+        : resumeStep?.kind === "proposal"
+          ? "Your first service proposal"
+          : resumeStep?.kind === "join"
+            ? "Complete your membership application"
+            : (COURSE_INFO.lessons[0]?.title ?? "The membership course"));
+  const nextSummary =
+    resumeLesson?.summary ??
+    (resumeStep?.kind === "assessment"
+      ? `${COURSE_INFO.questionCount} questions, with ${COURSE_INFO.passMark} needed to pass.`
+      : resumeStep?.kind === "proposal"
+        ? "Turn the course into one practical page the club can act on."
+        : resumeStep?.kind === "join"
+          ? "Your first month, club dues and the application the membership team reads."
+          : "Work through the situation before moving to the next part of the course.");
+  const nextMeta = resumeLesson
+    ? `${resumeLesson.minutes} min next`
+    : resumeStep?.kind === "assessment"
+      ? `${COURSE_INFO.questionCount} questions`
+      : "Final step";
+  const featuredVideo =
+    COURSE_VIDEOS.find((video) => video.chapterId === currentChapter?.id) ??
+    COURSE_VIDEOS[0];
+  const learnerName = data?.actor?.displayName?.split(" ")[0];
 
   return (
     <>
@@ -235,25 +290,28 @@ export default function AcademyPage() {
         description="Seven chapters and twenty lessons on Rotaract, club leadership and service, with practice activities and a personal service proposal."
       />
 
-      <header className="dashboard-hero">
+      <header className="dashboard-hero study-hero">
+        <div className="study-hero-watermark" aria-hidden="true">
+          Learn
+        </div>
         <div className="container dashboard-hero-inner">
           <div className="dashboard-hero-copy">
             <span className="academy-eyebrow">
-              <BookOpen size={15} aria-hidden="true" /> Menengai learning
+              <Route size={15} aria-hidden="true" /> The Menengai course
             </span>
             <h1>
-              {signedIn && data?.actor?.displayName
-                ? `Welcome back, ${data.actor.displayName.split(" ")[0]}`
-                : "The membership course"}
+              {signedIn && learnerName
+                ? `${learnerName}, take the next step.`
+                : "Learn the club. Then help run it."}
             </h1>
             <p>
               {signedIn
                 ? percent === 0
-                  ? "You have not started yet. Chapter one takes about ten minutes."
+                  ? "Your route starts with the people and purpose behind Rotaract. The first chapter takes about ten minutes."
                   : percent === 100
-                    ? "Every lesson, check and the proposal are done. The joining steps are open below."
-                    : `You are ${percent}% of the way through. Pick up where you left off — the next step takes a few minutes.`
-                : "Twenty short lessons. Learn how Rotaract works, meet your club and plan your first contribution. Explore freely; sign in to keep your place."}
+                    ? "You have completed the course route. Revisit any chapter, or continue into the club’s joining steps."
+                    : `You are ${percent}% through the course. ${completedChapters} of ${chapters.length} chapters are complete, and your place is saved.`
+                : "A practical course in Rotaract, club life, meetings and service. Read at your pace now, then create an account when you want the club to keep your progress."}
             </p>
 
             <div className="dashboard-actions">
@@ -315,86 +373,157 @@ export default function AcademyPage() {
             ) : null}
           </div>
 
-          <aside className="dashboard-progress" aria-label="Your progress">
-            {signedIn ? <AccountChip /> : null}
+          <aside className="study-desk" aria-label="Your next study session">
+            <div className="study-desk-head">
+              <span>{signedIn ? "Your study desk" : "Start here"}</span>
+              {signedIn ? <AccountChip /> : null}
+            </div>
+
+            <Link
+              className="study-desk-poster"
+              to={`/membership/academy/${resume}`}
+              aria-label={`Open ${nextTitle}`}
+            >
+              <VideoThumbnail
+                youtubeId={featuredVideo.youtubeId}
+                title={featuredVideo.title}
+                priority
+              />
+              <span className="study-desk-poster-shade" aria-hidden="true" />
+              <span className="study-desk-poster-label">
+                <Play size={15} aria-hidden="true" />
+                Film preview
+              </span>
+              <span className="study-desk-poster-title">
+                {featuredVideo.title}
+              </span>
+            </Link>
+
+            <div className="study-desk-next">
+              <span>
+                {currentChapter
+                  ? `Chapter ${String(currentChapterIndex + 1).padStart(2, "0")} / ${currentChapter.title}`
+                  : "Course complete"}
+              </span>
+              <strong>{nextTitle}</strong>
+              <p>{nextSummary}</p>
+            </div>
+
             <div
-              className="dashboard-ring"
+              className="study-desk-route"
               role="progressbar"
               aria-valuemin={0}
-              aria-valuemax={summary?.total ?? 0}
-              aria-valuenow={summary?.completed ?? 0}
-              aria-valuetext={`${summary?.completed ?? 0} of ${summary?.total ?? 0} steps complete`}
-              style={{ ["--done" as string]: `${percent}%` }}
+              aria-valuemax={100}
+              aria-valuenow={percent}
+              aria-label="Course completion"
             >
-              <span className="dashboard-ring-value">{percent}%</span>
-              <span className="dashboard-ring-label">complete</span>
+              <div className="study-desk-route-head">
+                <span>{percent}% complete</span>
+                <span>
+                  {completedChapters}/{chapters.length} chapters
+                </span>
+              </div>
+              <div className="study-desk-route-track">
+                <span
+                  style={
+                    { "--study-progress": `${percent}%` } as React.CSSProperties
+                  }
+                />
+                {chapters.map((chapter, index) => (
+                  <i
+                    key={chapter.id}
+                    className={
+                      chapter.complete
+                        ? "is-done"
+                        : chapter.current
+                          ? "is-current"
+                          : ""
+                    }
+                    aria-hidden="true"
+                    style={
+                      {
+                        "--route-position": `${(index / Math.max(1, chapters.length - 1)) * 100}%`,
+                      } as React.CSSProperties
+                    }
+                  />
+                ))}
+              </div>
             </div>
-            <dl className="dashboard-stats">
-              <div>
-                <dt>Steps done</dt>
-                <dd>
-                  {/* Never "0 of 0" while the course is still loading. */}
-                  {summary
-                    ? `${summary.completed} of ${summary.total}`
-                    : `— of ${COURSE_INFO.lessons.length + CHAPTERS.length + 3}`}
-                </dd>
-              </div>
-              <div>
-                <dt>Chapters</dt>
-                <dd>
-                  {chapters.filter((chapter) => chapter.complete).length} of{" "}
-                  {chapters.length}
-                </dd>
-              </div>
-              <div>
-                <dt>Course time</dt>
-                <dd>{COURSE_INFO.minutes} minutes</dd>
-              </div>
-            </dl>
-            {data?.actor?.reviewer ? (
-              <div className="academy-review-links">
-                <Link className="academy-review-link" to="/membership/queue">
-                  Review applications
-                </Link>
-                <Link className="academy-review-link" to="/membership/learners">
-                  Learner progress
-                </Link>
-                <Link
-                  className="academy-review-link"
-                  to="/membership/enquiries"
-                >
-                  Website enquiries
-                </Link>
-              </div>
-            ) : null}
+
+            <div className="study-desk-foot">
+              <span>
+                <Clock size={14} aria-hidden="true" />
+                {nextMeta}
+              </span>
+              <Link to={`/membership/academy/${resume}`}>
+                {percent === 100
+                  ? "Review"
+                  : percent > 0
+                    ? "Continue"
+                    : "Begin"}
+                <ArrowRight size={16} aria-hidden="true" />
+              </Link>
+            </div>
           </aside>
         </div>
+
+        {data?.actor?.reviewer ? (
+          <div className="container study-hero-admin">
+            <span>Club desk</span>
+            <Link to="/membership/queue">Applications</Link>
+            <Link to="/membership/learners">Learners</Link>
+            <Link to="/membership/enquiries">Enquiries</Link>
+          </div>
+        ) : null}
       </header>
 
-      <section className="academy-study-guide" aria-labelledby="study-guide-title">
+      <section
+        className="academy-study-guide"
+        aria-labelledby="study-guide-title"
+      >
         <div className="container">
           <div className="academy-study-guide-head">
             <div>
-              <span className="eyebrow">A simple way to learn</span>
-              <h2 id="study-guide-title">Read a little. Try it. Keep moving.</h2>
+              <span className="eyebrow">The study loop</span>
+              <h2 id="study-guide-title">Short sessions. Real practice.</h2>
             </div>
             <p>
-              You do not need to finish everything in one sitting. Each lesson is
-              short, practical, and ends with one clear thing to remember or do.
+              Each lesson follows the same rhythm, so you always know what to do
+              next. Nothing asks you to guess whether you have finished.
             </p>
           </div>
           <ol className="academy-study-guide-steps">
             <li>
-              <span className="academy-study-guide-icon" aria-hidden="true"><BookOpen size={19} /></span>
-              <div><strong>1. Learn the idea</strong><span>Read the short lesson and the highlighted examples.</span></div>
+              <span className="academy-study-guide-icon" aria-hidden="true">
+                <BookOpen size={19} />
+              </span>
+              <div>
+                <strong>1. Learn the idea</strong>
+                <span>Read the short lesson and the highlighted examples.</span>
+              </div>
             </li>
             <li>
-              <span className="academy-study-guide-icon" aria-hidden="true"><ListChecks size={19} /></span>
-              <div><strong>2. Practise it</strong><span>Use the scenario, ordering task, or flashcards to test yourself.</span></div>
+              <span className="academy-study-guide-icon" aria-hidden="true">
+                <ListChecks size={19} />
+              </span>
+              <div>
+                <strong>2. Practise it</strong>
+                <span>
+                  Use the scenario, ordering task, or flashcards to test
+                  yourself.
+                </span>
+              </div>
             </li>
             <li>
-              <span className="academy-study-guide-icon" aria-hidden="true"><CheckCircle2 size={19} /></span>
-              <div><strong>3. Mark the step complete</strong><span>Come back whenever you need a refresher — your place is saved.</span></div>
+              <span className="academy-study-guide-icon" aria-hidden="true">
+                <CheckCircle2 size={19} />
+              </span>
+              <div>
+                <strong>3. Mark the step complete</strong>
+                <span>
+                  Come back whenever you need a refresher — your place is saved.
+                </span>
+              </div>
             </li>
           </ol>
         </div>
@@ -412,7 +541,10 @@ export default function AcademyPage() {
             </p>
           </div>
 
-          <ol className="chapter-cards">
+          <ol
+            className="chapter-cards"
+            style={{ "--route-growth": `${percent}%` } as React.CSSProperties}
+          >
             {chapters.map((chapter, index) => {
               const lessons = lessonsFor(chapter.id);
               const scenario = course?.chapters.find(
@@ -440,13 +572,17 @@ export default function AcademyPage() {
                       onClick={() => toggle(chapter.id)}
                     >
                       <span className="chapter-card-no" aria-hidden="true">
-                        {String(index + 1).padStart(2, "0")}
+                        {chapter.complete ? (
+                          <Check size={17} />
+                        ) : (
+                          String(index + 1).padStart(2, "0")
+                        )}
                       </span>
                       <span className="chapter-card-title">
                         <strong>{chapter.title}</strong>
                         <small>{chapter.description}</small>
                       </span>
-                        <span className="chapter-card-meta">
+                      <span className="chapter-card-meta">
                         <span className="chapter-card-state">
                           {chapter.complete ? (
                             <>
@@ -469,13 +605,20 @@ export default function AcademyPage() {
                           aria-hidden="true"
                           className="chapter-card-chevron"
                         />
-                        </span>
-                      </button>
-                    </h3>
+                      </span>
+                    </button>
+                  </h3>
 
-                    <div className="chapter-card-progress" aria-label={`${chapter.lessonsDone} of ${chapter.lessonsTotal} lessons complete`}>
-                      <span style={{ width: `${chapter.lessonsTotal ? (chapter.lessonsDone / chapter.lessonsTotal) * 100 : 0}%` }} />
-                    </div>
+                  <div
+                    className="chapter-card-progress"
+                    aria-label={`${chapter.lessonsDone} of ${chapter.lessonsTotal} lessons complete`}
+                  >
+                    <span
+                      style={{
+                        width: `${chapter.lessonsTotal ? (chapter.lessonsDone / chapter.lessonsTotal) * 100 : 0}%`,
+                      }}
+                    />
+                  </div>
 
                   {open ? (
                     <div

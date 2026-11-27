@@ -131,7 +131,10 @@ export function videosForChapter(chapterId: string): CourseVideo[] {
  * Watch URL with the privacy-enhanced host. Used for the click-to-load player
  * and for anyone who opens the video in a new tab.
  */
-export function videoWatchUrl(video: CourseVideo, autoplay = false): string {
+export function videoWatchUrl(
+  video: Pick<CourseVideo, "youtubeId">,
+  autoplay = false,
+): string {
   const params = new URLSearchParams({
     rel: "0",
     modestbranding: "1",

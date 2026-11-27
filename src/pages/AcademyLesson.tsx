@@ -23,7 +23,9 @@ import {
   CircleCheck,
   Clock,
   ExternalLink,
+  Film,
   Lightbulb,
+  ListChecks,
   Loader2,
   Lock,
   Play,
@@ -36,6 +38,7 @@ import { PageMeta } from "../components/ui";
 import { CHAPTERS, COURSE_INFO } from "../course-info";
 import { useAccount } from "../academy/account";
 import { LessonExplorer } from "../academy/LessonExplorer";
+import { VideoThumbnail } from "../academy/VideoThumbnail";
 import { FourWayPractice, RolePractice } from "../academy/RolePractice";
 import { assessmentDraftIdentity } from "../academy/learning-experience";
 import { Flashcards } from "../academy/Flashcards";
@@ -77,6 +80,7 @@ import {
   PROPOSAL_FIELDS,
   PROPOSAL_MIN_LENGTH,
 } from "../../shared/rotaract-academy/proposal";
+import { videoWatchUrl } from "../../shared/rotaract-academy/videos";
 import "../academy.css";
 import {
   courseSteps,
@@ -203,9 +207,10 @@ function StaticSyllabus({ note }: { note?: string }) {
   );
 }
 
-/** A video that makes no request to YouTube until the learner asks for it. */
+/** A video that makes no player request to YouTube until the learner asks for it. */
 function VideoPlate({
   video,
+  priority = false,
 }: {
   video: {
     id: string;
@@ -214,6 +219,7 @@ function VideoPlate({
     why: string;
     reading: { label: string; href: string };
   };
+  priority?: boolean;
 }) {
   const [armed, setArmed] = useState(false);
   return (
@@ -222,7 +228,7 @@ function VideoPlate({
         {armed ? (
           <iframe
             key={video.id}
-            src={`https://www.youtube-nocookie.com/embed/${video.youtubeId}?rel=0&modestbranding=1&autoplay=1`}
+            src={videoWatchUrl(video, true)}
             title={video.title}
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
@@ -236,11 +242,10 @@ function VideoPlate({
             onClick={() => setArmed(true)}
             aria-label={`Play ${video.title}`}
           >
-            <img
-              src={`https://i.ytimg.com/vi/${video.youtubeId}/hqdefault.jpg`}
-              alt=""
-              loading="eager"
-              decoding="async"
+            <VideoThumbnail
+              youtubeId={video.youtubeId}
+              title={video.title}
+              priority={priority}
             />
             <span className="academy-video-shade" aria-hidden="true" />
             <span className="academy-video-play" aria-hidden="true">
@@ -274,12 +279,17 @@ export default function AcademyPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [busy, setBusy] = useState(false);
-  const [contentsOpen, setContentsOpen] = useState(false);
+  const [contentsOpen, setContentsOpen] = useState(true);
   const [assessmentResult, setAssessmentResult] =
     useState<GradedResponse | null>(null);
   useEffect(() => {
     setAssessmentResult(null);
   }, [account.email]);
+  useEffect(() => {
+    if (window.matchMedia("(max-width: 900px)").matches) {
+      setContentsOpen(false);
+    }
+  }, []);
   const [scenarioResult, setScenarioResult] = useState<ScenarioResponse | null>(
     null,
   );
@@ -826,38 +836,100 @@ export default function AcademyPage() {
 
           {step?.kind === "lesson" && lesson && lessonBody ? (
             <>
-              <h1 className="academy-step-title" tabIndex={-1} ref={headingRef}>
-                {lesson.title}
-              </h1>
-              <p className="academy-lede">{lesson.summary}</p>
+              <header className="lesson-heading">
+                <div className="lesson-heading-where">
+                  {chapter ? (
+                    <>
+                      <span>{chapter.title}</span>
+                      <i aria-hidden="true" />
+                      <span>
+                        Lesson{" "}
+                        {chapter.lessons.findIndex(
+                          (entry) => entry.id === lesson.id,
+                        ) + 1}{" "}
+                        of {chapter.lessons.length}
+                      </span>
+                    </>
+                  ) : (
+                    <span>Membership course</span>
+                  )}
+                </div>
+                <h1
+                  className="academy-step-title"
+                  tabIndex={-1}
+                  ref={headingRef}
+                >
+                  {lesson.title}
+                </h1>
+                <p className="academy-lede">{lesson.summary}</p>
+                <div className="lesson-heading-meta">
+                  <span>
+                    <Clock size={15} aria-hidden="true" /> About{" "}
+                    {lesson.minutes} minutes
+                  </span>
+                  <span>
+                    <ListChecks size={15} aria-hidden="true" />{" "}
+                    {lessonBody.objectives.length} learning goals
+                  </span>
+                  {record?.completedLessons.includes(lesson.id) ? (
+                    <span className="is-done">
+                      <BadgeCheck size={15} aria-hidden="true" /> Completed
+                    </span>
+                  ) : null}
+                </div>
+              </header>
 
-              <aside className="lesson-study-rhythm" aria-label="How to study this lesson">
+              <aside
+                className="lesson-study-rhythm"
+                aria-label="How to study this lesson"
+              >
                 <div className="lesson-study-rhythm-title">
                   <Lightbulb size={18} aria-hidden="true" />
-                  <strong>Study this lesson in 3 minutes</strong>
+                  <strong>Your reading rhythm</strong>
                 </div>
                 <ol>
-                  <li><span>1</span> Read the idea and the example.</li>
-                  <li><span>2</span> Pause and ask: “How would this look at Menengai?”</li>
-                  <li><span>3</span> Complete the activity before moving on.</li>
+                  <li>
+                    <span>1</span> Read the idea and work through the example.
+                  </li>
+                  <li>
+                    <span>2</span> Pause and ask how it would work at Menengai.
+                  </li>
+                  <li>
+                    <span>3</span> Use the practice before you mark the lesson
+                    finished.
+                  </li>
                 </ol>
               </aside>
 
               {/* A chapter's films belong to the chapter, so they open it
-                  rather than reappearing on every lesson inside it. */}
+                  rather than reappearing on every lesson inside it. The
+                  previews load with the page; YouTube itself waits for play. */}
               {chapter?.videos.length &&
               chapter.lessons[0]?.id === lesson.id ? (
-                <details className="lesson-video-option">
-                  <summary>
-                    <Play size={16} aria-hidden="true" /> Watch a related Rotary
-                    video ({chapter.videos.length})
-                  </summary>
+                <section
+                  className="lesson-media"
+                  aria-labelledby="lesson-media-title"
+                >
+                  <div className="lesson-media-head">
+                    <span>
+                      <Film size={15} aria-hidden="true" /> Film break
+                    </span>
+                    <h2 id="lesson-media-title">Rotary in its own words</h2>
+                    <p>
+                      Optional context from Rotary International. The preview is
+                      ready now; the player loads only when you press play.
+                    </p>
+                  </div>
                   <div className="academy-videos">
-                    {chapter.videos.map((video) => (
-                      <VideoPlate key={video.id} video={video} />
+                    {chapter.videos.map((video, index) => (
+                      <VideoPlate
+                        key={video.id}
+                        video={video}
+                        priority={index === 0}
+                      />
                     ))}
                   </div>
-                </details>
+                </section>
               ) : null}
 
               <LessonExplorer
@@ -926,55 +998,69 @@ export default function AcademyPage() {
                 ) : null}
               </aside>
 
-              <div className="academy-actions">
-                {index > 0 ? (
+              <div className="lesson-finish-bar">
+                <div className="lesson-finish-next">
+                  <span>Next on the route</span>
+                  <strong>{nextTitle}</strong>
+                  <small>
+                    {record?.completedLessons.includes(lesson.id)
+                      ? "You can revisit this lesson whenever you need it."
+                      : signedIn
+                        ? "Finish the practice, then save this lesson to your record."
+                        : "Explore now. Sign in when you want the club to keep your place."}
+                  </small>
+                </div>
+                <div className="academy-actions">
+                  {index > 0 ? (
+                    <button
+                      type="button"
+                      className="btn btn-secondary btn-md"
+                      onClick={() => go(steps[index - 1])}
+                    >
+                      <ArrowLeft aria-hidden="true" /> Back
+                    </button>
+                  ) : null}
                   <button
                     type="button"
-                    className="btn btn-secondary btn-md"
-                    onClick={() => go(steps[index - 1])}
+                    className="btn btn-primary btn-md"
+                    disabled={
+                      busy ||
+                      (Boolean(record?.completedLessons.includes(lesson.id)) &&
+                        !unlocked(index + 1))
+                    }
+                    onClick={() =>
+                      !signedIn || record?.completedLessons.includes(lesson.id)
+                        ? go(steps[Math.min(index + 1, steps.length - 1)])
+                        : void run(
+                            (token) => markLesson(token, lesson.id),
+                            (next) => {
+                              setData((previous) =>
+                                previous
+                                  ? {
+                                      ...previous,
+                                      record: next.record,
+                                      summary: next.summary,
+                                      chapters: next.chapters,
+                                    }
+                                  : previous,
+                              );
+                              go(steps[Math.min(index + 1, steps.length - 1)]);
+                            },
+                          )
+                    }
                   >
-                    <ArrowLeft aria-hidden="true" /> Back
+                    {!signedIn ||
+                    record?.completedLessons.includes(lesson.id) ? (
+                      <>
+                        Continue <ArrowRight aria-hidden="true" />
+                      </>
+                    ) : (
+                      <>
+                        Mark finished <ArrowRight aria-hidden="true" />
+                      </>
+                    )}
                   </button>
-                ) : null}
-                <button
-                  type="button"
-                  className="btn btn-primary btn-md"
-                  disabled={
-                    busy ||
-                    (Boolean(record?.completedLessons.includes(lesson.id)) &&
-                      !unlocked(index + 1))
-                  }
-                  onClick={() =>
-                    !signedIn || record?.completedLessons.includes(lesson.id)
-                      ? go(steps[Math.min(index + 1, steps.length - 1)])
-                      : void run(
-                          (token) => markLesson(token, lesson.id),
-                          (next) => {
-                            setData((previous) =>
-                              previous
-                                ? {
-                                    ...previous,
-                                    record: next.record,
-                                    summary: next.summary,
-                                    chapters: next.chapters,
-                                  }
-                                : previous,
-                            );
-                            go(steps[Math.min(index + 1, steps.length - 1)]);
-                          },
-                        )
-                  }
-                >
-                  {!signedIn || record?.completedLessons.includes(lesson.id) ? (
-                    <>
-                      Continue <ArrowRight aria-hidden="true" />
-                    </>
-                  ) : (
-                    <>
-                      Mark finished <ArrowRight aria-hidden="true" />
-                    </>
-                  )}
-                </button>
+                </div>
               </div>
               {!signedIn ? (
                 <p className="academy-hint">
