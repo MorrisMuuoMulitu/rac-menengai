@@ -722,15 +722,20 @@ a.chapter-lesson:hover {
 
 .academy-workspace .academy-layout {
   max-width: 1440px;
-  grid-template-columns: 272px minmax(0, 980px);
+  grid-template-columns: 272px minmax(0, 1fr);
   justify-content: center;
   gap: clamp(1.5rem, 4vw, 3.7rem);
   padding-top: 2rem;
   padding-bottom: 5rem;
 }
 
+.academy-workspace .academy-layout > .academy-step {
+  width: 100%;
+  max-width: none;
+}
+
 .academy-workspace .academy-layout.is-focused > .academy-step {
-  max-width: 980px;
+  max-width: 1120px;
 }
 
 .academy-workspace .academy-rail {
