@@ -44,8 +44,9 @@ export const MENENGAI_LEARNING_PROFILE: ClubLearningProfile = {
   districtDescription: "West of Nairobi, western Kenya and South Sudan",
   districtUrl: "https://rotary9215.org/",
   sponsor: CLUB.sponsor,
-  meeting: "Thursday, 5:00–7:00 PM, Nakuru Athletic Club",
-  venue: "Nakuru Athletic Club",
+  meeting:
+    "Thursday, 5:00–7:00 PM, Nakuru Athletic Club, West Road, Oginga Odinga Avenue, Nakuru",
+  venue: "Nakuru Athletic Club, West Road, Oginga Odinga Avenue, Nakuru",
   guestPolicy:
     "Guests may attend three fellowships before deciding, without paying membership dues.",
   joining:

@@ -26,6 +26,9 @@ export interface ClubMeta {
     dayLabel: "Thursday";
     timeLabel: "5:00–7:00 PM";
     timeZoneNote: string;
+    venue: string;
+    address: string;
+    mapUrl: string;
     /** Set false when the club pauses its weekly schedule (graceful countdown fallback). */
     active: boolean;
   };
@@ -96,6 +99,8 @@ export interface Leader {
   portfolio: string;
   /** Leadership standing when it is a role rather than a portfolio. */
   standing?: string;
+  /** Formal leadership abbreviation used by Rotary clubs. */
+  abbreviation?: "CP" | "PP" | "IPP" | "PN" | "PE";
   term?: string;
   bio: string;
   /** Anchor id and photo stem, e.g. "issa-telot". */
@@ -110,6 +115,17 @@ export interface Leader {
   group?: "executive" | "officers" | "service";
   kind: "board" | "past";
   confirm?: boolean; // awaiting officer confirmation (see CONTENT_AUDIT.md)
+}
+
+export interface PresidentialTerm {
+  name: string;
+  term: string;
+  abbreviation?: "CP" | "PP" | "IPP" | "PN" | "PE";
+  role: string;
+  slug: string;
+  initials: string;
+  photo?: string;
+  current?: boolean;
 }
 
 export interface NewsItem {
@@ -206,13 +222,17 @@ export const CLUB: ClubMeta = {
   country: "Kenya",
   district: "Rotary District 9215",
   sponsor: "Rotary Club of Nakuru",
-  establishedLabel: "Nakuru, Kenya", // CONFIRM exact charter year (2015 vs 2016)
+  establishedLabel: "Chartered 1 January 2015",
   motto: "Service Above Self",
   audience: "Young professionals and students, aged 18 and over",
   meeting: {
     dayLabel: "Thursday",
     timeLabel: "5:00–7:00 PM",
     timeZoneNote: "East Africa Time",
+    venue: "Nakuru Athletic Club",
+    address: "West Road, Oginga Odinga Avenue, Nakuru",
+    mapUrl:
+      "https://www.google.com/maps/dir/?api=1&destination=-0.29089202605049613,36.06554557116428",
     active: true, // CONFIRM if the club ever pauses its weekly schedule
   },
 };
@@ -252,13 +272,13 @@ export const HERO = {
   eyebrow: `${CLUB.district} · ${CLUB.city}`,
   title: "A Decade of Service Above Self",
   titleAccent: "Service Above Self",
-  lead: "Rotaract Club of Menengai — young professionals and students in Nakuru, Kenya, turning service into community impact. We meet every Thursday from 5:00–7:00 PM at Nakuru Athletic Club for fellowship.",
+  lead: "Rotaract Club of Menengai — young professionals and students in Nakuru, Kenya, turning service into community impact. We meet every Thursday from 5:00–7:00 PM at Nakuru Athletic Club, West Road, Oginga Odinga Avenue, Nakuru.",
   primaryCta: "Attend a fellowship",
   secondaryCta: "Explore our projects",
 };
 
 export const ANNOUNCEMENT = {
-  text: "Next fellowship: Thursday, 5:00–7:00 PM · Nakuru Athletic Club",
+  text: "Next fellowship: Thursday, 5:00–7:00 PM · Nakuru Athletic Club, Oginga Odinga Avenue",
   action: "Plan your visit",
 };
 
@@ -766,6 +786,36 @@ export const FINAL_CTA = {
 /* ============================= Projects ============================= */
 export const PROJECTS: Project[] = [
   {
+    slug: "nakuru-free-medical-outreach-2026",
+    title: "Nakuru Free Medical Outreach",
+    tag: "Health",
+    year: "2026",
+    image:
+      "/images/events/medical-camp-2026/medical-camp-2026-group-photo.webp",
+    summary:
+      "A one-day free medical camp bringing local health professionals, hospitals, partners and volunteers to the Patel Brotherhood grounds.",
+    detail:
+      "On Wednesday 18 November 2026, the Rotaract Club of Menengai joined the Ministry of Health, the County Government of Nakuru and 18 partner organisations for a free medical outreach at the Railways grounds. The camp served 320 people with different ailments and brought together more than 70 volunteers. Services included consultations, screenings and referrals, with 15 blood donations recorded during the day.",
+    location: "Railways (Patel Brotherhood Grounds), Nakuru",
+    areasOfFocus: ["disease", "maternal"],
+    reached: ["320 people served", "15 blood donations"],
+    results: [
+      "320 people received care or screening",
+      "18 partner organisations took part",
+      "More than 70 volunteers supported the day",
+    ],
+    partners: [
+      "Ministry of Health",
+      "County Government of Nakuru",
+      "Kenya Blood Transfusion and Transplant Service",
+      "DamuKE",
+      "Rotary Club of Nakuru",
+      "Rotaract Club of Sunrise-Kampala",
+      "Kenya Red Cross",
+    ],
+    featured: true,
+  },
+  {
     slug: "sports-legacy",
     title: "Sports Legacy",
     tag: "Community",
@@ -775,7 +825,7 @@ export const PROJECTS: Project[] = [
     summary: "Youth engagement, teamwork and talent development through sport.",
     detail:
       "On 31 May 2025, the Sports Legacy Project brought young people together through sports, promoting teamwork, discipline, leadership and healthy living. District Grant DG2677765 supported opportunities for youth engagement, talent development and positive community interaction. The initiative strengthened relationships through shared sporting activities.",
-    location: "Venue not supplied",
+    location: "Lanet, Nakuru County",
     areasOfFocus: ["community"],
     reached: ["Young participants"],
     results: [
@@ -915,19 +965,23 @@ export const LEADERS: Leader[] = [
     bio: "A youth leader, environmental advocate and strategic thinker, Wanjiku holds a Bachelor of Commerce in Information Systems from the University of Nairobi and works as a Relationship Officer at ACK Imani Talent Sacco, driving member engagement and financial inclusion. She joined Rotaract in 2023 and has held progressive roles including GRC Chair and Rotaract East Africa Impact Country Director for Kenya, and now leads the club as President. A daily farmer and travel enthusiast, she is guided by faith and purpose — championing environmental sustainability, youth empowerment and collective action for lasting community impact.",
   },
   {
-    name: "Racheal Kyalo",
+    name: "Rachael Kyalo",
     standing: "President Elect",
+    abbreviation: "PE",
+    term: "2027/28",
     portfolio: "Executive",
     slug: "racheal-kyalo",
     initials: "RK",
     photo: "/images/leadership/racheal-kyalo",
     group: "executive",
     kind: "board",
-    bio: "A Rotaractor, sales and marketing professional and dedicated leader committed to personal growth, service and youth empowerment. Racheal served as Professional and Leadership Development Director for two consecutive Rotary years, was Merchandise Lead for RYLA Kenya in 2025, and held the role of President Nominee for the 2025–2026 Rotary year. She is passionate about sales, marketing and building meaningful connections, and loves travelling, exploring new experiences and networking with people from diverse backgrounds.",
+    bio: "A Rotaractor, sales and marketing professional and dedicated leader committed to personal growth, service and youth empowerment. Rachael served as Professional and Leadership Development Director for two consecutive Rotary years, was Merchandise Lead for RYLA Kenya in 2025, and now serves as President Elect for the 2027/28 Rotary year. She is passionate about sales, marketing and building meaningful connections, and loves travelling, exploring new experiences and networking with people from diverse backgrounds.",
   },
   {
     name: "Janet Nkirote",
     standing: "Immediate Past President & Club Advisor",
+    abbreviation: "IPP",
+    term: "2025/26",
     portfolio: "Executive",
     slug: "janet-nkirote",
     initials: "JN",
@@ -988,11 +1042,14 @@ export const LEADERS: Leader[] = [
   },
   {
     name: "Issa Telot",
+    standing: "President Nominee",
+    abbreviation: "PN",
+    term: "2028/29",
     portfolio: "Community Service",
     slug: "issa-telot",
     initials: "IT",
     photo: "/images/leadership/issa-telot",
-    group: "service",
+    group: "executive",
     kind: "board",
     bio: "Emmanuel Issa Telot is a dedicated leader, public servant and community advocate based in Nakuru, holding a Bachelor’s degree in Criminology with IT. He serves in Administration and Records Management at the National Police Service Commission, while also leading the MLIFE Foundation Executive Board, Kenya Chapter, championing youth empowerment, minority rights and inclusivity. A VirtueLead Fellow at the Emerging Leaders Foundation, he is passionate about anime, football and community service.",
   },
@@ -1017,45 +1074,111 @@ export const LEADERS: Leader[] = [
     bio: "A young leader, creative strategist and community advocate, Jessica steps into the role of New Generation Director. With a strong background in stakeholder engagement, event coordination, branding and youth empowerment, she is driven by creating opportunities that inspire growth and positive community impact. Outside her professional pursuits she is an avid reader, adventure enthusiast and lover of food, music, hiking and biking.",
   },
   {
-    name: "John Ngugi",
+    name: "John Ngugi Kamau",
     portfolio: "Government & Ethics",
     slug: "john-ngugi",
     initials: "JN",
-    photo: "/images/leadership/john-ngugi",
+    photo: "/images/leadership/john-ngugi-kamau",
     group: "service",
     kind: "board",
     bio: "A dedicated Rotaract leader currently serving as Assistant District Rotaract Representative for the Nakuru Region. John first joined the Rotaract Club of Menengai, where he served as both President and Service Project Director and elevated the club’s public profile through impactful projects, member engagement and visibility in the community. He is passionate about bridging generations, fostering youth leadership, and making sure every member feels empowered to serve and make a difference.",
   },
+];
 
-  /* Past presidents — archive */
+/**
+ * The official presidential line supplied by the club on 27 November 2026.
+ *
+ * Two names have no matching portrait in the supplied Downloads folder, so
+ * those rows use initials instead of borrowing an unidentified photograph.
+ */
+export const PRESIDENTIAL_LINE: PresidentialTerm[] = [
   {
-    name: "John Brodrick",
-    portfolio: "Charter President",
-    slug: "john-brodrick",
-    initials: "JB",
-    kind: "past",
-    bio: "Founder president who guided the club’s charter under the Rotary Club of Nakuru.",
+    name: "John Ochieng Brodrick",
+    term: "2016-2017",
+    abbreviation: "CP",
+    role: "Charter President",
+    slug: "john-ochieng-brodrick",
+    initials: "JOB",
   },
   {
-    name: "Terry Muigai",
-    portfolio: "President",
-    term: "2019",
-    slug: "terry-muigai",
-    initials: "TM",
-    kind: "past",
-    bio: "Led the club through a key year of growth and service.",
+    name: "T. Wambui Muigai",
+    term: "2018-2019",
+    abbreviation: "PP",
+    role: "Past President",
+    slug: "t-wambui-muigai",
+    initials: "TWM",
+    photo: "/images/leadership/t-wambui-muigai",
   },
   {
-    // Retained as a record only: the 2025/26 DEI role is unconfirmed, so it is
-    // filtered out of the public page (see docs/CONTENT_AUDIT.md).
-    name: "Phylis Kanja",
-    portfolio: "DEI Director",
-    term: "2025/26",
-    slug: "phylis-kanja",
-    initials: "PK",
-    kind: "past",
-    confirm: true,
-    bio: "Champion of diversity, equity and inclusion across the club’s work.",
+    name: "Frank Omondi",
+    term: "2019-2020",
+    abbreviation: "PP",
+    role: "Past President",
+    slug: "frank-omondi",
+    initials: "FO",
+    photo: "/images/leadership/frank-omondi",
+  },
+  {
+    name: "Job Ondeko",
+    term: "2020-2021",
+    abbreviation: "PP",
+    role: "Past President",
+    slug: "job-ondeko",
+    initials: "JO",
+    photo: "/images/leadership/job-ondeko",
+  },
+  {
+    name: "Eric Shamwama",
+    term: "2021-2022",
+    abbreviation: "PP",
+    role: "Past President",
+    slug: "eric-shamwama",
+    initials: "ES",
+  },
+  {
+    name: "Kennedy Baraza",
+    term: "2022-2023",
+    abbreviation: "PP",
+    role: "Past President",
+    slug: "kennedy-baraza",
+    initials: "KB",
+    photo: "/images/leadership/kennedy-baraza",
+  },
+  {
+    name: "Beth Wanjiku",
+    term: "2023-2024",
+    abbreviation: "PP",
+    role: "Past President",
+    slug: "beth-wanjiku",
+    initials: "BW",
+    photo: "/images/leadership/beth-wanjiku",
+  },
+  {
+    name: "John Ngugi Kamau",
+    term: "2024-2025",
+    abbreviation: "PP",
+    role: "Past President",
+    slug: "john-ngugi-kamau",
+    initials: "JNK",
+    photo: "/images/leadership/john-ngugi-kamau",
+  },
+  {
+    name: "Janet Nkirote",
+    term: "2025-2026",
+    abbreviation: "IPP",
+    role: "Immediate Past President",
+    slug: "janet-nkirote-president",
+    initials: "JN",
+    photo: "/images/leadership/janet-nkirote",
+  },
+  {
+    name: "Wanjiku Nguru",
+    term: "2026-2027",
+    role: "President",
+    slug: "wanjiku-nguru-president",
+    initials: "WN",
+    photo: "/images/leadership/wanjiku-nguru",
+    current: true,
   },
 ];
 
@@ -1241,7 +1364,7 @@ export const VALUES: Value[] = [
 export const FAQS: Faq[] = [
   {
     q: "When and where do you meet?",
-    a: `Fellowship every Thursday, 5:00–7:00 PM at Nakuru Athletic Club (${CLUB.district}). Guests are welcome — come to three meetings to get a feel for the family before joining.`,
+    a: `Fellowship every Thursday, 5:00–7:00 PM at Nakuru Athletic Club, West Road, Oginga Odinga Avenue, Nakuru (${CLUB.district}). Guests are welcome — come to three meetings to get a feel for the family before joining.`,
   },
   {
     q: "Who can join Rotaract?",

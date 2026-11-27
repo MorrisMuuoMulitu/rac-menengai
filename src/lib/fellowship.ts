@@ -19,7 +19,8 @@ export const fellowship = {
   endMinute: 0,
   timezone: "Africa/Nairobi",
   /** Club-confirmed in the Q1 2026–2027 activities bulletin (October 2026). */
-  location: "Nakuru Athletic Club, Nakuru",
+  location:
+    "Nakuru Athletic Club, West Road, Oginga Odinga Avenue, Nakuru",
   /** Set via data.ts override when the club changes the weekly schedule. */
   override: null as null | { message: string },
 };

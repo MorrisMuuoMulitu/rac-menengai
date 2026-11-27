@@ -22,14 +22,14 @@ const VALUE_ICONS: Record<string, React.ReactNode> = {
 
 const MILESTONES = [
   {
-    year: "2019",
-    title: "Presidency of Terry Muigai",
-    text: "A year of growth and service under then-president Terry Muigai.",
+    year: "2015",
+    title: "The club is chartered",
+    text: "The Rotaract Club of Menengai was chartered on 1 January 2015.",
   },
   {
     year: "2025",
     title: "Ten years of service",
-    text: "The club marks a decade of fellowship and impact across the district.",
+    text: "The club marks a decade of fellowship, leadership and service in Nakuru.",
   },
 ] as const;
 

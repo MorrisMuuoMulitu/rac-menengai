@@ -40,6 +40,7 @@ function row(patch: Partial<LearnerProgressRow>): LearnerProgressRow {
     userId: "u1",
     displayName: "Amina Wanjiru",
     email: "amina@example.com",
+    phone: "+254700000000",
     startedAt: "2026-09-01T09:00:00.000Z",
     lastProgressAt: "2026-09-10T09:00:00.000Z",
     lastSeenAt: "2026-09-10T09:00:00.000Z",
@@ -174,6 +175,7 @@ it("lets an officer edit the learner and certificate names", async () => {
       email: "amina@example.com",
       displayName: "Amina W. Mwangi",
       certificateName: "Amina Wangari Mwangi",
+      phone: "+254711222333",
     },
   });
   renderPage();
@@ -185,7 +187,15 @@ it("lets an officer edit the learner and certificate names", async () => {
   fireEvent.change(within(card).getByLabelText("Name on certificate"), {
     target: { value: "Amina Wangari Mwangi" },
   });
-  fireEvent.click(within(card).getByRole("button", { name: "Save details" }));
+  fireEvent.change(within(card).getByLabelText("Phone"), {
+    target: { value: "+254711222333" },
+  });
+  fireEvent.click(within(card).getByRole("button", { name: "Review changes" }));
+  expect(within(card).getByText("Confirm these learner details")).toBeTruthy();
+  expect(api.save).not.toHaveBeenCalled();
+  fireEvent.click(
+    within(card).getByRole("button", { name: "Confirm and save" }),
+  );
 
   expect(await screen.findByText("Amina W. Mwangi")).toBeTruthy();
   expect(api.save).toHaveBeenCalledWith(
@@ -193,6 +203,7 @@ it("lets an officer edit the learner and certificate names", async () => {
     "u1",
     "Amina W. Mwangi",
     "Amina Wangari Mwangi",
+    "+254711222333",
   );
 });
 

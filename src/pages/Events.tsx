@@ -3,7 +3,7 @@ import { Link, useParams } from "react-router-dom";
 import { PUBLIC_EVENTS, dateLabel } from "../content";
 import { PageHero, PageMeta, ButtonLink } from "../components/ui";
 import { fellowship, fellowshipStatus } from "../lib/fellowship";
-import { FELLOWSHIP_OVERRIDE, PROJECTS } from "../data";
+import { CLUB, FELLOWSHIP_OVERRIDE, PROJECTS } from "../data";
 import { downloadCalendar, initialEventView } from "../lib/events";
 import { ArrowUpRight, Maximize2 } from "lucide-react";
 import NotFoundPage from "./NotFound";
@@ -126,10 +126,12 @@ export function FellowshipVisit() {
       <div>
         <p className="section-label">Weekly fellowship</p>
         <h2>Thursday, 5:00–7:00 PM</h2>
-        <p>Nakuru Athletic Club, Nakuru · Africa/Nairobi (EAT)</p>
         <p>
-          Guests are welcome at Nakuru Athletic Club — just come along on a
-          Thursday.
+          Nakuru Athletic Club · {CLUB.meeting.address} · Africa/Nairobi (EAT)
+        </p>
+        <p>
+          Guests are welcome at Nakuru Athletic Club on West Road, just off
+          Oginga Odinga Avenue. Come along on a Thursday.
         </p>
         <p className="recurring-note">
           <strong>Book Club Review</strong> every second Sunday of the month:
@@ -143,6 +145,14 @@ export function FellowshipVisit() {
           href="mailto:menengairc@gmail.com?subject=Coming%20to%20a%20Thursday%20fellowship"
         >
           Tell us you’re coming
+        </a>
+        <a
+          className="btn btn-secondary btn-md"
+          href={CLUB.meeting.mapUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open directions
         </a>
         {state.kind !== "override" && (
           <button
@@ -158,12 +168,14 @@ export function FellowshipVisit() {
                 title: "Rotaract Club of Menengai fellowship",
                 start: current.start.toISOString(),
                 end: current.end.toISOString(),
-                location: "Nakuru Athletic Club, Nakuru",
+                location: fellowship.location,
                 description:
-                  "Thursday fellowship, 17:00–19:00 EAT at Nakuru Athletic Club. Guests are welcome.",
+                  "Thursday fellowship, 17:00–19:00 EAT at Nakuru Athletic Club, West Road, Oginga Odinga Avenue, Nakuru. Guests are welcome.",
                 status: "scheduled",
               });
-              setFeedback("Calendar file prepared for Nakuru Athletic Club.");
+              setFeedback(
+                "Calendar file prepared for Nakuru Athletic Club, Oginga Odinga Avenue.",
+              );
             }}
           >
             Add next fellowship to calendar

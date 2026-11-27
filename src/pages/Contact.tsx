@@ -126,7 +126,8 @@ export default function ContactPage() {
                     <h3>Fellowship</h3>
                     <p>
                       Every {CLUB.meeting.dayLabel}, {CLUB.meeting.timeLabel} (
-                      {CLUB.meeting.timeZoneNote}) — {CLUB.city.split(",")[0]}
+                      {CLUB.meeting.timeZoneNote}) at {CLUB.meeting.venue},{" "}
+                      {CLUB.meeting.address}
                     </p>
                   </div>
                 </div>
@@ -177,7 +178,8 @@ export default function ContactPage() {
           <p className="fine-print">
             The email address is listed on the club’s public Facebook profile.
             Call either listed number to reach a club officer. Fellowship is
-            every Thursday at Nakuru Athletic Club.
+            every Thursday at Nakuru Athletic Club, West Road, Oginga Odinga
+            Avenue.
           </p>
         </div>
       </section>

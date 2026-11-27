@@ -415,6 +415,126 @@
   text-underline-offset: 3px;
 }
 
+.learner-profile-setup {
+  padding-block: clamp(1.8rem, 4vw, 3rem);
+  border-bottom: 1px solid var(--study-rule-dark);
+  background: #e8dfd0;
+}
+
+.learner-profile-setup-inner {
+  display: grid;
+  grid-template-columns: minmax(260px, 0.8fr) minmax(360px, 1.2fr);
+  gap: clamp(1.5rem, 5vw, 4.5rem);
+  align-items: end;
+}
+
+.learner-profile-setup-copy > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.42rem;
+  color: var(--study-pink);
+  font-size: 0.69rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.learner-profile-setup h2 {
+  max-width: 13ch;
+  margin-block: 0.45rem 0.7rem;
+  font-size: clamp(2rem, 4vw, 3.2rem);
+  line-height: 0.98;
+}
+
+.learner-profile-setup p {
+  max-width: 48ch;
+  color: var(--study-muted);
+  font-size: 0.84rem;
+  line-height: 1.6;
+}
+
+.learner-profile-setup-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: end;
+  gap: 0.8rem;
+}
+
+.learner-profile-setup-form label {
+  display: grid;
+  gap: 0.3rem;
+  color: var(--study-ink);
+  font-size: 0.72rem;
+  font-weight: 750;
+}
+
+.learner-profile-setup-form input {
+  min-height: 46px;
+  padding: 0.65rem 0.75rem;
+  border: 1px solid #a99f8f;
+  border-radius: 0;
+  background: var(--study-paper);
+  color: var(--study-ink);
+  font: inherit;
+  font-size: 0.86rem;
+}
+
+.learner-profile-setup-form .btn {
+  grid-column: 1 / -1;
+  justify-self: start;
+  border-radius: 2px;
+}
+
+.certificate-ready-panel {
+  padding-block: 1.4rem;
+  border-bottom: 1px solid #d3c4ad;
+  background: #fff7e7;
+}
+
+.certificate-ready-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+}
+
+.certificate-ready-inner > div:first-child > span {
+  color: var(--study-pink);
+  font-size: 0.68rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+
+.certificate-ready-inner h2 {
+  margin-block: 0.25rem 0.35rem;
+  font-size: clamp(1.7rem, 3.2vw, 2.45rem);
+  line-height: 1;
+}
+
+.certificate-ready-inner p {
+  max-width: 54ch;
+  color: var(--study-muted);
+  font-size: 0.8rem;
+}
+
+.certificate-ready-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.65rem;
+}
+
+.certificate-ready-actions .btn {
+  white-space: nowrap;
+}
+
+.certificate-row-error {
+  flex-basis: 100%;
+  color: #8b173e;
+  font-size: 0.72rem;
+}
+
 /* -------------------------------------------------------- study loop ---- */
 
 .academy-study-guide {
@@ -1302,6 +1422,51 @@ a.chapter-lesson:hover {
   font-size: 0.76rem;
 }
 
+.academy-profile-nudge {
+  padding-block: 0.65rem;
+  border-bottom: 1px solid #c9bfae;
+  background: #fff1d7;
+}
+
+.academy-profile-nudge .container {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  color: #694a17;
+  font-size: 0.78rem;
+}
+
+.academy-profile-nudge svg {
+  flex: none;
+}
+
+.academy-profile-nudge a {
+  margin-left: auto;
+  color: #7c173a;
+  font-weight: 800;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.academy-learner-confirm {
+  margin-top: 1rem;
+  padding: 1rem;
+  border: 1px solid #e2c994;
+  background: #fff9e9;
+}
+
+.academy-learner-confirm > strong {
+  color: var(--study-ink);
+  font-size: 0.88rem;
+}
+
+.academy-learner-confirm > p {
+  margin-top: 0.45rem;
+  color: var(--study-muted);
+  font-size: 0.78rem;
+  line-height: 1.6;
+}
+
 /* ------------------------------------------------------------ search ---- */
 
 .academy-search-hero {
@@ -1737,6 +1902,16 @@ a.chapter-lesson:hover {
     gap: 2rem;
   }
 
+  .learner-profile-setup-inner {
+    grid-template-columns: 1fr;
+  }
+
+  .certificate-ready-inner {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
   .academy-search-hero h1 {
     max-width: 11ch;
   }
@@ -2045,6 +2220,31 @@ a.chapter-lesson:hover {
 
   .lesson-finish-bar .academy-actions .btn {
     flex: 1;
+  }
+
+  .learner-profile-setup-form {
+    grid-template-columns: 1fr;
+  }
+
+  .learner-profile-setup-form .btn {
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .certificate-ready-actions,
+  .certificate-ready-actions .certificate-ready-download,
+  .certificate-ready-actions .btn {
+    width: 100%;
+  }
+
+  .academy-profile-nudge .container {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .academy-profile-nudge a {
+    width: 100%;
+    margin-left: 1.6rem;
   }
 
   .lesson-section-check {

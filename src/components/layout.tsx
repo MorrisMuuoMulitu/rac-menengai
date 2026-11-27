@@ -139,7 +139,7 @@ export function Header() {
         </div>
         <div className="mobile-nav-visit">
           <p>Start with a Thursday.</p>
-          <span>5:00–7:00 PM · Nakuru Athletic Club</span>
+          <span>5:00–7:00 PM · Nakuru Athletic Club, Oginga Odinga Ave</span>
           <Link to="/membership#first-visit" onClick={() => setOpen(false)}>
             Plan your visit <ArrowUpRight size={18} aria-hidden="true" />
           </Link>
@@ -211,7 +211,10 @@ export function Footer() {
             <br />
             5:00–7:00 PM EAT
           </p>
-          <p>Thursday fellowship at Nakuru Athletic Club.</p>
+          <p>
+            Thursday fellowship at Nakuru Athletic Club, West Road, Oginga
+            Odinga Avenue.
+          </p>
           <div className="footer-contact">
             <a href={`mailto:${contactConfig.email}`}>{contactConfig.email}</a>
             {contactConfig.phones.filter(isContactConfirmed).map((phone) => (

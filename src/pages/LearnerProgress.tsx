@@ -9,13 +9,7 @@
  * Officer-only, enforced on the server. This page adds no decision of its own.
  */
 
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  type FormEvent,
-} from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   ArrowLeft,
@@ -105,6 +99,8 @@ export default function LearnerProgressPage() {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [displayNameDraft, setDisplayNameDraft] = useState("");
   const [certificateNameDraft, setCertificateNameDraft] = useState("");
+  const [phoneDraft, setPhoneDraft] = useState("");
+  const [confirmingId, setConfirmingId] = useState<string | null>(null);
   const [profileBusy, setProfileBusy] = useState(false);
 
   const load = useCallback(async () => {
@@ -146,7 +142,7 @@ export default function LearnerProgressPage() {
     return all.filter((row) => {
       if (filter !== "all" && row.cohort !== filter) return false;
       if (!needle) return true;
-      return `${row.displayName ?? ""} ${row.email ?? ""}`
+      return `${row.displayName ?? ""} ${row.email ?? ""} ${row.phone ?? ""}`
         .toLowerCase()
         .includes(needle);
     });
@@ -154,8 +150,7 @@ export default function LearnerProgressPage() {
 
   const nudgeDays = data?.nudgeAfterDays ?? 21;
 
-  async function saveProfile(event: FormEvent, learner: LearnerProgressRow) {
-    event.preventDefault();
+  async function saveProfile(learner: LearnerProgressRow) {
     setProfileBusy(true);
     setError("");
     try {
@@ -164,6 +159,7 @@ export default function LearnerProgressPage() {
         learner.userId,
         displayNameDraft,
         certificateNameDraft,
+        phoneDraft,
       );
       setData((current) =>
         current
@@ -175,6 +171,7 @@ export default function LearnerProgressPage() {
                       ...row,
                       displayName: result.learner.displayName,
                       certificateName: result.learner.certificateName,
+                      phone: result.learner.phone,
                     }
                   : row,
               ),
@@ -182,6 +179,7 @@ export default function LearnerProgressPage() {
           : current,
       );
       setEditingId(null);
+      setConfirmingId(null);
     } catch (cause) {
       setError(
         cause instanceof AcademyError
@@ -311,11 +309,13 @@ export default function LearnerProgressPage() {
                 </div>
                 <label className="academy-search">
                   <Search size={15} aria-hidden="true" />
-                  <span className="sr-only">Search by name or email</span>
+                  <span className="sr-only">
+                    Search by name, email or phone
+                  </span>
                   <input
                     type="search"
                     value={query}
-                    placeholder="Name or email"
+                    placeholder="Name, email or phone"
                     onChange={(event) => setQuery(event.target.value)}
                   />
                 </label>
@@ -346,6 +346,14 @@ export default function LearnerProgressPage() {
                             <Mail size={13} aria-hidden="true" /> {row.email}
                           </a>
                         ) : null}
+                        {row.phone ? (
+                          <a
+                            className="academy-learner-mail"
+                            href={`tel:${row.phone}`}
+                          >
+                            {row.phone}
+                          </a>
+                        ) : null}
                       </div>
                       <div className="academy-learner-head-actions">
                         <span className={`academy-cohort is-${row.cohort}`}>
@@ -367,6 +375,8 @@ export default function LearnerProgressPage() {
                                 row.email ??
                                 "",
                             );
+                            setPhoneDraft(row.phone ?? "");
+                            setConfirmingId(null);
                             setError("");
                           }}
                           aria-expanded={editingId === row.userId}
@@ -379,7 +389,10 @@ export default function LearnerProgressPage() {
                     {editingId === row.userId ? (
                       <form
                         className="academy-learner-edit"
-                        onSubmit={(event) => void saveProfile(event, row)}
+                        onSubmit={(event) => {
+                          event.preventDefault();
+                          setConfirmingId(row.userId);
+                        }}
                       >
                         <div className="academy-learner-edit-fields">
                           <label className="academy-field">
@@ -410,6 +423,19 @@ export default function LearnerProgressPage() {
                               }
                             />
                           </label>
+                          <label className="academy-field">
+                            <span className="academy-field-label">Phone</span>
+                            <input
+                              required
+                              type="tel"
+                              minLength={7}
+                              maxLength={40}
+                              value={phoneDraft}
+                              onChange={(event) =>
+                                setPhoneDraft(event.target.value)
+                              }
+                            />
+                          </label>
                         </div>
                         <p className="academy-learner-edit-note">
                           Sign-in email: {row.email ?? "none on file"}. This is
@@ -417,17 +443,11 @@ export default function LearnerProgressPage() {
                         </p>
                         <div className="academy-learner-edit-actions">
                           <button
-                            className="btn btn-primary btn-sm"
+                            type="submit"
+                            className="btn btn-secondary btn-sm"
                             disabled={profileBusy}
                           >
-                            {profileBusy ? (
-                              <Loader2
-                                className="academy-spin"
-                                size={14}
-                                aria-hidden="true"
-                              />
-                            ) : null}
-                            Save details
+                            Review changes
                           </button>
                           <button
                             type="button"
@@ -438,6 +458,46 @@ export default function LearnerProgressPage() {
                             <X size={14} aria-hidden="true" /> Cancel
                           </button>
                         </div>
+                        {confirmingId === row.userId ? (
+                          <div
+                            className="academy-learner-confirm"
+                            role="status"
+                          >
+                            <strong>Confirm these learner details</strong>
+                            <p>
+                              Display name: {displayNameDraft.trim()}
+                              <br />
+                              Certificate name: {certificateNameDraft.trim()}
+                              <br />
+                              Phone: {phoneDraft.trim()}
+                            </p>
+                            <div className="academy-learner-edit-actions">
+                              <button
+                                type="button"
+                                className="btn btn-primary btn-sm"
+                                disabled={profileBusy}
+                                onClick={() => void saveProfile(row)}
+                              >
+                                {profileBusy ? (
+                                  <Loader2
+                                    className="academy-spin"
+                                    size={14}
+                                    aria-hidden="true"
+                                  />
+                                ) : null}
+                                Confirm and save
+                              </button>
+                              <button
+                                type="button"
+                                className="btn btn-secondary btn-sm"
+                                disabled={profileBusy}
+                                onClick={() => setConfirmingId(null)}
+                              >
+                                Keep editing
+                              </button>
+                            </div>
+                          </div>
+                        ) : null}
                       </form>
                     ) : null}
 

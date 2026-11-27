@@ -29,6 +29,7 @@ export interface LearnerRow {
   clubId: string;
   email: string | null;
   displayName: string | null;
+  phone: string | null;
   record: LearningRecord;
 }
 
@@ -50,6 +51,7 @@ export interface LearnerProgressRow {
   userId: string;
   email: string | null;
   displayName: string | null;
+  phone: string | null;
   record: LearningRecord;
   /** When the learner first appeared on this club's course. */
   startedAt: string | null;
@@ -88,7 +90,7 @@ export interface AcademyRepository {
   updateLearnerProfile(
     userId: string,
     clubId: string,
-    profile: { displayName: string; certificateName: string },
+    profile: { displayName: string; certificateName: string; phone: string },
   ): Promise<LearnerRow | null>;
   nextCertificateSequence(clubId: string, rotaryYear: string): Promise<number>;
   recordAttempt(
@@ -154,12 +156,15 @@ create table if not exists academy_learner (
   club_id text not null,
   email text,
   display_name text,
+  phone text,
   course_version text not null,
   record jsonb not null default '{}'::jsonb,
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   primary key (user_id, club_id)
 );
+
+alter table academy_learner add column if not exists phone text;
 
 create table if not exists academy_attempt (
   id bigserial primary key,
@@ -320,7 +325,7 @@ export function createPostgresRepository(
            set email = coalesce(excluded.email, academy_learner.email),
                display_name = coalesce(academy_learner.display_name, excluded.display_name),
                updated_at = now()
-         returning user_id, club_id, email, display_name, record`,
+         returning user_id, club_id, email, display_name, phone, record`,
         [
           userId,
           clubId,
@@ -336,6 +341,7 @@ export function createPostgresRepository(
         clubId: row.club_id,
         email: row.email ?? null,
         displayName: row.display_name ?? null,
+        phone: row.phone ?? null,
         record: normaliseRecord(
           row.record,
           FULL_COURSE.version,
@@ -367,11 +373,18 @@ export function createPostgresRepository(
       const { rows } = await database.query(
         `update academy_learner
             set display_name = $3,
-                record = jsonb_set(record, '{certificateName}', to_jsonb($4::text), true),
+                phone = $4,
+                record = jsonb_set(record, '{certificateName}', to_jsonb($5::text), true),
                 updated_at = now()
           where user_id = $1 and club_id = $2
-        returning user_id, club_id, email, display_name, record`,
-        [userId, clubId, profile.displayName, profile.certificateName],
+        returning user_id, club_id, email, display_name, phone, record`,
+        [
+          userId,
+          clubId,
+          profile.displayName,
+          profile.phone,
+          profile.certificateName,
+        ],
       );
       const row = rows[0];
       if (!row) return null;
@@ -380,6 +393,7 @@ export function createPostgresRepository(
         clubId: row.club_id,
         email: row.email ?? null,
         displayName: row.display_name ?? null,
+        phone: row.phone ?? null,
         record: normaliseRecord(
           row.record,
           FULL_COURSE.version,
@@ -506,7 +520,7 @@ export function createPostgresRepository(
     async listLearners(clubId) {
       await ready();
       const { rows } = await database.query(
-        `select user_id, email, display_name, record, created_at, updated_at
+        `select user_id, email, display_name, phone, record, created_at, updated_at
            from academy_learner
           where club_id = $1
           order by updated_at desc
@@ -517,6 +531,7 @@ export function createPostgresRepository(
         userId: String(row.user_id),
         email: row.email ? String(row.email) : null,
         displayName: row.display_name ? String(row.display_name) : null,
+        phone: row.phone ? String(row.phone) : null,
         record: normaliseRecord(
           row.record,
           FULL_COURSE.version,

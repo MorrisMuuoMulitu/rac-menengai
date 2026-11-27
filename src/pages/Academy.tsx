@@ -27,10 +27,13 @@ import {
   Play,
   Route,
   Sparkles,
+  UserRoundCheck,
 } from "lucide-react";
 import { PageMeta } from "../components/ui";
 import { useAccount } from "../academy/account";
 import { AccountChip } from "../academy/AccountChip";
+import { CertificateDownloadButton } from "../academy/CertificateDownloadButton";
+import { LearnerProfileSetup } from "../academy/LearnerProfileSetup";
 import { VideoThumbnail } from "../academy/VideoThumbnail";
 import {
   chapterSummaries,
@@ -43,6 +46,7 @@ import {
 import {
   AcademyError,
   loadAcademy,
+  saveOwnLearnerProfile,
   type AcademyBootstrap,
 } from "../lib/academy";
 import { CHAPTERS, COURSE_INFO } from "../course-info";
@@ -173,6 +177,7 @@ export default function AcademyPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
   const [openChapter, setOpenChapter] = useState<string | null>(null);
+  const [profileBusy, setProfileBusy] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
@@ -210,6 +215,7 @@ export default function AcademyPage() {
     ? resumeSlug(course, data)
     : (COURSE_INFO.lessons[0]?.id ?? "");
   const summary = data?.summary;
+  const record = data?.record;
   const earned = badges(data, chapters);
   const lessonsFor = useCallback(
     (chapterId: string): ChapterLesson[] =>
@@ -262,7 +268,7 @@ export default function AcademyPage() {
         : resumeStep?.kind === "proposal"
           ? "Your first service proposal"
           : resumeStep?.kind === "join"
-            ? "Complete your membership application"
+            ? "Contact the membership team (optional)"
             : (COURSE_INFO.lessons[0]?.title ?? "The membership course"));
   const nextSummary =
     resumeLesson?.summary ??
@@ -282,6 +288,38 @@ export default function AcademyPage() {
     COURSE_VIDEOS.find((video) => video.chapterId === currentChapter?.id) ??
     COURSE_VIDEOS[0];
   const learnerName = data?.actor?.displayName?.split(" ")[0];
+  const profileNeeded = Boolean(
+    signedIn && data?.profile && !data.profile.complete,
+  );
+
+  const saveProfile = async (phone: string, officialName: string) => {
+    setProfileBusy(true);
+    setError("");
+    try {
+      const next = await saveOwnLearnerProfile(
+        await account.token(),
+        phone,
+        officialName,
+      );
+      setData((previous) =>
+        previous
+          ? {
+              ...previous,
+              record: next.record,
+              profile: next.profile,
+            }
+          : previous,
+      );
+    } catch (cause) {
+      setError(
+        cause instanceof AcademyError
+          ? cause.message
+          : "Your learner details could not be saved.",
+      );
+    } finally {
+      setProfileBusy(false);
+    }
+  };
 
   return (
     <>
@@ -309,24 +347,34 @@ export default function AcademyPage() {
                 ? percent === 0
                   ? "Your route starts with the people and purpose behind Rotaract. The first chapter takes about ten minutes."
                   : percent === 100
-                    ? "You have completed the course route. Revisit any chapter, or continue into the club’s joining steps."
+                    ? "You have completed the course route. Download your certificate, or contact the membership team only if you need to."
                     : `You are ${percent}% through the course. ${completedChapters} of ${chapters.length} chapters are complete, and your place is saved.`
                 : "A practical course in Rotaract, club life, meetings and service. Read at your pace now, then create an account when you want the club to keep your progress."}
             </p>
 
             <div className="dashboard-actions">
               {signedIn ? (
-                <Link
-                  className="btn btn-primary btn-lg"
-                  to={`/membership/academy/${resume}`}
-                >
-                  <Play size={16} aria-hidden="true" />
-                  {percent === 0
-                    ? "Start chapter one"
-                    : percent === 100
-                      ? "Review the course"
-                      : "Continue where I left off"}
-                </Link>
+                profileNeeded ? (
+                  <a
+                    className="btn btn-primary btn-lg"
+                    href="#learner-profile-setup"
+                  >
+                    <UserRoundCheck size={16} aria-hidden="true" />
+                    Set up learner record
+                  </a>
+                ) : (
+                  <Link
+                    className="btn btn-primary btn-lg"
+                    to={`/membership/academy/${resume}`}
+                  >
+                    <Play size={16} aria-hidden="true" />
+                    {percent === 0
+                      ? "Start chapter one"
+                      : percent === 100
+                        ? "Review the course"
+                        : "Continue where I left off"}
+                  </Link>
+                )
               ) : (
                 <>
                   <Link
@@ -477,6 +525,56 @@ export default function AcademyPage() {
         ) : null}
       </header>
 
+      {data?.profile ? (
+        <LearnerProfileSetup
+          profile={data.profile}
+          busy={profileBusy}
+          onSave={(phone, officialName) =>
+            void saveProfile(phone, officialName)
+          }
+        />
+      ) : null}
+
+      {record?.passed &&
+      data?.profile?.complete &&
+      summary?.stage === "complete" ? (
+        <section
+          className="certificate-ready-panel"
+          aria-labelledby="certificate-ready-title"
+        >
+          <div className="container certificate-ready-inner">
+            <div>
+              <span>Course complete</span>
+              <h2 id="certificate-ready-title">Your certificate is ready.</h2>
+              <p>
+                Download it here now, or return to this dashboard whenever you
+                need another copy.
+              </p>
+            </div>
+            <div className="certificate-ready-actions">
+              <CertificateDownloadButton
+                name={
+                  record.certificateName ?? data.actor?.displayName ?? "Learner"
+                }
+                photo={record.certificatePhoto}
+                completedAt={
+                  record.completedAt ?? record.passedAt ?? record.updatedAt
+                }
+                score={record.bestScore}
+                total={course?.questions.length ?? COURSE_INFO.questionCount}
+                certificateNumber={record.certificateNumber}
+              />
+              <Link
+                className="btn btn-secondary btn-md"
+                to="/membership/academy/join"
+              >
+                Contact membership team
+              </Link>
+            </div>
+          </div>
+        </section>
+      ) : null}
+
       <section
         className="academy-study-guide"
         aria-labelledby="study-guide-title"
@@ -537,7 +635,8 @@ export default function AcademyPage() {
             <p className="section-lead">
               Each chapter ends with a situation to work through. Finish all{" "}
               {CHAPTERS.length}, pass the {COURSE_INFO.questionCount}-question
-              assessment, write your proposal, and the joining steps open.
+              assessment and write your proposal. Contacting the membership team
+              remains optional.
             </p>
           </div>
 
@@ -746,7 +845,9 @@ export default function AcademyPage() {
         <div className="container">
           <div className="section-head-block">
             <span className="eyebrow">At the end</span>
-            <h2 className="sec-title">Assessment, proposal, and joining</h2>
+            <h2 className="sec-title">
+              Assessment, proposal, and your next step
+            </h2>
           </div>
           <ol className="finish-cards">
             {(
@@ -768,9 +869,9 @@ export default function AcademyPage() {
                 },
                 {
                   slug: "join",
-                  title: "Joining the club",
+                  title: "Membership team (optional)",
                   detail:
-                    "Your first month, the dues, and the application the membership team reads.",
+                    "Already a member? Finish with your certificate. Want to join or continue a membership conversation? Contact the team.",
                   Icon: BadgeCheck,
                   step: { kind: "join" } as Step,
                 },
@@ -789,7 +890,8 @@ export default function AcademyPage() {
                       className="btn btn-secondary btn-sm"
                       to={`/membership/academy/${item.slug}`}
                     >
-                      <BadgeCheck size={15} aria-hidden="true" /> Done — review
+                      <BadgeCheck size={15} aria-hidden="true" />{" "}
+                      {item.slug === "join" ? "Optional" : "Done — review"}
                     </Link>
                   ) : (
                     <Link

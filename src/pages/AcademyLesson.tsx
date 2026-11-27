@@ -80,6 +80,7 @@ import {
   saveDraft as saveAssessmentDraft,
 } from "../lib/assessment-draft";
 import {
+  APPLICATION_LIMITS,
   AVAILABILITY_OPTIONS,
   EMPTY_DRAFT,
   FIRST_MONTH_CHECKLIST,
@@ -532,7 +533,7 @@ export default function AcademyPage() {
           ? "Final assessment"
           : nextStep.kind === "proposal"
             ? "Your service proposal"
-            : "Membership journey";
+            : "Contact the membership team (optional)";
 
   return (
     <>
@@ -634,7 +635,7 @@ export default function AcademyPage() {
                         ? "Final assessment"
                         : item.kind === "proposal"
                           ? "My service proposal"
-                          : "Membership journey"}
+                          : "Contact the membership team (optional)"}
                 </option>
               ))}
             </select>
@@ -680,6 +681,21 @@ export default function AcademyPage() {
                 </p>
               )}
             </div>
+          </div>
+        </section>
+      ) : null}
+
+      {signedIn && data?.profile && !data.profile.complete ? (
+        <section className="academy-profile-nudge">
+          <div className="container">
+            <UserRoundCheck size={18} aria-hidden="true" />
+            <span>
+              Add your phone number and official certificate name before you
+              finish the course.
+            </span>
+            <Link to="/membership/academy#learner-profile-setup">
+              Complete learner record
+            </Link>
           </div>
         </section>
       ) : null}
@@ -818,7 +834,7 @@ export default function AcademyPage() {
                   [
                     ["assessment", "Personal assessment"],
                     ["proposal", "Your first proposal"],
-                    ["join", "Joining the club"],
+                    ["join", "Membership team (optional)"],
                   ] as const
                 ).map(([kind, label]) => {
                   const stepIndex = steps.findIndex(
@@ -1287,17 +1303,19 @@ export default function AcademyPage() {
                     ),
                 )
               }
-              onSend={() =>
-                run(sendApplication, (next) =>
-                  setData((previous) =>
-                    previous
-                      ? {
-                          ...previous,
-                          application: next.application,
-                          statusLabel: next.statusLabel,
-                        }
-                      : previous,
-                  ),
+              onSend={(draft) =>
+                run(
+                  (token) => sendApplication(token, draft),
+                  (next) =>
+                    setData((previous) =>
+                      previous
+                        ? {
+                            ...previous,
+                            application: next.application,
+                            statusLabel: next.statusLabel,
+                          }
+                        : previous,
+                    ),
                 )
               }
               onWithdraw={() =>
@@ -1892,7 +1910,7 @@ function JoinStep({
   signedIn: boolean;
   headingRef: React.RefObject<HTMLHeadingElement>;
   onSaveDraft: (draft: ApplicationDraft) => void;
-  onSend: () => void;
+  onSend: (draft: ApplicationDraft) => void;
   onWithdraw: () => void;
 }) {
   const application = data?.application ?? null;
@@ -1923,13 +1941,14 @@ function JoinStep({
         <UserRoundCheck size={15} aria-hidden="true" /> Ready
       </span>
       <h2 className="academy-step-title" tabIndex={-1} ref={headingRef}>
-        Course finished. Here is what happens next.
+        Course finished. What would you like to do next?
       </h2>
       <p className="academy-lede">
         You have read the lessons, worked through the situations, passed the
-        assessment and written a proposal. That is the club’s learning
-        requirement met — and it is not membership yet. A person from the
-        membership team reads this and comes back to you.
+        assessment and written a proposal. Your course completion is recorded.
+        Contacting the membership team is optional: use it if you want to join
+        or continue a membership conversation, and skip it if you are already a
+        member.
       </p>
 
       <section className="academy-checklist">
@@ -1991,10 +2010,14 @@ function JoinStep({
           className="academy-application"
           onSubmit={(event) => {
             event.preventDefault();
-            onSend();
+            onSend(draft);
           }}
         >
           <h3>Tell the membership team about you</h3>
+          <p className="academy-hint">
+            Already a member? You do not need to complete this form. Your
+            certificate is available from the academy dashboard.
+          </p>
           <div className="academy-field-row">
             {(
               [
@@ -2010,6 +2033,9 @@ function JoinStep({
                 <input
                   type={type}
                   value={draft[key]}
+                  required
+                  minLength={APPLICATION_LIMITS[key].min}
+                  maxLength={APPLICATION_LIMITS[key].max}
                   autoComplete={
                     key === "fullName"
                       ? "name"
@@ -2035,6 +2061,7 @@ function JoinStep({
             </span>
             <select
               value={draft.availability}
+              required
               onChange={(event) =>
                 setDraft((previous) => ({
                   ...previous,
@@ -2060,7 +2087,9 @@ function JoinStep({
             </span>
             <textarea
               rows={6}
-              maxLength={2000}
+              required
+              minLength={APPLICATION_LIMITS.motivation.min}
+              maxLength={APPLICATION_LIMITS.motivation.max}
               value={draft.motivation}
               onChange={(event) =>
                 setDraft((previous) => ({
@@ -2069,6 +2098,10 @@ function JoinStep({
                 }))
               }
             />
+            <span className="academy-count">
+              {draft.motivation.trim().length}/
+              {APPLICATION_LIMITS.motivation.min}
+            </span>
           </label>
           <div className="academy-actions">
             <button
@@ -2084,7 +2117,7 @@ function JoinStep({
               className="btn btn-primary btn-lg"
               disabled={busy || !signedIn}
             >
-              Send to the membership team <Send aria-hidden="true" />
+              Save and send to membership team <Send aria-hidden="true" />
             </button>
           </div>
           {!signedIn ? (

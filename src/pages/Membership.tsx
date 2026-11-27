@@ -39,7 +39,11 @@ export default function MembershipPage() {
         <ButtonLink to="/membership/academy" variant="primary" size="md">
           Start the membership course <ArrowRight aria-hidden="true" />
         </ButtonLink>
-        <ButtonLink to="/contact?interest=join-club" variant="secondary" size="md">
+        <ButtonLink
+          to="/contact?interest=join-club"
+          variant="secondary"
+          size="md"
+        >
           Ask before you commit
         </ButtonLink>
       </PageHero>
@@ -53,8 +57,9 @@ export default function MembershipPage() {
               <h2>Thursday fellowship</h2>
               <p>
                 Fellowship runs every {CLUB.meeting.dayLabel},{" "}
-                {CLUB.meeting.timeLabel} at Nakuru Athletic Club. Short service
-                update, project news, time to talk.
+                {CLUB.meeting.timeLabel} at {CLUB.meeting.venue},{" "}
+                {CLUB.meeting.address}. Short service update, project news, time
+                to talk.
               </p>
             </div>
             <div className="membership-fact">
@@ -63,8 +68,7 @@ export default function MembershipPage() {
               <p>
                 Rotary International dues and club running costs, plus a{" "}
                 {formatKes(MEMBERSHIP.fees.pin)} Rotaract pin. Projects are
-                funded separately by fundraising — you are never billed for
-                one.
+                funded separately by fundraising — you are never billed for one.
               </p>
             </div>
             <div className="membership-fact">
@@ -225,13 +229,13 @@ export default function MembershipPage() {
               <p>
                 No joining fee is published and no minimum donation is expected.
                 You will not be asked to fund a project out of your own pocket,
-                and you do not need a profession, a degree or a car to be
-                useful here.
+                and you do not need a profession, a degree or a car to be useful
+                here.
               </p>
               <p className="membership-meeting">
                 <MapPin size={18} aria-hidden="true" /> Fellowship ·{" "}
-                {CLUB.meeting.dayLabel}, {CLUB.meeting.timeLabel} · Nakuru
-                Athletic Club
+                {CLUB.meeting.dayLabel}, {CLUB.meeting.timeLabel} ·{" "}
+                {CLUB.meeting.venue}, {CLUB.meeting.address}
               </p>
             </div>
           </div>
@@ -251,9 +255,9 @@ export default function MembershipPage() {
             <Reveal delay={80}>
               <p className="lede">
                 Leave your details and one of our officers will invite you to
-                the next fellowship at Nakuru Athletic Club on a{" "}
-                {CLUB.meeting.dayLabel}. Guests are welcome, and you can bring
-                questions instead of answers.
+                the next fellowship at {CLUB.meeting.venue},{" "}
+                {CLUB.meeting.address} on a {CLUB.meeting.dayLabel}. Guests are
+                welcome, and you can bring questions instead of answers.
               </p>
             </Reveal>
           </div>

@@ -42,6 +42,12 @@ export interface AcademyBootstrap {
   courseVersion?: string;
   record?: LearningRecord;
   application?: MembershipApplication | null;
+  profile?: {
+    displayName: string | null;
+    phone: string | null;
+    officialName: string | null;
+    complete: boolean;
+  };
   statusLabel?: string | null;
   summary?: CourseProgressSummary;
   chapters?: ChapterProgress[];
@@ -63,6 +69,7 @@ export interface LearnerProgressRow {
   userId: string;
   displayName: string | null;
   email: string | null;
+  phone: string | null;
   startedAt: string | null;
   lastProgressAt: string | null;
   lastSeenAt: string | null;
@@ -260,6 +267,7 @@ export function saveLearnerProfile(
   userId: string,
   displayName: string,
   certificateName: string,
+  phone: string,
 ) {
   return academyAction<{
     learner: {
@@ -267,12 +275,29 @@ export function saveLearnerProfile(
       email: string | null;
       displayName: string;
       certificateName: string;
+      phone: string | null;
     };
   }>(token, {
     action: "learner-profile",
     userId,
     displayName,
     certificateName,
+    phone,
+  });
+}
+
+export function saveOwnLearnerProfile(
+  token: string | null,
+  phone: string,
+  officialName: string,
+) {
+  return academyAction<{
+    record: LearningRecord;
+    profile: NonNullable<AcademyBootstrap["profile"]>;
+  }>(token, {
+    action: "self-profile",
+    phone,
+    officialName,
   });
 }
 
@@ -367,11 +392,14 @@ export const saveDraft = (token: string | null, draft: ApplicationDraft) =>
     draft,
   });
 
-export const sendApplication = (token: string | null) =>
+export const sendApplication = (
+  token: string | null,
+  draft?: ApplicationDraft,
+) =>
   academyAction<{
     application: MembershipApplication;
     statusLabel: string;
-  }>(token, { action: "apply" });
+  }>(token, { action: "apply", ...(draft ? { draft } : {}) });
 
 export const withdrawApplication = (token: string | null) =>
   academyAction<{ application: MembershipApplication }>(token, {

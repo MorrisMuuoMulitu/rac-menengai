@@ -357,7 +357,9 @@ export default function HomePage() {
               </div>
               <div>
                 <dt>Where</dt>
-                <dd>Nakuru Athletic Club, Nakuru</dd>
+                <dd>
+                  Nakuru Athletic Club, West Road, Oginga Odinga Avenue, Nakuru
+                </dd>
               </div>
               <div>
                 <dt>Who</dt>

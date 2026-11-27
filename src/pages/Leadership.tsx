@@ -8,14 +8,13 @@
  * 2025/26 DEI role, which stays in the data as a record.
  */
 import { ArrowRight, Mail } from "lucide-react";
-import { CLUB, LEADERS, PAGE_INTROS } from "../data";
+import { CLUB, LEADERS, PAGE_INTROS, PRESIDENTIAL_LINE } from "../data";
 import { ButtonLink, PageHero, PageMeta } from "../components/ui";
 import { LeaderCard } from "../components/cards";
 
 export default function LeadershipPage() {
   const intro = PAGE_INTROS.leadership;
   const board = LEADERS.filter((l) => l.kind === "board");
-  const past = LEADERS.filter((l) => l.kind === "past" && !l.confirm);
   const executive = board.filter((l) => l.group === "executive");
   const officers = board.filter((l) => l.group === "officers");
   const service = board.filter((l) => l.group === "service");
@@ -44,7 +43,9 @@ export default function LeadershipPage() {
               <a key={l.slug} href={`#${l.slug}`} className="board-chip">
                 <span className="board-chip-name">{l.name}</span>
                 <span className="board-chip-role">
-                  {l.standing ?? l.portfolio}
+                  {l.abbreviation
+                    ? `${l.abbreviation} · ${l.standing}`
+                    : (l.standing ?? l.portfolio)}
                 </span>
               </a>
             ))}
@@ -102,10 +103,11 @@ export default function LeadershipPage() {
           </div>
 
           <p className="board-source">
-            Names, portfolios, portraits and biographies are supplied by the
-            club (October 2026). Portraits are cropped from the club’s own
-            leadership cards, and the club confirms the roster at the start of
-            each Rotary year.
+            Current roles and the presidential line were confirmed by the club
+            on 27 November 2026. Portraits use the club-supplied leadership
+            photographs. The two historical presidents without a matching
+            supplied image are shown with initials rather than an unidentified
+            photograph.
           </p>
         </div>
       </section>
@@ -113,13 +115,86 @@ export default function LeadershipPage() {
       <section className="section">
         <div className="container">
           <div className="section-head-block">
-            <span className="eyebrow">Past presidents</span>
+            <span className="eyebrow">Presidential line</span>
             <h2 className="sec-title">Who built the club</h2>
+            <p className="section-lead">
+              The club was chartered on 1 January 2015. This is the supplied
+              presidential record from the first charter year onward.
+            </p>
           </div>
-          <div className="leaders-grid leaders-grid--two">
-            {past.map((l, i) => (
-              <LeaderCard key={l.slug} leader={l} delay={i * 80} />
-            ))}
+          <div className="presidential-table-wrap">
+            <table className="presidential-table">
+              <caption className="sr-only">
+                Charter and past presidents of the Rotaract Club of Menengai
+              </caption>
+              <thead>
+                <tr>
+                  <th scope="col">President</th>
+                  <th scope="col">Office</th>
+                  <th scope="col">Term</th>
+                </tr>
+              </thead>
+              <tbody>
+                {PRESIDENTIAL_LINE.map((president) => (
+                  <tr
+                    key={president.slug}
+                    className={president.current ? "is-current" : ""}
+                  >
+                    <th scope="row">
+                      <span className="presidential-person">
+                        {president.photo ? (
+                          <img
+                            src={`${president.photo}-320.webp`}
+                            alt=""
+                            width={320}
+                            height={420}
+                            loading="lazy"
+                            decoding="async"
+                          />
+                        ) : (
+                          <span
+                            className="presidential-initials"
+                            aria-hidden="true"
+                          >
+                            {president.initials}
+                          </span>
+                        )}
+                        <span>
+                          <strong>{president.name}</strong>
+                          {president.current ? (
+                            <small>Current term</small>
+                          ) : null}
+                        </span>
+                      </span>
+                    </th>
+                    <td>
+                      {president.abbreviation ? (
+                        <strong>{president.abbreviation}</strong>
+                      ) : null}{" "}
+                      {president.role}
+                    </td>
+                    <td>{president.term}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="leadership-key" aria-label="Leadership abbreviations">
+            <span>
+              <strong>CP</strong> Charter President
+            </span>
+            <span>
+              <strong>PP</strong> Past President
+            </span>
+            <span>
+              <strong>IPP</strong> Immediate Past President
+            </span>
+            <span>
+              <strong>PN</strong> President Nominee
+            </span>
+            <span>
+              <strong>PE</strong> President Elect
+            </span>
           </div>
           <div className="section-more">
             <ButtonLink to="/membership" variant="primary" size="sm">

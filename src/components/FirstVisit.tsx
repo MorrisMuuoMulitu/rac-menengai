@@ -56,7 +56,8 @@ export function FirstVisit() {
             <Clock size={20} aria-hidden="true" /> {CLUB.meeting.timeLabel} EAT
           </p>
           <p>
-            <MapPin size={20} aria-hidden="true" /> Nakuru Athletic Club, Nakuru
+            <MapPin size={20} aria-hidden="true" /> {CLUB.meeting.venue},{" "}
+            {CLUB.meeting.address}
           </p>
           <div className="first-visit-cost">
             <strong>Free for guests</strong>

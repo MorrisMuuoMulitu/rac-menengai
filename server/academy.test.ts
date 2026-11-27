@@ -56,6 +56,7 @@ function fakeRepository(): AcademyRepository & {
         clubId,
         email,
         displayName,
+        phone: null,
         record: emptyRecord(FULL_COURSE.version),
       };
       data.set(key(userId, clubId), learner);
@@ -75,6 +76,7 @@ function fakeRepository(): AcademyRepository & {
       const learner = data.get(key(userId, clubId));
       if (!learner) return null;
       learner.displayName = profile.displayName;
+      learner.phone = profile.phone;
       learner.record = withProgressStamp({
         ...learner.record,
         certificateName: profile.certificateName,
@@ -124,6 +126,7 @@ function fakeRepository(): AcademyRepository & {
             userId: learner.userId,
             email: learner.email,
             displayName: learner.displayName,
+            phone: learner.phone,
             record: learner.record,
             startedAt: stamp?.createdAt ?? null,
             lastSeenAt: stamp?.updatedAt ?? null,
@@ -800,6 +803,27 @@ describe("the proposal and the application", () => {
     expect(res.statusCode).toBe(422);
   });
 
+  it("saves the details on screen and sends them in one request", async () => {
+    await completeCourse(learner.userId);
+    const res = await post(learner.userId, {
+      action: "apply",
+      draft: {
+        fullName: "Amina Wanjiru",
+        email: "amina@example.com",
+        phone: "+254 700 000 000",
+        profession: "Civil engineer",
+        location: "Nakuru",
+        motivation:
+          "I want to work on water projects where I can use my engineering training and keep learning from people who have run projects for longer than I have.",
+        availability: "Weekday evenings",
+      },
+    });
+    expect(res.statusCode).toBe(200);
+    expect(
+      (res.body as { application: MembershipApplication }).application.status,
+    ).toBe("submitted");
+  });
+
   it("carries a learner through to a submitted application", async () => {
     await completeCourse(learner.userId);
     await fillDraft(learner.userId);
@@ -946,6 +970,7 @@ type ProgressBody = {
     userId: string;
     email: string | null;
     displayName: string | null;
+    phone: string | null;
     completed: number;
     total: number;
     percent: number;
@@ -966,18 +991,20 @@ type ProgressBody = {
 const learnersUrl = "/api/academy?view=learners";
 
 describe("officer learner progress", () => {
-  it("lets an officer correct a learner's display and certificate names", async () => {
+  it("lets an officer correct a learner's display name, official name and phone", async () => {
     await get(learner.userId);
     const res = await post(officer.userId, {
       action: "learner-profile",
       userId: learner.userId,
       displayName: "Amina W. Mwangi",
       certificateName: "Amina Wangari Mwangi",
+      phone: "+254 700 111 222",
     });
     expect(res.statusCode).toBe(200);
     const saved = repository.data.get(`menengai:${learner.userId}`)!;
     expect(saved.displayName).toBe("Amina W. Mwangi");
     expect(saved.record.certificateName).toBe("Amina Wangari Mwangi");
+    expect(saved.phone).toBe("+254 700 111 222");
     expect(
       (
         await post(learner.userId, {
@@ -985,9 +1012,30 @@ describe("officer learner progress", () => {
           userId: learner.userId,
           displayName: "Self edit",
           certificateName: "Self edit",
+          phone: "+254 700 999 999",
         })
       ).statusCode,
     ).toBe(403);
+  });
+
+  it("lets a learner capture their own phone and official certificate name", async () => {
+    const res = await post(learner.userId, {
+      action: "self-profile",
+      phone: "+254 711 222 333",
+      officialName: "Amina Wangari Mwangi",
+    });
+    expect(res.statusCode).toBe(200);
+    const saved = repository.data.get(`menengai:${learner.userId}`)!;
+    expect(saved.phone).toBe("+254 711 222 333");
+    expect(saved.record.certificateName).toBe("Amina Wangari Mwangi");
+    const payload = (await get(learner.userId)).body as {
+      profile: { complete: boolean; phone: string; officialName: string };
+    };
+    expect(payload.profile).toMatchObject({
+      complete: true,
+      phone: "+254 711 222 333",
+      officialName: "Amina Wangari Mwangi",
+    });
   });
 
   it("is refused to a signed-in learner and to a visitor", async () => {
@@ -1003,6 +1051,7 @@ describe("officer learner progress", () => {
     expect(body.nudgeAfterDays).toBe(NUDGE_AFTER_DAYS);
     const row = body.learners.find((item) => item.userId === learner.userId)!;
     expect(row.lessonsDone).toBe(1);
+    expect(row.phone).toBeNull();
     expect(row.lessonsTotal).toBe(FULL_COURSE.modules.length);
     expect(row.assessmentTotal).toBe(FULL_COURSE.questions.length);
     expect(row.cohort).toBe("in-progress");

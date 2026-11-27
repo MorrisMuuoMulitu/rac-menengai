@@ -210,7 +210,9 @@ export function LeaderCard({
 }) {
   // Standing when the role is a leadership position, otherwise the portfolio.
   const roleLine = leader.standing
-    ? `${leader.standing}${leader.term ? ` · ${leader.term}` : ""}`
+    ? `${leader.abbreviation ? `${leader.abbreviation} · ` : ""}${leader.standing}${
+        leader.term ? ` · ${leader.term}` : ""
+      }`
     : leader.portfolio;
   const inner = (
     <Reveal
@@ -339,7 +341,7 @@ export function OpportunityCard({ compact = false }: { compact?: boolean }) {
         <Clock aria-hidden="true" /> {meetingTimeLabel()} · East Africa Time
       </span>
       <span>
-        <MapPin aria-hidden="true" /> {CLUB.city.split(",")[0]} · casual
+        <MapPin aria-hidden="true" /> {CLUB.meeting.venue}, Oginga Odinga Ave
       </span>
     </div>
   );
@@ -354,7 +356,8 @@ export function OpportunityCard({ compact = false }: { compact?: boolean }) {
         <h3>Attend a fellowship</h3>
         <p className="opportunity-note">
           Fellowship every {CLUB.meeting.dayLabel}, {meetingTimeLabel()} in{" "}
-          {CLUB.city.split(",")[0]}. Guests are always welcome.
+          {CLUB.meeting.venue}, {CLUB.meeting.address}. Guests are always
+          welcome.
         </p>
         <div className="opportunity-actions">
           <ButtonLink to="/membership" variant="primary">

@@ -147,6 +147,10 @@ function readDraft(input: unknown): ApplicationDraft | null {
 /** Everything the learner's own screen needs, and nothing about anyone else. */
 function learnerPayload(
   actor: Actor,
+  learner: {
+    displayName: string | null;
+    phone: string | null;
+  },
   record: LearningRecord,
   application: MembershipApplication | null,
 ) {
@@ -159,6 +163,16 @@ function learnerPayload(
     },
     courseVersion: FULL_COURSE.version,
     record,
+    profile: {
+      displayName: learner.displayName ?? actor.displayName,
+      phone: learner.phone,
+      officialName: record.certificateName,
+      complete: Boolean(
+        learner.phone?.trim().length &&
+        learner.phone.trim().length >= 7 &&
+        record.certificateName,
+      ),
+    },
     application,
     statusLabel: application
       ? APPLICATION_STATUS_LABEL[application.status]
@@ -236,6 +250,7 @@ function learnerProgressPayload(
       userId: row.userId,
       displayName: row.displayName,
       email: row.email,
+      phone: row.phone,
       startedAt: row.startedAt,
       lastProgressAt,
       lastSeenAt: row.lastSeenAt,
@@ -516,7 +531,7 @@ export function createAcademyHandler(
       );
       return response.status(200).json({
         course,
-        ...learnerPayload(actor, learner.record, application),
+        ...learnerPayload(actor, learner, learner.record, application),
       });
     }
 
@@ -538,6 +553,41 @@ export function createAcademyHandler(
     }
     const signedIn: Actor = actor;
 
+    if (action === "self-profile") {
+      const learner = await withLearner(dependencies, signedIn);
+      const phone = typeof body.phone === "string" ? body.phone.trim() : "";
+      const officialName =
+        typeof body.officialName === "string" ? body.officialName.trim() : "";
+      if (phone.length < 7 || phone.length > 40)
+        return response
+          .status(422)
+          .json({ error: "Enter a phone number between 7 and 40 characters." });
+      if (officialName.length < 2 || officialName.length > 120)
+        return response.status(422).json({
+          error: "Use the official name from 2 to 120 characters.",
+        });
+      const updated = await dependencies.repository.updateLearnerProfile(
+        signedIn.userId,
+        CLUB_ID,
+        {
+          displayName: learner.displayName ?? signedIn.displayName ?? "Learner",
+          certificateName: officialName,
+          phone,
+        },
+      );
+      if (!updated)
+        return response.status(404).json({ error: "Learner not found." });
+      return response.status(200).json({
+        record: updated.record,
+        profile: {
+          displayName: updated.displayName,
+          phone: updated.phone,
+          officialName: updated.record.certificateName,
+          complete: true,
+        },
+      });
+    }
+
     if (action === "learner-profile") {
       if (!signedIn.reviewer)
         return response
@@ -550,6 +600,7 @@ export function createAcademyHandler(
         typeof body.certificateName === "string"
           ? body.certificateName.trim()
           : "";
+      const phone = typeof body.phone === "string" ? body.phone.trim() : "";
       if (!userId || displayName.length < 1 || displayName.length > 120)
         return response
           .status(422)
@@ -558,10 +609,14 @@ export function createAcademyHandler(
         return response.status(422).json({
           error: "Use a certificate name between 2 and 120 characters.",
         });
+      if (phone.length < 7 || phone.length > 40)
+        return response
+          .status(422)
+          .json({ error: "Use a phone number between 7 and 40 characters." });
       const updated = await dependencies.repository.updateLearnerProfile(
         userId,
         CLUB_ID,
-        { displayName, certificateName },
+        { displayName, certificateName, phone },
       );
       if (!updated)
         return response.status(404).json({ error: "Learner not found." });
@@ -581,6 +636,7 @@ export function createAcademyHandler(
           email: updated.email,
           displayName: updated.displayName,
           certificateName: updated.record.certificateName,
+          phone: updated.phone,
         },
       });
     }
@@ -985,10 +1041,51 @@ export function createAcademyHandler(
           error:
             "Complete the course, the chapter checks, the assessment and your proposal first.",
         });
-      const existing = await dependencies.repository.loadApplication(
+      let existing = await dependencies.repository.loadApplication(
         signedIn.userId,
         CLUB_ID,
       );
+      /*
+       * The send button submits the values currently on screen. Saving those
+       * values in the same request prevents a stale or missing draft from
+       * blocking an application the learner has just completed.
+       */
+      if (body.draft !== undefined) {
+        const draft = readDraft(body.draft);
+        if (!draft)
+          return response.status(400).json({ error: "Invalid details." });
+        const draftErrors = validateDraft(draft);
+        if (Object.keys(draftErrors).length)
+          return response.status(422).json({
+            error: "Check your details before sending.",
+            fields: draftErrors,
+          });
+        if (
+          existing &&
+          existing.status !== "draft" &&
+          existing.status !== "needs_more" &&
+          existing.status !== "withdrawn"
+        )
+          return response
+            .status(409)
+            .json({ error: "Your application is already with the club." });
+        existing = await dependencies.repository.saveApplication(
+          signedIn.userId,
+          CLUB_ID,
+          {
+            id: existing?.id ?? "",
+            status: "draft",
+            ...draft,
+            courseVersion: FULL_COURSE.version,
+            courseScore: record.bestScore,
+            submittedAt: null,
+            decidedAt: null,
+            decidedBy: null,
+            decisionNote: null,
+            updatedAt: new Date().toISOString(),
+          },
+        );
+      }
       if (!existing)
         return response
           .status(409)
