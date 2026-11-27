@@ -428,23 +428,28 @@ export default function LearnerProgressPage() {
                         >
                           <Pencil size={13} aria-hidden="true" /> Edit details
                         </button>
-                        <button
-                          type="button"
-                          className="academy-learner-delete-button"
-                          onClick={() => {
-                            setEditingId(null);
-                            setConfirmingId(null);
-                            setDeletingId(
-                              deletingId === row.userId ? null : row.userId,
-                            );
-                            setDeleteConfirmation("");
-                            setError("");
-                            setNotice("");
-                          }}
-                          aria-expanded={deletingId === row.userId}
-                        >
-                          <Trash2 size={13} aria-hidden="true" /> Delete learner
-                        </button>
+                        {!account.email ||
+                        row.email?.toLowerCase() !==
+                          account.email.toLowerCase() ? (
+                          <button
+                            type="button"
+                            className="academy-learner-delete-button"
+                            onClick={() => {
+                              setEditingId(null);
+                              setConfirmingId(null);
+                              setDeletingId(
+                                deletingId === row.userId ? null : row.userId,
+                              );
+                              setDeleteConfirmation("");
+                              setError("");
+                              setNotice("");
+                            }}
+                            aria-expanded={deletingId === row.userId}
+                          >
+                            <Trash2 size={13} aria-hidden="true" /> Delete
+                            learner
+                          </button>
+                        ) : null}
                       </div>
                     </div>
 
